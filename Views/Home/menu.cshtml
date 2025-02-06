@@ -1,271 +1,277 @@
 ﻿
-<div class="container">
-	<div class="alert alert-light border shadow-sm text-center mb-4">
-		<div class="row g-2 justify-content-center">
-			<div class="col-auto"><i class="bi bi-sun text-primary me-1"></i>Breakfast: 7:00-10:30</div>
-			<div class="col-auto">|</div>
-			<div class="col-auto"><i class="bi bi-brightness-high text-success me-1"></i>Lunch: 11:30-2:30</div>
-			<div class="col-auto">|</div>
-			<div class="col-auto"><i class="bi bi-moon text-info me-1"></i>Dinner: 5:30-8:30</div>
-		</div>
-	</div>
+<div class="container py-4 py-lg-5">
+	<div class="container">
+            <div class="alert alert-light border shadow-sm text-center mb-4">
+                <div class="row g-2 justify-content-center">
+                    <div class="col-auto"><i class="bi bi-sun text-success me-1"></i>Breakfast: 7:00-10:30</div>
+                    <div class="col-auto">|</div>
+                    <div class="col-auto"><i class="bi bi-brightness-high text-info me-1"></i>Lunch: 11:30-2:30</div>
+                    <div class="col-auto">|</div>
+                    <div class="col-auto"><i class="bi bi-moon text-primary me-1"></i>Dinner: 5:30-8:30</div>
+                </div>
+            </div>
 
-	<div class="card shadow-sm mb-4">
-		<div class="card-header bg-primary text-white py-3">
-			<h5 class="mb-0">Weekly Menu</h5>
-		</div>
-		<div class="card-body p-0">
-			<nav>
-				<div class="nav nav-tabs nav-fill border-0" role="tablist">
-					<a class="nav-link active py-3 px-2 px-md-3 border-0" href="#sunday"
-					   data-bs-toggle="tab">SUN</a>
-					<a class="nav-link py-3 px-2 px-md-3 border-0" href="#monday" data-bs-toggle="tab">MON</a>
-					<a class="nav-link py-3 px-2 px-md-3 border-0" href="#tuesday" data-bs-toggle="tab">TUE</a>
-					<a class="nav-link py-3 px-2 px-md-3 border-0" href="#wednesday"
-					   data-bs-toggle="tab">WED</a>
-					<a class="nav-link py-3 px-2 px-md-3 border-0" href="#thursday" data-bs-toggle="tab">THU</a>
-				</div>
-			</nav>
-		</div>
-	</div>
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-success text-white py-3">
+                    <h5 class="mb-0">Weekly Menu</h5>
+                </div>
+                <div class="card-body p-0">
+                    <nav>
+                        <div class="nav nav-tabs nav-fill border-0" role="tablist">
+                            <a class="nav-link active py-3 px-2 px-md-3 border-0" href="#sunday" data-bs-toggle="tab">SUN</a>
+                            <a class="nav-link py-3 px-2 px-md-3 border-0" href="#monday" data-bs-toggle="tab">MON</a>
+                            <a class="nav-link py-3 px-2 px-md-3 border-0" href="#tuesday" data-bs-toggle="tab">TUE</a>
+                            <a class="nav-link py-3 px-2 px-md-3 border-0" href="#wednesday" data-bs-toggle="tab">WED</a>
+                            <a class="nav-link py-3 px-2 px-md-3 border-0" href="#thursday" data-bs-toggle="tab">THU</a>
+                        </div>
+                    </nav>
+                </div>
+            </div>
 
-	<div class="tab-content" id="menuContent">
-		<div class="tab-pane fade show active" id="sunday">
-			<!-- Breakfast Section -->
-			<div class="accordion" id="sundayMenu">
-				<div class="accordion-item border-0 rounded mb-3 shadow-sm">
-					<h2 class="accordion-header">
-						<button class="accordion-button bg-primary text-white rounded-top" type="button"
-								data-bs-toggle="collapse" data-bs-target="#sundayBreakfast" aria-expanded="true">
-							<i class="bi bi-sun me-2"></i>Breakfast
-						</button>
-					</h2>
-					<div id="sundayBreakfast" class="accordion-collapse collapse show"
-						 data-bs-parent="#sundayMenu">
-						<div class="accordion-body p-4">
-							<!-- Main Course -->
-							<div class="mb-4">
-								<div class="d-flex align-items-center border-bottom pb-2 mb-3">
-									<span class="badge bg-primary">Main Course</span>
-								</div>
-								<div class="list-group list-group-flush">
-									<div class="list-group-item d-flex justify-content-between align-items-start px-0">
-										<div>
-											<strong>Classic American Breakfast</strong>
-											<p class="mb-0 small text-muted">Eggs, bacon, toast, hash browns</p>
-										</div>
-										<span class="badge bg-light text-dark">450 cal</span>
-									</div>
-									<div class="list-group-item d-flex justify-content-between align-items-start px-0">
-										<div>
-											<strong>Pancake Stack</strong>
-											<p class="mb-0 small text-muted">
-												Three buttermilk pancakes, maple
-												syrup
-											</p>
-										</div>
-										<span class="badge bg-light text-dark">520 cal</span>
-									</div>
-								</div>
-							</div>
+            <div class="tab-content" id="menuContent">
+                <div class="tab-pane fade show active" id="sunday">
+                    <!-- Breakfast Section -->
+                    <div class="accordion" id="sundayMenu">
+                        <div class="accordion-item border-0 rounded mb-3 shadow-sm">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button bg-success text-white rounded-top" type="button"
+                                    data-bs-toggle="collapse" data-bs-target="#sundayBreakfast" aria-expanded="true">
+                                    <i class="bi bi-sun me-2"></i>Breakfast
+                                </button>
+                            </h2>
+                            <div id="sundayBreakfast" class="accordion-collapse collapse show"
+                                data-bs-parent="#sundayMenu">
+                                <div class="accordion-body p-4">
+                                    <!-- Main Course -->
+                                    <div class="mb-4">
+                                        <div class="d-flex align-items-center border-bottom pb-2 mb-3">
+                                            <span class="badge bg-success">Main Course</span>
+                                        </div>
+                                        <div class="list-group list-group-flush">
+                                            <div
+                                                class="list-group-item d-flex justify-content-between align-items-start px-0">
+                                                <div>
+                                                    <strong>Classic American Breakfast</strong>
+                                                    <p class="mb-0 small text-muted">Eggs, bacon, toast, hash browns</p>
+                                                </div>
+                                                <span class="badge bg-light text-dark">450 cal</span>
+                                            </div>
+                                            <div
+                                                class="list-group-item d-flex justify-content-between align-items-start px-0">
+                                                <div>
+                                                    <strong>Pancake Stack</strong>
+                                                    <p class="mb-0 small text-muted">Three buttermilk pancakes, maple
+                                                        syrup</p>
+                                                </div>
+                                                <span class="badge bg-light text-dark">520 cal</span>
+                                            </div>
+                                        </div>
+                                    </div>
 
-							<!-- Sides -->
-							<div class="mb-4">
-								<div class="d-flex align-items-center border-bottom pb-2 mb-3">
-									<span class="badge bg-success">Sides</span>
-								</div>
-								<div class="list-group list-group-flush">
-									<div class="list-group-item d-flex justify-content-between align-items-start px-0">
-										<div>
-											<strong>Fresh Fruit Bowl</strong>
-											<p class="mb-0 small text-muted">Seasonal mixed fruits</p>
-										</div>
-										<span class="badge bg-light text-dark">120 cal</span>
-									</div>
-									<div class="list-group-item d-flex justify-content-between align-items-start px-0">
-										<div>
-											<strong>Yogurt Parfait</strong>
-											<p class="mb-0 small text-muted">Greek yogurt, granola, berries</p>
-										</div>
-										<span class="badge bg-light text-dark">280 cal</span>
-									</div>
-								</div>
-							</div>
+                                    <!-- Sides -->
+                                    <div class="mb-4">
+                                        <div class="d-flex align-items-center border-bottom pb-2 mb-3">
+                                            <span class="badge bg-info">Sides</span>
+                                        </div>
+                                        <div class="list-group list-group-flush">
+                                            <div
+                                                class="list-group-item d-flex justify-content-between align-items-start px-0">
+                                                <div>
+                                                    <strong>Fresh Fruit Bowl</strong>
+                                                    <p class="mb-0 small text-muted">Seasonal mixed fruits</p>
+                                                </div>
+                                                <span class="badge bg-light text-dark">120 cal</span>
+                                            </div>
+                                            <div
+                                                class="list-group-item d-flex justify-content-between align-items-start px-0">
+                                                <div>
+                                                    <strong>Yogurt Parfait</strong>
+                                                    <p class="mb-0 small text-muted">Greek yogurt, granola, berries</p>
+                                                </div>
+                                                <span class="badge bg-light text-dark">280 cal</span>
+                                            </div>
+                                        </div>
+                                    </div>
 
-							<!-- Beverages -->
-							<div>
-								<div class="d-flex align-items-center border-bottom pb-2 mb-3">
-									<span class="badge bg-info">Beverages</span>
-								</div>
-								<div class="list-group list-group-flush">
-									<div class="list-group-item d-flex justify-content-between align-items-start px-0">
-										<div>
-											<strong>Hot Beverages</strong>
-											<p class="mb-0 small text-muted">Coffee, Tea, or Hot Chocolate</p>
-										</div>
-										<span class="badge bg-light text-dark">0-120 cal</span>
-									</div>
-									<div class="list-group-item d-flex justify-content-between align-items-start px-0">
-										<div>
-											<strong>Cold Beverages</strong>
-											<p class="mb-0 small text-muted">
-												Orange Juice, Apple Juice, or Milk
-											</p>
-										</div>
-										<span class="badge bg-light text-dark">90-160 cal</span>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
+                                    <!-- Beverages -->
+                                    <div>
+                                        <div class="d-flex align-items-center border-bottom pb-2 mb-3">
+                                            <span class="badge bg-primary">Beverages</span>
+                                        </div>
+                                        <div class="list-group list-group-flush">
+                                            <div
+                                                class="list-group-item d-flex justify-content-between align-items-start px-0">
+                                                <div>
+                                                    <strong>Hot Beverages</strong>
+                                                    <p class="mb-0 small text-muted">Coffee, Tea, or Hot Chocolate</p>
+                                                </div>
+                                                <span class="badge bg-light text-dark">0-120 cal</span>
+                                            </div>
+                                            <div
+                                                class="list-group-item d-flex justify-content-between align-items-start px-0">
+                                                <div>
+                                                    <strong>Cold Beverages</strong>
+                                                    <p class="mb-0 small text-muted">Orange Juice, Apple Juice, or Milk
+                                                    </p>
+                                                </div>
+                                                <span class="badge bg-light text-dark">90-160 cal</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-				<!-- Lunch Section -->
-				<div class="accordion-item border-0 rounded mb-3 shadow-sm">
-					<h2 class="accordion-header">
-						<button class="accordion-button collapsed bg-success text-white rounded-top"
-								type="button" data-bs-toggle="collapse" data-bs-target="#sundayLunch">
-							<i class="bi bi-brightness-high me-2"></i>Lunch
-						</button>
-					</h2>
-					<div id="sundayLunch" class="accordion-collapse collapse" data-bs-parent="#sundayMenu">
-						<div class="accordion-body p-4">
-							<!-- Similar structure as breakfast with lunch items -->
-						</div>
-					</div>
-				</div>
+                        <!-- Lunch Section -->
+                        <div class="accordion-item border-0 rounded mb-3 shadow-sm">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed bg-info text-white rounded-top"
+                                    type="button" data-bs-toggle="collapse" data-bs-target="#sundayLunch">
+                                    <i class="bi bi-brightness-high me-2"></i>Lunch
+                                </button>
+                            </h2>
+                            <div id="sundayLunch" class="accordion-collapse collapse" data-bs-parent="#sundayMenu">
+                                <div class="accordion-body p-4">
+                                    <!-- Similar structure as breakfast with lunch items -->
+                                </div>
+                            </div>
+                        </div>
 
-				<!-- Dinner Section -->
-				<div class="accordion-item border-0 rounded shadow-sm">
-					<h2 class="accordion-header">
-						<button class="accordion-button collapsed bg-info text-white rounded-top" type="button"
-								data-bs-toggle="collapse" data-bs-target="#sundayDinner">
-							<i class="bi bi-moon me-2"></i>Dinner
-						</button>
-					</h2>
-					<div id="sundayDinner" class="accordion-collapse collapse" data-bs-parent="#sundayMenu">
-						<div class="accordion-body p-4">
-							<!-- Similar structure as breakfast with dinner items -->
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+                        <!-- Dinner Section -->
+                        <div class="accordion-item border-0 rounded shadow-sm">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed bg-primary text-white rounded-top" type="button"
+                                    data-bs-toggle="collapse" data-bs-target="#sundayDinner">
+                                    <i class="bi bi-moon me-2"></i>Dinner
+                                </button>
+                            </h2>
+                            <div id="sundayDinner" class="accordion-collapse collapse" data-bs-parent="#sundayMenu">
+                                <div class="accordion-body p-4">
+                                    <!-- Similar structure as breakfast with dinner items -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-		<div class="tab-pane fade" id="monday">
+                <div class="tab-pane fade" id="monday">
 
-			<div class="accordion" id="sundayMenu">
-				<div class="accordion-item border-0 rounded mb-3 shadow-sm">
-					<h2 class="accordion-header">
-						<button class="accordion-button bg-primary text-white rounded-top" type="button"
-								data-bs-toggle="collapse" data-bs-target="#sundayBreakfast" aria-expanded="true">
-							<i class="bi bi-sun me-2"></i>Breakfast
-						</button>
-					</h2>
-					<div id="sundayBreakfast" class="accordion-collapse collapse show"
-						 data-bs-parent="#sundayMenu">
-						<div class="accordion-body p-4">
-							<div class="mb-4">
-								<div class="d-flex align-items-center border-bottom pb-2 mb-3">
-									<span class="badge bg-primary">Main Course</span>
-								</div>
-								<div class="list-group list-group-flush">
-									<div class="list-group-item d-flex justify-content-between align-items-start px-0">
-										<div>
-											<strong>Classic Saudi Breakfast</strong>
-											<p class="mb-0 small text-muted">Eggs, bacon, toast, hash browns</p>
-										</div>
-										<span class="badge bg-light text-dark">450 cal</span>
-									</div>
-									<div class="list-group-item d-flex justify-content-between align-items-start px-0">
-										<div>
-											<strong>Pancake Stack</strong>
-											<p class="mb-0 small text-muted">
-												Three buttermilk pancakes, maple
-												syrup
-											</p>
-										</div>
-										<span class="badge bg-light text-dark">520 cal</span>
-									</div>
-								</div>
-							</div>
+                    <div class="accordion" id="sundayMenu">
+                        <div class="accordion-item border-0 rounded mb-3 shadow-sm">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button bg-success text-white rounded-top" type="button"
+                                    data-bs-toggle="collapse" data-bs-target="#sundayBreakfast" aria-expanded="true">
+                                    <i class="bi bi-sun me-2"></i>Breakfast
+                                </button>
+                            </h2>
+                            <div id="sundayBreakfast" class="accordion-collapse collapse show"
+                                data-bs-parent="#sundayMenu">
+                                <div class="accordion-body p-4">
+                                    <div class="mb-4">
+                                        <div class="d-flex align-items-center border-bottom pb-2 mb-3">
+                                            <span class="badge bg-success">Main Course</span>
+                                        </div>
+                                        <div class="list-group list-group-flush">
+                                            <div
+                                                class="list-group-item d-flex justify-content-between align-items-start px-0">
+                                                <div>
+                                                    <strong>Classic Saudi Breakfast</strong>
+                                                    <p class="mb-0 small text-muted">Eggs, bacon, toast, hash browns</p>
+                                                </div>
+                                                <span class="badge bg-light text-dark">450 cal</span>
+                                            </div>
+                                            <div
+                                                class="list-group-item d-flex justify-content-between align-items-start px-0">
+                                                <div>
+                                                    <strong>Pancake Stack</strong>
+                                                    <p class="mb-0 small text-muted">Three buttermilk pancakes, maple
+                                                        syrup</p>
+                                                </div>
+                                                <span class="badge bg-light text-dark">520 cal</span>
+                                            </div>
+                                        </div>
+                                    </div>
 
-							<div class="mb-4">
-								<div class="d-flex align-items-center border-bottom pb-2 mb-3">
-									<span class="badge bg-success">Sides</span>
-								</div>
-								<div class="list-group list-group-flush">
-									<div class="list-group-item d-flex justify-content-between align-items-start px-0">
-										<div>
-											<strong>Fresh Fruit Bowl</strong>
-											<p class="mb-0 small text-muted">Seasonal mixed fruits</p>
-										</div>
-										<span class="badge bg-light text-dark">120 cal</span>
-									</div>
-									<div class="list-group-item d-flex justify-content-between align-items-start px-0">
-										<div>
-											<strong>Yogurt Parfait</strong>
-											<p class="mb-0 small text-muted">Greek yogurt, granola, berries</p>
-										</div>
-										<span class="badge bg-light text-dark">280 cal</span>
-									</div>
-								</div>
-							</div>
+                                    <div class="mb-4">
+                                        <div class="d-flex align-items-center border-bottom pb-2 mb-3">
+                                            <span class="badge bg-info">Sides</span>
+                                        </div>
+                                        <div class="list-group list-group-flush">
+                                            <div
+                                                class="list-group-item d-flex justify-content-between align-items-start px-0">
+                                                <div>
+                                                    <strong>Fresh Fruit Bowl</strong>
+                                                    <p class="mb-0 small text-muted">Seasonal mixed fruits</p>
+                                                </div>
+                                                <span class="badge bg-light text-dark">120 cal</span>
+                                            </div>
+                                            <div
+                                                class="list-group-item d-flex justify-content-between align-items-start px-0">
+                                                <div>
+                                                    <strong>Yogurt Parfait</strong>
+                                                    <p class="mb-0 small text-muted">Greek yogurt, granola, berries</p>
+                                                </div>
+                                                <span class="badge bg-light text-dark">280 cal</span>
+                                            </div>
+                                        </div>
+                                    </div>
 
-							<div>
-								<div class="d-flex align-items-center border-bottom pb-2 mb-3">
-									<span class="badge bg-info">Beverages</span>
-								</div>
-								<div class="list-group list-group-flush">
-									<div class="list-group-item d-flex justify-content-between align-items-start px-0">
-										<div>
-											<strong>Hot Beverages</strong>
-											<p class="mb-0 small text-muted">Coffee, Tea, or Hot Chocolate</p>
-										</div>
-										<span class="badge bg-light text-dark">0-120 cal</span>
-									</div>
-									<div class="list-group-item d-flex justify-content-between align-items-start px-0">
-										<div>
-											<strong>Cold Beverages</strong>
-											<p class="mb-0 small text-muted">
-												Orange Juice, Apple Juice, or Milk
-											</p>
-										</div>
-										<span class="badge bg-light text-dark">90-160 cal</span>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
+                                    <div>
+                                        <div class="d-flex align-items-center border-bottom pb-2 mb-3">
+                                            <span class="badge bg-primary">Beverages</span>
+                                        </div>
+                                        <div class="list-group list-group-flush">
+                                            <div
+                                                class="list-group-item d-flex justify-content-between align-items-start px-0">
+                                                <div>
+                                                    <strong>Hot Beverages</strong>
+                                                    <p class="mb-0 small text-muted">Coffee, Tea, or Hot Chocolate</p>
+                                                </div>
+                                                <span class="badge bg-light text-dark">0-120 cal</span>
+                                            </div>
+                                            <div
+                                                class="list-group-item d-flex justify-content-between align-items-start px-0">
+                                                <div>
+                                                    <strong>Cold Beverages</strong>
+                                                    <p class="mb-0 small text-muted">Orange Juice, Apple Juice, or Milk
+                                                    </p>
+                                                </div>
+                                                <span class="badge bg-light text-dark">90-160 cal</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-				<div class="accordion-item border-0 rounded mb-3 shadow-sm">
-					<h2 class="accordion-header">
-						<button class="accordion-button collapsed bg-success text-white rounded-top"
-								type="button" data-bs-toggle="collapse" data-bs-target="#sundayLunch">
-							<i class="bi bi-brightness-high me-2"></i>Lunch
-						</button>
-					</h2>
-					<div id="sundayLunch" class="accordion-collapse collapse" data-bs-parent="#sundayMenu">
-						<div class="accordion-body p-4">
-						</div>
-					</div>
-				</div>
+                        <div class="accordion-item border-0 rounded mb-3 shadow-sm">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed bg-info text-white rounded-top"
+                                    type="button" data-bs-toggle="collapse" data-bs-target="#sundayLunch">
+                                    <i class="bi bi-brightness-high me-2"></i>Lunch
+                                </button>
+                            </h2>
+                            <div id="sundayLunch" class="accordion-collapse collapse" data-bs-parent="#sundayMenu">
+                                <div class="accordion-body p-4">
+                                </div>
+                            </div>
+                        </div>
 
-				<div class="accordion-item border-0 rounded shadow-sm">
-					<h2 class="accordion-header">
-						<button class="accordion-button collapsed bg-info text-white rounded-top" type="button"
-								data-bs-toggle="collapse" data-bs-target="#sundayDinner">
-							<i class="bi bi-moon me-2"></i>Dinner
-						</button>
-					</h2>
-					<div id="sundayDinner" class="accordion-collapse collapse" data-bs-parent="#sundayMenu">
-						<div class="accordion-body p-4">
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- ... repeat for other days ... -->
-	</div>
+                        <div class="accordion-item border-0 rounded shadow-sm">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed bg-primary text-white rounded-top" type="button"
+                                    data-bs-toggle="collapse" data-bs-target="#sundayDinner">
+                                    <i class="bi bi-moon me-2"></i>Dinner
+                                </button>
+                            </h2>
+                            <div id="sundayDinner" class="accordion-collapse collapse" data-bs-parent="#sundayMenu">
+                                <div class="accordion-body p-4">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- ... repeat for other days ... -->
+            </div>
+        </div>
 </div>
