@@ -1,5 +1,5 @@
 ﻿@{
-    var currentPath = Context.Request.Path;
+	var currentPath = Context.Request.Path;
 }
 
 <!DOCTYPE html>
@@ -55,10 +55,10 @@
 					</ul>
 
 					<div class="d-flex gap-2 mt-3 mt-lg-0">
-						<a href="auth.html" class="btn btn-outline-success px-3 text-white">
+						<a asp-area="Identity" asp-page="/Account/Login" class="btn btn-outline-success px-3 text-white">
 							<i class="bi bi-box-arrow-in-right me-2"></i>Login
 						</a>
-						<a href="auth.html#signup" class="btn btn-success px-3 text-white">
+						<a asp-area="Identity" asp-page="/Account/Register" class="btn btn-success px-3 text-white">
 							<i class="bi bi-person-plus me-2"></i>Sign Up
 						</a>
 					</div>
@@ -67,7 +67,7 @@
 		</nav>
 	</header>
 
-	<main role="main">
+	<main role="main" class="pb-5">
 		@RenderBody()
 	</main>
 
