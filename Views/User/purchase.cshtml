@@ -1,0 +1,98 @@
+﻿<div class="container py-4">
+    <!-- Header -->
+    <div class="mb-4">
+        <h1 class="h3 mb-2">Purchase Meal Tickets</h1>
+        <p class="text-muted mb-0">Select the quantity of tickets you'd like to purchase</p>
+    </div>
+
+    <!-- Meal Times Info -->
+    <div class="alert alert-light border shadow-sm text-center mb-4">
+        <div class="row g-2 justify-content-center">
+            <div class="col-auto"><i class="bi bi-sun text-success me-1"></i>Breakfast: 7:00-10:30</div>
+            <div class="col-auto">|</div>
+            <div class="col-auto"><i class="bi bi-brightness-high text-info me-1"></i>Lunch: 11:30-2:30</div>
+            <div class="col-auto">|</div>
+            <div class="col-auto"><i class="bi bi-moon text-primary me-1"></i>Dinner: 5:30-8:30</div>
+        </div>
+    </div>
+
+    <!-- Ticket Selection Form -->
+    <div class="card shadow-sm">
+        <div class="card-body p-4">
+            <form id="ticketPurchaseForm">
+                <!-- Breakfast Tickets -->
+                <div class="mb-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="bi bi-sun fs-4 text-success me-2"></i>
+                        <h5 class="mb-0">Breakfast Tickets</h5>
+                        <span class="badge bg-success ms-2">7 SR/ticket</span>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text">Quantity</span>
+                        <input type="number" class="form-control" min="0" value="0" id="breakfastQty">
+                        <span class="input-group-text">Total: <span class="ms-1" id="breakfastTotal">0 SR</span></span>
+                    </div>
+                </div>
+
+                <!-- Lunch Tickets -->
+                <div class="mb-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="bi bi-brightness-high fs-4 text-info me-2"></i>
+                        <h5 class="mb-0">Lunch Tickets</h5>
+                        <span class="badge bg-info ms-2">10 SR/ticket</span>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text">Quantity</span>
+                        <input type="number" class="form-control" min="0" value="0" id="lunchQty">
+                        <span class="input-group-text">Total: <span class="ms-1" id="lunchTotal">0 SR</span></span>
+                    </div>
+                </div>
+
+                <!-- Dinner Tickets -->
+                <div class="mb-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="bi bi-moon fs-4 text-primary me-2"></i>
+                        <h5 class="mb-0">Dinner Tickets</h5>
+                        <span class="badge bg-primary ms-2">10 SR/ticket</span>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text">Quantity</span>
+                        <input type="number" class="form-control" min="0" value="0" id="dinnerQty">
+                        <span class="input-group-text">Total: <span class="ms-1" id="dinnerTotal">0 SR</span></span>
+                    </div>
+                </div>
+
+                <hr class="my-4">
+
+                <!-- Order Summary -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h5 class="mb-0">Total Amount</h5>
+                    <h4 class="mb-0" id="grandTotal">0 SR</h4>
+                </div>
+
+                <!-- PayPal Button Placeholder -->
+                <div class="d-grid">
+                    <button type="button" class="btn btn-primary btn-lg" id="paypal-button">Purchase</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Simple calculation logic for the totals
+    document.querySelectorAll('input[type="number"]').forEach(input => {
+        input.addEventListener('change', calculateTotals);
+    });
+
+    function calculateTotals() {
+        const breakfast = document.getElementById('breakfastQty').value * 7;
+        const lunch = document.getElementById('lunchQty').value * 10;
+        const dinner = document.getElementById('dinnerQty').value * 10;
+
+        document.getElementById('breakfastTotal').textContent = `${breakfast} SR`;
+        document.getElementById('lunchTotal').textContent = `${lunch} SR`;
+        document.getElementById('dinnerTotal').textContent = `${dinner} SR`;
+        document.getElementById('grandTotal').textContent = `${breakfast + lunch + dinner} SR`;
+    }
+</script>

@@ -23,6 +23,16 @@ namespace KauRestaurant.Controllers
             return View();
         }
 
+        public IActionResult Tickets()
+        {
+            return View();
+        }
+
+        public IActionResult Purchase()
+        {
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

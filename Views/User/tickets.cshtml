@@ -1,0 +1,141 @@
+﻿<div class="container py-4">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 mb-0">My Meal Tickets</h1>
+        <a class="btn btn-success btn-sm" asp-controller="User" asp-action="Purchase">
+            <i class="bi bi-plus-lg me-2"></i>Buy Tickets
+        </a>
+    </div>
+
+    <!-- Ticket Summary -->
+    <div class="row g-3 mb-4">
+        <div class="col-12">
+            <div class="card border-0 bg-light">
+                <div class="card-body">
+                    <div class="row g-3 text-center">
+                        <div class="col">
+                            <div class="d-flex align-items-center justify-content-center mb-2">
+                                <i class="bi bi-sun fs-4 text-success me-2"></i>
+                                <span class="h5 mb-0">Breakfast</span>
+                            </div>
+                            <h3 class="mb-0 fw-bold">5</h3>
+                            <small class="text-muted">tickets</small>
+                        </div>
+                        <div class="col">
+                            <div class="d-flex align-items-center justify-content-center mb-2">
+                                <i class="bi bi-brightness-high fs-4 text-info me-2"></i>
+                                <span class="h5 mb-0">Lunch</span>
+                            </div>
+                            <h3 class="mb-0 fw-bold">3</h3>
+                            <small class="text-muted">tickets</small>
+                        </div>
+                        <div class="col">
+                            <div class="d-flex align-items-center justify-content-center mb-2">
+                                <i class="bi bi-moon fs-4 text-primary me-2"></i>
+                                <span class="h5 mb-0">Dinner</span>
+                            </div>
+                            <h3 class="mb-0 fw-bold">2</h3>
+                            <small class="text-muted">tickets</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Available Tickets -->
+    <div class="row g-3">
+        <!-- Breakfast Tickets -->
+        <div class="col-12">
+            <div class="d-flex align-items-center mb-3">
+                <i class="bi bi-sun fs-4 text-success me-2"></i>
+                <h5 class="mb-0">Breakfast Tickets</h5>
+            </div>
+            <div class="row g-3">
+                <!-- Single Ticket Card -->
+                <div class="col-md-6">
+                    <div class="card h-100 border-success">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h6 class="card-title mb-0">Ticket #1234</h6>
+                                <span class="badge bg-success">Breakfast</span>
+                            </div>
+                            <p class="card-text small mb-3">Valid during breakfast hours (7:00 AM - 10:30 AM)</p>
+                            <button class="btn btn-success w-100" data-bs-toggle="modal" data-bs-target="#qrModal">
+                                <i class="bi bi-qr-code me-2"></i>Redeem Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Repeat for other breakfast tickets -->
+            </div>
+        </div>
+
+        <!-- Lunch Tickets -->
+        <div class="col-12">
+            <div class="d-flex align-items-center mb-3">
+                <i class="bi bi-brightness-high fs-4 text-info me-2"></i>
+                <h5 class="mb-0">Lunch Tickets</h5>
+            </div>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="card h-100 border-info">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h6 class="card-title mb-0">Ticket #1235</h6>
+                                <span class="badge bg-info">Lunch</span>
+                            </div>
+                            <p class="card-text small mb-3">Valid during lunch hours (11:30 AM - 2:30 PM)</p>
+                            <button class="btn btn-info w-100 text-white" data-bs-toggle="modal" data-bs-target="#qrModal">
+                                <i class="bi bi-qr-code me-2"></i>Redeem Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dinner Tickets -->
+        <div class="col-12">
+            <div class="d-flex align-items-center mb-3">
+                <i class="bi bi-moon fs-4 text-primary me-2"></i>
+                <h5 class="mb-0">Dinner Tickets</h5>
+            </div>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="card h-100 border-primary">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h6 class="card-title mb-0">Ticket #1236</h6>
+                                <span class="badge bg-primary">Dinner</span>
+                            </div>
+                            <p class="card-text small mb-3">Valid during dinner hours (5:30 PM - 8:30 PM)</p>
+                            <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#qrModal">
+                                <i class="bi bi-qr-code me-2"></i>Redeem Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- QR Modal -->
+    <div class="modal fade" id="qrModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title">Redeem Ticket</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body text-center p-4">
+                    <div class="mb-4">
+                        <img src="https://via.placeholder.com/200x200" alt="QR Code" class="img-fluid rounded shadow-sm">
+                    </div>
+                    <h6 class="mb-3">Ticket #1234</h6>
+                    <p class="mb-0 text-muted">Show this QR code to the staff to redeem your meal</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

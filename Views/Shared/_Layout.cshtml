@@ -38,17 +38,17 @@
 							</a>
 						</li>
 						<li class="nav-item px-1">
-							<a class="nav-link @(currentPath == "/Home/Menu" ? "active" : "") rounded px-3 py-2" asp-controller="Home" asp-action="Menu">
+							<a class="nav-link @(currentPath == "/Home/Menu" ? "active" : "") rounded px-3 py-2" asp-controller="User" asp-action="Menu">
 								<i class="bi bi-journal-text me-2"></i>Weekly Menu
 							</a>
 						</li>
 						<li class="nav-item px-1">
-							<a class="nav-link @(currentPath == "/purchase" ? "active" : "") rounded px-3 py-2" href="/purchase">
+							<a class="nav-link @(currentPath == "/purchase" ? "active" : "") rounded px-3 py-2" asp-controller="User" asp-action="Purchase">
 								<i class="bi bi-ticket-perforated me-2"></i>Buy Tickets
 							</a>
 						</li>
 						<li class="nav-item px-1">
-							<a class="nav-link @(currentPath == "/my-tickets" ? "active" : "") rounded px-3 py-2" href="/my-tickets">
+							<a class="nav-link @(currentPath == "/my-tickets" ? "active" : "") rounded px-3 py-2" asp-controller="User" asp-action="Tickets">
 								<i class="bi bi-collection me-2"></i>My Tickets
 							</a>
 						</li>
@@ -74,7 +74,7 @@
 
 	<footer class="border-top footer bg-dark text-white py-4 mt-auto">
 		<div class="container text-center">
-			<p class="mb-0">&copy; 2023 University Restaurant. All rights reserved.</p>
+			<p class="mb-0">&copy; 2025 KAU Restaurant. All rights reserved.</p>
 		</div>
 	</footer>
 	<script src="~/lib/jquery/dist/jquery.min.js"></script>

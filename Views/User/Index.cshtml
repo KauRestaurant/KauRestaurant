@@ -7,7 +7,7 @@
 					<p class="lead mb-0">Check out what's on the menu today!</p>
 				</div>
 				<div class="col-md-4 text-md-end mt-3 mt-md-0">
-					<a href="purchase.html" class="btn btn-light btn-lg">
+					<a class="btn btn-light btn-lg" asp-controller="User" asp-action="Purchase">
 						<i class="bi bi-ticket-perforated me-2"></i>Get Meal Tickets
 					</a>
 				</div>
@@ -19,7 +19,7 @@
 		<div class="container">
 			<div class="d-flex justify-content-between align-items-center mb-4">
 				<h2 class="h3 h2-lg fw-bold mb-0">Today's Menu</h2>
-				<a asp-controller="Home" asp-action="Menu" class="btn btn-outline-success">
+				<a asp-controller="User" asp-action="Menu" class="btn btn-outline-success">
 					<i class="bi bi-grid-3x3-gap me-2"></i>View Menu Details
 				</a>
 			</div>
