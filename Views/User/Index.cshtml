@@ -1,126 +1,128 @@
-﻿<div>
-	<div class="bg-success text-white py-4">
-		<div class="container">
-			<div class="row align-items-center">
-				<div class="col-md-8">
-					<h1 class="display-5 fw-bold mb-2">Welcome to University Restaurant</h1>
-					<p class="lead mb-0">Check out what's on the menu today!</p>
-				</div>
-				<div class="col-md-4 text-md-end mt-3 mt-md-0">
-					<a class="btn btn-light btn-lg" asp-controller="User" asp-action="Purchase">
-						<i class="bi bi-ticket-perforated me-2"></i>Get Meal Tickets
-					</a>
-				</div>
-			</div>
-		</div>
-	</div>
+﻿@{
+    ViewData["Title"] = "الرئيسية";
+}
 
-	<div class="container-fluid py-4 py-lg-5 bg-white">
-		<div class="container">
-			<div class="d-flex justify-content-between align-items-center mb-4">
-				<h2 class="h3 h2-lg fw-bold mb-0">Today's Menu</h2>
-				<a asp-controller="User" asp-action="Menu" class="btn btn-outline-success">
-					<i class="bi bi-grid-3x3-gap me-2"></i>View Menu Details
-				</a>
-			</div>
+<div>
+    <div class="bg-success text-white py-4">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1 class="display-5 fw-bold mb-2">مرحبًا بكم في المطعم الجامعي</h1>
+                    <p class="lead mb-0">تحقق من قائمة طعام اليوم</p>
+                </div>
+                <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                    <a class="btn btn-light btn-lg" asp-controller="User" asp-action="Purchase">
+                        <i class="bi bi-plus-lg me-2"></i>شراء التذاكر
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 
-			<div class="card border-0 shadow">
-				<div class="card-header bg-success text-white py-3">
-					<div class="d-flex justify-content-between align-items-center flex-wrap">
-						<h4 class="mb-0">
-							<i class="bi bi-sun me-2"></i>Breakfast Menu
-						</h4>
-						<span class="badge bg-white text-success fs-6 menu-time-badge">7:00 AM - 10:30 AM</span>
-					</div>
-				</div>
+    <div class="container-fluid py-4 py-lg-5 bg-white">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="h3 h2-lg fw-bold mb-0">قائمة اليوم</h2>
+                <a asp-controller="User" asp-action="Menu" class="btn btn-outline-success">
+                    <i class="bi bi-grid-3x3-gap me-2"></i>عرض تفاصيل القائمة
+                </a>
+            </div>
 
-				<div class="card-body p-4">
-					<div class="row gy-4">
-						<div class="col-md-6">
-							<div class="p-3 bg-light rounded">
-								<h5 class="border-bottom pb-2 mb-3">
-									<i class="bi bi-egg-fried me-2"></i>Main Dishes
-								</h5>
-								<div class="list-group list-group-flush">
-									<div class="list-group-item bg-transparent px-0">
-										<div class="d-flex justify-content-between align-items-start">
-											<div class="pe-2">
-												<h6 class="mb-1">Classic American Breakfast</h6>
-												<p class="text-muted small mb-0">
-													Eggs any style, bacon, toast, hash
-													browns
-												</p>
-											</div>
-										</div>
-									</div>
-									<div class="list-group-item bg-transparent px-0">
-										<div class="d-flex justify-content-between align-items-start">
-											<div>
-												<h6 class="mb-1">
-													Vegetarian Omelette
-													<i class="bi bi-leaf-fill text-success" title="Vegetarian"></i>
-												</h6>
-												<p class="text-muted small mb-0">
-													Mushrooms, spinach, cheese with
-													toast
-												</p>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
+            <div class="card border-0 shadow">
+                <div class="card-header bg-success text-white py-3">
+                    <div class="d-flex justify-content-between align-items-center flex-wrap">
+                        <h4 class="mb-0">
+                            <i class="bi bi-sun me-2"></i>قائمة الإفطار
+                        </h4>
+                        <span class="badge bg-white text-success fs-6 menu-time-badge">7:00 صباحًا - 10:30 صباحًا</span>
+                    </div>
+                </div>
 
-						<div class="col-md-6">
-							<div class="p-3 bg-light rounded">
-								<h5 class="border-bottom pb-2 mb-3">
-									<i class="bi bi-cup-hot me-2"></i>Sides & Beverages
-								</h5>
-								<div class="row">
-									<div class="col-6">
-										<h6 class="text-muted mb-2">Sides:</h6>
-										<ul class="list-unstyled">
-											<li class="mb-2 d-flex align-items-center">
-												<i class="bi bi-dot fs-4 me-1"></i>Fresh Fruit Bowl
-											</li>
-											<li class="mb-2 d-flex align-items-center">
-												<i class="bi bi-dot fs-4 me-1"></i>Yogurt Parfait
-											</li>
-											<li class="mb-2 d-flex align-items-center">
-												<i class="bi bi-dot fs-4 me-1"></i>Fresh Croissants
-											</li>
-											<li class="mb-2 d-flex align-items-center">
-												<i class="bi bi-dot fs-4 me-1"></i>Muffin Selection
-											</li>
-										</ul>
-									</div>
-									<div class="col-6">
-										<h6 class="text-muted mb-2">Beverages:</h6>
-										<ul class="list-unstyled mb-0">
-											<li class="mb-2 d-flex align-items-center">
-												<i class="bi bi-dot fs-4 me-1"></i>Coffee / Tea
-											</li>
-											<li class="mb-2 d-flex align-items-center">
-												<i class="bi bi-dot fs-4 me-1"></i>Fresh Juices
-											</li>
-											<li class="mb-2 d-flex align-items-center">
-												<i class="bi bi-dot fs-4 me-1"></i>Hot Chocolate
-											</li>
-										</ul>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
+                <div class="card-body p-4">
+                    <div class="row gy-4">
+                        <div class="col-md-6">
+                            <div class="p-3 bg-light rounded">
+                                <h5 class="border-bottom pb-2 mb-3">
+                                    <i class="bi bi-egg-fried me-2"></i>الأطباق الرئيسية
+                                </h5>
+                                <div class="list-group list-group-flush">
+                                    <div class="list-group-item bg-transparent px-0">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div class="pe-2">
+                                                <h6 class="mb-1">الإفطار الأمريكي الكلاسيكي</h6>
+                                                <p class="text-muted small mb-0">
+                                                    بيض بأي طريقة، لحم مقدد، توست، هاش براون
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="list-group-item bg-transparent px-0">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div>
+                                                <h6 class="mb-1">
+                                                    عجة نباتية
+                                                    <i class="bi bi-leaf-fill text-success" title="نباتي"></i>
+                                                </h6>
+                                                <p class="text-muted small mb-0">
+                                                    فطر، سبانخ، جبن مع توست
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-					<div class="text-center mt-4">
-						<small class="text-muted d-flex align-items-center justify-content-center">
-							<i class="bi bi-info-circle me-2"></i>
-							View full menu for detailed nutritional information and allergens
-						</small>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+                        <div class="col-md-6">
+                            <div class="p-3 bg-light rounded">
+                                <h5 class="border-bottom pb-2 mb-3">
+                                    <i class="bi bi-cup-hot me-2"></i>الأطباق الجانبية والمشروبات
+                                </h5>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <h6 class="text-muted mb-2">الأطباق الجانبية:</h6>
+                                        <ul class="list-unstyled">
+                                            <li class="mb-2 d-flex align-items-center">
+                                                <i class="bi bi-dot fs-4 me-1"></i>وعاء فواكه طازجة
+                                            </li>
+                                            <li class="mb-2 d-flex align-items-center">
+                                                <i class="bi bi-dot fs-4 me-1"></i>بارفيه الزبادي
+                                            </li>
+                                            <li class="mb-2 d-flex align-items-center">
+                                                <i class="bi bi-dot fs-4 me-1"></i>كرواسون طازج
+                                            </li>
+                                            <li class="mb-2 d-flex align-items-center">
+                                                <i class="bi bi-dot fs-4 me-1"></i>تشكيلة مافن
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-6">
+                                        <h6 class="text-muted mb-2">المشروبات:</h6>
+                                        <ul class="list-unstyled mb-0">
+                                            <li class="mb-2 d-flex align-items-center">
+                                                <i class="bi bi-dot fs-4 me-1"></i>قهوة / شاي
+                                            </li>
+                                            <li class="mb-2 d-flex align-items-center">
+                                                <i class="bi bi-dot fs-4 me-1"></i>عصائر طازجة
+                                            </li>
+                                            <li class="mb-2 d-flex align-items-center">
+                                                <i class="bi bi-dot fs-4 me-1"></i>شوكولاتة ساخنة
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <small class="text-muted d-flex align-items-center justify-content-center">
+                            <i class="bi bi-info-circle me-2"></i>
+                            عرض القائمة الكاملة لمعلومات التغذية التفصيلية والمواد المسببة للحساسية
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

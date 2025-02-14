@@ -21,3 +21,56 @@ body {
     margin-bottom: 60px;
     font-family: "Roboto", serif;
 }
+
+/* Navbar and Footer Background */
+.custom-navbar, .custom-footer {
+    background-color: #212529;
+}
+
+/* Main Green Button */
+.btn-main-green {
+    background-color: #198754;
+    border-color: #198754;
+    color: #ffffff;
+}
+
+    .btn-main-green:hover {
+        background-color: #105431;
+        border-color: #105431;
+        color: #ffffff;
+    }
+
+/* Outline Main Green Button */
+.btn-outline-main-green {
+    background-color: transparent;
+    border-color: #198754;
+    color: #ffffff;
+}
+
+.btn-outline-main-green:hover {
+        background-color: #198754;
+        border-color: #198754;
+        color: #ffffff;}
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+    font-family: "Roboto", serif;
+}
