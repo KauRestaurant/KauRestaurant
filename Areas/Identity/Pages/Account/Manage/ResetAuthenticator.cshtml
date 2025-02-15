@@ -1,0 +1,37 @@
+﻿@page
+@model ResetAuthenticatorModel
+@{
+    ViewData["Title"] = "إعادة تعيين مفتاح المصادقة";
+    ViewData["ActivePage"] = ManageNavPages.TwoFactorAuthentication;
+}
+
+<div class="text-center mb-4">
+    <h4 class="mb-3">@ViewData["Title"]</h4>
+    <partial name="_StatusMessage" for="StatusMessage" />
+</div>
+
+<div class="alert alert-warning">
+    <div class="d-flex">
+        <div class="me-3">
+            <i class="bi bi-exclamation-triangle-fill fs-3"></i>
+        </div>
+        <div>
+            <h5 class="alert-heading">تنبيه مهم</h5>
+            <p class="mb-2">
+                <strong>إذا قمت بإعادة تعيين مفتاح المصادقة، لن يعمل تطبيق المصادقة حتى تقوم بإعادة تكوينه.</strong>
+            </p>
+            <p class="mb-0">
+                هذه العملية تعطل المصادقة الثنائية حتى تتحقق من تطبيق المصادقة الخاص بك.
+                إذا لم تكمل تكوين تطبيق المصادقة، فقد تفقد الوصول إلى حسابك.
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="text-center">
+    <form id="reset-authenticator-form" method="post">
+        <button id="reset-authenticator-button" class="btn btn-danger btn-lg" type="submit">
+            <i class="bi bi-arrow-counterclockwise me-2"></i>إعادة تعيين مفتاح المصادقة
+        </button>
+    </form>
+</div>

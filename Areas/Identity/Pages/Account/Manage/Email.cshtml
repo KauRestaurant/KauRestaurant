@@ -1,0 +1,65 @@
+﻿@page
+@model EmailModel
+@{
+    ViewData["Title"] = "البريد الإلكتروني";
+    ViewData["ActivePage"] = ManageNavPages.Email;
+}
+
+<div class="text-center mb-4">
+    <h4 class="mb-3">@ViewData["Title"]</h4>
+    <partial name="_StatusMessage" for="StatusMessage" />
+</div>
+
+<form id="email-form" method="post" class="needs-validation" novalidate>
+    @if (ViewData.ModelState.ErrorCount > 0)
+    {
+        <div asp-validation-summary="All" role="alert" class="alert alert-danger alert-dismissible fade show">
+            <h6 class="alert-heading d-flex align-items-center">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                حدث خطأ
+            </h6>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (Model.IsEmailConfirmed)
+    {
+        <div class="form-floating mb-3">
+            <input asp-for="Email" class="form-control text-start" disabled dir="ltr" />
+            <label asp-for="Email">البريد الإلكتروني الحالي</label>
+            <div class="form-text text-success">
+                <i class="bi bi-check-circle me-2"></i>تم التحقق من البريد الإلكتروني
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="form-floating mb-3">
+            <input asp-for="Email" class="form-control text-start" disabled dir="ltr" />
+            <label asp-for="Email">البريد الإلكتروني الحالي</label>
+            <div class="mt-2">
+                <button id="email-verification" type="submit" asp-page-handler="SendVerificationEmail" 
+                        class="btn btn-outline-success">
+                    <i class="bi bi-envelope me-2"></i>إرسال رسالة التحقق
+                </button>
+            </div>
+        </div>
+    }
+
+    <div class="form-floating mb-4">
+        <input asp-for="Input.NewEmail" class="form-control text-start" autocomplete="email" aria-required="true" dir="ltr" />
+        <label asp-for="Input.NewEmail">البريد الإلكتروني الجديد</label>
+        <span asp-validation-for="Input.NewEmail" class="text-danger"></span>
+    </div>
+
+    <div class="d-grid">
+        <button id="change-email-button" type="submit" asp-page-handler="ChangeEmail" 
+                class="btn btn-success btn-lg">
+            <i class="bi bi-check-lg me-2"></i>تحديث البريد الإلكتروني
+        </button>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

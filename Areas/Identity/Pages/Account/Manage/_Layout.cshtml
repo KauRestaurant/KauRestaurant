@@ -1,0 +1,40 @@
+@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+
+<div class="bg-success text-white py-4">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1 class="display-5 fw-bold mb-2">إدارة الحساب</h1>
+                <p class="lead mb-0">تحكم في إعدادات حسابك وبياناتك الشخصية</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container py-4">
+    <div class="row g-4">
+        <div class="col-md-3">
+            <div class="card shadow-sm">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">القائمة</h5>
+                </div>
+                <div class="card-body p-0">
+                    @await Html.PartialAsync("_ManageNav")
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @RenderSection("Scripts", required: false)
+}

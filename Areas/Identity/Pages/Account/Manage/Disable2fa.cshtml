@@ -1,0 +1,37 @@
+﻿@page
+@model Disable2faModel
+@{
+    ViewData["Title"] = "تعطيل المصادقة الثنائية";
+    ViewData["ActivePage"] = ManageNavPages.TwoFactorAuthentication;
+}
+
+<div class="text-center mb-4">
+    <h4 class="mb-3">@ViewData["Title"]</h4>
+    <partial name="_StatusMessage" for="StatusMessage" />
+</div>
+
+<div class="alert alert-warning">
+    <div class="d-flex">
+        <div class="me-3">
+            <i class="bi bi-exclamation-triangle-fill fs-3"></i>
+        </div>
+        <div>
+            <h5 class="alert-heading">تنبيه مهم</h5>
+            <p class="mb-2">
+                <strong>هذا الإجراء سيقوم فقط بتعطيل المصادقة الثنائية.</strong>
+            </p>
+            <p class="mb-0">
+                تعطيل المصادقة الثنائية لا يغير المفاتيح المستخدمة في تطبيقات المصادقة. إذا كنت ترغب في تغيير المفتاح المستخدم في تطبيق المصادقة، يجب عليك 
+                <a asp-page="./ResetAuthenticator" class="alert-link">إعادة تعيين مفاتيح المصادقة الخاصة بك</a>.
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="text-center">
+    <form method="post">
+        <button class="btn btn-danger btn-lg" type="submit">
+            <i class="bi bi-shield-x me-2"></i>تعطيل المصادقة الثنائية
+        </button>
+    </form>
+</div>
