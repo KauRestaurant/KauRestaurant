@@ -52,6 +52,18 @@ namespace KauRestaurant.Areas.Identity.Pages.Account.Manage
         /// </summary>
         public class InputModel
         {
+            [Required(ErrorMessage = "الاسم الأول مطلوب")]
+            [StringLength(50, ErrorMessage = "الاسم الأول يجب أن يكون بين {2} و {1} حرفاً", MinimumLength = 2)]
+            [RegularExpression(@"^[\u0600-\u06FF\s]{2,50}$", ErrorMessage = "الاسم الأول يجب أن يحتوي على حروف عربية فقط")]
+            [Display(Name = "الاسم الأول")]
+            public string FirstName { get; set; }
+
+            [Required(ErrorMessage = "اسم العائلة مطلوب")]
+            [StringLength(50, ErrorMessage = "اسم العائلة يجب أن يكون بين {2} و {1} حرفاً", MinimumLength = 2)]
+            [RegularExpression(@"^[\u0600-\u06FF\s]{2,50}$", ErrorMessage = "اسم العائلة يجب أن يحتوي على حروف عربية فقط")]
+            [Display(Name = "اسم العائلة")]
+            public string LastName { get; set; }
+
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
@@ -70,6 +82,8 @@ namespace KauRestaurant.Areas.Identity.Pages.Account.Manage
 
             Input = new InputModel
             {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
                 PhoneNumber = phoneNumber
             };
         }
@@ -79,7 +93,7 @@ namespace KauRestaurant.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"تعذر تحميل المستخدم.");
             }
 
             await LoadAsync(user);
@@ -91,7 +105,7 @@ namespace KauRestaurant.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"تعذر تحميل المستخدم.");
             }
 
             if (!ModelState.IsValid)
@@ -111,8 +125,20 @@ namespace KauRestaurant.Areas.Identity.Pages.Account.Manage
                 }
             }
 
+            if (ModelState.IsValid)
+            {
+                user.FirstName = Input.FirstName;
+                user.LastName = Input.LastName;
+                var result = await _userManager.UpdateAsync(user);
+                if (!result.Succeeded)
+                {
+                    StatusMessage = "حدث خطأ غير متوقع عند محاولة تحديث الملف الشخصي.";
+                    return RedirectToPage();
+                }
+            }
+
             await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Your profile has been updated";
+            StatusMessage = "تم تحديث معلوماتك الشخصية بنجاح";
             return RedirectToPage();
         }
     }

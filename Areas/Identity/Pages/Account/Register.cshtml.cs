@@ -71,6 +71,18 @@ namespace KauRestaurant.Areas.Identity.Pages.Account
         /// </summary>
         public class InputModel
         {
+            [Required(ErrorMessage = "الاسم الأول مطلوب")]
+            [StringLength(50, ErrorMessage = "الاسم الأول يجب أن يكون بين {2} و {1} حرفاً", MinimumLength = 2)]
+            [RegularExpression(@"^[\u0600-\u06FF\s]{2,50}$", ErrorMessage = "الاسم الأول يجب أن يحتوي على حروف عربية فقط")]
+            [Display(Name = "الاسم الأول")]
+            public string FirstName { get; set; }
+
+            [Required(ErrorMessage = "اسم العائلة مطلوب")]
+            [StringLength(50, ErrorMessage = "اسم العائلة يجب أن يكون بين {2} و {1} حرفاً", MinimumLength = 2)]
+            [RegularExpression(@"^[\u0600-\u06FF\s]{2,50}$", ErrorMessage = "اسم العائلة يجب أن يحتوي على حروف عربية فقط")]
+            [Display(Name = "اسم العائلة")]
+            public string LastName { get; set; }
+
             [Required(ErrorMessage = "البريد الإلكتروني مطلوب")]
             [EmailAddress(ErrorMessage = "البريد الإلكتروني غير صالح")]
             [Display(Name = "البريد الإلكتروني")]
@@ -109,6 +121,10 @@ namespace KauRestaurant.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
+                    user.FirstName = Input.FirstName;
+                    user.LastName = Input.LastName;
+                    await _userManager.UpdateAsync(user);
+
                     _logger.LogInformation("User created a new account with password.");
 
                     var userId = await _userManager.GetUserIdAsync(user);
