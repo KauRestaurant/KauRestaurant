@@ -1,20 +1,31 @@
 html {
     font-size: 14px;
+    position: relative;
+    min-height: 100%;
 }
+
 
 @media (min-width: 768px) {
     html {
         font-size: 16px;
     }
+
+    .accordion-desktop .accordion-button::after {
+        display: none;
+    }
+
+    .accordion-desktop .accordion-button {
+        cursor: default;
+        pointer-events: none;
+    }
+
+    .accordion-desktop .accordion-collapse {
+        display: block;
+    }
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
     box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-    position: relative;
-    min-height: 100%;
 }
 
 body {
@@ -32,6 +43,7 @@ body {
     background-color: #198754;
     border-color: #198754;
     color: #ffffff;
+    transition: all 0.3s ease;
 }
 
     .btn-main-green:hover {
@@ -45,28 +57,30 @@ body {
     background-color: transparent;
     border-color: #198754;
     color: #ffffff;
+    transition: all 0.3s ease;
 }
 
-.btn-outline-main-green:hover {
+    .btn-outline-main-green:hover {
         background-color: #198754;
         border-color: #198754;
-        color: #ffffff;}
+        color: #ffffff;
+    }
 
 /* Custom Nav Pills Styling */
 .nav-pills .nav-link {
-    color: #198754;  /* Bootstrap's success color */
+    color: #198754; /* Bootstrap's success color */
 }
 
-.nav-pills .nav-link.active,
-.nav-pills .show > .nav-link {
-    background-color: #198754;
-    color: white;
-}
+    .nav-pills .nav-link.active,
+    .nav-pills .show > .nav-link {
+        background-color: #198754;
+        color: white;
+    }
 
-.nav-pills .nav-link:hover:not(.active) {
-    background-color: #e8f5e9;
-    color: #198754;
-}
+    .nav-pills .nav-link:hover:not(.active) {
+        background-color: #e8f5e9;
+        color: #198754;
+    }
 
 /* Custom Menu Tabs Styling */
 .nav-tabs .nav-link {
@@ -74,30 +88,54 @@ body {
     position: relative;
 }
 
-.nav-tabs .nav-link:hover {
-    color: #198754;
-    border-color: transparent;
-    background-color: #e8f5e9;
-}
+    .nav-tabs .nav-link:hover {
+        color: #198754;
+        border-color: transparent;
+        background-color: #e8f5e9;
+    }
 
-.nav-tabs .nav-link.active {
-    color: #198754;
-    font-weight: 600;
-    background-color: transparent;
-    border-color: transparent;
-}
+    .nav-tabs .nav-link.active {
+        color: #198754;
+        font-weight: 600;
+        background-color: transparent;
+        border-color: transparent;
+    }
 
-.nav-tabs .nav-link.active::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background-color: #198754;
-}
+        .nav-tabs .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background-color: #198754;
+        }
 
 /* Make sure the tab content border is removed */
 .tab-content {
     border: none;
 }
+
+.hover-success {
+    transition: color 0.2s ease-in-out;
+}
+
+    .hover-success:hover {
+        color: #198754 !important;
+    }
+
+.max-w-600 {
+    max-width: 600px
+}
+
+/* Purchase Button Hover Effect */
+.btn-light {
+    transition: all 0.3s ease;
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+}
+
+    .btn-light:hover {
+        background-color: #198754 !important; /* Using the main green color */
+        color: #ffffff !important;
+    }

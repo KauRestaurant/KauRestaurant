@@ -1,281 +1,1374 @@
 ﻿@{
-    ViewData["Title"] = "قائمة الأسبوع";
+	ViewData["Title"] = "قائمة الأسبوع";
 }
 
-<div class="bg-success text-white py-4">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-md-8">
-                <h1 class="display-5 fw-bold mb-2">قائمة الأسبوع</h1>
-                <p class="lead mb-0">اختر كمية التذاكر الخاصة بك</p>
-            </div>
-            <div class="col-md-4 text-md-end mt-3 mt-md-0">
-                <a class="btn btn-light btn-lg" asp-controller="User" asp-action="Purchase">
-                    <i class="bi bi-plus-lg me-2"></i>شراء التذاكر
-                </a>
-            </div>
-        </div>
-    </div>
-</div>
+<div>
+	<!-- Main Content Section -->
+	<div class="container-fluid py-4 py-lg-5 bg-white">
+		<div class="container">
 
-<div class="container py-4 py-lg-5">
-    <div class="container">
-        <div class="alert alert-light border shadow-sm text-center mb-4">
-            <div class="row g-2 justify-content-center">
-                <div class="col-auto"><i class="bi bi-sun text-dark me-1"></i>الإفطار: 7:00-10:30</div>
-                <div class="col-auto">|</div>
-                <div class="col-auto"><i class="bi bi-brightness-high text-dark me-1"></i>الغداء: 11:30-2:30</div>
-                <div class="col-auto">|</div>
-                <div class="col-auto"><i class="bi bi-moon text-dark me-1"></i>العشاء: 5:30-8:30</div>
-            </div>
-        </div>
+			<!-- Card Header -->
+			<div class="card border-0 shadow mb-4">
+				<div class="card-header bg-success text-white py-3">
+					<div class="d-flex justify-content-between align-items-center">
+						<h3 class="fw-bold mb-0">قائمة الأسبوع</h3>
+						<div>
+							<a class="btn btn-light" asp-controller="User" asp-action="Purchase">
+								<i class="bi bi-plus-lg me-2"></i>شراء التذاكر
+							</a>
+						</div>
+					</div>
+				</div>
 
-        <div class="card shadow-sm mb-4">
-            <div class="card-header bg-dark text-white py-3">
-                <h5 class="mb-0">قائمة الأسبوع</h5>
-            </div>
-            <div class="card-body p-0">
-                <nav>
-                    <div class="nav nav-tabs nav-fill border-0" role="tablist">
-                        <a class="nav-link active py-3 px-2 px-md-3 border-0" href="#sunday" data-bs-toggle="tab">الأحد</a>
-                        <a class="nav-link py-3 px-2 px-md-3 border-0" href="#monday" data-bs-toggle="tab">الإثنين</a>
-                        <a class="nav-link py-3 px-2 px-md-3 border-0" href="#tuesday" data-bs-toggle="tab">الثلاثاء</a>
-                        <a class="nav-link py-3 px-2 px-md-3 border-0" href="#wednesday" data-bs-toggle="tab">الأربعاء</a>
-                        <a class="nav-link py-3 px-2 px-md-3 border-0" href="#thursday" data-bs-toggle="tab">الخميس</a>
-                    </div>
-                </nav>
-            </div>
-        </div>
+				<!-- Week Days -->
+				<div class="card-body p-0">
+					<nav>
+						<div class="nav nav-tabs nav-fill border-0" role="tablist">
+							<a class="nav-link active py-3 px-2 px-md-3" href="#sunday" data-bs-toggle="tab">الأحد</a>
+							<a class="nav-link py-3 px-2 px-md-3" href="#monday" data-bs-toggle="tab">الإثنين</a>
+							<a class="nav-link py-3 px-2 px-md-3" href="#tuesday" data-bs-toggle="tab">الثلاثاء</a>
+							<a class="nav-link py-3 px-2 px-md-3" href="#wednesday" data-bs-toggle="tab">الأربعاء</a>
+							<a class="nav-link py-3 px-2 px-md-3" href="#thursday" data-bs-toggle="tab">الخميس</a>
+						</div>
+					</nav>
+				</div>
+			</div>
 
-        <div class="tab-content" id="menuContent">
-            <div class="tab-pane fade show active" id="sunday">
-                <!-- Breakfast Section -->
-                <div class="accordion" id="sundayMenu">
-                    <div class="accordion-item border-0 rounded mb-3 shadow-sm">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button text-white rounded-top" style="background-color: #2e7d32;" type="button"
-                                    data-bs-toggle="collapse" data-bs-target="#sundayBreakfast" aria-expanded="true">
-                                <i class="bi bi-sun me-2"></i>الإفطار
-                            </button>
-                        </h2>
-                        <div id="sundayBreakfast" class="accordion-collapse collapse show"
-                             data-bs-parent="#sundayMenu">
-                            <div class="accordion-body p-4">
-                                <!-- Main Course -->
-                                <div class="mb-4">
-                                    <div class="d-flex align-items-center border-bottom pb-2 mb-3">
-                                        <span class="badge bg-success">الطبق الرئيسي</span>
-                                    </div>
-                                    <div class="list-group list-group-flush">
-                                        <div class="list-group-item d-flex justify-content-between align-items-start px-0">
-                                            <div>
-                                                <strong>الإفطار الأمريكي الكلاسيكي</strong>
-                                                <p class="mb-0 small text-muted">بيض، لحم مقدد، توست، هاش براون</p>
-                                            </div>
-                                            <span class="badge bg-light text-dark">450 سعرة حرارية</span>
-                                        </div>
-                                        <div class="list-group-item d-flex justify-content-between align-items-start px-0">
-                                            <div>
-                                                <strong>كومة البانكيك</strong>
-                                                <p class="mb-0 small text-muted">ثلاثة فطائر باللبن، شراب القيقب</p>
-                                            </div>
-                                            <span class="badge bg-light text-dark">520 سعرة حرارية</span>
-                                        </div>
-                                    </div>
-                                </div>
+			<!-- Meal Times -->
+			<div class="alert alert-light border shadow-sm text-center mb-4">
+				<div class="row g-2 justify-content-center">
+					<div class="col-auto">
+						<i class="bi bi-sun text-dark me-1"></i>الإفطار: 7:00-10:30
+					</div>
+					<div class="col-auto">|</div>
+					<div class="col-auto">
+						<i class="bi bi-brightness-high text-dark me-1"></i>الغداء: 11:30-2:30
+					</div>
+					<div class="col-auto">|</div>
+					<div class="col-auto">
+						<i class="bi bi-moon text-dark me-1"></i>العشاء: 5:30-8:30
+					</div>
+				</div>
+			</div>
 
-                                <!-- Sides -->
-                                <div class="mb-4">
-                                    <div class="d-flex align-items-center border-bottom pb-2 mb-3">
-                                        <span class="badge bg-primary ">الأطباق الجانبية</span>
-                                    </div>
-                                    <div class="list-group list-group-flush">
-                                        <div class="list-group-item d-flex justify-content-between align-items-start px-0">
-                                            <div>
-                                                <strong>وعاء فواكه طازجة</strong>
-                                                <p class="mb-0 small text-muted">فواكه موسمية مختلطة</p>
-                                            </div>
-                                            <span class="badge bg-light text-dark">120 سعرة حرارية</span>
-                                        </div>
-                                        <div class="list-group-item d-flex justify-content-between align-items-start px-0">
-                                            <div>
-                                                <strong>بارفيه الزبادي</strong>
-                                                <p class="mb-0 small text-muted">زبادي يوناني، جرانولا، توت</p>
-                                            </div>
-                                            <span class="badge bg-light text-dark">280 سعرة حرارية</span>
-                                        </div>
-                                    </div>
-                                </div>
+			<!-- Menu -->
+			<div class="tab-content" id="menuContent">
 
-                                <!-- Beverages -->
-                                <div>
-                                    <div class="d-flex align-items-center border-bottom pb-2 mb-3">
-                                        <span class="badge bg-secondary">المشروبات</span>
-                                    </div>
-                                    <div class="list-group list-group-flush">
-                                        <div class="list-group-item d-flex justify-content-between align-items-start px-0">
-                                            <div>
-                                                <strong>مشروبات ساخنة</strong>
-                                                <p class="mb-0 small text-muted">قهوة، شاي، أو شوكولاتة ساخنة</p>
-                                            </div>
-                                            <span class="badge bg-light text-dark">0-120 سعرة حرارية</span>
-                                        </div>
-                                        <div class="list-group-item d-flex justify-content-between align-items-start px-0">
-                                            <div>
-                                                <strong>مشروبات باردة</strong>
-                                                <p class="mb-0 small text-muted">عصير برتقال، عصير تفاح، أو حليب</p>
-                                            </div>
-                                            <span class="badge bg-light text-dark">90-160 سعرة حرارية</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+				<!-- Sunday Menu -->
+				<div class="tab-pane fade show active" id="sunday">
+					<div class="row" id="sundayMenu">
+						<!-- Breakfast Section -->
+						<div class="col-12 col-md-4 mb-3">
+							<div class="accordion accordion-desktop">
+								<div class="accordion-item border-0 rounded shadow h-100">
+									<h2 class="accordion-header">
+										<button class="accordion-button collapsed text-white rounded-top" style="background-color: #2e7d32;" type="button"
+												data-bs-toggle="collapse" data-bs-target="#sundayBreakfast">
+											<i class="bi bi-sun me-2"></i>الإفطار
+										</button>
+									</h2>
+									<div id="sundayBreakfast" class="accordion-collapse collapse">
+										<div class="accordion-body p-4">
+											<!-- Main Course -->
+											<div class="mb-4">
+												<div class="d-flex align-items-center border-bottom pb-2 mb-3">
+													<span class="badge bg-success">الطبق الرئيسي</span>
+												</div>
+												<div class="list-group list-group-flush">
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>الإفطار الأمريكي الكلاسيكي</strong>
+															<p class="mb-0 small text-muted">بيض، لحم مقدد، توست، هاش براون</p>
+														</div>
+														<span class="badge bg-light text-dark">450 سعرة حرارية</span>
+													</div>
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>كومة البانكيك</strong>
+															<p class="mb-0 small text-muted">ثلاثة فطائر باللبن، شراب القيقب</p>
+														</div>
+														<span class="badge bg-light text-dark">520 سعرة حرارية</span>
+													</div>
+												</div>
+											</div>
 
-                    <!-- Lunch Section -->
-                    <div class="accordion-item border-0 rounded mb-3 shadow-sm">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button collapsed text-white rounded-top" style="background-color: #1b5e20;"
-                                    type="button" data-bs-toggle="collapse" data-bs-target="#sundayLunch">
-                                <i class="bi bi-brightness-high me-2"></i>الغداء
-                            </button>
-                        </h2>
-                        <div id="sundayLunch" class="accordion-collapse collapse" data-bs-parent="#sundayMenu">
-                            <div class="accordion-body p-4">
-                                <!-- Similar structure as breakfast with lunch items -->
-                            </div>
-                        </div>
-                    </div>
+											<!-- Sides -->
+											<div class="mb-4">
+												<div class="d-flex align-items-center border-bottom pb-2 mb-3">
+													<span class="badge bg-primary">الأطباق الجانبية</span>
+												</div>
+												<div class="list-group list-group-flush">
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>وعاء فواكه طازجة</strong>
+															<p class="mb-0 small text-muted">فواكه موسمية مختلطة</p>
+														</div>
+														<span class="badge bg-light text-dark">120 سعرة حرارية</span>
+													</div>
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>بارفيه الزبادي</strong>
+															<p class="mb-0 small text-muted">زبادي يوناني، جرانولا، توت</p>
+														</div>
+														<span class="badge bg-light text-dark">280 سعرة حرارية</span>
+													</div>
+												</div>
+											</div>
 
-                    <!-- Dinner Section -->
-                    <div class="accordion-item border-0 rounded shadow-sm">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button collapsed text-white rounded-top" type="button" style="background-color: #004d40;"
-                                    data-bs-toggle="collapse" data-bs-target="#sundayDinner">
-                                <i class="bi bi-moon me-2"></i>العشاء
-                            </button>
-                        </h2>
-                        <div id="sundayDinner" class="accordion-collapse collapse" data-bs-parent="#sundayMenu">
-                            <div class="accordion-body p-4">
-                                <!-- Similar structure as breakfast with dinner items -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+											<!-- Beverages -->
+											<div>
+												<div class="d-flex align-items-center border-bottom pb-2 mb-3">
+													<span class="badge bg-secondary">المشروبات</span>
+												</div>
+												<div class="list-group list-group-flush">
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>مشروبات ساخنة</strong>
+															<p class="mb-0 small text-muted">قهوة، شاي، أو شوكولاتة ساخنة</p>
+														</div>
+														<span class="badge bg-light text-dark">0-120 سعرة حرارية</span>
+													</div>
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>مشروبات باردة</strong>
+															<p class="mb-0 small text-muted">عصير برتقال، عصير تفاح، أو حليب</p>
+														</div>
+														<span class="badge bg-light text-dark">90-160 سعرة حرارية</span>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
 
-            <div class="tab-pane fade" id="monday">
-                <div class="accordion" id="mondayMenu">
-                    <div class="accordion-item border-0 rounded mb-3 shadow-sm">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button text-white rounded-top" style="background-color: #2e7d32;" type="button"
-                                    data-bs-toggle="collapse" data-bs-target="#mondayBreakfast" aria-expanded="true">
-                                <i class="bi bi-sun me-2"></i>الإفطار
-                            </button>
-                        </h2>
-                        <div id="mondayBreakfast" class="accordion-collapse collapse show"
-                             data-bs-parent="#mondayMenu">
-                            <div class="accordion-body p-4">
-                                <div class="mb-4">
-                                    <div class="d-flex align-items-center border-bottom pb-2 mb-3">
-                                        <span class="badge bg-success">الطبق الرئيسي</span>
-                                    </div>
-                                    <div class="list-group list-group-flush">
-                                        <div class="list-group-item d-flex justify-content-between align-items-start px-0">
-                                            <div>
-                                                <strong>الإفطار السعودي الكلاسيكي</strong>
-                                                <p class="mb-0 small text-muted">بيض، لحم مقدد، توست، هاش براون</p>
-                                            </div>
-                                            <span class="badge bg-light text-dark">450 سعرة حرارية</span>
-                                        </div>
-                                        <div class="list-group-item d-flex justify-content-between align-items-start px-0">
-                                            <div>
-                                                <strong>كومة البانكيك</strong>
-                                                <p class="mb-0 small text-muted">ثلاثة فطائر باللبن، شراب القيقب</p>
-                                            </div>
-                                            <span class="badge bg-light text-dark">520 سعرة حرارية</span>
-                                        </div>
-                                    </div>
-                                </div>
+						<!-- Lunch Section -->
+						<div class="col-12 col-md-4 mb-3">
+							<div class="accordion accordion-desktop">
+								<div class="accordion-item border-0 rounded shadow h-100">
+									<h2 class="accordion-header">
+										<button class="accordion-button collapsed text-white rounded-top" style="background-color: #1b5e20;" type="button"
+												data-bs-toggle="collapse" data-bs-target="#sundayLunch">
+											<i class="bi bi-brightness-high me-2"></i>الغداء
+										</button>
+									</h2>
+									<div id="sundayLunch" class="accordion-collapse collapse">
+										<div class="accordion-body p-4">
+											<!-- Main Course -->
+											<div class="mb-4">
+												<div class="d-flex align-items-center border-bottom pb-2 mb-3">
+													<span class="badge bg-success">الطبق الرئيسي</span>
+												</div>
+												<div class="list-group list-group-flush">
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>الإفطار الأمريكي الكلاسيكي</strong>
+															<p class="mb-0 small text-muted">بيض، لحم مقدد، توست، هاش براون</p>
+														</div>
+														<span class="badge bg-light text-dark">450 سعرة حرارية</span>
+													</div>
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>كومة البانكيك</strong>
+															<p class="mb-0 small text-muted">ثلاثة فطائر باللبن، شراب القيقب</p>
+														</div>
+														<span class="badge bg-light text-dark">520 سعرة حرارية</span>
+													</div>
+												</div>
+											</div>
 
-                                <div class="mb-4">
-                                    <div class="d-flex align-items-center border-bottom pb-2 mb-3">
-                                        <span class="badge bg-primary ">الأطباق الجانبية</span>
-                                    </div>
-                                    <div class="list-group list-group-flush">
-                                        <div class="list-group-item d-flex justify-content-between align-items-start px-0">
-                                            <div>
-                                                <strong>وعاء فواكه طازجة</strong>
-                                                <p class="mb-0 small text-muted">فواكه موسمية مختلطة</p>
-                                            </div>
-                                            <span class="badge bg-light text-dark">120 سعرة حرارية</span>
-                                        </div>
-                                        <div class="list-group-item d-flex justify-content-between align-items-start px-0">
-                                            <div>
-                                                <strong>بارفيه الزبادي</strong>
-                                                <p class="mb-0 small text-muted">زبادي يوناني، جرانولا، توت</p>
-                                            </div>
-                                            <span class="badge bg-light text-dark">280 سعرة حرارية</span>
-                                        </div>
-                                    </div>
-                                </div>
+											<!-- Sides -->
+											<div class="mb-4">
+												<div class="d-flex align-items-center border-bottom pb-2 mb-3">
+													<span class="badge bg-primary">الأطباق الجانبية</span>
+												</div>
+												<div class="list-group list-group-flush">
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>وعاء فواكه طازجة</strong>
+															<p class="mb-0 small text-muted">فواكه موسمية مختلطة</p>
+														</div>
+														<span class="badge bg-light text-dark">120 سعرة حرارية</span>
+													</div>
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>بارفيه الزبادي</strong>
+															<p class="mb-0 small text-muted">زبادي يوناني، جرانولا، توت</p>
+														</div>
+														<span class="badge bg-light text-dark">280 سعرة حرارية</span>
+													</div>
+												</div>
+											</div>
 
-                                <div>
-                                    <div class="d-flex align-items-center border-bottom pb-2 mb-3">
-                                        <span class="badge bg-secondary">المشروبات</span>
-                                    </div>
-                                    <div class="list-group list-group-flush">
-                                        <div class="list-group-item d-flex justify-content-between align-items-start px-0">
-                                            <div>
-                                                <strong>مشروبات ساخنة</strong>
-                                                <p class="mb-0 small text-muted">قهوة، شاي، أو شوكولاتة ساخنة</p>
-                                            </div>
-                                            <span class="badge bg-light text-dark">0-120 سعرة حرارية</span>
-                                        </div>
-                                        <div class="list-group-item d-flex justify-content-between align-items-start px-0">
-                                            <div>
-                                                <strong>مشروبات باردة</strong>
-                                                <p class="mb-0 small text-muted">عصير برتقال، عصير تفاح، أو حليب</p>
-                                            </div>
-                                            <span class="badge bg-light text-dark">90-160 سعرة حرارية</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+											<!-- Beverages -->
+											<div>
+												<div class="d-flex align-items-center border-bottom pb-2 mb-3">
+													<span class="badge bg-secondary">المشروبات</span>
+												</div>
+												<div class="list-group list-group-flush">
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>مشروبات ساخنة</strong>
+															<p class="mb-0 small text-muted">قهوة، شاي، أو شوكولاتة ساخنة</p>
+														</div>
+														<span class="badge bg-light text-dark">0-120 سعرة حرارية</span>
+													</div>
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>مشروبات باردة</strong>
+															<p class="mb-0 small text-muted">عصير برتقال، عصير تفاح، أو حليب</p>
+														</div>
+														<span class="badge bg-light text-dark">90-160 سعرة حرارية</span>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
 
-                    <div class="accordion-item border-0 rounded mb-3 shadow-sm">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button collapsed text-white rounded-top" style="background-color: #1b5e20;"
-                                    type="button" data-bs-toggle="collapse" data-bs-target="#mondayLunch">
-                                <i class="bi bi-brightness-high me-2"></i>الغداء
-                            </button>
-                        </h2>
-                        <div id="mondayLunch" class="accordion-collapse collapse" data-bs-parent="#mondayMenu">
-                            <div class="accordion-body p-4">
-                                <!-- Similar structure as breakfast with lunch items -->
-                            </div>
-                        </div>
-                    </div>
+						<!-- Dinner Section -->
+						<div class="col-12 col-md-4 mb-3">
+							<div class="accordion accordion-desktop">
+								<div class="accordion-item border-0 rounded shadow h-100">
+									<h2 class="accordion-header">
+										<button class="accordion-button collapsed text-white rounded-top" style="background-color: #004d40;" type="button"
+												data-bs-toggle="collapse" data-bs-target="#sundayDinner">
+											<i class="bi bi-moon me-2"></i>العشاء
+										</button>
+									</h2>
+									<div id="sundayDinner" class="accordion-collapse collapse">
+										<div class="accordion-body p-4">
+											<!-- Main Course -->
+											<div class="mb-4">
+												<div class="d-flex align-items-center border-bottom pb-2 mb-3">
+													<span class="badge bg-success">الطبق الرئيسي</span>
+												</div>
+												<div class="list-group list-group-flush">
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>الإفطار الأمريكي الكلاسيكي</strong>
+															<p class="mb-0 small text-muted">بيض، لحم مقدد، توست، هاش براون</p>
+														</div>
+														<span class="badge bg-light text-dark">450 سعرة حرارية</span>
+													</div>
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>كومة البانكيك</strong>
+															<p class="mb-0 small text-muted">ثلاثة فطائر باللبن، شراب القيقب</p>
+														</div>
+														<span class="badge bg-light text-dark">520 سعرة حرارية</span>
+													</div>
+												</div>
+											</div>
 
-                    <div class="accordion-item border-0 rounded shadow-sm">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button collapsed text-white rounded-top" style="background-color: #004d40;"
-                                    type="button" data-bs-toggle="collapse" data-bs-target="#mondayDinner">
-                                <i class="bi bi-moon me-2"></i>العشاء
-                            </button>
-                        </h2>
-                        <div id="mondayDinner" class="accordion-collapse collapse" data-bs-parent="#mondayMenu">
-                            <div class="accordion-body p-4">
-                                <!-- Similar structure as breakfast with dinner items -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- ... repeat for other days ... -->
-        </div>
-    </div>
+											<!-- Sides -->
+											<div class="mb-4">
+												<div class="d-flex align-items-center border-bottom pb-2 mb-3">
+													<span class="badge bg-primary">الأطباق الجانبية</span>
+												</div>
+												<div class="list-group list-group-flush">
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>وعاء فواكه طازجة</strong>
+															<p class="mb-0 small text-muted">فواكه موسمية مختلطة</p>
+														</div>
+														<span class="badge bg-light text-dark">120 سعرة حرارية</span>
+													</div>
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>بارفيه الزبادي</strong>
+															<p class="mb-0 small text-muted">زبادي يوناني، جرانولا، توت</p>
+														</div>
+														<span class="badge bg-light text-dark">280 سعرة حرارية</span>
+													</div>
+												</div>
+											</div>
+
+											<!-- Beverages -->
+											<div>
+												<div class="d-flex align-items-center border-bottom pb-2 mb-3">
+													<span class="badge bg-secondary">المشروبات</span>
+												</div>
+												<div class="list-group list-group-flush">
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>مشروبات ساخنة</strong>
+															<p class="mb-0 small text-muted">قهوة، شاي، أو شوكولاتة ساخنة</p>
+														</div>
+														<span class="badge bg-light text-dark">0-120 سعرة حرارية</span>
+													</div>
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>مشروبات باردة</strong>
+															<p class="mb-0 small text-muted">عصير برتقال، عصير تفاح، أو حليب</p>
+														</div>
+														<span class="badge bg-light text-dark">90-160 سعرة حرارية</span>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Monday Menu -->
+				<div class="tab-pane fade" id="monday">
+					<div class="row" id="mondayMenu">
+						<!-- Breakfast Section -->
+						<div class="col-12 col-md-4 mb-3">
+							<div class="accordion accordion-desktop">
+								<div class="accordion-item border-0 rounded shadow h-100">
+									<h2 class="accordion-header">
+										<button class="accordion-button collapsed text-white rounded-top" style="background-color: #2e7d32;" type="button"
+												data-bs-toggle="collapse" data-bs-target="#mondayBreakfast">
+											<i class="bi bi-sun me-2"></i>الإفطار
+										</button>
+									</h2>
+									<div id="mondayBreakfast" class="accordion-collapse collapse">
+										<div class="accordion-body p-4">
+											<!-- Main Course -->
+											<div class="mb-4">
+												<div class="d-flex align-items-center border-bottom pb-2 mb-3">
+													<span class="badge bg-success">الطبق الرئيسي</span>
+												</div>
+												<div class="list-group list-group-flush">
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>الإفطار الأمريكي الكلاسيكي</strong>
+															<p class="mb-0 small text-muted">بيض، لحم مقدد، توست، هاش براون</p>
+														</div>
+														<span class="badge bg-light text-dark">450 سعرة حرارية</span>
+													</div>
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>كومة البانكيك</strong>
+															<p class="mb-0 small text-muted">ثلاثة فطائر باللبن، شراب القيقب</p>
+														</div>
+														<span class="badge bg-light text-dark">520 سعرة حرارية</span>
+													</div>
+												</div>
+											</div>
+
+											<!-- Sides -->
+											<div class="mb-4">
+												<div class="d-flex align-items-center border-bottom pb-2 mb-3">
+													<span class="badge bg-primary">الأطباق الجانبية</span>
+												</div>
+												<div class="list-group list-group-flush">
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>وعاء فواكه طازجة</strong>
+															<p class="mb-0 small text-muted">فواكه موسمية مختلطة</p>
+														</div>
+														<span class="badge bg-light text-dark">120 سعرة حرارية</span>
+													</div>
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>بارفيه الزبادي</strong>
+															<p class="mb-0 small text-muted">زبادي يوناني، جرانولا، توت</p>
+														</div>
+														<span class="badge bg-light text-dark">280 سعرة حرارية</span>
+													</div>
+												</div>
+											</div>
+
+											<!-- Beverages -->
+											<div>
+												<div class="d-flex align-items-center border-bottom pb-2 mb-3">
+													<span class="badge bg-secondary">المشروبات</span>
+												</div>
+												<div class="list-group list-group-flush">
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>مشروبات ساخنة</strong>
+															<p class="mb-0 small text-muted">قهوة، شاي، أو شوكولاتة ساخنة</p>
+														</div>
+														<span class="badge bg-light text-dark">0-120 سعرة حرارية</span>
+													</div>
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>مشروبات باردة</strong>
+															<p class="mb-0 small text-muted">عصير برتقال، عصير تفاح، أو حليب</p>
+														</div>
+														<span class="badge bg-light text-dark">90-160 سعرة حرارية</span>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<!-- Lunch Section -->
+						<div class="col-12 col-md-4 mb-3">
+							<div class="accordion accordion-desktop">
+								<div class="accordion-item border-0 rounded shadow h-100">
+									<h2 class="accordion-header">
+										<button class="accordion-button collapsed text-white rounded-top" style="background-color: #1b5e20;" type="button"
+												data-bs-toggle="collapse" data-bs-target="#mondayLunch">
+											<i class="bi bi-brightness-high me-2"></i>الغداء
+										</button>
+									</h2>
+									<div id="mondayLunch" class="accordion-collapse collapse">
+										<div class="accordion-body p-4">
+											<!-- Main Course -->
+											<div class="mb-4">
+												<div class="d-flex align-items-center border-bottom pb-2 mb-3">
+													<span class="badge bg-success">الطبق الرئيسي</span>
+												</div>
+												<div class="list-group list-group-flush">
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>الإفطار الأمريكي الكلاسيكي</strong>
+															<p class="mb-0 small text-muted">بيض، لحم مقدد، توست، هاش براون</p>
+														</div>
+														<span class="badge bg-light text-dark">450 سعرة حرارية</span>
+													</div>
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>كومة البانكيك</strong>
+															<p class="mb-0 small text-muted">ثلاثة فطائر باللبن، شراب القيقب</p>
+														</div>
+														<span class="badge bg-light text-dark">520 سعرة حرارية</span>
+													</div>
+												</div>
+											</div>
+
+											<!-- Sides -->
+											<div class="mb-4">
+												<div class="d-flex align-items-center border-bottom pb-2 mb-3">
+													<span class="badge bg-primary">الأطباق الجانبية</span>
+												</div>
+												<div class="list-group list-group-flush">
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>وعاء فواكه طازجة</strong>
+															<p class="mb-0 small text-muted">فواكه موسمية مختلطة</p>
+														</div>
+														<span class="badge bg-light text-dark">120 سعرة حرارية</span>
+													</div>
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>بارفيه الزبادي</strong>
+															<p class="mb-0 small text-muted">زبادي يوناني، جرانولا، توت</p>
+														</div>
+														<span class="badge bg-light text-dark">280 سعرة حرارية</span>
+													</div>
+												</div>
+											</div>
+
+											<!-- Beverages -->
+											<div>
+												<div class="d-flex align-items-center border-bottom pb-2 mb-3">
+													<span class="badge bg-secondary">المشروبات</span>
+												</div>
+												<div class="list-group list-group-flush">
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>مشروبات ساخنة</strong>
+															<p class="mb-0 small text-muted">قهوة، شاي، أو شوكولاتة ساخنة</p>
+														</div>
+														<span class="badge bg-light text-dark">0-120 سعرة حرارية</span>
+													</div>
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>مشروبات باردة</strong>
+															<p class="mb-0 small text-muted">عصير برتقال، عصير تفاح، أو حليب</p>
+														</div>
+														<span class="badge bg-light text-dark">90-160 سعرة حرارية</span>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<!-- Dinner Section -->
+						<div class="col-12 col-md-4 mb-3">
+							<div class="accordion accordion-desktop">
+								<div class="accordion-item border-0 rounded shadow h-100">
+									<h2 class="accordion-header">
+										<button class="accordion-button collapsed text-white rounded-top" style="background-color: #004d40;" type="button"
+												data-bs-toggle="collapse" data-bs-target="#mondayDinner">
+											<i class="bi bi-moon me-2"></i>العشاء
+										</button>
+									</h2>
+									<div id="mondayDinner" class="accordion-collapse collapse">
+										<div class="accordion-body p-4">
+											<!-- Main Course -->
+											<div class="mb-4">
+												<div class="d-flex align-items-center border-bottom pb-2 mb-3">
+													<span class="badge bg-success">الطبق الرئيسي</span>
+												</div>
+												<div class="list-group list-group-flush">
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>الإفطار الأمريكي الكلاسيكي</strong>
+															<p class="mb-0 small text-muted">بيض، لحم مقدد، توست، هاش براون</p>
+														</div>
+														<span class="badge bg-light text-dark">450 سعرة حرارية</span>
+													</div>
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>كومة البانكيك</strong>
+															<p class="mb-0 small text-muted">ثلاثة فطائر باللبن، شراب القيقب</p>
+														</div>
+														<span class="badge bg-light text-dark">520 سعرة حرارية</span>
+													</div>
+												</div>
+											</div>
+
+											<!-- Sides -->
+											<div class="mb-4">
+												<div class="d-flex align-items-center border-bottom pb-2 mb-3">
+													<span class="badge bg-primary">الأطباق الجانبية</span>
+												</div>
+												<div class="list-group list-group-flush">
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>وعاء فواكه طازجة</strong>
+															<p class="mb-0 small text-muted">فواكه موسمية مختلطة</p>
+														</div>
+														<span class="badge bg-light text-dark">120 سعرة حرارية</span>
+													</div>
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>بارفيه الزبادي</strong>
+															<p class="mb-0 small text-muted">زبادي يوناني، جرانولا، توت</p>
+														</div>
+														<span class="badge bg-light text-dark">280 سعرة حرارية</span>
+													</div>
+												</div>
+											</div>
+
+											<!-- Beverages -->
+											<div>
+												<div class="d-flex align-items-center border-bottom pb-2 mb-3">
+													<span class="badge bg-secondary">المشروبات</span>
+												</div>
+												<div class="list-group list-group-flush">
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>مشروبات ساخنة</strong>
+															<p class="mb-0 small text-muted">قهوة، شاي، أو شوكولاتة ساخنة</p>
+														</div>
+														<span class="badge bg-light text-dark">0-120 سعرة حرارية</span>
+													</div>
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>مشروبات باردة</strong>
+															<p class="mb-0 small text-muted">عصير برتقال، عصير تفاح، أو حليب</p>
+														</div>
+														<span class="badge bg-light text-dark">90-160 سعرة حرارية</span>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Tuesday Menu -->
+				<div class="tab-pane fade" id="tuesday">
+					<div class="row" id="tuesdayMenu">
+						<!-- Breakfast Section -->
+						<div class="col-12 col-md-4 mb-3">
+							<div class="accordion accordion-desktop">
+								<div class="accordion-item border-0 rounded shadow h-100">
+									<h2 class="accordion-header">
+										<button class="accordion-button collapsed text-white rounded-top" style="background-color: #2e7d32;" type="button"
+												data-bs-toggle="collapse" data-bs-target="#tuesdayBreakfast">
+											<i class="bi bi-sun me-2"></i>الإفطار
+										</button>
+									</h2>
+									<div id="tuesdayBreakfast" class="accordion-collapse collapse">
+										<div class="accordion-body p-4">
+											<!-- Main Course -->
+											<div class="mb-4">
+												<div class="d-flex align-items-center border-bottom pb-2 mb-3">
+													<span class="badge bg-success">الطبق الرئيسي</span>
+												</div>
+												<div class="list-group list-group-flush">
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>الإفطار الأمريكي الكلاسيكي</strong>
+															<p class="mb-0 small text-muted">بيض، لحم مقدد، توست، هاش براون</p>
+														</div>
+														<span class="badge bg-light text-dark">450 سعرة حرارية</span>
+													</div>
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>كومة البانكيك</strong>
+															<p class="mb-0 small text-muted">ثلاثة فطائر باللبن، شراب القيقب</p>
+														</div>
+														<span class="badge bg-light text-dark">520 سعرة حرارية</span>
+													</div>
+												</div>
+											</div>
+
+											<!-- Sides -->
+											<div class="mb-4">
+												<div class="d-flex align-items-center border-bottom pb-2 mb-3">
+													<span class="badge bg-primary">الأطباق الجانبية</span>
+												</div>
+												<div class="list-group list-group-flush">
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>وعاء فواكه طازجة</strong>
+															<p class="mb-0 small text-muted">فواكه موسمية مختلطة</p>
+														</div>
+														<span class="badge bg-light text-dark">120 سعرة حرارية</span>
+													</div>
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>بارفيه الزبادي</strong>
+															<p class="mb-0 small text-muted">زبادي يوناني، جرانولا، توت</p>
+														</div>
+														<span class="badge bg-light text-dark">280 سعرة حرارية</span>
+													</div>
+												</div>
+											</div>
+
+											<!-- Beverages -->
+											<div>
+												<div class="d-flex align-items-center border-bottom pb-2 mb-3">
+													<span class="badge bg-secondary">المشروبات</span>
+												</div>
+												<div class="list-group list-group-flush">
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>مشروبات ساخنة</strong>
+															<p class="mb-0 small text-muted">قهوة، شاي، أو شوكولاتة ساخنة</p>
+														</div>
+														<span class="badge bg-light text-dark">0-120 سعرة حرارية</span>
+													</div>
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>مشروبات باردة</strong>
+															<p class="mb-0 small text-muted">عصير برتقال، عصير تفاح، أو حليب</p>
+														</div>
+														<span class="badge bg-light text-dark">90-160 سعرة حرارية</span>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<!-- Lunch Section -->
+						<div class="col-12 col-md-4 mb-3">
+							<div class="accordion accordion-desktop">
+								<div class="accordion-item border-0 rounded shadow h-100">
+									<h2 class="accordion-header">
+										<button class="accordion-button collapsed text-white rounded-top" style="background-color: #1b5e20;" type="button"
+												data-bs-toggle="collapse" data-bs-target="#tuesdayLunch">
+											<i class="bi bi-brightness-high me-2"></i>الغداء
+										</button>
+									</h2>
+									<div id="tuesdayLunch" class="accordion-collapse collapse">
+										<div class="accordion-body p-4">
+											<!-- Main Course -->
+											<div class="mb-4">
+												<div class="d-flex align-items-center border-bottom pb-2 mb-3">
+													<span class="badge bg-success">الطبق الرئيسي</span>
+												</div>
+												<div class="list-group list-group-flush">
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>الإفطار الأمريكي الكلاسيكي</strong>
+															<p class="mb-0 small text-muted">بيض، لحم مقدد، توست، هاش براون</p>
+														</div>
+														<span class="badge bg-light text-dark">450 سعرة حرارية</span>
+													</div>
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>كومة البانكيك</strong>
+															<p class="mb-0 small text-muted">ثلاثة فطائر باللبن، شراب القيقب</p>
+														</div>
+														<span class="badge bg-light text-dark">520 سعرة حرارية</span>
+													</div>
+												</div>
+											</div>
+
+											<!-- Sides -->
+											<div class="mb-4">
+												<div class="d-flex align-items-center border-bottom pb-2 mb-3">
+													<span class="badge bg-primary">الأطباق الجانبية</span>
+												</div>
+												<div class="list-group list-group-flush">
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>وعاء فواكه طازجة</strong>
+															<p class="mb-0 small text-muted">فواكه موسمية مختلطة</p>
+														</div>
+														<span class="badge bg-light text-dark">120 سعرة حرارية</span>
+													</div>
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>بارفيه الزبادي</strong>
+															<p class="mb-0 small text-muted">زبادي يوناني، جرانولا، توت</p>
+														</div>
+														<span class="badge bg-light text-dark">280 سعرة حرارية</span>
+													</div>
+												</div>
+											</div>
+
+											<!-- Beverages -->
+											<div>
+												<div class="d-flex align-items-center border-bottom pb-2 mb-3">
+													<span class="badge bg-secondary">المشروبات</span>
+												</div>
+												<div class="list-group list-group-flush">
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>مشروبات ساخنة</strong>
+															<p class="mb-0 small text-muted">قهوة، شاي، أو شوكولاتة ساخنة</p>
+														</div>
+														<span class="badge bg-light text-dark">0-120 سعرة حرارية</span>
+													</div>
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>مشروبات باردة</strong>
+															<p class="mb-0 small text-muted">عصير برتقال، عصير تفاح، أو حليب</p>
+														</div>
+														<span class="badge bg-light text-dark">90-160 سعرة حرارية</span>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<!-- Dinner Section -->
+						<div class="col-12 col-md-4 mb-3">
+							<div class="accordion accordion-desktop">
+								<div class="accordion-item border-0 rounded shadow h-100">
+									<h2 class="accordion-header">
+										<button class="accordion-button collapsed text-white rounded-top" style="background-color: #004d40;" type="button"
+												data-bs-toggle="collapse" data-bs-target="#tuesdayDinner">
+											<i class="bi bi-moon me-2"></i>العشاء
+										</button>
+									</h2>
+									<div id="tuesdayDinner" class="accordion-collapse collapse">
+										<div class="accordion-body p-4">
+											<!-- Main Course -->
+											<div class="mb-4">
+												<div class="d-flex align-items-center border-bottom pb-2 mb-3">
+													<span class="badge bg-success">الطبق الرئيسي</span>
+												</div>
+												<div class="list-group list-group-flush">
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>الإفطار الأمريكي الكلاسيكي</strong>
+															<p class="mb-0 small text-muted">بيض، لحم مقدد، توست، هاش براون</p>
+														</div>
+														<span class="badge bg-light text-dark">450 سعرة حرارية</span>
+													</div>
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>كومة البانكيك</strong>
+															<p class="mb-0 small text-muted">ثلاثة فطائر باللبن، شراب القيقب</p>
+														</div>
+														<span class="badge bg-light text-dark">520 سعرة حرارية</span>
+													</div>
+												</div>
+											</div>
+
+											<!-- Sides -->
+											<div class="mb-4">
+												<div class="d-flex align-items-center border-bottom pb-2 mb-3">
+													<span class="badge bg-primary">الأطباق الجانبية</span>
+												</div>
+												<div class="list-group list-group-flush">
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>وعاء فواكه طازجة</strong>
+															<p class="mb-0 small text-muted">فواكه موسمية مختلطة</p>
+														</div>
+														<span class="badge bg-light text-dark">120 سعرة حرارية</span>
+													</div>
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>بارفيه الزبادي</strong>
+															<p class="mb-0 small text-muted">زبادي يوناني، جرانولا، توت</p>
+														</div>
+														<span class="badge bg-light text-dark">280 سعرة حرارية</span>
+													</div>
+												</div>
+											</div>
+
+											<!-- Beverages -->
+											<div>
+												<div class="d-flex align-items-center border-bottom pb-2 mb-3">
+													<span class="badge bg-secondary">المشروبات</span>
+												</div>
+												<div class="list-group list-group-flush">
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>مشروبات ساخنة</strong>
+															<p class="mb-0 small text-muted">قهوة، شاي، أو شوكولاتة ساخنة</p>
+														</div>
+														<span class="badge bg-light text-dark">0-120 سعرة حرارية</span>
+													</div>
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>مشروبات باردة</strong>
+															<p class="mb-0 small text-muted">عصير برتقال، عصير تفاح، أو حليب</p>
+														</div>
+														<span class="badge bg-light text-dark">90-160 سعرة حرارية</span>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Wednesday Menu -->
+				<div class="tab-pane fade" id="wednesday">
+					<div class="row" id="wednesdayMenu">
+						<!-- Breakfast Section -->
+						<div class="col-12 col-md-4 mb-3">
+							<div class="accordion accordion-desktop">
+								<div class="accordion-item border-0 rounded shadow h-100">
+									<h2 class="accordion-header">
+										<button class="accordion-button collapsed text-white rounded-top" style="background-color: #2e7d32;" type="button"
+												data-bs-toggle="collapse" data-bs-target="#wednesdayBreakfast">
+											<i class="bi bi-sun me-2"></i>الإفطار
+										</button>
+									</h2>
+									<div id="wednesdayBreakfast" class="accordion-collapse collapse">
+										<div class="accordion-body p-4">
+											<!-- Main Course -->
+											<div class="mb-4">
+												<div class="d-flex align-items-center border-bottom pb-2 mb-3">
+													<span class="badge bg-success">الطبق الرئيسي</span>
+												</div>
+												<div class="list-group list-group-flush">
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>الإفطار الأمريكي الكلاسيكي</strong>
+															<p class="mb-0 small text-muted">بيض، لحم مقدد، توست، هاش براون</p>
+														</div>
+														<span class="badge bg-light text-dark">450 سعرة حرارية</span>
+													</div>
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>كومة البانكيك</strong>
+															<p class="mb-0 small text-muted">ثلاثة فطائر باللبن، شراب القيقب</p>
+														</div>
+														<span class="badge bg-light text-dark">520 سعرة حرارية</span>
+													</div>
+												</div>
+											</div>
+
+											<!-- Sides -->
+											<div class="mb-4">
+												<div class="d-flex align-items-center border-bottom pb-2 mb-3">
+													<span class="badge bg-primary">الأطباق الجانبية</span>
+												</div>
+												<div class="list-group list-group-flush">
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>وعاء فواكه طازجة</strong>
+															<p class="mb-0 small text-muted">فواكه موسمية مختلطة</p>
+														</div>
+														<span class="badge bg-light text-dark">120 سعرة حرارية</span>
+													</div>
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>بارفيه الزبادي</strong>
+															<p class="mb-0 small text-muted">زبادي يوناني، جرانولا، توت</p>
+														</div>
+														<span class="badge bg-light text-dark">280 سعرة حرارية</span>
+													</div>
+												</div>
+											</div>
+
+											<!-- Beverages -->
+											<div>
+												<div class="d-flex align-items-center border-bottom pb-2 mb-3">
+													<span class="badge bg-secondary">المشروبات</span>
+												</div>
+												<div class="list-group list-group-flush">
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>مشروبات ساخنة</strong>
+															<p class="mb-0 small text-muted">قهوة، شاي، أو شوكولاتة ساخنة</p>
+														</div>
+														<span class="badge bg-light text-dark">0-120 سعرة حرارية</span>
+													</div>
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>مشروبات باردة</strong>
+															<p class="mb-0 small text-muted">عصير برتقال، عصير تفاح، أو حليب</p>
+														</div>
+														<span class="badge bg-light text-dark">90-160 سعرة حرارية</span>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<!-- Lunch Section -->
+						<div class="col-12 col-md-4 mb-3">
+							<div class="accordion accordion-desktop">
+								<div class="accordion-item border-0 rounded shadow h-100">
+									<h2 class="accordion-header">
+										<button class="accordion-button collapsed text-white rounded-top" style="background-color: #1b5e20;" type="button"
+												data-bs-toggle="collapse" data-bs-target="#wednesdayLunch">
+											<i class="bi bi-brightness-high me-2"></i>الغداء
+										</button>
+									</h2>
+									<div id="wednesdayLunch" class="accordion-collapse collapse">
+										<div class="accordion-body p-4">
+											<!-- Main Course -->
+											<div class="mb-4">
+												<div class="d-flex align-items-center border-bottom pb-2 mb-3">
+													<span class="badge bg-success">الطبق الرئيسي</span>
+												</div>
+												<div class="list-group list-group-flush">
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>الإفطار الأمريكي الكلاسيكي</strong>
+															<p class="mb-0 small text-muted">بيض، لحم مقدد، توست، هاش براون</p>
+														</div>
+														<span class="badge bg-light text-dark">450 سعرة حرارية</span>
+													</div>
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>كومة البانكيك</strong>
+															<p class="mb-0 small text-muted">ثلاثة فطائر باللبن، شراب القيقب</p>
+														</div>
+														<span class="badge bg-light text-dark">520 سعرة حرارية</span>
+													</div>
+												</div>
+											</div>
+
+											<!-- Sides -->
+											<div class="mb-4">
+												<div class="d-flex align-items-center border-bottom pb-2 mb-3">
+													<span class="badge bg-primary">الأطباق الجانبية</span>
+												</div>
+												<div class="list-group list-group-flush">
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>وعاء فواكه طازجة</strong>
+															<p class="mb-0 small text-muted">فواكه موسمية مختلطة</p>
+														</div>
+														<span class="badge bg-light text-dark">120 سعرة حرارية</span>
+													</div>
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>بارفيه الزبادي</strong>
+															<p class="mb-0 small text-muted">زبادي يوناني، جرانولا، توت</p>
+														</div>
+														<span class="badge bg-light text-dark">280 سعرة حرارية</span>
+													</div>
+												</div>
+											</div>
+
+											<!-- Beverages -->
+											<div>
+												<div class="d-flex align-items-center border-bottom pb-2 mb-3">
+													<span class="badge bg-secondary">المشروبات</span>
+												</div>
+												<div class="list-group list-group-flush">
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>مشروبات ساخنة</strong>
+															<p class="mb-0 small text-muted">قهوة، شاي، أو شوكولاتة ساخنة</p>
+														</div>
+														<span class="badge bg-light text-dark">0-120 سعرة حرارية</span>
+													</div>
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>مشروبات باردة</strong>
+															<p class="mb-0 small text-muted">عصير برتقال، عصير تفاح، أو حليب</p>
+														</div>
+														<span class="badge bg-light text-dark">90-160 سعرة حرارية</span>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<!-- Dinner Section -->
+						<div class="col-12 col-md-4 mb-3">
+							<div class="accordion accordion-desktop">
+								<div class="accordion-item border-0 rounded shadow h-100">
+									<h2 class="accordion-header">
+										<button class="accordion-button collapsed text-white rounded-top" style="background-color: #004d40;" type="button"
+												data-bs-toggle="collapse" data-bs-target="#wednesdayDinner">
+											<i class="bi bi-moon me-2"></i>العشاء
+										</button>
+									</h2>
+									<div id="wednesdayDinner" class="accordion-collapse collapse">
+										<div class="accordion-body p-4">
+											<!-- Main Course -->
+											<div class="mb-4">
+												<div class="d-flex align-items-center border-bottom pb-2 mb-3">
+													<span class="badge bg-success">الطبق الرئيسي</span>
+												</div>
+												<div class="list-group list-group-flush">
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>الإفطار الأمريكي الكلاسيكي</strong>
+															<p class="mb-0 small text-muted">بيض، لحم مقدد، توست، هاش براون</p>
+														</div>
+														<span class="badge bg-light text-dark">450 سعرة حرارية</span>
+													</div>
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>كومة البانكيك</strong>
+															<p class="mb-0 small text-muted">ثلاثة فطائر باللبن، شراب القيقب</p>
+														</div>
+														<span class="badge bg-light text-dark">520 سعرة حرارية</span>
+													</div>
+												</div>
+											</div>
+
+											<!-- Sides -->
+											<div class="mb-4">
+												<div class="d-flex align-items-center border-bottom pb-2 mb-3">
+													<span class="badge bg-primary">الأطباق الجانبية</span>
+												</div>
+												<div class="list-group list-group-flush">
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>وعاء فواكه طازجة</strong>
+															<p class="mb-0 small text-muted">فواكه موسمية مختلطة</p>
+														</div>
+														<span class="badge bg-light text-dark">120 سعرة حرارية</span>
+													</div>
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>بارفيه الزبادي</strong>
+															<p class="mb-0 small text-muted">زبادي يوناني، جرانولا، توت</p>
+														</div>
+														<span class="badge bg-light text-dark">280 سعرة حرارية</span>
+													</div>
+												</div>
+											</div>
+
+											<!-- Beverages -->
+											<div>
+												<div class="d-flex align-items-center border-bottom pb-2 mb-3">
+													<span class="badge bg-secondary">المشروبات</span>
+												</div>
+												<div class="list-group list-group-flush">
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>مشروبات ساخنة</strong>
+															<p class="mb-0 small text-muted">قهوة، شاي، أو شوكولاتة ساخنة</p>
+														</div>
+														<span class="badge bg-light text-dark">0-120 سعرة حرارية</span>
+													</div>
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>مشروبات باردة</strong>
+															<p class="mb-0 small text-muted">عصير برتقال، عصير تفاح، أو حليب</p>
+														</div>
+														<span class="badge bg-light text-dark">90-160 سعرة حرارية</span>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Thursday Menu -->
+				<div class="tab-pane fade" id="thursday">
+					<div class="row" id="thursdayMenu">
+						<!-- Breakfast Section -->
+						<div class="col-12 col-md-4 mb-3">
+							<div class="accordion accordion-desktop">
+								<div class="accordion-item border-0 rounded shadow h-100">
+									<h2 class="accordion-header">
+										<button class="accordion-button collapsed text-white rounded-top" style="background-color: #2e7d32;" type="button"
+												data-bs-toggle="collapse" data-bs-target="#thursdayBreakfast">
+											<i class="bi bi-sun me-2"></i>الإفطار
+										</button>
+									</h2>
+									<div id="thursdayBreakfast" class="accordion-collapse collapse">
+										<div class="accordion-body p-4">
+											<!-- Main Course -->
+											<div class="mb-4">
+												<div class="d-flex align-items-center border-bottom pb-2 mb-3">
+													<span class="badge bg-success">الطبق الرئيسي</span>
+												</div>
+												<div class="list-group list-group-flush">
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>الإفطار الأمريكي الكلاسيكي</strong>
+															<p class="mb-0 small text-muted">بيض، لحم مقدد، توست، هاش براون</p>
+														</div>
+														<span class="badge bg-light text-dark">450 سعرة حرارية</span>
+													</div>
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>كومة البانكيك</strong>
+															<p class="mb-0 small text-muted">ثلاثة فطائر باللبن، شراب القيقب</p>
+														</div>
+														<span class="badge bg-light text-dark">520 سعرة حرارية</span>
+													</div>
+												</div>
+											</div>
+
+											<!-- Sides -->
+											<div class="mb-4">
+												<div class="d-flex align-items-center border-bottom pb-2 mb-3">
+													<span class="badge bg-primary">الأطباق الجانبية</span>
+												</div>
+												<div class="list-group list-group-flush">
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>وعاء فواكه طازجة</strong>
+															<p class="mb-0 small text-muted">فواكه موسمية مختلطة</p>
+														</div>
+														<span class="badge bg-light text-dark">120 سعرة حرارية</span>
+													</div>
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>بارفيه الزبادي</strong>
+															<p class="mb-0 small text-muted">زبادي يوناني، جرانولا، توت</p>
+														</div>
+														<span class="badge bg-light text-dark">280 سعرة حرارية</span>
+													</div>
+												</div>
+											</div>
+
+											<!-- Beverages -->
+											<div>
+												<div class="d-flex align-items-center border-bottom pb-2 mb-3">
+													<span class="badge bg-secondary">المشروبات</span>
+												</div>
+												<div class="list-group list-group-flush">
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>مشروبات ساخنة</strong>
+															<p class="mb-0 small text-muted">قهوة، شاي، أو شوكولاتة ساخنة</p>
+														</div>
+														<span class="badge bg-light text-dark">0-120 سعرة حرارية</span>
+													</div>
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>مشروبات باردة</strong>
+															<p class="mb-0 small text-muted">عصير برتقال، عصير تفاح، أو حليب</p>
+														</div>
+														<span class="badge bg-light text-dark">90-160 سعرة حرارية</span>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<!-- Lunch Section -->
+						<div class="col-12 col-md-4 mb-3">
+							<div class="accordion accordion-desktop">
+								<div class="accordion-item border-0 rounded shadow h-100">
+									<h2 class="accordion-header">
+										<button class="accordion-button collapsed text-white rounded-top" style="background-color: #1b5e20;" type="button"
+												data-bs-toggle="collapse" data-bs-target="#thursdayLunch">
+											<i class="bi bi-brightness-high me-2"></i>الغداء
+										</button>
+									</h2>
+									<div id="thursdayLunch" class="accordion-collapse collapse">
+										<div class="accordion-body p-4">
+											<!-- Main Course -->
+											<div class="mb-4">
+												<div class="d-flex align-items-center border-bottom pb-2 mb-3">
+													<span class="badge bg-success">الطبق الرئيسي</span>
+												</div>
+												<div class="list-group list-group-flush">
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>الإفطار الأمريكي الكلاسيكي</strong>
+															<p class="mb-0 small text-muted">بيض، لحم مقدد، توست، هاش براون</p>
+														</div>
+														<span class="badge bg-light text-dark">450 سعرة حرارية</span>
+													</div>
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>كومة البانكيك</strong>
+															<p class="mb-0 small text-muted">ثلاثة فطائر باللبن، شراب القيقب</p>
+														</div>
+														<span class="badge bg-light text-dark">520 سعرة حرارية</span>
+													</div>
+												</div>
+											</div>
+
+											<!-- Sides -->
+											<div class="mb-4">
+												<div class="d-flex align-items-center border-bottom pb-2 mb-3">
+													<span class="badge bg-primary">الأطباق الجانبية</span>
+												</div>
+												<div class="list-group list-group-flush">
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>وعاء فواكه طازجة</strong>
+															<p class="mb-0 small text-muted">فواكه موسمية مختلطة</p>
+														</div>
+														<span class="badge bg-light text-dark">120 سعرة حرارية</span>
+													</div>
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>بارفيه الزبادي</strong>
+															<p class="mb-0 small text-muted">زبادي يوناني، جرانولا، توت</p>
+														</div>
+														<span class="badge bg-light text-dark">280 سعرة حرارية</span>
+													</div>
+												</div>
+											</div>
+
+											<!-- Beverages -->
+											<div>
+												<div class="d-flex align-items-center border-bottom pb-2 mb-3">
+													<span class="badge bg-secondary">المشروبات</span>
+												</div>
+												<div class="list-group list-group-flush">
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>مشروبات ساخنة</strong>
+															<p class="mb-0 small text-muted">قهوة، شاي، أو شوكولاتة ساخنة</p>
+														</div>
+														<span class="badge bg-light text-dark">0-120 سعرة حرارية</span>
+													</div>
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>مشروبات باردة</strong>
+															<p class="mb-0 small text-muted">عصير برتقال، عصير تفاح، أو حليب</p>
+														</div>
+														<span class="badge bg-light text-dark">90-160 سعرة حرارية</span>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<!-- Dinner Section -->
+						<div class="col-12 col-md-4 mb-3">
+							<div class="accordion accordion-desktop">
+								<div class="accordion-item border-0 rounded shadow h-100">
+									<h2 class="accordion-header">
+										<button class="accordion-button collapsed text-white rounded-top" style="background-color: #004d40;" type="button"
+												data-bs-toggle="collapse" data-bs-target="#thursdayDinner">
+											<i class="bi bi-moon me-2"></i>العشاء
+										</button>
+									</h2>
+									<div id="thursdayDinner" class="accordion-collapse collapse">
+										<div class="accordion-body p-4">
+											<!-- Main Course -->
+											<div class="mb-4">
+												<div class="d-flex align-items-center border-bottom pb-2 mb-3">
+													<span class="badge bg-success">الطبق الرئيسي</span>
+												</div>
+												<div class="list-group list-group-flush">
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>الإفطار الأمريكي الكلاسيكي</strong>
+															<p class="mb-0 small text-muted">بيض، لحم مقدد، توست، هاش براون</p>
+														</div>
+														<span class="badge bg-light text-dark">450 سعرة حرارية</span>
+													</div>
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>كومة البانكيك</strong>
+															<p class="mb-0 small text-muted">ثلاثة فطائر باللبن، شراب القيقب</p>
+														</div>
+														<span class="badge bg-light text-dark">520 سعرة حرارية</span>
+													</div>
+												</div>
+											</div>
+
+											<!-- Sides -->
+											<div class="mb-4">
+												<div class="d-flex align-items-center border-bottom pb-2 mb-3">
+													<span class="badge bg-primary">الأطباق الجانبية</span>
+												</div>
+												<div class="list-group list-group-flush">
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>وعاء فواكه طازجة</strong>
+															<p class="mb-0 small text-muted">فواكه موسمية مختلطة</p>
+														</div>
+														<span class="badge bg-light text-dark">120 سعرة حرارية</span>
+													</div>
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>بارفيه الزبادي</strong>
+															<p class="mb-0 small text-muted">زبادي يوناني، جرانولا، توت</p>
+														</div>
+														<span class="badge bg-light text-dark">280 سعرة حرارية</span>
+													</div>
+												</div>
+											</div>
+
+											<!-- Beverages -->
+											<div>
+												<div class="d-flex align-items-center border-bottom pb-2 mb-3">
+													<span class="badge bg-secondary">المشروبات</span>
+												</div>
+												<div class="list-group list-group-flush">
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>مشروبات ساخنة</strong>
+															<p class="mb-0 small text-muted">قهوة، شاي، أو شوكولاتة ساخنة</p>
+														</div>
+														<span class="badge bg-light text-dark">0-120 سعرة حرارية</span>
+													</div>
+													<div class="list-group-item d-flex justify-content-between align-items-start px-0">
+														<div>
+															<strong>مشروبات باردة</strong>
+															<p class="mb-0 small text-muted">عصير برتقال، عصير تفاح، أو حليب</p>
+														</div>
+														<span class="badge bg-light text-dark">90-160 سعرة حرارية</span>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>

@@ -2,141 +2,140 @@
     ViewData["Title"] = "تذاكري";
 }
 
-<div class="bg-success text-white py-4">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-md-8">
-                <h1 class="display-5 fw-bold mb-2">تذاكري</h1>
-                <p class="lead mb-0">اختر كمية التذاكر الخاصة بك</p>
+<div>
+    <!-- Main Content Section -->
+    <div class="container-fluid py-4 py-lg-5 bg-white">
+        <div class="container">
+            <div class="card border-0 shadow">
+
+                <!-- Card Header -->
+                <div class="card-header bg-success text-white py-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h3 class="fw-bold mb-0">ملخص التذاكر</h3>
+                        <div>
+                            <a class="btn btn-light" asp-controller="User" asp-action="Purchase">
+                                <i class="bi bi-plus-lg me-2"></i>شراء التذاكر
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card Body -->
+                <div class="card-body p-4">
+
+                    <!-- Tickets Summary -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-12">
+                            <div class="row g-3 text-center">
+                                <div class="col">
+                                    <div class="d-flex align-items-center justify-content-center mb-2">
+                                        <i class="bi bi-sun fs-4 text-dark me-2"></i>
+                                        <span class="h5 mb-0">الإفطار</span>
+                                    </div>
+                                    <h3 class="mb-0 fw-bold">5</h3>
+                                    <small class="text-muted">تذاكر</small>
+                                </div>
+                                <div class="col">
+                                    <div class="d-flex align-items-center justify-content-center mb-2">
+                                        <i class="bi bi-brightness-high fs-4 text-dark me-2"></i>
+                                        <span class="h5 mb-0">الغداء</span>
+                                    </div>
+                                    <h3 class="mb-0 fw-bold">3</h3>
+                                    <small class="text-muted">تذاكر</small>
+                                </div>
+                                <div class="col">
+                                    <div class="d-flex align-items-center justify-content-center mb-2">
+                                        <i class="bi bi-moon fs-4 text-dark me-2"></i>
+                                        <span class="h5 mb-0">العشاء</span>
+                                    </div>
+                                    <h3 class="mb-0 fw-bold">2</h3>
+                                    <small class="text-muted">تذاكر</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Available Tickets -->
+                    <div class="row g-3">
+
+                        <!-- Breakfast Tickets -->
+                        <div class="col-12 col-md-4">
+                            <div class="card h-100 border-success">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <h6 class="card-title mb-0">تذكرة #1234</h6>
+                                        <span class="badge bg-success">الإفطار</span>
+                                    </div>
+                                    <p class="card-text small mb-3">صالحة خلال ساعات الإفطار (7:00 صباحًا - 10:30 صباحًا)</p>
+                                    <button class="btn w-100 text-white" style="background-color: #2e7d32;"
+                                            data-bs-toggle="modal" data-bs-target="#qrModal">
+                                        <i class="bi bi-qr-code me-2"></i> استرد الآن
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Lunch Tickets -->
+                        <div class="col-12 col-md-4">
+                            <div class="card h-100 border-success">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <h6 class="card-title mb-0">تذكرة #1235</h6>
+                                        <span class="badge bg-primary">الغداء</span>
+                                    </div>
+                                    <p class="card-text small mb-3">صالحة خلال ساعات الغداء (11:30 صباحًا - 2:30 مساءً)</p>
+                                    <button class="btn w-100 text-white" style="background-color: #1b5e20;"
+                                            data-bs-toggle="modal" data-bs-target="#qrModal">
+                                        <i class="bi bi-qr-code me-2"></i> استرد الآن
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Dinner Tickets -->
+                        <div class="col-12 col-md-4">
+                            <div class="card h-100 border-success">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <h6 class="card-title mb-0">تذكرة #1236</h6>
+                                        <span class="badge bg-secondary">العشاء</span>
+                                    </div>
+                                    <p class="card-text small mb-3">صالحة خلال ساعات العشاء (5:30 مساءً - 8:30 مساءً)</p>
+                                    <button class="btn w-100 text-white" style="background-color: #004d40;"
+                                            data-bs-toggle="modal" data-bs-target="#qrModal">
+                                        <i class="bi bi-qr-code me-2"></i> استرد الآن
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- QR Modal -->
+                    <div class="modal fade" id="qrModal" tabindex="-1">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header border-0">
+                                    <h5 class="modal-title">استرداد التذكرة</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body text-center p-4">
+                                    <div class="mb-4">
+                                        <img src="https://via.placeholder.com/200x200" alt="QR Code"
+                                             class="img-fluid rounded shadow-sm">
+                                    </div>
+                                    <h6 class="mb-3">تذكرة #1234</h6>
+                                    <p class="mb-0 text-muted">أظهر هذا الرمز للموظفين لاسترداد وجبتك</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End QR Modal -->
+                </div>
+                <!-- End Card Body -->
             </div>
-            <div class="col-md-4 text-md-end mt-3 mt-md-0">
-                <a class="btn btn-light btn-lg" asp-controller="User" asp-action="Purchase">
-                    <i class="bi bi-plus-lg me-2"></i>شراء التذاكر
-                </a>
-            </div>
+            <!-- End Card -->
         </div>
+        <!-- End .container -->
     </div>
+    <!-- End .container-fluid -->
 </div>
-
-<div class="container py-4">
-    <!-- Ticket Summary -->
-    <div class="row g-3 mb-4">
-        <div class="col-12">
-            <div class="card border-0 bg-light">
-                <div class="card-body">
-                    <div class="row g-3 text-center">
-                        <div class="col">
-                            <div class="d-flex align-items-center justify-content-center mb-2">
-                                <i class="bi bi-sun fs-4 text-dark me-2"></i>
-                                <span class="h5 mb-0">الإفطار</span>
-                            </div>
-                            <h3 class="mb-0 fw-bold">5</h3>
-                            <small class="text-muted">تذاكر</small>
-                        </div>
-                        <div class="col">
-                            <div class="d-flex align-items-center justify-content-center mb-2">
-                                <i class="bi bi-brightness-high fs-4 text-dark me-2"></i>
-                                <span class="h5 mb-0">الغداء</span>
-                            </div>
-                            <h3 class="mb-0 fw-bold">3</h3>
-                            <small class="text-muted">تذاكر</small>
-                        </div>
-                        <div class="col">
-                            <div class="d-flex align-items-center justify-content-center mb-2">
-                                <i class="bi bi-moon fs-4 text-dark me-2"></i>
-                                <span class="h5 mb-0">العشاء</span>
-                            </div>
-                            <h3 class="mb-0 fw-bold">2</h3>
-                            <small class="text-muted">تذاكر</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Available Tickets -->
-    <div class="row g-3">
-        <!-- Breakfast Tickets -->
-        <div class="col-12">
-            <div class="row g-3 justify-content-center">
-                <!-- Single Ticket Card -->
-                <div class="col-md-6">
-                    <div class="card h-100 border-success">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h6 class="card-title mb-0">تذكرة #1234</h6>
-                                <span class="badge bg-success">الإفطار</span>
-                            </div>
-                            <p class="card-text small mb-3">صالحة خلال ساعات الإفطار (7:00 صباحًا - 10:30 صباحًا)</p>
-                            <button class="btn w-100 text-white" style="background-color: #2e7d32;" data-bs-toggle="modal" data-bs-target="#qrModal">
-                                <i class="bi bi-qr-code me-2"></i> استرد الآن
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <!-- Repeat for other breakfast tickets -->
-            </div>
-        </div>
-
-        <!-- Lunch Tickets -->
-        <div class="col-12">
-            <div class="row g-3 justify-content-center">
-                <div class="col-md-6">
-                    <div class="card h-100 border-info">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h6 class="card-title mb-0">تذكرة #1235</h6>
-                                <span class="badge bg-primary">الغداء</span>
-                            </div>
-                            <p class="card-text small mb-3">صالحة خلال ساعات الغداء (11:30 صباحًا - 2:30 مساءً)</p>
-                            <button class="btn w-100 text-white" style="background-color: #1b5e20;" data-bs-toggle="modal" data-bs-target="#qrModal">
-                                <i class="bi bi-qr-code me-2"></i> استرد الآن
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Dinner Tickets -->
-        <div class="col-12">
-            <div class="row g-3 justify-content-center">
-                <div class="col-md-6">
-                    <div class="card h-100 border-primary">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h6 class="card-title mb-0">تذكرة #1236</h6>
-                                <span class="badge bg-secondary">العشاء</span>
-                            </div>
-                            <p class="card-text small mb-3">صالحة خلال ساعات العشاء (5:30 مساءً - 8:30 مساءً)</p>
-                            <button class="btn w-100 text-white" style="background-color: #004d40;" data-bs-toggle="modal" data-bs-target="#qrModal">
-                                <i class="bi bi-qr-code me-2"></i> استرد الآن
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- QR Modal -->
-    <div class="modal fade" id="qrModal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header border-0">
-                    <h5 class="modal-title">استرداد التذكرة</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body text-center p-4">
-                    <div class="mb-4">
-                        <img src="https://via.placeholder.com/200x200" alt="QR Code" class="img-fluid rounded shadow-sm">
-                    </div>
-                    <h6 class="mb-3">تذكرة #1234</h6>
-                    <p class="mb-0 text-muted">أظهر هذا الرمز للموظفين لاسترداد وجبتك</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
