@@ -4,14 +4,20 @@
 
 <div>
     <!-- Main Content Section -->
-    <div class="container-fluid py-5 bg-white">
-        <div class="container-fluid py-5 bg-white">
-            <div class="container max-w-600">
-                <div class="card border-0 shadow">
-                    <div class="card-header bg-success text-white py-3">
+    <div class="container-fluid py-4 py-lg-5 bg-white">
+        <div class="container">
+            <div class="card border-0 shadow">
+
+                <!-- Card Header -->
+                <div class="card-header bg-success text-white py-3">
+                    <div class="d-flex justify-content-between align-items-center">
                         <h3 class="fw-bold mb-0">شراء التذاكر</h3>
                     </div>
-                    <div class="card-body p-4">
+                </div>
+
+                <!-- Card Body -->
+                <div class="card border-0 shadow">
+                    <div class="card-body p-3">
                         <!-- Ticket Input Sections -->
                         <div class="row justify-content-center">
                             <div class="col-12" id="ticketSection"></div>
@@ -42,7 +48,7 @@
                 </h5>
                 <div class="d-flex align-items-center justify-content-center gap-3">
                     <button type="button" class="btn btn-outline-success fw-bold px-3" onclick="adjustQuantity('${id}', -1)">-</button>
-                    <input type="number" class="form-control text-center" style="width: 90px;" min="0" value="0" id="${id}">
+                    <input type="text" class="form-control text-center" style="width: 90px;" min="0" value="0" id="${id}">
                     <button type="button" class="btn btn-outline-success fw-bold px-3" onclick="adjustQuantity('${id}', 1)">+</button>
                 </div>
             </div>
