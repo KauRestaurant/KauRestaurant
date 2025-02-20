@@ -1,0 +1,164 @@
+﻿@{
+    ViewData["Title"] = "تفاصيل الوجبة";
+}
+
+<div>
+    <!-- Meal Details Section -->
+    <div class="container-fluid py-4 py-lg-5 bg-white">
+        <div class="container">
+            <div class="row">
+                <!-- Meal Information -->
+                <div class="col-md-8 mb-4">
+                    <div class="card border-0 shadow">
+
+                        <!-- Card Header -->
+                        <div class="card-header bg-white py-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h3 class="fw-bold mb-0">معلومات الوجبة</h3>
+                                <a asp-controller="User" asp-action="Menu" class="btn btn-success">
+                                    <i class="bi bi-grid-3x3-gap me-2"></i>العودة إلى القائمة
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="card-body p-4">
+                            <div class="mb-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    <span class="badge bg-success me-2">الطبق الرئيسي</span>
+                                    <span class="badge bg-light text-dark">450 سعرة حرارية</span>
+                                </div>
+                                <p class="text-muted">وصف الوجبة هنا. يمكن أن يتضمن هذا الوصف المكونات الرئيسية وطريقة التحضير وأي معلومات إضافية تود تضمينها.</p>
+                            </div>
+
+                            <div class="mb-4">
+                                <h4 class="fw-bold mb-3">المكونات</h4>
+                                <ul class="list-unstyled">
+                                    <li><i class="bi bi-check2-circle text-success me-2"></i>مكون 1</li>
+                                    <li><i class="bi bi-check2-circle text-success me-2"></i>مكون 2</li>
+                                    <li><i class="bi bi-check2-circle text-success me-2"></i>مكون 3</li>
+                                </ul>
+                            </div>
+
+                            <div>
+                                <h4 class="fw-bold mb-3">معلومات غذائية</h4>
+                                <div class="row g-3">
+                                    <div class="col-6 col-md-3">
+                                        <div class="border rounded p-3 text-center">
+                                            <div class="fw-bold text-success mb-1">البروتين</div>
+                                            <div>20 جرام</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-md-3">
+                                        <div class="border rounded p-3 text-center">
+                                            <div class="fw-bold text-success mb-1">الكربوهيدرات</div>
+                                            <div>30 جرام</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-md-3">
+                                        <div class="border rounded p-3 text-center">
+                                            <div class="fw-bold text-success mb-1">الدهون</div>
+                                            <div>10 جرام</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-md-3">
+                                        <div class="border rounded p-3 text-center">
+                                            <div class="fw-bold text-success mb-1">الألياف</div>
+                                            <div>5 جرام</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reviews Section -->
+                <div class="col-md-4">
+                    <div class="card border-0 shadow">
+                        <div class="card-body p-4">
+                            <h3 class="fw-bold mb-4">التقييمات والمراجعات</h3>
+
+                            <!-- Review Form -->
+                            <form class="mb-4">
+                                <div class="mb-3">
+                                    <label class="form-label">تقييمك</label>
+                                    <div class="star-rating">
+                                        @for (int i = 5; i >= 1; i--)
+                                        {
+                                            <input type="radio" id="star@(i)" name="rating" value="@i" />
+                                            <label for="star@(i)"><i class="bi bi-star-fill"></i></label>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">تعليقك</label>
+                                    <textarea class="form-control" name="comment" rows="3" placeholder="اكتب تعليقك هنا..."></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-success w-100">إرسال التقييم</button>
+                            </form>
+
+                            <!-- Previous Reviews -->
+                            <div class="reviews-list">
+                                <div class="border-bottom pb-3 mb-3">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <div class="text-success">
+                                            @for (int i = 0; i < 4; i++)
+                                            {
+                                                <i class="bi bi-star-fill"></i>
+                                            }
+                                        </div>
+                                        <small class="text-muted">19/02/2025</small>
+                                    </div>
+                                    <p class="mb-0">تعليق سابق هنا. يمكن أن يتضمن هذا التعليق رأي المستخدم في الوجبة.</p>
+                                </div>
+                                <div class="border-bottom pb-3 mb-3">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <div class="text-success">
+                                            @for (int i = 0; i < 5; i++)
+                                            {
+                                                <i class="bi bi-star-fill"></i>
+                                            }
+                                        </div>
+                                        <small class="text-muted">18/02/2025</small>
+                                    </div>
+                                    <p class="mb-0">تعليق سابق آخر هنا. يمكن أن يتضمن هذا التعليق رأي المستخدم في الوجبة.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .star-rating {
+        direction: ltr;
+        display: inline-flex;
+        flex-direction: row-reverse;
+        gap: 0.25rem;
+    }
+
+        .star-rating input {
+            display: none;
+        }
+
+        .star-rating label {
+            color: #ddd;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: color 0.2s;
+        }
+
+            .star-rating label:hover,
+            .star-rating label:hover ~ label,
+            .star-rating input:checked ~ label {
+                color: #ffc107;
+            }
+
+    .reviews-list {
+        max-height: 400px;
+        overflow-y: auto;
+    }
+</style>

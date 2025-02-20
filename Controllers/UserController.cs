@@ -33,6 +33,11 @@ namespace KauRestaurant.Controllers
             return View();
         }
 
+        public IActionResult Meal()
+        {
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
