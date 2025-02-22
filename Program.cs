@@ -1,32 +1,24 @@
 using KauRestaurant.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using AuthSystem.Data;
 using KauRestaurant.Areas.Identity.Data;
-
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
-builder.Services.AddDbContext<AuthDbContext>(options =>
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
 builder.Services.AddDefaultIdentity<KauRestaurantUser>(options => options.SignIn.RequireConfirmedAccount = false)
-    .AddEntityFrameworkStores<AuthDbContext>();
-
-builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
-
-builder.Services.AddDbContext<AuthDbContext>(options => options.UseSqlServer(connectionString));
+    .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddRazorPages();
-
-
 
 var app = builder.Build();
 

@@ -114,6 +114,9 @@ namespace KauRestaurant.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
+                // Set the required fields before creating the user
+                user.FirstName = Input.FirstName;
+                user.LastName = Input.LastName;
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
@@ -121,10 +124,6 @@ namespace KauRestaurant.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
-                    user.FirstName = Input.FirstName;
-                    user.LastName = Input.LastName;
-                    await _userManager.UpdateAsync(user);
-
                     _logger.LogInformation("User created a new account with password.");
 
                     var userId = await _userManager.GetUserIdAsync(user);
