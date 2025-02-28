@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KauRestaurant.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250222221258_AddMenuAndMealTables")]
+    [Migration("20250228035637_AddMenuAndMealTables")]
     partial class AddMenuAndMealTables
     {
         /// <inheritdoc />
@@ -108,6 +108,15 @@ namespace KauRestaurant.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MealID"));
 
+                    b.Property<int>("Calories")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Carbs")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Fat")
+                        .HasColumnType("int");
+
                     b.Property<string>("MealCategory")
                         .IsRequired()
                         .HasMaxLength(10)
@@ -118,12 +127,16 @@ namespace KauRestaurant.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<string>("MealType")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
                     b.Property<int>("MenuID")
                         .HasColumnType("int");
 
-                    b.Property<string>("NutritionalInfo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Protein")
+                        .HasColumnType("int");
 
                     b.HasKey("MealID");
 
@@ -135,18 +148,242 @@ namespace KauRestaurant.Data.Migrations
                         new
                         {
                             MealID = 1,
-                            MealCategory = "Breakfast",
-                            MealName = "Pancakes",
+                            Calories = 250,
+                            Carbs = 45,
+                            Fat = 10,
+                            MealCategory = "الإفطار",
+                            MealName = "فطائر بالجبن",
+                            MealType = "الطبق الرئيسي",
                             MenuID = 1,
-                            NutritionalInfo = "{\"calories\": 250, \"protein\": 8, \"carbs\": 45}"
+                            Protein = 8
                         },
                         new
                         {
                             MealID = 2,
-                            MealCategory = "Lunch",
-                            MealName = "Grilled Chicken",
+                            Calories = 185,
+                            Carbs = 2,
+                            Fat = 14,
+                            MealCategory = "الإفطار",
+                            MealName = "بيض مقلي",
+                            MealType = "الطبق الرئيسي",
                             MenuID = 1,
-                            NutritionalInfo = "{\"calories\": 350, \"protein\": 30, \"carbs\": 0}"
+                            Protein = 12
+                        },
+                        new
+                        {
+                            MealID = 3,
+                            Calories = 220,
+                            Carbs = 35,
+                            Fat = 5,
+                            MealCategory = "الإفطار",
+                            MealName = "فول مدمس",
+                            MealType = "طبق جانبي",
+                            MenuID = 1,
+                            Protein = 15
+                        },
+                        new
+                        {
+                            MealID = 4,
+                            Calories = 180,
+                            Carbs = 25,
+                            Fat = 9,
+                            MealCategory = "الإفطار",
+                            MealName = "حمص بالطحينة",
+                            MealType = "طبق جانبي",
+                            MenuID = 1,
+                            Protein = 8
+                        },
+                        new
+                        {
+                            MealID = 5,
+                            Calories = 5,
+                            Carbs = 1,
+                            Fat = 0,
+                            MealCategory = "الإفطار",
+                            MealName = "شاي عربي",
+                            MealType = "مشروب",
+                            MenuID = 1,
+                            Protein = 0
+                        },
+                        new
+                        {
+                            MealID = 6,
+                            Calories = 120,
+                            Carbs = 28,
+                            Fat = 0,
+                            MealCategory = "الإفطار",
+                            MealName = "عصير برتقال طازج",
+                            MealType = "مشروب",
+                            MenuID = 1,
+                            Protein = 1
+                        },
+                        new
+                        {
+                            MealID = 7,
+                            Calories = 450,
+                            Carbs = 55,
+                            Fat = 15,
+                            MealCategory = "الغداء",
+                            MealName = "كبسة لحم",
+                            MealType = "الطبق الرئيسي",
+                            MenuID = 1,
+                            Protein = 28
+                        },
+                        new
+                        {
+                            MealID = 8,
+                            Calories = 350,
+                            Carbs = 0,
+                            Fat = 20,
+                            MealCategory = "الغداء",
+                            MealName = "دجاج مشوي",
+                            MealType = "الطبق الرئيسي",
+                            MenuID = 1,
+                            Protein = 30
+                        },
+                        new
+                        {
+                            MealID = 9,
+                            Calories = 65,
+                            Carbs = 12,
+                            Fat = 2,
+                            MealCategory = "الغداء",
+                            MealName = "سلطة خضراء",
+                            MealType = "طبق جانبي",
+                            MenuID = 1,
+                            Protein = 3
+                        },
+                        new
+                        {
+                            MealID = 10,
+                            Calories = 180,
+                            Carbs = 30,
+                            Fat = 5,
+                            MealCategory = "الغداء",
+                            MealName = "شوربة عدس",
+                            MealType = "طبق جانبي",
+                            MenuID = 1,
+                            Protein = 10
+                        },
+                        new
+                        {
+                            MealID = 11,
+                            Calories = 350,
+                            Carbs = 52,
+                            Fat = 15,
+                            MealCategory = "الغداء",
+                            MealName = "أم علي",
+                            MealType = "حلوى",
+                            MenuID = 1,
+                            Protein = 8
+                        },
+                        new
+                        {
+                            MealID = 12,
+                            Calories = 90,
+                            Carbs = 12,
+                            Fat = 5,
+                            MealCategory = "الغداء",
+                            MealName = "لبن عيران",
+                            MealType = "مشروب",
+                            MenuID = 1,
+                            Protein = 8
+                        },
+                        new
+                        {
+                            MealID = 13,
+                            Calories = 380,
+                            Carbs = 40,
+                            Fat = 20,
+                            MealCategory = "العشاء",
+                            MealName = "شاورما دجاج",
+                            MealType = "الطبق الرئيسي",
+                            MenuID = 1,
+                            Protein = 25
+                        },
+                        new
+                        {
+                            MealID = 14,
+                            Calories = 420,
+                            Carbs = 35,
+                            Fat = 25,
+                            MealCategory = "العشاء",
+                            MealName = "برجر لحم",
+                            MealType = "الطبق الرئيسي",
+                            MenuID = 1,
+                            Protein = 28
+                        },
+                        new
+                        {
+                            MealID = 15,
+                            Calories = 365,
+                            Carbs = 48,
+                            Fat = 18,
+                            MealCategory = "العشاء",
+                            MealName = "بطاطس مقلية",
+                            MealType = "طبق جانبي",
+                            MenuID = 1,
+                            Protein = 4
+                        },
+                        new
+                        {
+                            MealID = 16,
+                            Calories = 150,
+                            Carbs = 15,
+                            Fat = 10,
+                            MealCategory = "العشاء",
+                            MealName = "سلطة سيزر",
+                            MealType = "طبق جانبي",
+                            MenuID = 1,
+                            Protein = 8
+                        },
+                        new
+                        {
+                            MealID = 17,
+                            Calories = 400,
+                            Carbs = 58,
+                            Fat = 20,
+                            MealCategory = "العشاء",
+                            MealName = "كنافة",
+                            MealType = "حلوى",
+                            MenuID = 1,
+                            Protein = 6
+                        },
+                        new
+                        {
+                            MealID = 18,
+                            Calories = 80,
+                            Carbs = 20,
+                            Fat = 0,
+                            MealCategory = "العشاء",
+                            MealName = "عصير ليمون بالنعناع",
+                            MealType = "مشروب",
+                            MenuID = 1,
+                            Protein = 1
+                        },
+                        new
+                        {
+                            MealID = 19,
+                            Calories = 120,
+                            Carbs = 28,
+                            Fat = 0,
+                            MealCategory = "الإفطار",
+                            MealName = "عصير برتقال طازج",
+                            MealType = "مشروب",
+                            MenuID = 2,
+                            Protein = 1
+                        },
+                        new
+                        {
+                            MealID = 20,
+                            Calories = 420,
+                            Carbs = 63,
+                            Fat = 22,
+                            MealCategory = "العشاء",
+                            MealName = "كعكة الشوكولاتة",
+                            MealType = "حلوى",
+                            MenuID = 3,
+                            Protein = 5
                         });
                 });
 
@@ -160,8 +397,8 @@ namespace KauRestaurant.Data.Migrations
 
                     b.Property<string>("Day")
                         .IsRequired()
-                        .HasMaxLength(3)
-                        .HasColumnType("nvarchar(3)");
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
                     b.HasKey("MenuID");
 
@@ -171,27 +408,27 @@ namespace KauRestaurant.Data.Migrations
                         new
                         {
                             MenuID = 1,
-                            Day = "SAT"
+                            Day = "الأحد"
                         },
                         new
                         {
                             MenuID = 2,
-                            Day = "SUN"
+                            Day = "الإثنين"
                         },
                         new
                         {
                             MenuID = 3,
-                            Day = "MON"
+                            Day = "الثلاثاء"
                         },
                         new
                         {
                             MenuID = 4,
-                            Day = "TUE"
+                            Day = "الأربعاء"
                         },
                         new
                         {
                             MenuID = 5,
-                            Day = "THU"
+                            Day = "الخميس"
                         });
                 });
 

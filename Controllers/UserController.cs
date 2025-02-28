@@ -1,16 +1,21 @@
 using System.Diagnostics;
 using KauRestaurant.Models;
 using Microsoft.AspNetCore.Mvc;
+using KauRestaurant.Data;
+using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 
 namespace KauRestaurant.Controllers
 {
     public class UserController : Controller
     {
         private readonly ILogger<UserController> _logger;
+        private readonly ApplicationDbContext _context;
 
-        public UserController(ILogger<UserController> logger)
+        public UserController(ILogger<UserController> logger, ApplicationDbContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
         public IActionResult Index()
@@ -18,9 +23,13 @@ namespace KauRestaurant.Controllers
             return View();
         }
 
-        public IActionResult Menu()
+        public async Task<IActionResult> Menu()
         {
-            return View();
+            var menus = await _context.Menus
+                .Include(m => m.Meals)
+                .ToListAsync();
+
+            return View("menu", menus);
         }
 
         public IActionResult Tickets()
@@ -33,9 +42,18 @@ namespace KauRestaurant.Controllers
             return View();
         }
 
-        public IActionResult Meal()
+        public async Task<IActionResult> Meal(int id)
         {
-            return View();
+            var meal = await _context.Meals
+                .Include(m => m.Menu)
+                .FirstOrDefaultAsync(m => m.MealID == id);
+
+            if (meal == null)
+            {
+                return NotFound();
+            }
+
+            return View(meal);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

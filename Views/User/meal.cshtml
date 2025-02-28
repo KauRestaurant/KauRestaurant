@@ -1,5 +1,8 @@
-﻿@{
-    ViewData["Title"] = "تفاصيل الوجبة";
+﻿@model KauRestaurant.Models.Meal
+@using KauRestaurant.Services
+
+@{
+    ViewData["Title"] = Model.MealName;
 }
 
 <div>
@@ -14,7 +17,7 @@
                         <!-- Card Header -->
                         <div class="card-header bg-white py-3">
                             <div class="d-flex justify-content-between align-items-center">
-                                <h3 class="fw-bold mb-0">معلومات الوجبة</h3>
+                                <h3 class="fw-bold mb-0">@Model.MealName</h3>
                                 <a asp-controller="User" asp-action="Menu" class="btn btn-success">
                                     <i class="bi bi-grid-3x3-gap me-2"></i>العودة إلى القائمة
                                 </a>
@@ -24,8 +27,11 @@
                         <div class="card-body p-4">
                             <div class="mb-4">
                                 <div class="d-flex align-items-center mb-3">
-                                    <span class="badge bg-success me-2">الطبق الرئيسي</span>
-                                    <span class="badge bg-light text-dark">450 سعرة حرارية</span>
+                                    <span class="badge @(UIConstants.MealTypeBadgeColors.ContainsKey(Model.MealType) ?
+                                          UIConstants.MealTypeBadgeColors[Model.MealType] : "bg-secondary") me-2">
+                                        @Model.MealType
+                                    </span>
+                                    <span class="badge bg-light text-dark">@Model.Calories سعرة حرارية</span>
                                 </div>
                                 <p class="text-muted">وصف الوجبة هنا. يمكن أن يتضمن هذا الوصف المكونات الرئيسية وطريقة التحضير وأي معلومات إضافية تود تضمينها.</p>
                             </div>
@@ -45,19 +51,19 @@
                                     <div class="col-6 col-md-3">
                                         <div class="border rounded p-3 text-center">
                                             <div class="fw-bold text-success mb-1">البروتين</div>
-                                            <div>20 جرام</div>
+                                            <div>@Model.Protein جرام</div>
                                         </div>
                                     </div>
                                     <div class="col-6 col-md-3">
                                         <div class="border rounded p-3 text-center">
                                             <div class="fw-bold text-success mb-1">الكربوهيدرات</div>
-                                            <div>30 جرام</div>
+                                            <div>@Model.Carbs جرام</div>
                                         </div>
                                     </div>
                                     <div class="col-6 col-md-3">
                                         <div class="border rounded p-3 text-center">
                                             <div class="fw-bold text-success mb-1">الدهون</div>
-                                            <div>10 جرام</div>
+                                            <div>@Model.Fat جرام</div>
                                         </div>
                                     </div>
                                     <div class="col-6 col-md-3">

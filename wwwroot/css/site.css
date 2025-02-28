@@ -111,6 +111,8 @@ body {
             background-color: #198754;
         }
 
+
+
 /* Make sure the tab content border is removed */
 .tab-content {
     border: none;
@@ -139,3 +141,25 @@ body {
         background-color: #198754 !important; /* Using the main green color */
         color: #ffffff !important;
     }
+
+
+/* Custom category styling */
+.bg-primary {
+    background-color: #198754 !important; /* Main green */
+    color: #ffffff !important;
+}
+
+.bg-info {
+    background-color: #75c994 !important; /* Lighter green */
+    color: #212529 !important;
+}
+
+.bg-warning {
+    background-color: #e6c16f !important; /* Warm gold/amber color */
+    color: #212529 !important;
+}
+
+.bg-secondary {
+    background-color: #6c8075 !important; /* Muted green-gray */
+    color: #ffffff !important;
+}

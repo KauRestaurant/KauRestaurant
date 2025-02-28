@@ -9,7 +9,7 @@ namespace KauRestaurant.Models
         public int MenuID { get; set; }
 
         [Required]
-        [StringLength(3)]
+        [StringLength(10)]
         public string Day { get; set; }
 
         // Navigation property
