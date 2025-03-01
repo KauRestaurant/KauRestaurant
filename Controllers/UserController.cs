@@ -3,7 +3,7 @@ using KauRestaurant.Models;
 using Microsoft.AspNetCore.Mvc;
 using KauRestaurant.Data;
 using Microsoft.EntityFrameworkCore;
-using System.Text.Json;
+using System.Security.Claims;
 
 namespace KauRestaurant.Controllers
 {
@@ -46,6 +46,8 @@ namespace KauRestaurant.Controllers
         {
             var meal = await _context.Meals
                 .Include(m => m.Menu)
+                .Include(m => m.Reviews)
+                    .ThenInclude(r => r.Customer)
                 .FirstOrDefaultAsync(m => m.MealID == id);
 
             if (meal == null)
@@ -54,6 +56,32 @@ namespace KauRestaurant.Controllers
             }
 
             return View(meal);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> submitReview(int mealId, int rating, string comment)
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                TempData["ErrorMessage"] = "??? ????? ?????? ?????? ?????";
+                return RedirectToAction("Meal", new { id = mealId });
+            }
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var review = new Review
+            {
+                MealID = mealId,
+                CustomerID = userId,
+                Rating = rating,
+                ReviewText = comment,
+                ReviewDate = DateTime.Now
+            };
+
+            _context.Reviews.Add(review);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Meal", new { id = mealId });
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

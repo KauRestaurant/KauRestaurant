@@ -14,6 +14,7 @@ namespace KauRestaurant.Data
 
         public DbSet<Menu> Menus { get; set; }
         public DbSet<Meal> Meals { get; set; }
+        public DbSet<Review> Reviews { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

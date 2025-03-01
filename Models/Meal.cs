@@ -39,6 +39,7 @@ namespace KauRestaurant.Models
         [ForeignKey("MenuID")]
         public virtual Menu Menu { get; set; }
 
+        public virtual ICollection<Review> Reviews { get; set; }
     }
 
 }
