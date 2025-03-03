@@ -1,5 +1,7 @@
-﻿@{
+﻿@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
+@{
     ViewData["Title"] = "شراء التذاكر";
+    var requestToken = Antiforgery.GetAndStoreTokens(Context).RequestToken;
 }
 
 <div>
@@ -18,6 +20,9 @@
                 <!-- Card Body -->
                 <div class="card border-0 shadow">
                     <div class="card-body p-3">
+                        <!-- Hidden antiforgery token -->
+                        <input type="hidden" name="__RequestVerificationToken" value="@requestToken" />
+
                         <!-- Ticket Input Sections -->
                         <div class="row justify-content-center">
                             <div class="col-12" id="ticketSection"></div>
@@ -77,8 +82,65 @@
     }
 
     function purchaseTickets() {
-        alert('تم شراء التذاكر!');
+        const breakfastQty = parseInt(document.getElementById('breakfastQty').value) || 0;
+        const lunchQty = parseInt(document.getElementById('lunchQty').value) || 0;
+        const dinnerQty = parseInt(document.getElementById('dinnerQty').value) || 0;
+
+        // Check if any tickets are selected
+        if (breakfastQty === 0 && lunchQty === 0 && dinnerQty === 0) {
+            alert('الرجاء اختيار عدد التذاكر أولا');
+            return;
+        }
+
+        // Disable button to prevent multiple submissions
+        const purchaseButton = document.querySelector('button.btn-success.btn-lg');
+        purchaseButton.disabled = true;
+        purchaseButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> جاري المعالجة...';
+
+        // Prepare data
+        const data = {
+            breakfastQty: breakfastQty,
+            lunchQty: lunchQty,
+            dinnerQty: dinnerQty
+        };
+
+        console.log('Sending order data:', data);
+
+        // Send AJAX request to create order
+        fetch('/Purchase/CreateOrder', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            if (!response.ok) {
+                console.error('Server returned:', response.status, response.statusText);
+                throw new Error('Network response was not ok: ' + response.status);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Order response:', data);
+            if (data.success) {
+                alert('تم شراء التذاكر بنجاح! رقم الطلب: ' + data.orderId);
+                window.location.href = 'tickets'; // Redirect to tickets page
+            } else {
+                alert('حدث خطأ أثناء معالجة الطلب');
+                purchaseButton.disabled = false;
+                purchaseButton.innerHTML = 'شراء';
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('حدث خطأ في الاتصال. يرجى المحاولة مرة أخرى.');
+            purchaseButton.disabled = false;
+            purchaseButton.innerHTML = 'شراء';
+        });
     }
+
 
     // Initialize
     renderTickets();

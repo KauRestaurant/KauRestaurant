@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using KauRestaurant.Models;
 using KauRestaurant.Areas.Identity.Data;
+using YourNamespace.Models;
 
 namespace KauRestaurant.Data
 {
@@ -15,6 +16,8 @@ namespace KauRestaurant.Data
         public DbSet<Menu> Menus { get; set; }
         public DbSet<Meal> Meals { get; set; }
         public DbSet<Review> Reviews { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<Ticket> Tickets { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

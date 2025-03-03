@@ -45,18 +45,13 @@
 							</a>
 						</li>
 						<li class="nav-item px-1">
-							<a class="nav-link @(currentController == "User" && currentAction == "Purchase" ? "active" : "") rounded px-3 py-2" asp-controller="User" asp-action="Purchase">
+							<a class="nav-link @(currentController == "Purchase" && currentAction == "Index" ? "active" : "") rounded px-3 py-2" asp-controller="Purchase" asp-action="Index">
 								<i class="bi bi-ticket-perforated me-2"></i> شراء التذاكر
 							</a>
 						</li>
 						<li class="nav-item px-1">
-							<a class="nav-link @(currentController == "User" && currentAction == "Tickets" ? "active" : "") rounded px-3 py-2" asp-controller="User" asp-action="Tickets">
+							<a class="nav-link @(currentController == "Tickets" && currentAction == "Index" ? "active" : "") rounded px-3 py-2" asp-controller="Tickets" asp-action="Index">
 								<i class="bi bi-collection me-2"></i> تذاكري
-							</a>
-						</li>
-						<li class="nav-item px-1">
-							<a class="nav-link @(currentController == "User" && currentAction == "Meal" ? "active" : "") rounded px-3 py-2" asp-controller="User" asp-action="Meal">
-								<i class="bi bi-egg-fried me-2"></i> وجبة
 							</a>
 						</li>
 					</ul>

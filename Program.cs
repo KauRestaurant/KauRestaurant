@@ -2,6 +2,7 @@ using KauRestaurant.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using KauRestaurant.Areas.Identity.Data;
+using KauRestaurant.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +20,8 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddRazorPages();
+
+builder.Services.AddScoped<TicketQrService>();
 
 var app = builder.Build();
 

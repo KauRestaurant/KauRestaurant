@@ -1,4 +1,4 @@
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using KauRestaurant.Models;
 using Microsoft.AspNetCore.Mvc;
 using KauRestaurant.Data;
@@ -18,9 +18,28 @@ namespace KauRestaurant.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            // Get current day in Arabic
+            var englishDay = DateTime.Now.DayOfWeek.ToString();
+            var arabicDay = englishDay switch
+            {
+                "Sunday" => "الأحد",
+                "Monday" => "الإثنين",
+                "Tuesday" => "الثلاثاء",
+                "Wednesday" => "الأربعاء",
+                "Thursday" => "الخميس",
+                "Friday" => "الجمعة",
+                "Saturday" => "السبت",
+                _ => "الأحد"
+            };
+
+            // Get today's menu with meals
+            var todayMenu = await _context.Menus
+                .Include(m => m.Meals)
+                .FirstOrDefaultAsync(m => m.Day == arabicDay);
+
+            return View(todayMenu);
         }
 
         public async Task<IActionResult> Menu()
@@ -30,16 +49,6 @@ namespace KauRestaurant.Controllers
                 .ToListAsync();
 
             return View("menu", menus);
-        }
-
-        public IActionResult Tickets()
-        {
-            return View();
-        }
-
-        public IActionResult Purchase()
-        {
-            return View();
         }
 
         public async Task<IActionResult> Meal(int id)
@@ -63,7 +72,7 @@ namespace KauRestaurant.Controllers
         {
             if (!User.Identity.IsAuthenticated)
             {
-                TempData["ErrorMessage"] = "??? ????? ?????? ?????? ?????";
+                TempData["ErrorMessage"] = "يجب تسجيل الدخول لتقديم مراجعة";
                 return RedirectToAction("Meal", new { id = mealId });
             }
 
