@@ -1,0 +1,82 @@
+﻿@{
+    ViewData["Title"] = "لوحة تحكم المسؤول";
+}
+
+<div class="container my-5">
+    <!-- Welcome Card -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4 text-center">
+                    <h2 class="mb-3">لوحة تحكم المسؤول</h2>
+                    <p class="text-muted mb-4">مرحباً بك في لوحة التحكم، يمكنك إدارة المطعم الجامعي من هنا</p>
+
+                    <!-- Primary Action Button - Scan Tickets -->
+                    <a asp-controller="Admin" asp-action="ScanTicket" class="btn btn-primary btn-lg px-5">
+                        <i class="bi bi-qr-code-scan me-2"></i>مسح التذاكر
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Actions Grid -->
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100 admin-card">
+                <div class="card-body d-flex flex-column text-center p-4">
+                    <div class="icon-wrapper bg-light rounded-circle mx-auto mb-3">
+                        <i class="bi bi-people fs-1 text-primary"></i>
+                    </div>
+                    <h5 class="card-title">إدارة المستخدمين</h5>
+                    <p class="card-text text-muted mb-4">إضافة، تعديل، وحذف المستخدمين</p>
+                    <a href="#" class="btn btn-outline-primary mt-auto">إدارة المستخدمين</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100 admin-card">
+                <div class="card-body d-flex flex-column text-center p-4">
+                    <div class="icon-wrapper bg-light rounded-circle mx-auto mb-3">
+                        <i class="bi bi-journal-text fs-1 text-success"></i>
+                    </div>
+                    <h5 class="card-title">إدارة قوائم الطعام</h5>
+                    <p class="card-text text-muted mb-4">إضافة وتعديل القوائم والوجبات</p>
+                    <a href="#" class="btn btn-outline-success mt-auto">إدارة القوائم</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100 admin-card">
+                <div class="card-body d-flex flex-column text-center p-4">
+                    <div class="icon-wrapper bg-light rounded-circle mx-auto mb-3">
+                        <i class="bi bi-bar-chart fs-1 text-info"></i>
+                    </div>
+                    <h5 class="card-title">التقارير والإحصائيات</h5>
+                    <p class="card-text text-muted mb-4">عرض تقارير المبيعات والإحصائيات</p>
+                    <a href="#" class="btn btn-outline-info mt-auto">عرض التقارير</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .icon-wrapper {
+        width: 80px;
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .admin-card {
+        transition: transform 0.2s;
+    }
+
+        .admin-card:hover {
+            transform: translateY(-5px);
+        }
+</style>

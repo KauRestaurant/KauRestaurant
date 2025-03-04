@@ -58,7 +58,7 @@ public class QrCodeController : Controller
         // Build the QR data
         var ticketData = new TicketQrService.TicketQrData
         {
-            TicketId = ticketId.ToString(),
+            TicketId = ticket.QRCode,
             MealType = mealType,
             UserId = ticket.Order.CustomerID,
             UserName = user.UserName,
