@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace KauRestaurant.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class AddReviewsTable : Migration
+    public partial class AddReviewModel : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

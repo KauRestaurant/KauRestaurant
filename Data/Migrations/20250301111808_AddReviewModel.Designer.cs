@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KauRestaurant.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250301031313_AddReviewsTable")]
-    partial class AddReviewsTable
+    [Migration("20250301111808_AddReviewModel")]
+    partial class AddReviewModel
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

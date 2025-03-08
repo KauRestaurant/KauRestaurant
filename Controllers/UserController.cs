@@ -39,6 +39,14 @@ namespace KauRestaurant.Controllers
                 .Include(m => m.Meals)
                 .FirstOrDefaultAsync(m => m.Day == arabicDay);
 
+            // If today's menu is null, get the menu for Sunday
+            if (todayMenu == null)
+            {
+                todayMenu = await _context.Menus
+                    .Include(m => m.Meals)
+                    .FirstOrDefaultAsync(m => m.Day == "الأحد");
+            }
+
             return View(todayMenu);
         }
 
