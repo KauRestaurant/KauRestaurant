@@ -6,13 +6,13 @@
     <!-- Welcome Card -->
     <div class="row mb-5">
         <div class="col-12">
-            <div class="card border-0 shadow-sm">
+            <div class="card border-0 shadow">
                 <div class="card-body p-4 text-center">
                     <h2 class="mb-3">لوحة تحكم المسؤول</h2>
                     <p class="text-muted mb-4">مرحباً بك في لوحة التحكم، يمكنك إدارة المطعم الجامعي من هنا</p>
 
                     <!-- Primary Action Button - Scan Tickets -->
-                    <a asp-controller="Admin" asp-action="ScanTicket" class="btn btn-primary btn-lg px-5">
+                    <a asp-controller="Admin" asp-action="ScanTicket" class="btn btn-success btn-lg px-5">
                         <i class="bi bi-qr-code-scan me-2"></i>مسح التذاكر
                     </a>
                 </div>
@@ -20,76 +20,165 @@
         </div>
     </div>
 
-    <!-- Admin Actions Grid -->
-    <div class="row g-4">
-        <div class="col-md-4">
-            <div class="card border-0 shadow-sm h-100 admin-card">
-                <div class="card-body d-flex flex-column text-center p-4">
-                    <div class="icon-wrapper bg-light rounded-circle mx-auto mb-3">
-                        <i class="bi bi-people fs-1 text-primary"></i>
+    <!-- Statistics Cards with Graphs -->
+    <div class="row mb-5">
+        <div class="col-md-6">
+            <div class="card border-0 shadow">
+                <div class="card-body p-4">
+                    <h5 class="card-title text-center mb-4">إحصائيات شراء التذاكر</h5>
+                    <div id="purchasesChartContainer">
+                        <canvas id="ticketPurchasesChart"></canvas>
+                        <div id="noPurchaseData" class="text-center text-muted py-5 d-none">
+                            <i class="bi bi-bar-chart-line fs-1 mb-3 d-block"></i>
+                            لا يوجد إحصائيات
+                        </div>
                     </div>
-                    <h5 class="card-title">إدارة المستخدمين</h5>
-                    <p class="card-text text-muted mb-4">إضافة، تعديل، وحذف المستخدمين</p>
-                    <a href="#" class="btn btn-outline-primary mt-auto">إدارة المستخدمين</a>
                 </div>
             </div>
         </div>
-
-        <div class="col-md-4">
-            <div class="card border-0 shadow-sm h-100 admin-card">
-                <div class="card-body d-flex flex-column text-center p-4">
-                    <div class="icon-wrapper bg-light rounded-circle mx-auto mb-3">
-                        <i class="bi bi-journal-text fs-1 text-success"></i>
+        <div class="col-md-6">
+            <div class="card border-0 shadow">
+                <div class="card-body p-4">
+                    <h5 class="card-title text-center mb-4">إحصائيات استخدام التذاكر</h5>
+                    <div id="redeemedChartContainer">
+                        <canvas id="ticketRedeemedChart"></canvas>
+                        <div id="noRedeemedData" class="text-center text-muted py-5 d-none">
+                            <i class="bi bi-bar-chart-line fs-1 mb-3 d-block"></i>
+                            لا يوجد إحصائيات
+                        </div>
                     </div>
-                    <h5 class="card-title">إدارة قوائم الطعام</h5>
-                    <p class="card-text text-muted mb-4">إضافة وتعديل القوائم والوجبات</p>
-                    <a href="#" class="btn btn-outline-success mt-auto">إدارة القوائم</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="card border-0 shadow-sm h-100 admin-card">
-                <div class="card-body d-flex flex-column text-center p-4">
-                    <div class="icon-wrapper bg-light rounded-circle mx-auto mb-3">
-                        <i class="bi bi-bar-chart fs-1 text-info"></i>
-                    </div>
-                    <h5 class="card-title">التقارير والإحصائيات</h5>
-                    <p class="card-text text-muted mb-4">عرض تقارير المبيعات والإحصائيات</p>
-                    <a href="#" class="btn btn-outline-info mt-auto">عرض التقارير</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="card border-0 shadow-sm h-100 admin-card">
-                <div class="card-body d-flex flex-column text-center p-4">
-                    <div class="icon-wrapper bg-light rounded-circle mx-auto mb-3">
-                        <i class="bi bi-shop fs-1 text-warning"></i>
-                    </div>
-                    <h5 class="card-title">إدارة معلومات المطعم</h5>
-                    <p class="card-text text-muted mb-4">تحديث معلومات وإعدادات المطعم</p>
-                    <a href="#" class="btn btn-outline-warning mt-auto">إدارة المطعم</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="card border-0 shadow-sm h-100 admin-card">
-                <div class="card-body d-flex flex-column text-center p-4">
-                    <div class="icon-wrapper bg-light rounded-circle mx-auto mb-3">
-                        <i class="bi bi-chat-dots fs-1 text-danger"></i>
-                    </div>
-                    <h5 class="card-title">عرض التعليقات</h5>
-                    <p class="card-text text-muted mb-4">مراجعة وإدارة تعليقات العملاء</p>
-                    <a href="#" class="btn btn-outline-danger mt-auto">عرض التعليقات</a>
                 </div>
             </div>
         </div>
     </div>
-</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Function to create gradient
+        function createGradient(ctx, colorStart, colorEnd) {
+            const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+            gradient.addColorStop(0, colorStart);
+            gradient.addColorStop(1, colorEnd);
+            return gradient;
+        }
+
+        // Function to check if data array has any non-zero values
+        function hasData(dataArray) {
+            return dataArray && dataArray.some(value => value > 0);
+        }
+
+        // Fetch and render charts
+        async function loadCharts() {
+            try {
+                const response = await fetch('/Admin/GetTicketStatistics');
+                const data = await response.json();
+
+                // Handle Purchases Chart
+                const purchasesCanvas = document.getElementById('ticketPurchasesChart');
+                const noPurchaseData = document.getElementById('noPurchaseData');
+
+                if (hasData(data.purchasedTickets)) {
+                    purchasesCanvas.classList.remove('d-none');
+                    noPurchaseData.classList.add('d-none');
+
+                    const purchasesCtx = purchasesCanvas.getContext('2d');
+                    const purchasesGradient = createGradient(purchasesCtx, 'rgba(54, 162, 235, 0.5)', 'rgba(54, 162, 235, 0.1)');
+
+                    new Chart(purchasesCtx, {
+                        type: 'line',
+                        data: {
+                            labels: data.labels,
+                            datasets: [{
+                                label: 'التذاكر المشتراة',
+                                data: data.purchasedTickets,
+                                fill: true,
+                                backgroundColor: purchasesGradient,
+                                borderColor: 'rgb(54, 162, 235)',
+                                tension: 0.3
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                } else {
+                    purchasesCanvas.classList.add('d-none');
+                    noPurchaseData.classList.remove('d-none');
+                }
+
+                // Handle Redeemed Chart
+                const redeemedCanvas = document.getElementById('ticketRedeemedChart');
+                const noRedeemedData = document.getElementById('noRedeemedData');
+
+                if (hasData(data.redeemedTickets)) {
+                    redeemedCanvas.classList.remove('d-none');
+                    noRedeemedData.classList.add('d-none');
+
+                    const redeemedCtx = redeemedCanvas.getContext('2d');
+                    const redeemedGradient = createGradient(redeemedCtx, 'rgba(75, 192, 192, 0.5)', 'rgba(75, 192, 192, 0.1)');
+
+                    new Chart(redeemedCtx, {
+                        type: 'line',
+                        data: {
+                            labels: data.labels,
+                            datasets: [{
+                                label: 'التذاكر المستخدمة',
+                                data: data.redeemedTickets,
+                                fill: true,
+                                backgroundColor: redeemedGradient,
+                                borderColor: 'rgb(75, 192, 192)',
+                                tension: 0.3
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                } else {
+                    redeemedCanvas.classList.add('d-none');
+                    noRedeemedData.classList.remove('d-none');
+                }
+            } catch (error) {
+                console.error('Error loading chart data:', error);
+                // Show error message for both charts
+                document.getElementById('ticketPurchasesChart').classList.add('d-none');
+                document.getElementById('ticketRedeemedChart').classList.add('d-none');
+                document.getElementById('noPurchaseData').classList.remove('d-none');
+                document.getElementById('noRedeemedData').classList.remove('d-none');
+            }
+        }
+
+        // Load charts when page loads
+        document.addEventListener('DOMContentLoaded', loadCharts);
+    </script>
+}
 
 <style>
+    canvas {
+        min-height: 300px;
+    }
+
+    #noPurchaseData, #noRedeemedData {
+        min-height: 300px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
     .icon-wrapper {
         width: 80px;
         height: 80px;

@@ -109,5 +109,50 @@ namespace KauRestaurant.Controllers
                 return Json(new { success = false, message = $"خطأ: {ex.Message}" });
             }
         }
+
+        public class TicketStatistics
+        {
+            public List<int> PurchasedTickets { get; set; }
+            public List<int> RedeemedTickets { get; set; }
+            public List<string> Labels { get; set; }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetTicketStatistics()
+        {
+            var today = DateTime.Today;
+            var last6Months = Enumerable.Range(0, 6)
+                .Select(i => today.AddMonths(-i))
+                .OrderBy(d => d)
+                .ToList();
+
+            var statistics = new TicketStatistics
+            {
+                PurchasedTickets = new List<int>(),
+                RedeemedTickets = new List<int>(),
+                Labels = last6Months.Select(d => d.ToString("MMM yyyy")).ToList()
+            };
+
+            foreach (var date in last6Months)
+            {
+                var startDate = new DateTime(date.Year, date.Month, 1);
+                var endDate = startDate.AddMonths(1);
+
+                // Get purchased tickets count
+                var purchasedCount = await _context.Tickets
+                    .Where(t => t.Order.OrderDate >= startDate && t.Order.OrderDate < endDate)
+                    .CountAsync();
+
+                // Get redeemed tickets count
+                var redeemedCount = await _context.Tickets
+                    .Where(t => t.Order.OrderDate >= startDate && t.Order.OrderDate < endDate && t.IsRedeemed)
+                    .CountAsync();
+
+                statistics.PurchasedTickets.Add(purchasedCount);
+                statistics.RedeemedTickets.Add(redeemedCount);
+            }
+
+            return Json(statistics);
+        }
     }
 }
