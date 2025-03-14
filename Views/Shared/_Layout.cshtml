@@ -22,7 +22,7 @@
 	<header>
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 			<div class="container py-2">
-				<a class="navbar-brand d-flex align-items-center" asp-controller="User" asp-action="Index">
+				<a class="navbar-brand d-flex align-items-center" asp-area="User" asp-controller="Home" asp-action="Index">
 					<img src="~/images/logo.png" alt="شعار الجامعة" height="38" class="ms-3">
 					<span class="fw-bold d-none d-sm-inline ms-1"> المطعم الجامعي</span>
 				</a>
@@ -35,22 +35,22 @@
 				<div class="collapse navbar-collapse" id="navbarNav">
 					<ul class="navbar-nav me-auto">
 						<li class="nav-item px-1">
-							<a class="nav-link @(currentController == "User" && currentAction == "Index" ? "active" : "") rounded px-3 py-2" asp-controller="User" asp-action="Index">
+							<a class="nav-link @(currentController == "Home" && currentAction == "Index" ? "active" : "") rounded px-3 py-2" asp-area="User" asp-controller="Home" asp-action="Index">
 								<i class="bi bi-house-door me-2"></i> الرئيسية
 							</a>
 						</li>
 						<li class="nav-item px-1">
-							<a class="nav-link @(currentController == "User" && currentAction == "Menu" ? "active" : "") rounded px-3 py-2" asp-controller="User" asp-action="Menu">
+							<a class="nav-link @(currentController == "Menu" && currentAction == "Index" ? "active" : "") rounded px-3 py-2" asp-area="User" asp-controller="Menu" asp-action="Index">
 								<i class="bi bi-journal-text me-2"></i> قائمة الأسبوع
 							</a>
 						</li>
 						<li class="nav-item px-1">
-							<a class="nav-link @(currentController == "Purchase" && currentAction == "Index" ? "active" : "") rounded px-3 py-2" asp-controller="Purchase" asp-action="Index">
+							<a class="nav-link @(currentController == "Purchase" && currentAction == "Index" ? "active" : "") rounded px-3 py-2" asp-area="User" asp-controller="Purchase" asp-action="Index">
 								<i class="bi bi-ticket-perforated me-2"></i> شراء التذاكر
 							</a>
 						</li>
 						<li class="nav-item px-1">
-							<a class="nav-link @(currentController == "Tickets" && currentAction == "Index" ? "active" : "") rounded px-3 py-2" asp-controller="Tickets" asp-action="Index">
+							<a class="nav-link @(currentController == "Tickets" && currentAction == "Index" ? "active" : "") rounded px-3 py-2" asp-area="User" asp-controller="Tickets" asp-action="Index">
 								<i class="bi bi-collection me-2"></i> تذاكري
 							</a>
 						</li>

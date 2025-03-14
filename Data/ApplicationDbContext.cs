@@ -18,10 +18,27 @@ namespace KauRestaurant.Data
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
+        public DbSet<MenuMeal> MenuMeals { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<MenuMeal>().ToTable("MenuMeals");
+
+            // Configure the many-to-many relationship
+            modelBuilder.Entity<MenuMeal>()
+                .HasKey(mm => mm.MenuMealID);
+
+            modelBuilder.Entity<MenuMeal>()
+                .HasOne(mm => mm.Menu)
+                .WithMany(m => m.MenuMeals)
+                .HasForeignKey(mm => mm.MenuID);
+
+            modelBuilder.Entity<MenuMeal>()
+                .HasOne(mm => mm.Meal)
+                .WithMany(m => m.MenuMeals)
+                .HasForeignKey(mm => mm.MealID);
 
             // Seed Menu data
             modelBuilder.Entity<Menu>().HasData(
@@ -38,7 +55,6 @@ namespace KauRestaurant.Data
                 new Meal
                 {
                     MealID = 1,
-                    MenuID = 1,
                     MealName = "فطائر بالجبن",
                     Calories = 250,
                     Protein = 8,
@@ -50,7 +66,6 @@ namespace KauRestaurant.Data
                 new Meal
                 {
                     MealID = 2,
-                    MenuID = 1,
                     MealName = "بيض مقلي",
                     Calories = 185,
                     Protein = 12,
@@ -62,7 +77,6 @@ namespace KauRestaurant.Data
                 new Meal
                 {
                     MealID = 3,
-                    MenuID = 1,
                     MealName = "فول مدمس",
                     Calories = 220,
                     Protein = 15,
@@ -74,7 +88,6 @@ namespace KauRestaurant.Data
                 new Meal
                 {
                     MealID = 4,
-                    MenuID = 1,
                     MealName = "حمص بالطحينة",
                     Calories = 180,
                     Protein = 8,
@@ -86,7 +99,6 @@ namespace KauRestaurant.Data
                 new Meal
                 {
                     MealID = 5,
-                    MenuID = 1,
                     MealName = "شاي عربي",
                     Calories = 5,
                     Protein = 0,
@@ -98,7 +110,6 @@ namespace KauRestaurant.Data
                 new Meal
                 {
                     MealID = 6,
-                    MenuID = 1,
                     MealName = "عصير برتقال طازج",
                     Calories = 120,
                     Protein = 1,
@@ -112,7 +123,6 @@ namespace KauRestaurant.Data
                 new Meal
                 {
                     MealID = 7,
-                    MenuID = 1,
                     MealName = "كبسة لحم",
                     Calories = 450,
                     Protein = 28,
@@ -124,7 +134,6 @@ namespace KauRestaurant.Data
                 new Meal
                 {
                     MealID = 8,
-                    MenuID = 1,
                     MealName = "دجاج مشوي",
                     Calories = 350,
                     Protein = 30,
@@ -136,7 +145,6 @@ namespace KauRestaurant.Data
                 new Meal
                 {
                     MealID = 9,
-                    MenuID = 1,
                     MealName = "سلطة خضراء",
                     Calories = 65,
                     Protein = 3,
@@ -148,7 +156,6 @@ namespace KauRestaurant.Data
                 new Meal
                 {
                     MealID = 10,
-                    MenuID = 1,
                     MealName = "شوربة عدس",
                     Calories = 180,
                     Protein = 10,
@@ -160,7 +167,6 @@ namespace KauRestaurant.Data
                 new Meal
                 {
                     MealID = 11,
-                    MenuID = 1,
                     MealName = "أم علي",
                     Calories = 350,
                     Protein = 8,
@@ -172,7 +178,6 @@ namespace KauRestaurant.Data
                 new Meal
                 {
                     MealID = 12,
-                    MenuID = 1,
                     MealName = "لبن عيران",
                     Calories = 90,
                     Protein = 8,
@@ -186,7 +191,6 @@ namespace KauRestaurant.Data
                 new Meal
                 {
                     MealID = 13,
-                    MenuID = 1,
                     MealName = "شاورما دجاج",
                     Calories = 380,
                     Protein = 25,
@@ -198,7 +202,6 @@ namespace KauRestaurant.Data
                 new Meal
                 {
                     MealID = 14,
-                    MenuID = 1,
                     MealName = "برجر لحم",
                     Calories = 420,
                     Protein = 28,
@@ -210,7 +213,6 @@ namespace KauRestaurant.Data
                 new Meal
                 {
                     MealID = 15,
-                    MenuID = 1,
                     MealName = "بطاطس مقلية",
                     Calories = 365,
                     Protein = 4,
@@ -222,7 +224,6 @@ namespace KauRestaurant.Data
                 new Meal
                 {
                     MealID = 16,
-                    MenuID = 1,
                     MealName = "سلطة سيزر",
                     Calories = 150,
                     Protein = 8,
@@ -234,7 +235,6 @@ namespace KauRestaurant.Data
                 new Meal
                 {
                     MealID = 17,
-                    MenuID = 1,
                     MealName = "كنافة",
                     Calories = 400,
                     Protein = 6,
@@ -246,7 +246,6 @@ namespace KauRestaurant.Data
                 new Meal
                 {
                     MealID = 18,
-                    MenuID = 1,
                     MealName = "عصير ليمون بالنعناع",
                     Calories = 80,
                     Protein = 1,
@@ -260,7 +259,6 @@ namespace KauRestaurant.Data
                 new Meal
                 {
                     MealID = 19,
-                    MenuID = 2,
                     MealName = "عصير برتقال طازج",
                     Calories = 120,
                     Protein = 1,
@@ -272,7 +270,6 @@ namespace KauRestaurant.Data
                 new Meal
                 {
                     MealID = 20,
-                    MenuID = 3,
                     MealName = "كعكة الشوكولاتة",
                     Calories = 420,
                     Protein = 5,
@@ -282,6 +279,56 @@ namespace KauRestaurant.Data
                     MealCategory = "العشاء"
                 }
             );
+
+            // Seed MenuMeal join table with the relationships
+            modelBuilder.Entity<MenuMeal>().HasData(
+                // Sunday (الأحد) meals - MenuID = 1
+                new MenuMeal { MenuMealID = 1, MenuID = 1, MealID = 1 },
+                new MenuMeal { MenuMealID = 2, MenuID = 1, MealID = 2 },
+                new MenuMeal { MenuMealID = 3, MenuID = 1, MealID = 3 },
+                new MenuMeal { MenuMealID = 4, MenuID = 1, MealID = 4 },
+                new MenuMeal { MenuMealID = 5, MenuID = 1, MealID = 5 },
+                new MenuMeal { MenuMealID = 6, MenuID = 1, MealID = 6 },
+                new MenuMeal { MenuMealID = 7, MenuID = 1, MealID = 7 },
+                new MenuMeal { MenuMealID = 8, MenuID = 1, MealID = 8 },
+                new MenuMeal { MenuMealID = 9, MenuID = 1, MealID = 9 },
+                new MenuMeal { MenuMealID = 10, MenuID = 1, MealID = 10 },
+                new MenuMeal { MenuMealID = 11, MenuID = 1, MealID = 11 },
+                new MenuMeal { MenuMealID = 12, MenuID = 1, MealID = 12 },
+                new MenuMeal { MenuMealID = 13, MenuID = 1, MealID = 13 },
+                new MenuMeal { MenuMealID = 14, MenuID = 1, MealID = 14 },
+                new MenuMeal { MenuMealID = 15, MenuID = 1, MealID = 15 },
+                new MenuMeal { MenuMealID = 16, MenuID = 1, MealID = 16 },
+                new MenuMeal { MenuMealID = 17, MenuID = 1, MealID = 17 },
+                new MenuMeal { MenuMealID = 18, MenuID = 1, MealID = 18 },
+
+                // Monday (الإثنين) meals - MenuID = 2
+                new MenuMeal { MenuMealID = 19, MenuID = 2, MealID = 19 },
+                // Also add some Sunday meals to Monday
+                new MenuMeal { MenuMealID = 20, MenuID = 2, MealID = 1 },
+                new MenuMeal { MenuMealID = 21, MenuID = 2, MealID = 7 },
+                new MenuMeal { MenuMealID = 22, MenuID = 2, MealID = 13 },
+
+                // Tuesday (الثلاثاء) meals - MenuID = 3
+                new MenuMeal { MenuMealID = 23, MenuID = 3, MealID = 20 },
+                // Also add some meals from other days
+                new MenuMeal { MenuMealID = 24, MenuID = 3, MealID = 2 },
+                new MenuMeal { MenuMealID = 25, MenuID = 3, MealID = 8 },
+                new MenuMeal { MenuMealID = 26, MenuID = 3, MealID = 14 },
+
+                // Wednesday (الأربعاء) meals - MenuID = 4
+                new MenuMeal { MenuMealID = 27, MenuID = 4, MealID = 3 },
+                new MenuMeal { MenuMealID = 28, MenuID = 4, MealID = 9 },
+                new MenuMeal { MenuMealID = 29, MenuID = 4, MealID = 15 },
+                new MenuMeal { MenuMealID = 30, MenuID = 4, MealID = 19 },
+
+                // Thursday (الخميس) meals - MenuID = 5
+                new MenuMeal { MenuMealID = 31, MenuID = 5, MealID = 4 },
+                new MenuMeal { MenuMealID = 32, MenuID = 5, MealID = 10 },
+                new MenuMeal { MenuMealID = 33, MenuID = 5, MealID = 16 },
+                new MenuMeal { MenuMealID = 34, MenuID = 5, MealID = 20 }
+            );
+
         }
     }
 }

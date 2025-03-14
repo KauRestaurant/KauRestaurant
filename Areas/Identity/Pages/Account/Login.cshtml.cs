@@ -112,7 +112,7 @@ namespace KauRestaurant.Areas.Identity.Pages.Account
                     if (await _signInManager.UserManager.IsInRoleAsync(user, "Admin"))
                     {
                         // Redirect admin users to the admin dashboard
-                        return RedirectToAction("Dashboard", "Admin");
+                        return RedirectToAction("Index", "Dashboard");
                     }
 
                     // Regular users follow the normal flow

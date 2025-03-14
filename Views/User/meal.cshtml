@@ -18,11 +18,12 @@
                         <div class="card-header bg-white py-3">
                             <div class="d-flex justify-content-between align-items-center">
                                 <h3 class="fw-bold mb-0">@Model.MealName</h3>
-                                <a asp-controller="User" asp-action="Menu" class="btn btn-success">
-                                    <i class="bi bi-grid-3x3-gap me-2"></i>العودة إلى القائمة
+                                <a href="javascript:history.back()" class="btn btn-success">
+                                    <i class="bi bi-arrow-left me-2"></i>العودة
                                 </a>
                             </div>
                         </div>
+
 
                         <div class="card-body p-4">
                             <div class="mb-4">
@@ -34,15 +35,6 @@
                                     <span class="badge bg-light text-dark">@Model.Calories سعرة حرارية</span>
                                 </div>
                                 <p class="text-muted">وصف الوجبة هنا. يمكن أن يتضمن هذا الوصف المكونات الرئيسية وطريقة التحضير وأي معلومات إضافية تود تضمينها.</p>
-                            </div>
-
-                            <div class="mb-4">
-                                <h4 class="fw-bold mb-3">المكونات</h4>
-                                <ul class="list-unstyled">
-                                    <li><i class="bi bi-check2-circle text-success me-2"></i>مكون 1</li>
-                                    <li><i class="bi bi-check2-circle text-success me-2"></i>مكون 2</li>
-                                    <li><i class="bi bi-check2-circle text-success me-2"></i>مكون 3</li>
-                                </ul>
                             </div>
 
                             <div>
@@ -119,7 +111,7 @@
                             }
 
                             <!-- Review Form -->
-                            <form class="mb-4" method="post" asp-controller="User" asp-action="submitReview">
+                            <form class="mb-4" method="post" asp-area="User" asp-controller="Meal" asp-action="submitReview">
                                 <input type="hidden" name="mealId" value="@Model.MealID" />
                                 <div class="mb-3">
                                     <label class="form-label">تقييمك</label>

@@ -1,4 +1,5 @@
-﻿@model KauRestaurant.Controllers.TicketsViewModel
+﻿@using KauRestaurant.Controllers.User
+@model TicketsViewModel
 
 @{
     ViewData["Title"] = "تذاكري";
@@ -15,7 +16,7 @@
                     <div class="d-flex justify-content-between align-items-center">
                         <h3 class="fw-bold mb-0">ملخص التذاكر</h3>
                         <div>
-                            <a class="btn btn-success" asp-controller="Purchase" asp-action="Index">
+                            <a class="btn btn-success" asp-area="User" asp-controller="Purchase" asp-action="Index">
                                 <i class="bi bi-plus-lg me-2"></i>شراء التذاكر
                             </a>
                         </div>
@@ -63,7 +64,7 @@
                         {
                             <div class="col-12 text-center py-4">
                                 <p class="text-muted mb-3">ليس لديك تذاكر حالياً</p>
-                                <a class="btn btn-success" asp-controller="Purchase" asp-action="Index">
+                                <a class="btn btn-success" asp-area="User" asp-controller="Purchase" asp-action="Index">
                                     <i class="bi bi-plus-lg me-2"></i>شراء التذاكر الآن
                                 </a>
                             </div>
@@ -97,7 +98,7 @@
                                             <div class="text-center mb-3">
                                                 <p class="text-muted">لا توجد تذاكر إفطار متاحة</p>
                                             </div>
-                                            <a class="btn btn-outline-success w-100" asp-controller="Purchase" asp-action="Index">
+                                            <a class="btn btn-outline-success w-100" asp-area="User" asp-controller="Purchase" asp-action="Index">
                                                 <i class="bi bi-plus-lg me-2"></i>شراء تذاكر
                                             </a>
                                         }
@@ -132,7 +133,7 @@
                                             <div class="text-center mb-3">
                                                 <p class="text-muted">لا توجد تذاكر غداء متاحة</p>
                                             </div>
-                                            <a class="btn btn-outline-primary w-100" asp-controller="Purchase" asp-action="Index">
+                                            <a class="btn btn-outline-primary w-100" asp-area="User" asp-controller="Purchase" asp-action="Index">
                                                 <i class="bi bi-plus-lg me-2"></i>شراء تذاكر
                                             </a>
                                         }
@@ -167,7 +168,7 @@
                                             <div class="text-center mb-3">
                                                 <p class="text-muted">لا توجد تذاكر عشاء متاحة</p>
                                             </div>
-                                            <a class="btn btn-outline-secondary w-100" asp-controller="Purchase" asp-action="Index">
+                                            <a class="btn btn-outline-secondary w-100" asp-area="User" asp-controller="Purchase" asp-action="Index">
                                                 <i class="bi bi-plus-lg me-2"></i>شراء تذاكر
                                             </a>
                                         }

@@ -129,15 +129,10 @@ namespace KauRestaurant.Data.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<int>("MenuID")
-                        .HasColumnType("int");
-
                     b.Property<int>("Protein")
                         .HasColumnType("int");
 
                     b.HasKey("MealID");
-
-                    b.HasIndex("MenuID");
 
                     b.ToTable("Meals");
 
@@ -151,7 +146,6 @@ namespace KauRestaurant.Data.Migrations
                             MealCategory = "الإفطار",
                             MealName = "فطائر بالجبن",
                             MealType = "الطبق الرئيسي",
-                            MenuID = 1,
                             Protein = 8
                         },
                         new
@@ -163,7 +157,6 @@ namespace KauRestaurant.Data.Migrations
                             MealCategory = "الإفطار",
                             MealName = "بيض مقلي",
                             MealType = "الطبق الرئيسي",
-                            MenuID = 1,
                             Protein = 12
                         },
                         new
@@ -175,7 +168,6 @@ namespace KauRestaurant.Data.Migrations
                             MealCategory = "الإفطار",
                             MealName = "فول مدمس",
                             MealType = "طبق جانبي",
-                            MenuID = 1,
                             Protein = 15
                         },
                         new
@@ -187,7 +179,6 @@ namespace KauRestaurant.Data.Migrations
                             MealCategory = "الإفطار",
                             MealName = "حمص بالطحينة",
                             MealType = "طبق جانبي",
-                            MenuID = 1,
                             Protein = 8
                         },
                         new
@@ -199,7 +190,6 @@ namespace KauRestaurant.Data.Migrations
                             MealCategory = "الإفطار",
                             MealName = "شاي عربي",
                             MealType = "مشروب",
-                            MenuID = 1,
                             Protein = 0
                         },
                         new
@@ -211,7 +201,6 @@ namespace KauRestaurant.Data.Migrations
                             MealCategory = "الإفطار",
                             MealName = "عصير برتقال طازج",
                             MealType = "مشروب",
-                            MenuID = 1,
                             Protein = 1
                         },
                         new
@@ -223,7 +212,6 @@ namespace KauRestaurant.Data.Migrations
                             MealCategory = "الغداء",
                             MealName = "كبسة لحم",
                             MealType = "الطبق الرئيسي",
-                            MenuID = 1,
                             Protein = 28
                         },
                         new
@@ -235,7 +223,6 @@ namespace KauRestaurant.Data.Migrations
                             MealCategory = "الغداء",
                             MealName = "دجاج مشوي",
                             MealType = "الطبق الرئيسي",
-                            MenuID = 1,
                             Protein = 30
                         },
                         new
@@ -247,7 +234,6 @@ namespace KauRestaurant.Data.Migrations
                             MealCategory = "الغداء",
                             MealName = "سلطة خضراء",
                             MealType = "طبق جانبي",
-                            MenuID = 1,
                             Protein = 3
                         },
                         new
@@ -259,7 +245,6 @@ namespace KauRestaurant.Data.Migrations
                             MealCategory = "الغداء",
                             MealName = "شوربة عدس",
                             MealType = "طبق جانبي",
-                            MenuID = 1,
                             Protein = 10
                         },
                         new
@@ -271,7 +256,6 @@ namespace KauRestaurant.Data.Migrations
                             MealCategory = "الغداء",
                             MealName = "أم علي",
                             MealType = "حلوى",
-                            MenuID = 1,
                             Protein = 8
                         },
                         new
@@ -283,7 +267,6 @@ namespace KauRestaurant.Data.Migrations
                             MealCategory = "الغداء",
                             MealName = "لبن عيران",
                             MealType = "مشروب",
-                            MenuID = 1,
                             Protein = 8
                         },
                         new
@@ -295,7 +278,6 @@ namespace KauRestaurant.Data.Migrations
                             MealCategory = "العشاء",
                             MealName = "شاورما دجاج",
                             MealType = "الطبق الرئيسي",
-                            MenuID = 1,
                             Protein = 25
                         },
                         new
@@ -307,7 +289,6 @@ namespace KauRestaurant.Data.Migrations
                             MealCategory = "العشاء",
                             MealName = "برجر لحم",
                             MealType = "الطبق الرئيسي",
-                            MenuID = 1,
                             Protein = 28
                         },
                         new
@@ -319,7 +300,6 @@ namespace KauRestaurant.Data.Migrations
                             MealCategory = "العشاء",
                             MealName = "بطاطس مقلية",
                             MealType = "طبق جانبي",
-                            MenuID = 1,
                             Protein = 4
                         },
                         new
@@ -331,7 +311,6 @@ namespace KauRestaurant.Data.Migrations
                             MealCategory = "العشاء",
                             MealName = "سلطة سيزر",
                             MealType = "طبق جانبي",
-                            MenuID = 1,
                             Protein = 8
                         },
                         new
@@ -343,7 +322,6 @@ namespace KauRestaurant.Data.Migrations
                             MealCategory = "العشاء",
                             MealName = "كنافة",
                             MealType = "حلوى",
-                            MenuID = 1,
                             Protein = 6
                         },
                         new
@@ -355,7 +333,6 @@ namespace KauRestaurant.Data.Migrations
                             MealCategory = "العشاء",
                             MealName = "عصير ليمون بالنعناع",
                             MealType = "مشروب",
-                            MenuID = 1,
                             Protein = 1
                         },
                         new
@@ -367,7 +344,6 @@ namespace KauRestaurant.Data.Migrations
                             MealCategory = "الإفطار",
                             MealName = "عصير برتقال طازج",
                             MealType = "مشروب",
-                            MenuID = 2,
                             Protein = 1
                         },
                         new
@@ -379,7 +355,6 @@ namespace KauRestaurant.Data.Migrations
                             MealCategory = "العشاء",
                             MealName = "كعكة الشوكولاتة",
                             MealType = "حلوى",
-                            MenuID = 3,
                             Protein = 5
                         });
                 });
@@ -426,6 +401,235 @@ namespace KauRestaurant.Data.Migrations
                         {
                             MenuID = 5,
                             Day = "الخميس"
+                        });
+                });
+
+            modelBuilder.Entity("KauRestaurant.Models.MenuMeal", b =>
+                {
+                    b.Property<int>("MenuMealID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MenuMealID"));
+
+                    b.Property<int>("MealID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MenuID")
+                        .HasColumnType("int");
+
+                    b.HasKey("MenuMealID");
+
+                    b.HasIndex("MealID");
+
+                    b.HasIndex("MenuID");
+
+                    b.ToTable("MenuMeals", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            MenuMealID = 1,
+                            MealID = 1,
+                            MenuID = 1
+                        },
+                        new
+                        {
+                            MenuMealID = 2,
+                            MealID = 2,
+                            MenuID = 1
+                        },
+                        new
+                        {
+                            MenuMealID = 3,
+                            MealID = 3,
+                            MenuID = 1
+                        },
+                        new
+                        {
+                            MenuMealID = 4,
+                            MealID = 4,
+                            MenuID = 1
+                        },
+                        new
+                        {
+                            MenuMealID = 5,
+                            MealID = 5,
+                            MenuID = 1
+                        },
+                        new
+                        {
+                            MenuMealID = 6,
+                            MealID = 6,
+                            MenuID = 1
+                        },
+                        new
+                        {
+                            MenuMealID = 7,
+                            MealID = 7,
+                            MenuID = 1
+                        },
+                        new
+                        {
+                            MenuMealID = 8,
+                            MealID = 8,
+                            MenuID = 1
+                        },
+                        new
+                        {
+                            MenuMealID = 9,
+                            MealID = 9,
+                            MenuID = 1
+                        },
+                        new
+                        {
+                            MenuMealID = 10,
+                            MealID = 10,
+                            MenuID = 1
+                        },
+                        new
+                        {
+                            MenuMealID = 11,
+                            MealID = 11,
+                            MenuID = 1
+                        },
+                        new
+                        {
+                            MenuMealID = 12,
+                            MealID = 12,
+                            MenuID = 1
+                        },
+                        new
+                        {
+                            MenuMealID = 13,
+                            MealID = 13,
+                            MenuID = 1
+                        },
+                        new
+                        {
+                            MenuMealID = 14,
+                            MealID = 14,
+                            MenuID = 1
+                        },
+                        new
+                        {
+                            MenuMealID = 15,
+                            MealID = 15,
+                            MenuID = 1
+                        },
+                        new
+                        {
+                            MenuMealID = 16,
+                            MealID = 16,
+                            MenuID = 1
+                        },
+                        new
+                        {
+                            MenuMealID = 17,
+                            MealID = 17,
+                            MenuID = 1
+                        },
+                        new
+                        {
+                            MenuMealID = 18,
+                            MealID = 18,
+                            MenuID = 1
+                        },
+                        new
+                        {
+                            MenuMealID = 19,
+                            MealID = 19,
+                            MenuID = 2
+                        },
+                        new
+                        {
+                            MenuMealID = 20,
+                            MealID = 1,
+                            MenuID = 2
+                        },
+                        new
+                        {
+                            MenuMealID = 21,
+                            MealID = 7,
+                            MenuID = 2
+                        },
+                        new
+                        {
+                            MenuMealID = 22,
+                            MealID = 13,
+                            MenuID = 2
+                        },
+                        new
+                        {
+                            MenuMealID = 23,
+                            MealID = 20,
+                            MenuID = 3
+                        },
+                        new
+                        {
+                            MenuMealID = 24,
+                            MealID = 2,
+                            MenuID = 3
+                        },
+                        new
+                        {
+                            MenuMealID = 25,
+                            MealID = 8,
+                            MenuID = 3
+                        },
+                        new
+                        {
+                            MenuMealID = 26,
+                            MealID = 14,
+                            MenuID = 3
+                        },
+                        new
+                        {
+                            MenuMealID = 27,
+                            MealID = 3,
+                            MenuID = 4
+                        },
+                        new
+                        {
+                            MenuMealID = 28,
+                            MealID = 9,
+                            MenuID = 4
+                        },
+                        new
+                        {
+                            MenuMealID = 29,
+                            MealID = 15,
+                            MenuID = 4
+                        },
+                        new
+                        {
+                            MenuMealID = 30,
+                            MealID = 19,
+                            MenuID = 4
+                        },
+                        new
+                        {
+                            MenuMealID = 31,
+                            MealID = 4,
+                            MenuID = 5
+                        },
+                        new
+                        {
+                            MenuMealID = 32,
+                            MealID = 10,
+                            MenuID = 5
+                        },
+                        new
+                        {
+                            MenuMealID = 33,
+                            MealID = 16,
+                            MenuID = 5
+                        },
+                        new
+                        {
+                            MenuMealID = 34,
+                            MealID = 20,
+                            MenuID = 5
                         });
                 });
 
@@ -669,13 +873,21 @@ namespace KauRestaurant.Data.Migrations
                     b.ToTable("Tickets");
                 });
 
-            modelBuilder.Entity("KauRestaurant.Models.Meal", b =>
+            modelBuilder.Entity("KauRestaurant.Models.MenuMeal", b =>
                 {
+                    b.HasOne("KauRestaurant.Models.Meal", "Meal")
+                        .WithMany("MenuMeals")
+                        .HasForeignKey("MealID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("KauRestaurant.Models.Menu", "Menu")
-                        .WithMany("Meals")
+                        .WithMany("MenuMeals")
                         .HasForeignKey("MenuID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Meal");
 
                     b.Navigation("Menu");
                 });
@@ -774,12 +986,14 @@ namespace KauRestaurant.Data.Migrations
 
             modelBuilder.Entity("KauRestaurant.Models.Meal", b =>
                 {
+                    b.Navigation("MenuMeals");
+
                     b.Navigation("Reviews");
                 });
 
             modelBuilder.Entity("KauRestaurant.Models.Menu", b =>
                 {
-                    b.Navigation("Meals");
+                    b.Navigation("MenuMeals");
                 });
 
             modelBuilder.Entity("KauRestaurant.Models.Order", b =>

@@ -24,7 +24,7 @@
         <!-- Sidebar - visible only on md and larger screens -->
         <nav class="sidebar navbar navbar-dark bg-dark d-none d-md-block px-3">
             <div class="d-flex align-items-center my-3">
-                <a class="navbar-brand d-flex align-items-center" asp-controller="Admin" asp-action="Dashboard">
+                <a class="navbar-brand d-flex align-items-center" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">
                     <img src="~/images/logo.png" alt="شعار الجامعة" height="38" class="me-2">
                     <span class="fw-bold">المطعم الجامعي</span>
                 </a>
@@ -33,14 +33,14 @@
                 <ul class="navbar-nav">
                     <li class="nav-item">
                         <a class="nav-link rounded px-3 py-2 @(currentController == "Admin" && currentAction == "Dashboard" ? "active" : "")"
-                           asp-controller="Admin" asp-action="Dashboard">
+                           asp-area="Admin" asp-controller="Dashboard" asp-action="Index">
                             <i class="bi bi-speedometer2 me-2"></i>
                             لوحة التحكم
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link rounded px-3 py-2 @(currentController == "Admin" && currentAction == "ScanTicket" ? "active" : "")"
-                           asp-controller="Admin" asp-action="ScanTicket">
+                           asp-area="Admin" asp-controller="ScanTicket" asp-action="Index">
                             <i class="bi bi-qr-code-scan me-2"></i>
                             مسح التذاكر
                         </a>
@@ -59,6 +59,12 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link rounded px-3 py-2" href="#">
+                            <i class="bi bi-egg-fried me-2"></i>
+                            إدارة الوجبات
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link rounded px-3 py-2" href="#">
                             <i class="bi bi-bar-chart me-2"></i>
                             التقارير والإحصائيات
                         </a>
@@ -72,7 +78,7 @@
                     <li class="nav-item">
                         <a class="nav-link rounded px-3 py-2" href="#">
                             <i class="bi bi-chat-dots me-2"></i>
-                            عرض التعليقات
+                            عرض الإقتراحات
                         </a>
                     </li>
                     <li class="nav-item ms-3 mt-2">
@@ -84,12 +90,16 @@
                     </li>
                 </ul>
             </div>
+             
+            <div class="text-center border-top text-white py-4">
+                <p class="mb-0">&copy; 2025 مطعم KAU جميع الحقوق محفوظة.</p>
+            </div>
         </nav>
 
         <!-- Mobile Navigation -->
         <nav class="navbar navbar-expand-md navbar-dark bg-dark d-md-none">
             <div class="container py-2">
-                <a class="navbar-brand d-flex align-items-center" asp-controller="Admin" asp-action="Dashboard">
+                <a class="navbar-brand d-flex align-items-center" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">
                     <img src="~/images/logo.png" alt="شعار الجامعة" height="38" class="ms-3">
                     <span class="fw-bold d-none d-sm-inline ms-1">المطعم الجامعي</span>
                 </a>
@@ -103,14 +113,14 @@
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item px-1">
                             <a class="nav-link @(currentController == "Admin" && currentAction == "Dashboard" ? "active" : "") rounded px-3 py-2"
-                               asp-controller="Admin" asp-action="Dashboard">
+                               asp-area="Admin" asp-controller="Dashboard" asp-action="Index">
                                 <i class="bi bi-speedometer2 me-2"></i>
                                 لوحة التحكم
                             </a>
                         </li>
                         <li class="nav-item px-1">
                             <a class="nav-link @(currentController == "Admin" && currentAction == "ScanTicket" ? "active" : "") rounded px-3 py-2"
-                               asp-controller="Admin" asp-action="ScanTicket">
+                               asp-area="Admin" asp-controller="ScanTicket" asp-action="Index">
                                 <i class="bi bi-qr-code-scan me-2"></i>
                                 مسح التذاكر
                             </a>
@@ -165,7 +175,7 @@
         </div>
     </div>
 
-    <footer class="border-top footer bg-dark text-white py-4 mt-auto">
+    <footer class="border-top footer bg-dark text-white py-4 mt-auto d-md-none">
         <div class="container text-center">
             <p class="mb-0">&copy; 2025 مطعم KAU جميع الحقوق محفوظة.</p>
         </div>

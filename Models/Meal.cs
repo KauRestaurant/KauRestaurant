@@ -9,9 +9,6 @@ namespace KauRestaurant.Models
         public int MealID { get; set; }
 
         [Required]
-        public int MenuID { get; set; }
-
-        [Required]
         [StringLength(100)]
         public string MealName { get; set; }
 
@@ -35,11 +32,12 @@ namespace KauRestaurant.Models
         [StringLength(20)]
         public string MealType { get; set; }
 
-        // Navigation property
-        [ForeignKey("MenuID")]
-        public virtual Menu Menu { get; set; }
+        // Updated navigation properties
+        public virtual ICollection<MenuMeal> MenuMeals { get; set; }
 
-        public virtual ICollection<Review> Reviews { get; set; }
+        [NotMapped]
+        public virtual ICollection<Menu> Menus => MenuMeals?.Select(mm => mm.Menu).ToList();
+
+        public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
     }
-
 }

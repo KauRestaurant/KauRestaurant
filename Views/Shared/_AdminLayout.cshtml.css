@@ -46,6 +46,8 @@ button.accept-policy {
         width: 250px;
         height: 100vh;
         z-index: 1000;
+        display: flex !important;
+        flex-direction: column !important;
     }
 
     .main-content {

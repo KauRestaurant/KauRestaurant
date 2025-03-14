@@ -1,5 +1,4 @@
-﻿using KauRestaurant.Controllers;
-using KauRestaurant.Data;
+﻿using KauRestaurant.Data;
 using KauRestaurant.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using YourNamespace.Models;
 
-namespace KauRestaurant.Controllers
+namespace KauRestaurant.Controllers.User
 {
     [Authorize]
     public class TicketsController : Controller
@@ -52,7 +51,7 @@ namespace KauRestaurant.Controllers
                 DinnerTickets = dinnerTickets
             };
 
-            return View("~/Views/User/tickets.cshtml", viewModel);
+            return View("~/Views/User/Tickets.cshtml", viewModel);
         }
 
         [HttpPost]

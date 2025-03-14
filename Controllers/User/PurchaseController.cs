@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using YourNamespace.Models;
 
-namespace KauRestaurant.Controllers
+namespace KauRestaurant.Controllers.User
 {
     [Authorize] // Ensures user is logged in
     public class PurchaseController : Controller
@@ -28,7 +28,7 @@ namespace KauRestaurant.Controllers
 
         public IActionResult Index()
         {
-            return View("~/Views/User/purchase.cshtml");
+            return View("~/Views/User/Purchase.cshtml");
         }
 
         [HttpPost]
@@ -50,7 +50,7 @@ namespace KauRestaurant.Controllers
                 }
 
                 // Calculate total price
-                float totalAmount = (model.breakfastQty * 7) + (model.lunchQty * 10) + (model.dinnerQty * 10);
+                float totalAmount = model.breakfastQty * 7 + model.lunchQty * 10 + model.dinnerQty * 10;
 
                 // Create new order
                 var order = new Order
@@ -120,7 +120,7 @@ namespace KauRestaurant.Controllers
                 {
                     success = true,
                     orderId = order.OrderID,
-                    totalAmount = totalAmount,
+                    totalAmount,
                     ticketCount = model.breakfastQty + model.lunchQty + model.dinnerQty
                 });
             }

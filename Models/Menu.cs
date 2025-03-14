@@ -12,7 +12,10 @@ namespace KauRestaurant.Models
         [StringLength(10)]
         public string Day { get; set; }
 
-        // Navigation property
-        public virtual ICollection<Meal> Meals { get; set; }
+        // Updated navigation properties
+        public virtual ICollection<MenuMeal> MenuMeals { get; set; }
+
+        [NotMapped]
+        public virtual ICollection<Meal> Meals => MenuMeals?.Select(mm => mm.Meal).ToList();
     }
 }

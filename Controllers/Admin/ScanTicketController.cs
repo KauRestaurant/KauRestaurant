@@ -6,23 +6,23 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
-using YourNamespace.Models;
 
-namespace KauRestaurant.Controllers
+namespace KauRestaurant.Controllers.Admin
 {
     [Authorize(Roles = "Admin")]
-    public class AdminController : Controller
+    [Route("[controller]")]
+    public class ScanTicketController : Controller
     {
         private readonly UserManager<KauRestaurantUser> _userManager;
         private readonly ApplicationDbContext _context;
         private readonly TicketQrService _ticketQrService;
-        private readonly ILogger<AdminController> _logger;
+        private readonly ILogger<ScanTicketController> _logger;
 
-        public AdminController(
+        public ScanTicketController(
             UserManager<KauRestaurantUser> userManager,
             ApplicationDbContext context,
             TicketQrService ticketQrService,
-            ILogger<AdminController> logger)
+            ILogger<ScanTicketController> logger)
         {
             _userManager = userManager;
             _context = context;
@@ -30,14 +30,12 @@ namespace KauRestaurant.Controllers
             _logger = logger;
         }
 
-        public IActionResult Dashboard()
+        [HttpGet]
+        [Route("")]
+        [Route("Index")]
+        public IActionResult Index()
         {
-            return View();
-        }
-
-        public IActionResult ScanTicket()
-        {
-            return View();
+            return View("~/Views/Admin/ScanTicket.cshtml");
         }
 
         public class TicketQrRequest
@@ -46,11 +44,12 @@ namespace KauRestaurant.Controllers
         }
 
         [HttpPost]
+        [Route("ValidateTicket")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ValidateTicket([FromBody] TicketQrRequest request)
         {
             _logger.LogInformation($"Received ticket request: {request?.qrData ?? "null"}");
-            
+
             if (request == null || string.IsNullOrEmpty(request.qrData))
             {
                 _logger.LogWarning("No QR data provided");
