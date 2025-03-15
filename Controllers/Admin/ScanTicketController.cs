@@ -117,6 +117,7 @@ namespace KauRestaurant.Controllers.Admin
         }
 
         [HttpGet]
+        [Route("Statistics")] // Add this explicit route
         public async Task<IActionResult> GetTicketStatistics()
         {
             var today = DateTime.Today;

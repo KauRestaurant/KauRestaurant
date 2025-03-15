@@ -6,7 +6,7 @@ namespace KauRestaurant.Controllers.Admin
     {
         public IActionResult Index()
         {
-            return View();
+            return View("~/Views/Admin/MealManagement.cshtml");
         }
     }
 }
