@@ -3,6 +3,7 @@
 
 @{
     ViewData["Title"] = "تذاكري";
+    var restaurant = ViewBag.Restaurant as KauRestaurant.Models.Restaurant;
 }
 
 <div>
@@ -77,9 +78,18 @@
                                     <div class="card-body">
                                         <div class="d-flex justify-content-between align-items-center mb-3">
                                             <h6 class="card-title mb-0">تذاكر الإفطار</h6>
-                                            <span class="badge bg-success">الإفطار</span>
+                                            <span class="badge" style="background: #2e7d32">الإفطار</span>
                                         </div>
-                                        <p class="card-text small mb-3">صالحة خلال ساعات الإفطار (7:00 صباحًا - 10:30 صباحًا)</p>
+                                        <p class="card-text small mb-3">
+                                            @if (restaurant != null && restaurant.ServesBreakfast && restaurant.BreakfastOpenTime.HasValue && restaurant.BreakfastCloseTime.HasValue)
+                                            {
+                                                <span>صالحة خلال ساعات الإفطار (@FormatTimeSpanToAmPm(restaurant.BreakfastOpenTime.Value) - @FormatTimeSpanToAmPm(restaurant.BreakfastCloseTime.Value))</span>
+                                            }
+                                            else
+                                            {
+                                                <span>صالحة خلال ساعات الإفطار</span>
+                                            }
+                                        </p>
 
                                         @if (Model.BreakfastCount > 0)
                                         {
@@ -87,7 +97,7 @@
                                                 <h4 class="fw-bold">@Model.BreakfastCount</h4>
                                                 <p class="small text-muted mb-0">تذاكر متاحة</p>
                                             </div>
-                                            <button class="btn w-100 text-white" style="background-color: #2e7d32;"
+                                            <button class="btn btn-success w-100 text-white"
                                                     data-bs-toggle="modal" data-bs-target="#qrModal"
                                                     onclick="showQrCode(@Model.BreakfastTickets.FirstOrDefault()?.TicketID, 'الإفطار')">
                                                 <i class="bi bi-qr-code me-2"></i> استرد الآن
@@ -112,9 +122,18 @@
                                     <div class="card-body">
                                         <div class="d-flex justify-content-between align-items-center mb-3">
                                             <h6 class="card-title mb-0">تذاكر الغداء</h6>
-                                            <span class="badge bg-primary">الغداء</span>
+                                            <span class="badge" style="background: #1b5e20">الغداء</span>
                                         </div>
-                                        <p class="card-text small mb-3">صالحة خلال ساعات الغداء (11:30 صباحًا - 2:30 مساءً)</p>
+                                        <p class="card-text small mb-3">
+                                            @if (restaurant != null && restaurant.ServesLunch && restaurant.LunchOpenTime.HasValue && restaurant.LunchCloseTime.HasValue)
+                                            {
+                                                <span>صالحة خلال ساعات الغداء (@FormatTimeSpanToAmPm(restaurant.LunchOpenTime.Value) - @FormatTimeSpanToAmPm(restaurant.LunchCloseTime.Value))</span>
+                                            }
+                                            else
+                                            {
+                                                <span>صالحة خلال ساعات الغداء</span>
+                                            }
+                                        </p>
 
                                         @if (Model.LunchCount > 0)
                                         {
@@ -122,7 +141,7 @@
                                                 <h4 class="fw-bold">@Model.LunchCount</h4>
                                                 <p class="small text-muted mb-0">تذاكر متاحة</p>
                                             </div>
-                                            <button class="btn w-100 text-white" style="background-color: #1b5e20;"
+                                            <button class="btn btn-success w-100 text-white"
                                                     data-bs-toggle="modal" data-bs-target="#qrModal"
                                                     onclick="showQrCode(@Model.LunchTickets.FirstOrDefault()?.TicketID, 'الغداء')">
                                                 <i class="bi bi-qr-code me-2"></i> استرد الآن
@@ -133,7 +152,7 @@
                                             <div class="text-center mb-3">
                                                 <p class="text-muted">لا توجد تذاكر غداء متاحة</p>
                                             </div>
-                                            <a class="btn btn-outline-primary w-100" asp-area="User" asp-controller="Purchase" asp-action="Index">
+                                            <a class="btn btn-outline-success w-100" asp-area="User" asp-controller="Purchase" asp-action="Index">
                                                 <i class="bi bi-plus-lg me-2"></i>شراء تذاكر
                                             </a>
                                         }
@@ -147,9 +166,18 @@
                                     <div class="card-body">
                                         <div class="d-flex justify-content-between align-items-center mb-3">
                                             <h6 class="card-title mb-0">تذاكر العشاء</h6>
-                                            <span class="badge bg-secondary">العشاء</span>
+                                            <span class="badge" style="background: #004d40">العشاء</span>
                                         </div>
-                                        <p class="card-text small mb-3">صالحة خلال ساعات العشاء (5:30 مساءً - 8:30 مساءً)</p>
+                                        <p class="card-text small mb-3">
+                                            @if (restaurant != null && restaurant.ServesDinner && restaurant.DinnerOpenTime.HasValue && restaurant.DinnerCloseTime.HasValue)
+                                            {
+                                                <span>صالحة خلال ساعات العشاء (@FormatTimeSpanToAmPm(restaurant.DinnerOpenTime.Value) - @FormatTimeSpanToAmPm(restaurant.DinnerCloseTime.Value))</span>
+                                            }
+                                            else
+                                            {
+                                                <span>صالحة خلال ساعات العشاء</span>
+                                            }
+                                        </p>
 
                                         @if (Model.DinnerCount > 0)
                                         {
@@ -157,7 +185,7 @@
                                                 <h4 class="fw-bold">@Model.DinnerCount</h4>
                                                 <p class="small text-muted mb-0">تذاكر متاحة</p>
                                             </div>
-                                            <button class="btn w-100 text-white" style="background-color: #004d40;"
+                                            <button class="btn btn-success w-100 text-white"
                                                     data-bs-toggle="modal" data-bs-target="#qrModal"
                                                     onclick="showQrCode(@Model.DinnerTickets.FirstOrDefault()?.TicketID, 'العشاء')">
                                                 <i class="bi bi-qr-code me-2"></i> استرد الآن
@@ -168,7 +196,7 @@
                                             <div class="text-center mb-3">
                                                 <p class="text-muted">لا توجد تذاكر عشاء متاحة</p>
                                             </div>
-                                            <a class="btn btn-outline-secondary w-100" asp-area="User" asp-controller="Purchase" asp-action="Index">
+                                            <a class="btn btn-outline-success w-100" asp-area="User" asp-controller="Purchase" asp-action="Index">
                                                 <i class="bi bi-plus-lg me-2"></i>شراء تذاكر
                                             </a>
                                         }
@@ -248,3 +276,17 @@
 </script>
 
 
+@functions {
+    private string FormatTimeSpanToAmPm(TimeSpan time)
+    {
+        int hour = time.Hours;
+        string amPm = hour >= 12 ? "مساءً" : "صباحاً";
+
+        // Convert to 12-hour format
+        hour = hour % 12;
+        if (hour == 0) hour = 12; // 0 hour should be displayed as 12 in 12-hour format
+
+        // Format with leading zeros for minutes
+        return $"{hour}:{time.Minutes:D2} {amPm}";
+    }
+}

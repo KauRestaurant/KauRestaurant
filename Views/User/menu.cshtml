@@ -3,6 +3,7 @@
 
 @{
     ViewData["Title"] = "قائمة الأسبوع";
+    var restaurant = ViewBag.Restaurant as KauRestaurant.Models.Restaurant;
 }
 
 <div>
@@ -28,33 +29,79 @@
                         <div class="nav nav-tabs nav-fill border-0" role="tablist">
                             @foreach (var menu in Model)
                             {
-                                var isActive = menu == Model.FirstOrDefault() ? "active" : "";
-                                <button class="nav-link @isActive py-3 px-2 px-md-3"
-                                        data-bs-toggle="tab"
-                                        data-bs-target="#@menu.Day.ToLower()"
-                                        type="button"
-                                        role="tab">
-                                    @menu.Day
-                                </button>
+                                if (menu.Day != "الجمعة" && menu.Day != "السبت")
+                                {
+                                    var isActive = menu == Model.FirstOrDefault(m => m.Day != "الجمعة" && m.Day != "السبت") ? "active" : "";
+                                    <button class="nav-link @isActive py-3 px-2 px-md-3"
+                                            data-bs-toggle="tab"
+                                            data-bs-target="#@menu.Day.ToLower()"
+                                            type="button"
+                                            role="tab">
+                                        @menu.Day
+                                    </button>
+                                }
                             }
                         </div>
                     </nav>
                 </div>
-            </div>
 
-            <!-- Meal Times -->
-            <div class="alert alert-light border shadow-sm text-center mb-4">
-                <div class="row g-2 justify-content-center">
-                    <div class="col-auto">
-                        <i class="bi bi-sun text-dark me-1"></i>الإفطار: 7:00-10:30
-                    </div>
-                    <div class="col-auto">|</div>
-                    <div class="col-auto">
-                        <i class="bi bi-brightness-high text-dark me-1"></i>الغداء: 11:30-2:30
-                    </div>
-                    <div class="col-auto">|</div>
-                    <div class="col-auto">
-                        <i class="bi bi-moon text-dark me-1"></i>العشاء: 5:30-8:30
+                <!-- Meal Times -->
+                <div class="card-body border-top text-center">
+                    <div class="row g-2 justify-content-center">
+                        @if (restaurant != null && restaurant.ServesBreakfast && restaurant.BreakfastOpenTime.HasValue && restaurant.BreakfastCloseTime.HasValue)
+                        {
+                            <div class="col-auto">
+                                <i class="bi bi-sun text-dark me-1"></i>الإفطار:
+                                @{
+                                    string breakfastOpen = FormatTimeSpanToAmPm(restaurant.BreakfastOpenTime.Value);
+                                    string breakfastClose = FormatTimeSpanToAmPm(restaurant.BreakfastCloseTime.Value);
+                                }
+                                @breakfastOpen - @breakfastClose
+                            </div>
+                            if (restaurant.ServesLunch || restaurant.ServesDinner)
+                            {
+                                <div class="col-auto d-none d-md-block">|</div>
+                            }
+                        }
+
+                        @if (restaurant != null && restaurant.ServesLunch && restaurant.LunchOpenTime.HasValue && restaurant.LunchCloseTime.HasValue)
+                        {
+                            <div class="col-auto">
+                                <i class="bi bi-brightness-high text-dark me-1"></i>الغداء:
+                                @{
+                                    string lunchOpen = FormatTimeSpanToAmPm(restaurant.LunchOpenTime.Value);
+                                    string lunchClose = FormatTimeSpanToAmPm(restaurant.LunchCloseTime.Value);
+                                }
+                                @lunchOpen - @lunchClose
+                            </div>
+                            if (restaurant.ServesDinner)
+                            {
+                                <div class="col-auto d-none d-md-block">|</div>
+                            }
+                        }
+
+                        @if (restaurant != null && restaurant.ServesDinner && restaurant.DinnerOpenTime.HasValue && restaurant.DinnerCloseTime.HasValue)
+                        {
+                            <div class="col-auto">
+                                <i class="bi bi-moon text-dark me-1"></i>العشاء:
+                                @{
+                                    string dinnerOpen = FormatTimeSpanToAmPm(restaurant.DinnerOpenTime.Value);
+                                    string dinnerClose = FormatTimeSpanToAmPm(restaurant.DinnerCloseTime.Value);
+                                }
+                                @dinnerOpen - @dinnerClose
+                            </div>
+                        }
+
+                        @if (restaurant == null ||
+                        (!restaurant.ServesBreakfast && !restaurant.ServesLunch && !restaurant.ServesDinner) ||
+                        (restaurant.ServesBreakfast && (!restaurant.BreakfastOpenTime.HasValue || !restaurant.BreakfastCloseTime.HasValue)) &&
+                        (restaurant.ServesLunch && (!restaurant.LunchOpenTime.HasValue || !restaurant.LunchCloseTime.HasValue)) &&
+                        (restaurant.ServesDinner && (!restaurant.DinnerOpenTime.HasValue || !restaurant.DinnerCloseTime.HasValue)))
+                        {
+                            <div class="col-auto">
+                                <i class="bi bi-info-circle text-dark me-1"></i>معلومات أوقات الوجبات غير متوفرة
+                            </div>
+                        }
                     </div>
                 </div>
             </div>
@@ -195,3 +242,18 @@
         </div>
     </div>
 </div>
+
+@functions {
+    private string FormatTimeSpanToAmPm(TimeSpan time)
+    {
+        int hour = time.Hours;
+        string amPm = hour >= 12 ? "مساءً" : "صباحاً";
+
+        // Convert to 12-hour format
+        hour = hour % 12;
+        if (hour == 0) hour = 12; // 0 hour should be displayed as 12 in 12-hour format
+
+        // Format with leading zeros for minutes
+        return $"{hour}:{time.Minutes:D2} {amPm}";
+    }
+            }

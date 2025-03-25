@@ -108,11 +108,13 @@ namespace KauRestaurant.Areas.Identity.Pages.Account
                     // Get the logged-in user
                     var user = await _signInManager.UserManager.FindByEmailAsync(Input.Email);
 
-                    // Check if the user is in the Admin role
-                    if (await _signInManager.UserManager.IsInRoleAsync(user, "Admin"))
+                    // Check if the user is in any of the Admin roles (A1, A2, or A3)
+                    if (await _signInManager.UserManager.IsInRoleAsync(user, "A1") ||
+                        await _signInManager.UserManager.IsInRoleAsync(user, "A2") ||
+                        await _signInManager.UserManager.IsInRoleAsync(user, "A3"))
                     {
                         // Redirect admin users to the admin dashboard
-                        return RedirectToAction("Index", "Dashboard");
+                        return RedirectToAction("Index", "Dashboard", new { area = "Admin" });
                     }
 
                     // Regular users follow the normal flow

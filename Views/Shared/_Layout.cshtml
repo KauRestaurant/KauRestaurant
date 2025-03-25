@@ -54,6 +54,11 @@
 								<i class="bi bi-collection me-2"></i> تذاكري
 							</a>
 						</li>
+						<li class="nav-item px-1">
+							<a class="nav-link @(currentController == "RestaurantInfo" && currentAction == "Index" ? "active" : "") rounded px-3 py-2" asp-area="User" asp-controller="RestaurantInfo" asp-action="Index">
+								<i class="bi bi-geo-alt me-2"></i> معلومات المطعم
+							</a>
+						</li>
 					</ul>
 
 					<div class="ms-auto">
@@ -64,13 +69,54 @@
 		</nav>
 	</header>
 
-	<main role="main" class="pb-5">
+	<main role="main" class="flex-fill">
 		@RenderBody()
 	</main>
 
-	<footer class="border-top footer bg-dark text-white py-4 mt-auto">
-		<div class="container text-center">
-			<p class="mb-0">&copy; 2025 مطعم KAU جميع الحقوق محفوظة.</p>
+	<footer class="footer border-top bg-dark text-white py-4 mt-auto">
+		<div class="container">
+			<div class="row mb-3">
+				<div class="col-md-4 mb-md-0">
+					<h5 class="fw-bold pb-2">مطعم KAU</h5>
+					<p class="py-1">
+						المطعم الجامعي الرسمي لجامعة الملك عبد العزيز، نقدم وجبات طازجة عالية الجودة للطلاب وأعضاء هيئة التدريس.
+					</p>
+				</div>
+				<div class="col-md-4 mb-md-0">
+					<h5 class="fw-bold pb-2">روابط مهمة</h5>
+					<ul class="list-unstyled mb-0">
+						<li class="py-1">
+							<a class="text-white text-decoration-none" asp-area="User" asp-controller="" asp-action="Index">
+								<i class="bi bi-question-circle me-2"></i>الأسئلة الشائعة
+							</a>
+						</li class="py-1">
+						<li>
+							<a class="text-white text-decoration-none" asp-area="User" asp-controller="Feedback" asp-action="Index">
+								<i class="bi bi-envelope me-2"></i>اتصل بنا
+							</a>
+						</li>
+						<li class="py-1">
+							<a class="text-white text-decoration-none" asp-area="User" asp-controller="" asp-action="Index">
+								<i class="bi bi-shield-check me-2"></i>سياسة الخصوصية
+							</a>
+						</li>
+					</ul>
+				</div>
+				<div class="col-md-4">
+					<h5 class="fw-bold pb-2">تابعنا</h5>
+					<div class="d-flex gap-3">
+						<a href="#" class="text-white fs-4" target="_blank">
+							<i class="bi bi-twitter"></i>
+						</a>
+						<a href="#" class="text-white fs-4" target="_blank">
+							<i class="bi bi-instagram"></i>
+						</a>
+					</div>
+				</div>
+			</div>
+			<div class="border-top border-secondary mt-3 pt-2 text-center">
+				<p class="mb-0">&copy; 2025 مطعم KAU جميع الحقوق محفوظة.</p>
+			</div>
 		</div>
 	</footer>
 	<script src="~/lib/jquery/dist/jquery.min.js"></script>

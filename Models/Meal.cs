@@ -12,6 +12,12 @@ namespace KauRestaurant.Models
         [StringLength(100)]
         public string MealName { get; set; }
 
+        [StringLength(500)]
+        public string Description { get; set; }
+
+        [StringLength(255)]
+        public string PicturePath { get; set; }
+
         [Range(0, 2000)]
         public int Calories { get; set; }
 
@@ -32,7 +38,6 @@ namespace KauRestaurant.Models
         [StringLength(20)]
         public string MealType { get; set; }
 
-        // Updated navigation properties
         public virtual ICollection<MenuMeal> MenuMeals { get; set; }
 
         [NotMapped]

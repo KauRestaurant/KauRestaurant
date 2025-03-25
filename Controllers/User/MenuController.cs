@@ -25,6 +25,9 @@ namespace KauRestaurant.Controllers.User
                 .ThenInclude(m => m.Reviews)
                 .ToListAsync();
 
+            var restaurant = _context.Restaurants.FirstOrDefault();
+            ViewBag.Restaurant = restaurant;
+
             return View("~/Views/User/Menu.cshtml", menus);
         }
     }

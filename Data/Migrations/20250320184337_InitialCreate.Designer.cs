@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KauRestaurant.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250313181531_AddMenuMealsAndReviews")]
-    partial class AddMenuMealsAndReviews
+    [Migration("20250320184337_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -100,6 +100,48 @@ namespace KauRestaurant.Data.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("KauRestaurant.Models.Feedback", b =>
+                {
+                    b.Property<int>("FeedbackID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FeedbackID"));
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Subject")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<string>("UserEmail")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("UserID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("FeedbackID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("Feedbacks");
+                });
+
             modelBuilder.Entity("KauRestaurant.Models.Meal", b =>
                 {
                     b.Property<int>("MealID")
@@ -113,6 +155,11 @@ namespace KauRestaurant.Data.Migrations
 
                     b.Property<int>("Carbs")
                         .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<int>("Fat")
                         .HasColumnType("int");
@@ -132,6 +179,11 @@ namespace KauRestaurant.Data.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
+                    b.Property<string>("PicturePath")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
                     b.Property<int>("Protein")
                         .HasColumnType("int");
 
@@ -145,10 +197,12 @@ namespace KauRestaurant.Data.Migrations
                             MealID = 1,
                             Calories = 250,
                             Carbs = 45,
+                            Description = "فطائر طازجة محشوة بالجبنة المشكلة المذابة، تقدم ساخنة مع زيت الزيتون والزعتر.",
                             Fat = 10,
                             MealCategory = "الإفطار",
                             MealName = "فطائر بالجبن",
                             MealType = "الطبق الرئيسي",
+                            PicturePath = "/images/meal.png",
                             Protein = 8
                         },
                         new
@@ -156,10 +210,12 @@ namespace KauRestaurant.Data.Migrations
                             MealID = 2,
                             Calories = 185,
                             Carbs = 2,
+                            Description = "بيض مقلي على الطريقة العربية، يقدم مع الخبز العربي والخضروات الطازجة.",
                             Fat = 14,
                             MealCategory = "الإفطار",
                             MealName = "بيض مقلي",
                             MealType = "الطبق الرئيسي",
+                            PicturePath = "/images/meal.png",
                             Protein = 12
                         },
                         new
@@ -167,10 +223,12 @@ namespace KauRestaurant.Data.Migrations
                             MealID = 3,
                             Calories = 220,
                             Carbs = 35,
+                            Description = "فول مدمس مطبوخ بالطريقة التقليدية مع زيت الزيتون والثوم والليمون، غني بالبروتين النباتي.",
                             Fat = 5,
                             MealCategory = "الإفطار",
                             MealName = "فول مدمس",
                             MealType = "طبق جانبي",
+                            PicturePath = "/images/meal.png",
                             Protein = 15
                         },
                         new
@@ -178,10 +236,12 @@ namespace KauRestaurant.Data.Migrations
                             MealID = 4,
                             Calories = 180,
                             Carbs = 25,
+                            Description = "حمص بالطحينة متبل بزيت الزيتون والليمون، مزين بحبات الحمص الكاملة والبقدونس.",
                             Fat = 9,
                             MealCategory = "الإفطار",
                             MealName = "حمص بالطحينة",
                             MealType = "طبق جانبي",
+                            PicturePath = "/images/meal.png",
                             Protein = 8
                         },
                         new
@@ -189,10 +249,12 @@ namespace KauRestaurant.Data.Migrations
                             MealID = 5,
                             Calories = 5,
                             Carbs = 1,
+                            Description = "شاي عربي معطر بالهيل والزعفران، يقدم ساخناً في أكواب تقليدية.",
                             Fat = 0,
                             MealCategory = "الإفطار",
                             MealName = "شاي عربي",
                             MealType = "مشروب",
+                            PicturePath = "/images/meal.png",
                             Protein = 0
                         },
                         new
@@ -200,10 +262,12 @@ namespace KauRestaurant.Data.Migrations
                             MealID = 6,
                             Calories = 120,
                             Carbs = 28,
+                            Description = "عصير برتقال طازج معصور في المطعم، غني بفيتامين سي والمذاق المنعش.",
                             Fat = 0,
                             MealCategory = "الإفطار",
                             MealName = "عصير برتقال طازج",
                             MealType = "مشروب",
+                            PicturePath = "/images/meal.png",
                             Protein = 1
                         },
                         new
@@ -211,10 +275,12 @@ namespace KauRestaurant.Data.Migrations
                             MealID = 7,
                             Calories = 450,
                             Carbs = 55,
+                            Description = "كبسة لحم سعودية تقليدية، مطبوخة ببهارات الكبسة المميزة مع قطع اللحم الطرية والأرز البسمتي.",
                             Fat = 15,
                             MealCategory = "الغداء",
                             MealName = "كبسة لحم",
                             MealType = "الطبق الرئيسي",
+                            PicturePath = "/images/meal.png",
                             Protein = 28
                         },
                         new
@@ -222,10 +288,12 @@ namespace KauRestaurant.Data.Migrations
                             MealID = 8,
                             Calories = 350,
                             Carbs = 0,
+                            Description = "دجاج مشوي متبل بالأعشاب والبهارات العربية، مشوي على الفحم ليكتسب نكهة مميزة.",
                             Fat = 20,
                             MealCategory = "الغداء",
                             MealName = "دجاج مشوي",
                             MealType = "الطبق الرئيسي",
+                            PicturePath = "/images/meal.png",
                             Protein = 30
                         },
                         new
@@ -233,10 +301,12 @@ namespace KauRestaurant.Data.Migrations
                             MealID = 9,
                             Calories = 65,
                             Carbs = 12,
+                            Description = "سلطة خضراء منعشة مع خضروات موسمية طازجة وتتبيلة خاصة بالمطعم.",
                             Fat = 2,
                             MealCategory = "الغداء",
                             MealName = "سلطة خضراء",
                             MealType = "طبق جانبي",
+                            PicturePath = "/images/meal.png",
                             Protein = 3
                         },
                         new
@@ -244,10 +314,12 @@ namespace KauRestaurant.Data.Migrations
                             MealID = 10,
                             Calories = 180,
                             Carbs = 30,
+                            Description = "شوربة عدس تقليدية، مطبوخة بالطريقة العربية مع البهارات والليمون وزيت الزيتون.",
                             Fat = 5,
                             MealCategory = "الغداء",
                             MealName = "شوربة عدس",
                             MealType = "طبق جانبي",
+                            PicturePath = "/images/meal.png",
                             Protein = 10
                         },
                         new
@@ -255,10 +327,12 @@ namespace KauRestaurant.Data.Migrations
                             MealID = 11,
                             Calories = 350,
                             Carbs = 52,
+                            Description = "أم علي، حلوى مصرية شهيرة مصنوعة من العجينة الهشة والمكسرات والحليب والقشطة.",
                             Fat = 15,
                             MealCategory = "الغداء",
                             MealName = "أم علي",
                             MealType = "حلوى",
+                            PicturePath = "/images/meal.png",
                             Protein = 8
                         },
                         new
@@ -266,10 +340,12 @@ namespace KauRestaurant.Data.Migrations
                             MealID = 12,
                             Calories = 90,
                             Carbs = 12,
+                            Description = "لبن عيران منعش، مشروب تقليدي من اللبن المخفوق مع الماء والنعناع والملح.",
                             Fat = 5,
                             MealCategory = "الغداء",
                             MealName = "لبن عيران",
                             MealType = "مشروب",
+                            PicturePath = "/images/meal.png",
                             Protein = 8
                         },
                         new
@@ -277,10 +353,12 @@ namespace KauRestaurant.Data.Migrations
                             MealID = 13,
                             Calories = 380,
                             Carbs = 40,
+                            Description = "شاورما دجاج عربية تقليدية، مشوية على السيخ ومقدمة مع الخبز العربي والطحينة والخضروات.",
                             Fat = 20,
                             MealCategory = "العشاء",
                             MealName = "شاورما دجاج",
                             MealType = "الطبق الرئيسي",
+                            PicturePath = "/images/meal.png",
                             Protein = 25
                         },
                         new
@@ -288,10 +366,12 @@ namespace KauRestaurant.Data.Migrations
                             MealID = 14,
                             Calories = 420,
                             Carbs = 35,
+                            Description = "برجر لحم محضر من اللحم البقري الطازج 100% مع الخضروات والصلصة الخاصة، يقدم مع خبز البرجر المحمص.",
                             Fat = 25,
                             MealCategory = "العشاء",
                             MealName = "برجر لحم",
                             MealType = "الطبق الرئيسي",
+                            PicturePath = "/images/meal.png",
                             Protein = 28
                         },
                         new
@@ -299,10 +379,12 @@ namespace KauRestaurant.Data.Migrations
                             MealID = 15,
                             Calories = 365,
                             Carbs = 48,
+                            Description = "بطاطس مقلية مقرمشة من الخارج وطرية من الداخل، تقدم مع الكاتشب والمايونيز.",
                             Fat = 18,
                             MealCategory = "العشاء",
                             MealName = "بطاطس مقلية",
                             MealType = "طبق جانبي",
+                            PicturePath = "/images/meal.png",
                             Protein = 4
                         },
                         new
@@ -310,10 +392,12 @@ namespace KauRestaurant.Data.Migrations
                             MealID = 16,
                             Calories = 150,
                             Carbs = 15,
+                            Description = "سلطة سيزر كلاسيكية مع خس رومين، جبن البارميزان، قطع خبز محمصة، وصلصة سيزر المميزة.",
                             Fat = 10,
                             MealCategory = "العشاء",
                             MealName = "سلطة سيزر",
                             MealType = "طبق جانبي",
+                            PicturePath = "/images/meal.png",
                             Protein = 8
                         },
                         new
@@ -321,10 +405,12 @@ namespace KauRestaurant.Data.Migrations
                             MealID = 17,
                             Calories = 400,
                             Carbs = 58,
+                            Description = "كنافة عربية تقليدية محشوة بالجبنة الحلوة ومغطاة بالقطر ومزينة بالفستق الحلبي.",
                             Fat = 20,
                             MealCategory = "العشاء",
                             MealName = "كنافة",
                             MealType = "حلوى",
+                            PicturePath = "/images/meal.png",
                             Protein = 6
                         },
                         new
@@ -332,10 +418,12 @@ namespace KauRestaurant.Data.Migrations
                             MealID = 18,
                             Calories = 80,
                             Carbs = 20,
+                            Description = "عصير ليمون طازج ومنعش مع النعناع، مثالي لتنشيط الجسم وتعزيز المناعة.",
                             Fat = 0,
                             MealCategory = "العشاء",
                             MealName = "عصير ليمون بالنعناع",
                             MealType = "مشروب",
+                            PicturePath = "/images/meal.png",
                             Protein = 1
                         },
                         new
@@ -343,10 +431,12 @@ namespace KauRestaurant.Data.Migrations
                             MealID = 19,
                             Calories = 120,
                             Carbs = 28,
+                            Description = "عصير برتقال طازج معصور من أجود أنواع البرتقال، غني بالفيتامينات والمعادن.",
                             Fat = 0,
                             MealCategory = "الإفطار",
                             MealName = "عصير برتقال طازج",
                             MealType = "مشروب",
+                            PicturePath = "/images/meal.png",
                             Protein = 1
                         },
                         new
@@ -354,10 +444,12 @@ namespace KauRestaurant.Data.Migrations
                             MealID = 20,
                             Calories = 420,
                             Carbs = 63,
+                            Description = "كعكة الشوكولاتة الغنية بطبقات الشوكولاتة الداكنة والكريمة، مثالية لمحبي الحلويات.",
                             Fat = 22,
                             MealCategory = "العشاء",
                             MealName = "كعكة الشوكولاتة",
                             MealType = "حلوى",
+                            PicturePath = "/images/meal.png",
                             Protein = 5
                         });
                 });
@@ -404,6 +496,16 @@ namespace KauRestaurant.Data.Migrations
                         {
                             MenuID = 5,
                             Day = "الخميس"
+                        },
+                        new
+                        {
+                            MenuID = 6,
+                            Day = "الجمعة"
+                        },
+                        new
+                        {
+                            MenuID = 7,
+                            Day = "السبت"
                         });
                 });
 
@@ -674,6 +776,109 @@ namespace KauRestaurant.Data.Migrations
                     b.ToTable("Orders");
                 });
 
+            modelBuilder.Entity("KauRestaurant.Models.Restaurant", b =>
+                {
+                    b.Property<int>("RestaurantID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RestaurantID"));
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<TimeSpan?>("BreakfastCloseTime")
+                        .HasColumnType("time");
+
+                    b.Property<TimeSpan?>("BreakfastOpenTime")
+                        .HasColumnType("time");
+
+                    b.Property<string>("DaysOpen")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<TimeSpan?>("DinnerCloseTime")
+                        .HasColumnType("time");
+
+                    b.Property<TimeSpan?>("DinnerOpenTime")
+                        .HasColumnType("time");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("LocationUrl")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<TimeSpan?>("LunchCloseTime")
+                        .HasColumnType("time");
+
+                    b.Property<TimeSpan?>("LunchOpenTime")
+                        .HasColumnType("time");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("PhotoPath")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<bool>("ServesBreakfast")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("ServesDinner")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("ServesLunch")
+                        .HasColumnType("bit");
+
+                    b.HasKey("RestaurantID");
+
+                    b.ToTable("Restaurants");
+
+                    b.HasData(
+                        new
+                        {
+                            RestaurantID = 1,
+                            Address = "جامعة الملك عبد العزيز، جدة، المملكة العربية السعودية",
+                            BreakfastCloseTime = new TimeSpan(0, 10, 30, 0, 0),
+                            BreakfastOpenTime = new TimeSpan(0, 7, 0, 0, 0),
+                            DaysOpen = "من الأحد إلى الخميس",
+                            Description = "في المطعم الجامعي الرسمي لجامعة الملك عبد العزيز، نقدم وجبات طازجة وعالية الجودة للطلاب وأعضاء هيئة التدريس. نحرص على تقديم أطباق متنوعة ومغذية في بيئة نظيفة ومرحبة.",
+                            DinnerCloseTime = new TimeSpan(0, 22, 0, 0, 0),
+                            DinnerOpenTime = new TimeSpan(0, 18, 0, 0, 0),
+                            Email = "restaurant@kau.edu.sa",
+                            LocationUrl = "https://maps.app.goo.gl/KFBdpmH7E88Lzvy49",
+                            LunchCloseTime = new TimeSpan(0, 15, 0, 0, 0),
+                            LunchOpenTime = new TimeSpan(0, 12, 0, 0, 0),
+                            Name = "مطعم جامعة الملك عبدالعزيز",
+                            PhoneNumber = "+9665********",
+                            PhotoPath = "/images/restaurant.png",
+                            ServesBreakfast = true,
+                            ServesDinner = true,
+                            ServesLunch = true
+                        });
+                });
+
             modelBuilder.Entity("KauRestaurant.Models.Review", b =>
                 {
                     b.Property<int>("ReviewID")
@@ -874,6 +1079,17 @@ namespace KauRestaurant.Data.Migrations
                     b.HasIndex("OrderID");
 
                     b.ToTable("Tickets");
+                });
+
+            modelBuilder.Entity("KauRestaurant.Models.Feedback", b =>
+                {
+                    b.HasOne("KauRestaurant.Areas.Identity.Data.KauRestaurantUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("KauRestaurant.Models.MenuMeal", b =>

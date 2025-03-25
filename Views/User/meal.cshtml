@@ -24,9 +24,17 @@
                             </div>
                         </div>
 
-
                         <div class="card-body p-4">
                             <div class="mb-4">
+                                <!-- Meal Photo -->
+                                @if (!string.IsNullOrEmpty(Model.PicturePath))
+                                {
+                                    <img src="@Url.Content(Model.PicturePath)" class="img-fluid" style="height: 300px; object-fit: cover;" alt="@Model.MealName" />
+                                }
+                                else
+                                {
+                                    <img src="" class="img-fluid" style="height: 300px; object-fit: cover;" alt="@Model.MealName" />
+                                }
                                 <div class="d-flex align-items-center mb-3">
                                     <span class="badge @(UIConstants.MealTypeBadgeColors.ContainsKey(Model.MealType) ?
                                           UIConstants.MealTypeBadgeColors[Model.MealType] : "bg-secondary") me-2">
@@ -34,34 +42,35 @@
                                     </span>
                                     <span class="badge bg-light text-dark">@Model.Calories سعرة حرارية</span>
                                 </div>
-                                <p class="text-muted">وصف الوجبة هنا. يمكن أن يتضمن هذا الوصف المكونات الرئيسية وطريقة التحضير وأي معلومات إضافية تود تضمينها.</p>
+                                @if (!string.IsNullOrEmpty(Model.Description))
+                                {
+                                    <p class="text-muted">@Model.Description</p>
+                                }
+                                else
+                                {
+                                    <p class="text-muted">لا يوجد وصف لهذه الوجبة.</p>
+                                }
                             </div>
 
                             <div>
                                 <h4 class="fw-bold mb-3">معلومات غذائية</h4>
                                 <div class="row g-3">
-                                    <div class="col-6 col-md-3">
+                                    <div class="col-8 col-md-4">
                                         <div class="border rounded p-3 text-center">
                                             <div class="fw-bold text-success mb-1">البروتين</div>
                                             <div>@Model.Protein جرام</div>
                                         </div>
                                     </div>
-                                    <div class="col-6 col-md-3">
+                                    <div class="col-8 col-md-4">
                                         <div class="border rounded p-3 text-center">
                                             <div class="fw-bold text-success mb-1">الكربوهيدرات</div>
                                             <div>@Model.Carbs جرام</div>
                                         </div>
                                     </div>
-                                    <div class="col-6 col-md-3">
+                                    <div class="col-8 col-md-4">
                                         <div class="border rounded p-3 text-center">
                                             <div class="fw-bold text-success mb-1">الدهون</div>
                                             <div>@Model.Fat جرام</div>
-                                        </div>
-                                    </div>
-                                    <div class="col-6 col-md-3">
-                                        <div class="border rounded p-3 text-center">
-                                            <div class="fw-bold text-success mb-1">الألياف</div>
-                                            <div>5 جرام</div>
                                         </div>
                                     </div>
                                 </div>
@@ -111,7 +120,7 @@
                             }
 
                             <!-- Review Form -->
-                            <form class="mb-4" method="post" asp-area="User" asp-controller="Meal" asp-action="submitReview">
+                            <form class="mb-4" method="post" asp-controller="Meal" asp-action="submitReview">
                                 <input type="hidden" name="mealId" value="@Model.MealID" />
                                 <div class="mb-3">
                                     <label class="form-label">تقييمك</label>

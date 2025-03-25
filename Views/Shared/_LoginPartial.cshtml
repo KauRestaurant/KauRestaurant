@@ -7,7 +7,7 @@
     @if (SignInManager.IsSignedIn(User))
     {
         <li class="nav-item d-flex gap-2 px-3 m-1 px-sm-0 m-sm-0">
-            @if (!User.IsInRole("Admin"))
+            @if (User.IsInRole("User"))
             {
                 <div class="d-flex align-items-center gap-2">
                     <a class="nav-link text-white" asp-area="Identity" asp-page="/Account/Manage/Index" title="إدارة الحساب">
@@ -18,9 +18,9 @@
                     </a>
                 </div>
             }
-                @if (User.IsInRole("Admin"))
+            @if (User.IsInRole("A1") || User.IsInRole("A2") || User.IsInRole("A3"))
                 {
-                    <a class="btn btn-outline-light px-3" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">
+                    <a class="btn btn-light px-3" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">
                         <i class="bi bi-speedometer2 me-2"></i>لوحة تحكم
                     </a>
                 }

@@ -12,14 +12,14 @@ namespace KauRestaurant.Data
             : base(options)
         {
         }
-
         public DbSet<Menu> Menus { get; set; }
         public DbSet<Meal> Meals { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<MenuMeal> MenuMeals { get; set; }
-
+        public DbSet<Restaurant> Restaurants { get; set; }
+        public DbSet<Feedback> Feedbacks { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -46,7 +46,9 @@ namespace KauRestaurant.Data
                 new Menu { MenuID = 2, Day = "الإثنين" },
                 new Menu { MenuID = 3, Day = "الثلاثاء" },
                 new Menu { MenuID = 4, Day = "الأربعاء" },
-                new Menu { MenuID = 5, Day = "الخميس" }
+                new Menu { MenuID = 5, Day = "الخميس" },
+                new Menu { MenuID = 6, Day = "الجمعة" },
+                new Menu { MenuID = 7, Day = "السبت" }
             );
 
             // Seed Meal data
@@ -56,6 +58,8 @@ namespace KauRestaurant.Data
                 {
                     MealID = 1,
                     MealName = "فطائر بالجبن",
+                    Description = "فطائر طازجة محشوة بالجبنة المشكلة المذابة، تقدم ساخنة مع زيت الزيتون والزعتر.",
+                    PicturePath = "/images/meal.png",
                     Calories = 250,
                     Protein = 8,
                     Carbs = 45,
@@ -67,6 +71,8 @@ namespace KauRestaurant.Data
                 {
                     MealID = 2,
                     MealName = "بيض مقلي",
+                    Description = "بيض مقلي على الطريقة العربية، يقدم مع الخبز العربي والخضروات الطازجة.",
+                    PicturePath = "/images/meal.png",
                     Calories = 185,
                     Protein = 12,
                     Carbs = 2,
@@ -78,6 +84,8 @@ namespace KauRestaurant.Data
                 {
                     MealID = 3,
                     MealName = "فول مدمس",
+                    Description = "فول مدمس مطبوخ بالطريقة التقليدية مع زيت الزيتون والثوم والليمون، غني بالبروتين النباتي.",
+                    PicturePath = "/images/meal.png",
                     Calories = 220,
                     Protein = 15,
                     Carbs = 35,
@@ -89,6 +97,8 @@ namespace KauRestaurant.Data
                 {
                     MealID = 4,
                     MealName = "حمص بالطحينة",
+                    Description = "حمص بالطحينة متبل بزيت الزيتون والليمون، مزين بحبات الحمص الكاملة والبقدونس.",
+                    PicturePath = "/images/meal.png",
                     Calories = 180,
                     Protein = 8,
                     Carbs = 25,
@@ -100,6 +110,8 @@ namespace KauRestaurant.Data
                 {
                     MealID = 5,
                     MealName = "شاي عربي",
+                    Description = "شاي عربي معطر بالهيل والزعفران، يقدم ساخناً في أكواب تقليدية.",
+                    PicturePath = "/images/meal.png",
                     Calories = 5,
                     Protein = 0,
                     Carbs = 1,
@@ -111,6 +123,8 @@ namespace KauRestaurant.Data
                 {
                     MealID = 6,
                     MealName = "عصير برتقال طازج",
+                    Description = "عصير برتقال طازج معصور في المطعم، غني بفيتامين سي والمذاق المنعش.",
+                    PicturePath = "/images/meal.png",
                     Calories = 120,
                     Protein = 1,
                     Carbs = 28,
@@ -124,6 +138,8 @@ namespace KauRestaurant.Data
                 {
                     MealID = 7,
                     MealName = "كبسة لحم",
+                    Description = "كبسة لحم سعودية تقليدية، مطبوخة ببهارات الكبسة المميزة مع قطع اللحم الطرية والأرز البسمتي.",
+                    PicturePath = "/images/meal.png",
                     Calories = 450,
                     Protein = 28,
                     Carbs = 55,
@@ -135,6 +151,8 @@ namespace KauRestaurant.Data
                 {
                     MealID = 8,
                     MealName = "دجاج مشوي",
+                    Description = "دجاج مشوي متبل بالأعشاب والبهارات العربية، مشوي على الفحم ليكتسب نكهة مميزة.",
+                    PicturePath = "/images/meal.png",
                     Calories = 350,
                     Protein = 30,
                     Carbs = 0,
@@ -146,6 +164,8 @@ namespace KauRestaurant.Data
                 {
                     MealID = 9,
                     MealName = "سلطة خضراء",
+                    Description = "سلطة خضراء منعشة مع خضروات موسمية طازجة وتتبيلة خاصة بالمطعم.",
+                    PicturePath = "/images/meal.png",
                     Calories = 65,
                     Protein = 3,
                     Carbs = 12,
@@ -157,6 +177,8 @@ namespace KauRestaurant.Data
                 {
                     MealID = 10,
                     MealName = "شوربة عدس",
+                    Description = "شوربة عدس تقليدية، مطبوخة بالطريقة العربية مع البهارات والليمون وزيت الزيتون.",
+                    PicturePath = "/images/meal.png",
                     Calories = 180,
                     Protein = 10,
                     Carbs = 30,
@@ -168,6 +190,8 @@ namespace KauRestaurant.Data
                 {
                     MealID = 11,
                     MealName = "أم علي",
+                    Description = "أم علي، حلوى مصرية شهيرة مصنوعة من العجينة الهشة والمكسرات والحليب والقشطة.",
+                    PicturePath = "/images/meal.png",
                     Calories = 350,
                     Protein = 8,
                     Carbs = 52,
@@ -179,6 +203,8 @@ namespace KauRestaurant.Data
                 {
                     MealID = 12,
                     MealName = "لبن عيران",
+                    Description = "لبن عيران منعش، مشروب تقليدي من اللبن المخفوق مع الماء والنعناع والملح.",
+                    PicturePath = "/images/meal.png",
                     Calories = 90,
                     Protein = 8,
                     Carbs = 12,
@@ -192,6 +218,8 @@ namespace KauRestaurant.Data
                 {
                     MealID = 13,
                     MealName = "شاورما دجاج",
+                    Description = "شاورما دجاج عربية تقليدية، مشوية على السيخ ومقدمة مع الخبز العربي والطحينة والخضروات.",
+                    PicturePath = "/images/meal.png",
                     Calories = 380,
                     Protein = 25,
                     Carbs = 40,
@@ -203,6 +231,8 @@ namespace KauRestaurant.Data
                 {
                     MealID = 14,
                     MealName = "برجر لحم",
+                    Description = "برجر لحم محضر من اللحم البقري الطازج 100% مع الخضروات والصلصة الخاصة، يقدم مع خبز البرجر المحمص.",
+                    PicturePath = "/images/meal.png",
                     Calories = 420,
                     Protein = 28,
                     Carbs = 35,
@@ -214,6 +244,8 @@ namespace KauRestaurant.Data
                 {
                     MealID = 15,
                     MealName = "بطاطس مقلية",
+                    Description = "بطاطس مقلية مقرمشة من الخارج وطرية من الداخل، تقدم مع الكاتشب والمايونيز.",
+                    PicturePath = "/images/meal.png",
                     Calories = 365,
                     Protein = 4,
                     Carbs = 48,
@@ -225,6 +257,8 @@ namespace KauRestaurant.Data
                 {
                     MealID = 16,
                     MealName = "سلطة سيزر",
+                    Description = "سلطة سيزر كلاسيكية مع خس رومين، جبن البارميزان، قطع خبز محمصة، وصلصة سيزر المميزة.",
+                    PicturePath = "/images/meal.png",
                     Calories = 150,
                     Protein = 8,
                     Carbs = 15,
@@ -236,6 +270,8 @@ namespace KauRestaurant.Data
                 {
                     MealID = 17,
                     MealName = "كنافة",
+                    Description = "كنافة عربية تقليدية محشوة بالجبنة الحلوة ومغطاة بالقطر ومزينة بالفستق الحلبي.",
+                    PicturePath = "/images/meal.png",
                     Calories = 400,
                     Protein = 6,
                     Carbs = 58,
@@ -247,6 +283,8 @@ namespace KauRestaurant.Data
                 {
                     MealID = 18,
                     MealName = "عصير ليمون بالنعناع",
+                    Description = "عصير ليمون طازج ومنعش مع النعناع، مثالي لتنشيط الجسم وتعزيز المناعة.",
+                    PicturePath = "/images/meal.png",
                     Calories = 80,
                     Protein = 1,
                     Carbs = 20,
@@ -255,11 +293,12 @@ namespace KauRestaurant.Data
                     MealCategory = "العشاء"
                 },
 
-                // Keep some existing meals for other days
                 new Meal
                 {
                     MealID = 19,
                     MealName = "عصير برتقال طازج",
+                    Description = "عصير برتقال طازج معصور من أجود أنواع البرتقال، غني بالفيتامينات والمعادن.",
+                    PicturePath = "/images/meal.png",
                     Calories = 120,
                     Protein = 1,
                     Carbs = 28,
@@ -267,10 +306,13 @@ namespace KauRestaurant.Data
                     MealType = "مشروب",
                     MealCategory = "الإفطار"
                 },
+
                 new Meal
                 {
                     MealID = 20,
                     MealName = "كعكة الشوكولاتة",
+                    Description = "كعكة الشوكولاتة الغنية بطبقات الشوكولاتة الداكنة والكريمة، مثالية لمحبي الحلويات.",
+                    PicturePath = "/images/meal.png",
                     Calories = 420,
                     Protein = 5,
                     Carbs = 63,
@@ -279,6 +321,7 @@ namespace KauRestaurant.Data
                     MealCategory = "العشاء"
                 }
             );
+
 
             // Seed MenuMeal join table with the relationships
             modelBuilder.Entity<MenuMeal>().HasData(
@@ -329,6 +372,30 @@ namespace KauRestaurant.Data
                 new MenuMeal { MenuMealID = 34, MenuID = 5, MealID = 20 }
             );
 
+            // Seed Restaurant data
+            modelBuilder.Entity<Restaurant>().HasData(
+                new Restaurant
+                {
+                    RestaurantID = 1,
+                    Name = "مطعم جامعة الملك عبدالعزيز",
+                    Description = "في المطعم الجامعي الرسمي لجامعة الملك عبد العزيز، نقدم وجبات طازجة وعالية الجودة للطلاب وأعضاء هيئة التدريس. نحرص على تقديم أطباق متنوعة ومغذية في بيئة نظيفة ومرحبة.",
+                    PhotoPath = "/images/restaurant.png",
+                    LocationUrl = "https://maps.app.goo.gl/KFBdpmH7E88Lzvy49",
+                    Address = "جامعة الملك عبد العزيز، جدة، المملكة العربية السعودية",
+                    PhoneNumber = "+9665********",
+                    Email = "restaurant@kau.edu.sa",
+                    BreakfastOpenTime = new TimeSpan(7, 0, 0), // 7:00 AM
+                    BreakfastCloseTime = new TimeSpan(10, 30, 0), // 10:30 AM
+                    ServesBreakfast = true,
+                    LunchOpenTime = new TimeSpan(12, 0, 0), // 12:00 PM
+                    LunchCloseTime = new TimeSpan(15, 0, 0), // 3:00 PM
+                    ServesLunch = true,
+                    DinnerOpenTime = new TimeSpan(18, 0, 0), // 6:00 PM
+                    DinnerCloseTime = new TimeSpan(22, 0, 0), // 10:00 PM
+                    ServesDinner = true,
+                    DaysOpen = "من الأحد إلى الخميس"
+                }
+            );
         }
     }
 }

@@ -2,6 +2,7 @@ html {
     font-size: 14px;
     position: relative;
     min-height: 100%;
+    margin: 0;
 }
 
 
@@ -29,8 +30,12 @@ html {
 }
 
 body {
-    margin-bottom: 60px;
     font-family: "Cairo", serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin-bottom: 0;
+    padding: 0;
 }
 
 /* Navbar and Footer Background */
@@ -138,8 +143,7 @@ body {
 }
 
     .btn-light:hover {
-        background-color: #198754 !important; /* Using the main green color */
-        color: #ffffff !important;
+        background-color: #ccc !important; /* Using the main green color */
     }
 
 

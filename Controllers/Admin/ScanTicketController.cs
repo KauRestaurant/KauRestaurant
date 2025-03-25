@@ -9,7 +9,7 @@ using System.Text.Json;
 
 namespace KauRestaurant.Controllers.Admin
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "A1,A2,A3")]
     [Route("[controller]")]
     public class ScanTicketController : Controller
     {

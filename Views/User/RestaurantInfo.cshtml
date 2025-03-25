@@ -1,5 +1,181 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model KauRestaurant.Models.Restaurant
 @{
+    ViewData["Title"] = "معلومات المطعم";
+}
+
+<div class="container-fluid py-4 py-lg-5 bg-white">
+    <div class="container">
+        <!-- Restaurant Info Card -->
+        <div class="card border-0 shadow">
+            <div class="card-header bg-white py-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h3 class="fw-bold mb-0">معلومات المطعم</h3>
+                    <a href="javascript:history.back()" class="btn btn-success">
+                        <i class="bi bi-arrow-left me-2"></i>العودة
+                    </a>
+                </div>
+            </div>
+
+            <div class="card-body p-0">
+                <!-- Restaurant Photo -->
+                <!-- Restaurant Details -->
+                <div class="p-4">
+                    <div class="row">
+
+                        <!-- Left Column -->
+                        <div class="col-md-6 mb-4">
+                            <div class="col-12 mb-4">
+                                @if (!string.IsNullOrEmpty(Model.PhotoPath))
+                                {
+                                    <img src="@Model.PhotoPath" class="img-fluid" style="height: 300px; object-fit: cover;" alt="صورة المطعم">
+                                }
+                                else
+                                {
+                                    <img src="" class="img-fluid" style="height: 300px; object-fit: cover;" alt="صورة المطعم">
+                                }
+                            </div>
+
+                            <!-- Description -->
+                            <div class="col-12 mb-4">
+                                <h4 class="fw-bold mb-2">الوصف</h4>
+                                <p class="mb-0">@Model.Description</p>
+                            </div>
+
+                            <!-- Working Days - Moved inside working hours section -->
+                            <div class="mb-3">
+                                <h6 class="mb-2"><i class="bi bi-calendar-week text-success me-2"></i>أيام العمل:</h6>
+                                <p class="ms-4 mb-0">@(string.IsNullOrEmpty(Model.DaysOpen) ? "غير محدد" : Model.DaysOpen.Replace(",", " - "))</p>
+                            </div>
+
+                            <!-- Meal Times -->
+                            <div class="mb-3">
+                                <h6 class="mb-2"><i class="bi bi-clock text-success me-2"></i>أوقات الوجبات:</h6>
+                                <ul class="list-group">
+                                    @if (Model.ServesBreakfast)
+                                    {
+                                        <li class="list-group-item d-flex align-items-center border-0">
+                                            <div class="me-3">
+                                                <span class="badge rounded-pill text-white" style="background: #2e7d32">الفطور</span>
+                                            </div>
+                                            <div>
+                                                @if (Model.BreakfastOpenTime.HasValue && Model.BreakfastCloseTime.HasValue)
+                                                {
+                                                    <span>@FormatTimeSpanToAmPm(Model.BreakfastOpenTime.Value) - @FormatTimeSpanToAmPm(Model.BreakfastCloseTime.Value)</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-muted">لم يتم تحديد الوقت</span>
+                                                }
+                                            </div>
+                                        </li>
+                                    }
+
+                                    @if (Model.ServesLunch)
+                                    {
+                                        <li class="list-group-item d-flex align-items-center border-0">
+                                            <div class="me-3">
+                                                <span class="badge rounded-pill text-white" style="background: #1b5e20">الغداء</span>
+                                            </div>
+                                            <div>
+                                                @if (Model.LunchOpenTime.HasValue && Model.LunchCloseTime.HasValue)
+                                                {
+                                                    <span>@FormatTimeSpanToAmPm(Model.LunchOpenTime.Value) - @FormatTimeSpanToAmPm(Model.LunchCloseTime.Value)</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-muted">لم يتم تحديد الوقت</span>
+                                                }
+                                            </div>
+                                        </li>
+                                    }
+
+                                    @if (Model.ServesDinner)
+                                    {
+                                        <li class="list-group-item d-flex align-items-center border-0">
+                                            <div class="me-3">
+                                                <span class="badge rounded-pill text-white" style="background: #004d40">العشاء</span>
+                                            </div>
+                                            <div>
+                                                @if (Model.DinnerOpenTime.HasValue && Model.DinnerCloseTime.HasValue)
+                                                {
+                                                    <span>@FormatTimeSpanToAmPm(Model.DinnerOpenTime.Value) - @FormatTimeSpanToAmPm(Model.DinnerCloseTime.Value)</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-muted">لم يتم تحديد الوقت</span>
+                                                }
+                                            </div>
+                                        </li>
+                                    }
+
+                                    @if (!Model.ServesBreakfast && !Model.ServesLunch && !Model.ServesDinner)
+                                    {
+                                        <li class="list-group-item text-muted">لا توجد أوقات وجبات محددة</li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Right Column -->
+                        <div class="col-md-6 mb-4">
+
+                            <h4 class="fw-bold mb-3">معلومات الاتصال</h4>
+
+                            <div class="mb-3">
+                                <h6 class="mb-2"><i class="bi bi-geo-alt-fill text-success me-2"></i>العنوان:</h6>
+                                <p class="ms-4 mb-0">@Model.Address</p>
+                            </div>
+
+                            @if (!string.IsNullOrEmpty(Model.PhoneNumber))
+                            {
+                                <div class="mb-3">
+                                    <h6 class="mb-2"><i class="bi bi-telephone-fill text-success me-2"></i>رقم الهاتف:</h6>
+                                    <p class="ms-4 mb-0">@Model.PhoneNumber</p>
+                                </div>
+                            }
+
+                            @if (!string.IsNullOrEmpty(Model.Email))
+                            {
+                                <div class="mb-3">
+                                    <h6 class="mb-2"><i class="bi bi-envelope-fill text-success me-2"></i>البريد الإلكتروني:</h6>
+                                    <p class="ms-4 mb-0">@Model.Email</p>
+                                </div>
+                            }
+
+                            <h4 class="fw-bold mb-3">الموقع</h4>
+                            @if (!string.IsNullOrEmpty(Model.LocationUrl))
+                            {
+                                <div class="ratio ratio-16x9 rounded overflow-hidden">
+                                    <iframe src="@Model.LocationUrl.Replace("?q=", "?q=").Replace("maps.google.com", "maps.google.com/embed")"
+                                            allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                                </div>
+                                <a href="@Model.LocationUrl" class="btn btn-sm btn-outline-success mt-2" target="_blank"><i class="bi bi-geo-alt me-1"></i>رابط الموقع</a>
+                            }
+                            else
+                            {
+                                <div class="alert alert-info">
+                                    لم يتم تحديد موقع للمطعم
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@functions {
+    private string FormatTimeSpanToAmPm(TimeSpan time)
+    {
+        int hour = time.Hours;
+        string amPm = hour >= 12 ? "مساءً" : "صباحاً";
+
+        // Convert to 12-hour format
+        hour = hour % 12;
+        if (hour == 0) hour = 12; // 0 hour should be displayed as 12 in 12-hour format
+
+        // Format with leading zeros for minutes
+        return $"{hour}:{time.Minutes:D2} {amPm}";
+    }
 }

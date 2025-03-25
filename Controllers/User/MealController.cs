@@ -60,7 +60,7 @@ namespace KauRestaurant.Controllers.User
             _context.Reviews.Add(review);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction("Meal", new { id = mealId });
+            return RedirectToAction("Index", new { id = mealId });
         }
     }
 }

@@ -17,7 +17,6 @@ namespace KauRestaurant.Controllers.User
         {
             _context = context;
         }
-
         // Changed from Tickets() to Index() to match convention
         public async Task<IActionResult> Index()
         {
@@ -51,8 +50,13 @@ namespace KauRestaurant.Controllers.User
                 DinnerTickets = dinnerTickets
             };
 
+            // Get restaurant information for meal times
+            var restaurant = await _context.Restaurants.FirstOrDefaultAsync();
+            ViewBag.Restaurant = restaurant;
+
             return View("~/Views/User/Tickets.cshtml", viewModel);
         }
+
 
         [HttpPost]
         public async Task<IActionResult> RedeemTicket(int ticketId)

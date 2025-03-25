@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace KauRestaurant.Controllers.Admin
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "A1,A2,A3")]
     public class DashboardController : Controller
     {
         private readonly UserManager<KauRestaurantUser> _userManager;

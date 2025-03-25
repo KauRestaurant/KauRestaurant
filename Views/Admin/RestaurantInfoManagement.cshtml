@@ -1,5 +1,260 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model KauRestaurant.Models.Restaurant
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
+    ViewData["Title"] = "إدارة معلومات المطعم";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid py-4 py-lg-5 bg-white">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i> @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["InfoMessage"] != null)
+    {
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+            <i class="bi bi-info-circle-fill me-2"></i> @TempData["InfoMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="container row">
+        <div class="col-12">
+            <div class="card border-0 shadow">
+                <div class="card-header bg-white py-3">
+                    <h3 class="fw-bold mb-0"><i class="bi bi-shop me-2"></i>إدارة معلومات المطعم</h3>
+                </div>
+                <div class="card-body p-4">
+                    <form asp-controller="RestaurantInfoManagement" asp-action="Update" method="post" enctype="multipart/form-data">
+                        <input type="hidden" asp-for="RestaurantID" />
+                        
+                        <div class="row mb-4">
+                            <div class="col-md-6 mb-3">
+                                <h5 class="border-bottom pb-2 mb-3">المعلومات الأساسية</h5>
+                                
+                                <div class="mb-3">
+                                    <label asp-for="Name" class="form-label fw-bold">اسم المطعم <span class="text-danger">*</span></label>
+                                    <input asp-for="Name" class="form-control" required />
+                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">صورة المطعم</label>
+                                    @if (!string.IsNullOrEmpty(Model.PhotoPath))
+                                    {
+                                        <div class="mb-2">
+                                            <img src="@Model.PhotoPath" style="max-height: 150px; max-width: 100%;" class="img-thumbnail" alt="صورة المطعم" />
+                                        </div>
+                                    }
+                                    <input type="file" name="photo" class="form-control" accept="image/*" />
+                                    <small class="form-text text-muted">اترك هذا الحقل فارغاً للاحتفاظ بالصورة الحالية</small>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label asp-for="Description" class="form-label fw-bold">وصف المطعم</label>
+                                    <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                                    <span asp-validation-for="Description" class="text-danger"></span>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label asp-for="DaysOpen" class="form-label fw-bold">أيام العمل</label>
+                                    <input asp-for="DaysOpen" class="form-control" placeholder="مثال: السبت,الأحد,الاثنين,الثلاثاء,الأربعاء" />
+                                    <span asp-validation-for="DaysOpen" class="text-danger"></span>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <h5 class="border-bottom pb-2 mb-3">معلومات الاتصال والعنوان</h5>
+                                
+                                <div class="mb-3">
+                                    <label asp-for="Address" class="form-label fw-bold">عنوان المطعم</label>
+                                    <input asp-for="Address" class="form-control" />
+                                    <span asp-validation-for="Address" class="text-danger"></span>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label asp-for="LocationUrl" class="form-label fw-bold">رابط الموقع على الخريطة <span class="text-danger">*</span></label>
+                                    <input asp-for="LocationUrl" class="form-control" required />
+                                    <span asp-validation-for="LocationUrl" class="text-danger"></span>
+                                    <small class="form-text text-muted">رابط من خرائط جوجل</small>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label asp-for="PhoneNumber" class="form-label fw-bold">رقم الهاتف</label>
+                                        <input asp-for="PhoneNumber" class="form-control" />
+                                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                    </div>
+                                    
+                                    <div class="col-md-6 mb-3">
+                                        <label asp-for="Email" class="form-label fw-bold">البريد الإلكتروني</label>
+                                        <input asp-for="Email" class="form-control" />
+                                        <span asp-validation-for="Email" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <h5 class="border-bottom pb-2 my-3">أوقات الوجبات</h5>
+
+                                <div class="row mx-2">
+                                    <div class="col-md-4 mb-3">
+                                        <div class="card h-100">
+                                            <div class="card-header bg-success text-white">
+                                                <div class="form-check">
+                                                    <input asp-for="ServesBreakfast" class="form-check-input" type="checkbox" id="servesBreakfastTop" />
+                                                    <label class="form-check-label fw-bold text-white" for="servesBreakfastTop">
+                                                        الفطور
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="mb-3">
+                                                    <label asp-for="BreakfastOpenTime" class="form-label">وقت بدء الفطور</label>
+                                                    <input asp-for="BreakfastOpenTime" class="form-control breakfast-time-top" type="time" />
+                                                    <span asp-validation-for="BreakfastOpenTime" class="text-danger"></span>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label asp-for="BreakfastCloseTime" class="form-label">وقت انتهاء الفطور</label>
+                                                    <input asp-for="BreakfastCloseTime" class="form-control breakfast-time-top" type="time" />
+                                                    <span asp-validation-for="BreakfastCloseTime" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4 mb-3">
+                                        <div class="card h-100">
+                                            <div class="card-header bg-primary text-white">
+                                                <div class="form-check">
+                                                    <input asp-for="ServesLunch" class="form-check-input" type="checkbox" id="servesLunchTop" />
+                                                    <label class="form-check-label fw-bold text-white" for="servesLunchTop">
+                                                        الغداء
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="mb-3">
+                                                    <label asp-for="LunchOpenTime" class="form-label">وقت بدء الغداء</label>
+                                                    <input asp-for="LunchOpenTime" class="form-control lunch-time-top" type="time" />
+                                                    <span asp-validation-for="LunchOpenTime" class="text-danger"></span>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label asp-for="LunchCloseTime" class="form-label">وقت انتهاء الغداء</label>
+                                                    <input asp-for="LunchCloseTime" class="form-control lunch-time-top" type="time" />
+                                                    <span asp-validation-for="LunchCloseTime" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4 mb-3">
+                                        <div class="card h-100">
+                                            <div class="card-header bg-info text-white">
+                                                <div class="form-check">
+                                                    <input asp-for="ServesDinner" class="form-check-input" type="checkbox" id="servesDinnerTop" />
+                                                    <label class="form-check-label fw-bold text-white" for="servesDinnerTop">
+                                                        العشاء
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="mb-3">
+                                                    <label asp-for="DinnerOpenTime" class="form-label">وقت بدء العشاء</label>
+                                                    <input asp-for="DinnerOpenTime" class="form-control dinner-time-top" type="time" />
+                                                    <span asp-validation-for="DinnerOpenTime" class="text-danger"></span>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label asp-for="DinnerCloseTime" class="form-label">وقت انتهاء العشاء</label>
+                                                    <input asp-for="DinnerCloseTime" class="form-control dinner-time-top" type="time" />
+                                                    <span asp-validation-for="DinnerCloseTime" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between pt-3 border-top">
+                            <a asp-controller="Dashboard" asp-action="Index" class="btn btn-secondary">
+                                <i class="bi bi-arrow-right me-1"></i>
+                                <span class="d-none d-md-inline">عودة إلى لوحة التحكم</span>
+                                <span class="d-inline d-md-none">العودة</span>
+                            </a>
+                            <button type="submit" class="btn btn-success px-4">
+                                <i class="bi bi-save me-2"></i>
+                                <span class="d-none d-md-inline">حفظ المعلومات</span>
+                                <span class="d-inline d-md-none">حفظ</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+
+        // Enable/disable time inputs based on checkbox status
+        document.addEventListener('DOMContentLoaded', function() {
+            function toggleTimeFields(checkboxId, timeFieldClass) {
+                const checkbox = document.getElementById(checkboxId);
+                if (!checkbox) return; // Guard against null references
+
+                const timeFields = document.querySelectorAll(`.${timeFieldClass}`);
+
+                checkbox.addEventListener('change', function() {
+                    for (let field of timeFields) {
+                        field.disabled = !this.checked;
+                    }
+                });
+
+                // Initialize on page load
+                for (let field of timeFields) {
+                    field.disabled = !checkbox.checked;
+                }
+            }
+
+            // Setup for each meal type
+            toggleTimeFields('servesBreakfastTop', 'breakfast-time-top');
+            toggleTimeFields('servesLunchTop', 'lunch-time-top');
+            toggleTimeFields('servesDinnerTop', 'dinner-time-top');
+
+            // Add classes to time inputs
+            const breakfastOpenTime = document.querySelector('[asp-for="BreakfastOpenTime"]');
+            if (breakfastOpenTime) breakfastOpenTime.classList.add('breakfast-time-top');
+
+            const breakfastCloseTime = document.querySelector('[asp-for="BreakfastCloseTime"]');
+            if (breakfastCloseTime) breakfastCloseTime.classList.add('breakfast-time-top');
+
+            const lunchOpenTime = document.querySelector('[asp-for="LunchOpenTime"]');
+            if (lunchOpenTime) lunchOpenTime.classList.add('lunch-time-top');
+
+            const lunchCloseTime = document.querySelector('[asp-for="LunchCloseTime"]');
+            if (lunchCloseTime) lunchCloseTime.classList.add('lunch-time-top');
+
+            const dinnerOpenTime = document.querySelector('[asp-for="DinnerOpenTime"]');
+            if (dinnerOpenTime) dinnerOpenTime.classList.add('dinner-time-top');
+
+            const dinnerCloseTime = document.querySelector('[asp-for="DinnerCloseTime"]');
+            if (dinnerCloseTime) dinnerCloseTime.classList.add('dinner-time-top');
+        });
+
+        document.getElementById('restaurantForm').addEventListener('submit', function(e) {
+        // Enable all disabled fields before submitting
+            const disabledFields = document.querySelectorAll('input[disabled]');
+            disabledFields.forEach(field => {
+                field.disabled = false;
+            });
+        });
+    </script>
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
