@@ -7,256 +7,194 @@
     var allMeals = ViewBag.AllMeals as List<KauRestaurant.Models.Meal>;
 }
 
-<div>
-    <!-- Main Content Section -->
-    <div class="container-fluid py-4 py-lg-5 bg-white">
-        <div class="container">
-            @if (TempData["SuccessMessage"] != null)
-            {
-                <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
-                    @TempData["SuccessMessage"]
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            }
-            @if (TempData["ErrorMessage"] != null)
-            {
-                <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
-                    @TempData["ErrorMessage"]
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            }
+<!-- Main Content Section -->
+<div class="container-fluid py-4 py-lg-5 bg-white">
+    <div class="container">
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+                @TempData["SuccessMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+                @TempData["ErrorMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
 
-            <form method="post" asp-controller="MenuManagement" asp-action="SaveMenu">
-                <!-- Card Header -->
-                <div class="card border-0 shadow mb-4">
-                    <div class="card-header bg-white py-3">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h3 class="fw-bold mb-0">إدارة قائمة الأسبوع</h3>
-                            <div>
-                                <button type="submit" class="btn btn-success">
-                                    <i class="bi bi-save me-2"></i>حفظ التغييرات
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Week Days -->
-                    <div class="card-body p-0">
-                        <nav>
-                            <div class="nav nav-tabs nav-fill border-0" role="tablist">
-                                @foreach (var menu in Model)
-                                {
-                                    if (menu.Day != "الجمعة" && menu.Day != "السبت")
-                                    {
-                                        var isActive = menu == Model.FirstOrDefault(m => m.Day != "الجمعة" && m.Day != "السبت") ? "active" : "";
-                                        <button class="nav-link @isActive py-3 px-2 px-md-3"
-                                                data-bs-toggle="tab"
-                                                data-bs-target="#@menu.Day.ToLower()"
-                                                type="button"
-                                                role="tab">
-                                            @menu.Day
-                                        </button>
-                                    }
-                                }
-                            </div>
-                        </nav>
-                    </div>
-
-                    <!-- Meal Times -->
-                    <div class="card-body border-top text-center">
-                        <div class="row g-2 justify-content-center">
-                            @if (restaurant != null && restaurant.ServesBreakfast && restaurant.BreakfastOpenTime.HasValue && restaurant.BreakfastCloseTime.HasValue)
-                            {
-                                <div class="col-auto">
-                                    <i class="bi bi-sun text-dark me-1"></i>الإفطار:
-                                    @{
-                                        string breakfastOpen = FormatTimeSpanToAmPm(restaurant.BreakfastOpenTime.Value);
-                                        string breakfastClose = FormatTimeSpanToAmPm(restaurant.BreakfastCloseTime.Value);
-                                    }
-                                    @breakfastOpen - @breakfastClose
-                                </div>
-                                if (restaurant.ServesLunch || restaurant.ServesDinner)
-                                {
-                                    <div class="col-auto d-none d-md-block">|</div>
-                                }
-                            }
-
-                            @if (restaurant != null && restaurant.ServesLunch && restaurant.LunchOpenTime.HasValue && restaurant.LunchCloseTime.HasValue)
-                            {
-                                <div class="col-auto">
-                                    <i class="bi bi-brightness-high text-dark me-1"></i>الغداء:
-                                    @{
-                                        string lunchOpen = FormatTimeSpanToAmPm(restaurant.LunchOpenTime.Value);
-                                        string lunchClose = FormatTimeSpanToAmPm(restaurant.LunchCloseTime.Value);
-                                    }
-                                    @lunchOpen - @lunchClose
-                                </div>
-                                if (restaurant.ServesDinner)
-                                {
-                                    <div class="col-auto d-none d-md-block">|</div>
-                                }
-                            }
-
-                            @if (restaurant != null && restaurant.ServesDinner && restaurant.DinnerOpenTime.HasValue && restaurant.DinnerCloseTime.HasValue)
-                            {
-                                <div class="col-auto">
-                                    <i class="bi bi-moon text-dark me-1"></i>العشاء:
-                                    @{
-                                        string dinnerOpen = FormatTimeSpanToAmPm(restaurant.DinnerOpenTime.Value);
-                                        string dinnerClose = FormatTimeSpanToAmPm(restaurant.DinnerCloseTime.Value);
-                                    }
-                                    @dinnerOpen - @dinnerClose
-                                </div>
-                            }
-
-                            @if (restaurant == null ||
-                            (!restaurant.ServesBreakfast && !restaurant.ServesLunch && !restaurant.ServesDinner) ||
-                            (restaurant.ServesBreakfast && (!restaurant.BreakfastOpenTime.HasValue || !restaurant.BreakfastCloseTime.HasValue)) &&
-                            (restaurant.ServesLunch && (!restaurant.LunchOpenTime.HasValue || !restaurant.LunchCloseTime.HasValue)) &&
-                            (restaurant.ServesDinner && (!restaurant.DinnerOpenTime.HasValue || !restaurant.DinnerCloseTime.HasValue)))
-                            {
-                                <div class="col-auto">
-                                    <i class="bi bi-info-circle text-dark me-1"></i>معلومات أوقات الوجبات غير متوفرة
-                                </div>
-                            }
+        <form method="post" asp-controller="MenuManagement" asp-action="SaveMenu">
+            <!-- Card Header -->
+            <div class="card border-0 shadow mb-4">
+                <div class="card-header bg-white py-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h3 class="fw-bold mb-0"><i class="bi bi-journal-text me-2"></i>إدارة قائمة الأسبوع</h3>
+                        <div>
+                            <button type="submit" class="btn btn-success">
+                                <i class="bi bi-save me-2"></i>حفظ التغييرات
+                            </button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Menu -->
-                <div class="tab-content" id="menuContent">
-                    @foreach (var menu in Model)
-                    {
-                        var isActive = menu == Model.FirstOrDefault() ? "show active" : "";
-                        <div class="tab-pane fade @isActive" id="@menu.Day.ToLower()">
-                            <div class="row" id="@(menu.Day.ToLower())Menu">
-                                @{
-                                    // Get meals for this menu day
-                                    var mealsByCategory = menu.MenuMeals
-                                    ?.Where(mm => mm.Meal != null)
-                                    .Select(mm => mm.Meal)
-                                    .GroupBy(m => m.MealCategory)
-                                    .ToDictionary(g => g.Key, g => g.ToList())
-                                    ?? new Dictionary<string, List<KauRestaurant.Models.Meal>>();
+                <!-- Week Days -->
+                <div class="card-body p-0">
+                    <nav>
+                        <div class="nav nav-tabs nav-fill border-0" role="tablist">
+                            @foreach (var menu in Model)
+                            {
+                                if (menu.Day != "الجمعة" && menu.Day != "السبت")
+                                {
+                                    var isActive = menu == Model.FirstOrDefault(m => m.Day != "الجمعة" && m.Day != "السبت") ? "active" : "";
+                                    <button class="nav-link @isActive py-3 px-2 px-md-3"
+                                            data-bs-toggle="tab"
+                                            data-bs-target="#@menu.Day.ToLower()"
+                                            type="button"
+                                            role="tab">
+                                        @menu.Day
+                                    </button>
+                                }
+                            }
+                        </div>
+                    </nav>
+                </div>
+            </div>
 
-                                    var categories = new[] { "الإفطار", "الغداء", "العشاء" };
+            <!-- Menu -->
+            <div class="tab-content" id="menuContent">
+                @foreach (var menu in Model)
+                {
+                    var isActive = menu == Model.FirstOrDefault() ? "show active" : "";
+                    <div class="tab-pane fade @isActive" id="@menu.Day.ToLower()">
+                        <div class="row" id="@(menu.Day.ToLower())Menu">
+                            @{
+                                // Get meals for this menu day
+                                var mealsByCategory = menu.MenuMeals
+                                ?.Where(mm => mm.Meal != null)
+                                .Select(mm => mm.Meal)
+                                .GroupBy(m => m.MealCategory)
+                                .ToDictionary(g => g.Key, g => g.ToList())
+                                ?? new Dictionary<string, List<KauRestaurant.Models.Meal>>();
 
-                                    foreach (var category in categories)
-                                    {
-                                        var (icon, bgColor) = UIConstants.MealCategoryInfo.ContainsKey(category)
-                                        ? UIConstants.MealCategoryInfo[category]
-                                        : ("bi-question", "#6c757d");
+                                var categories = new[] { "الإفطار", "الغداء", "العشاء" };
 
-                                        var categoryId = $"{menu.Day.ToLower()}{category}";
+                                foreach (var category in categories)
+                                {
+                                    var (icon, bgColor) = UIConstants.MealCategoryInfo.ContainsKey(category)
+                                    ? UIConstants.MealCategoryInfo[category]
+                                    : ("bi-question", "#6c757d");
 
-                                        <div class="col-12 col-md-4 mb-3">
-                                            <div class="accordion accordion-desktop">
-                                                <div class="accordion-item border-0 rounded shadow h-100">
-                                                    <h2 class="accordion-header">
-                                                        <button class="accordion-button collapsed text-white rounded-top"
-                                                                style="background-color: @bgColor" type="button"
-                                                                data-bs-toggle="collapse" data-bs-target="#@categoryId">
-                                                            <i class="bi @icon me-2"></i>@category
-                                                        </button>
-                                                    </h2>
-                                                    <div id="@categoryId" class="accordion-collapse collapse show">
-                                                        <div class="accordion-body p-4">
-                                                            @{
-                                                                // Get meals available for this category
-                                                                var mealsOfCategory = allMeals?
-                                                                .Where(m => m.MealCategory == category)
-                                                                .ToList() ?? new List<KauRestaurant.Models.Meal>();
+                                    var categoryId = $"{menu.Day.ToLower()}{category}";
 
-                                                                // Get selected meals for this day and category
-                                                                var selectedMealsOfCategory = mealsByCategory.ContainsKey(category)
-                                                                ? mealsByCategory[category]
-                                                                : new List<KauRestaurant.Models.Meal>();
+                                    <div class="col-12 col-md-4 mb-3">
+                                        <div class="accordion accordion-desktop">
+                                            <div class="accordion-item border-0 rounded shadow h-100">
+                                                <h2 class="accordion-header">
+                                                    <button class="accordion-button collapsed text-white rounded-top"
+                                                            style="background-color: @bgColor" type="button"
+                                                            data-bs-toggle="collapse" data-bs-target="#@categoryId">
+                                                        <i class="bi @icon me-2"></i>@category
+                                                    </button>
+                                                </h2>
+                                                <div id="@categoryId" class="accordion-collapse collapse show">
+                                                    <div class="accordion-body p-4">
+                                                        @{
+                                                            // Get meals available for this category
+                                                            var mealsOfCategory = allMeals?
+                                                            .Where(m => m.MealCategory == category)
+                                                            .ToList() ?? new List<KauRestaurant.Models.Meal>();
 
-                                                                var mealTypes = new[] { "الطبق الرئيسي", "طبق جانبي", "حلوى", "مشروب" };
+                                                            // Get selected meals for this day and category
+                                                            var selectedMealsOfCategory = mealsByCategory.ContainsKey(category)
+                                                            ? mealsByCategory[category]
+                                                            : new List<KauRestaurant.Models.Meal>();
 
-                                                                foreach (var mealType in mealTypes)
+                                                            var mealTypes = new[] { "الطبق الرئيسي", "طبق جانبي", "حلوى", "مشروب" };
+
+                                                            foreach (var mealType in mealTypes)
+                                                            {
+                                                                var mealsOfType = mealsOfCategory.Where(m => m.MealType == mealType).ToList();
+
+                                                                if (mealsOfType.Any())
                                                                 {
-                                                                    var mealsOfType = mealsOfCategory.Where(m => m.MealType == mealType).ToList();
+                                                                    // Get currently selected meals for this day, category, and type
+                                                                    var selectedMeals = selectedMealsOfCategory
+                                                                    .Where(m => m.MealType == mealType)
+                                                                    .ToList();
 
-                                                                    if (mealsOfType.Any())
-                                                                    {
-                                                                        // Get currently selected meals for this day, category, and type
-                                                                        var selectedMeals = selectedMealsOfCategory
-                                                                        .Where(m => m.MealType == mealType)
-                                                                        .ToList();
-
-                                                                        <div class="mb-4">
-                                                                            <div class="d-flex align-items-center border-bottom pb-2 mb-3">
-                                                                                <span class="badge @(UIConstants.MealTypeBadgeColors.ContainsKey(mealType) ?
+                                                                    <div class="mb-4">
+                                                                        <div class="d-flex align-items-center border-bottom pb-2 mb-3">
+                                                                            <span class="badge @(UIConstants.MealTypeBadgeColors.ContainsKey(mealType) ?
                                                                                     UIConstants.MealTypeBadgeColors[mealType] : "bg-secondary")">
-                                                                                    @mealType
-                                                                                </span>
-                                                                            </div>
-                                                                            <div class="list-group list-group-flush">
-                                                                                @for (int i = 0; i < 2; i++)
-                                                                                {
-                                                                                    var selectedMeal = selectedMeals.Count > i ? selectedMeals[i] : null;
-                                                                                    var selectedMealId = selectedMeal?.MealID ?? 0;
-                                                                                    var selectName = $"mealSelections[{menu.MenuID}][{category}][{mealType}][{i}]";
+                                                                                @mealType
+                                                                            </span>
+                                                                        </div>
+                                                                        <div class="list-group list-group-flush">
+                                                                            @for (int i = 0; i < 2; i++)
+                                                                            {
+                                                                                var selectedMeal = selectedMeals.Count > i ? selectedMeals[i] : null;
+                                                                                var selectedMealId = selectedMeal?.MealID ?? 0;
+                                                                                var selectName = $"mealSelections[{menu.MenuID}][{category}][{mealType}][{i}]";
 
-                                                                                    <div class="list-group-item px-0 py-1">
-                                                                                        <div class="d-flex justify-content-between align-items-center">
-                                                                                            <div class="w-75">
-                                                                                                <select name="@selectName" class="form-select meal-dropdown"
-                                                                                                        aria-label="اختر وجبة" data-menu-id="@menu.MenuID"
-                                                                                                        data-category="@category" data-type="@mealType"
-                                                                                                        data-index="@i">
-                                                                                                    <option value="0">اختر...</option>
-                                                                                                    @foreach (var meal in mealsOfType)
-                                                                                                    {
-                                                                                                        <option value="@meal.MealID"
-                                                                                                                selected="@(selectedMealId == meal.MealID)"
-                                                                                                                data-calories="@meal.Calories">
-                                                                                                            @meal.MealName
-                                                                                                        </option>
-                                                                                                    }
-                                                                                                </select>
-                                                                                            </div>
-                                                                                            <div class="meal-info text-end" id="info-@menu.MenuID-@category-@mealType-@i">
-                                                                                                @if (selectedMeal != null)
+                                                                                <div class="list-group-item px-0 py-1">
+                                                                                    <div class="d-flex justify-content-between align-items-center">
+                                                                                        <div class="w-75">
+                                                                                            <select name="@selectName" class="form-select meal-dropdown"
+                                                                                                    aria-label="اختر وجبة" data-menu-id="@menu.MenuID"
+                                                                                                    data-category="@category" data-type="@mealType"
+                                                                                                    data-index="@i">
+                                                                                                <option value="0">اختر...</option>
+                                                                                                @foreach (var meal in mealsOfType)
                                                                                                 {
-                                                                                                    <span class="badge bg-light text-dark">@selectedMeal.Calories سعرة حرارية</span>
+                                                                                                    <option value="@meal.MealID"
+                                                                                                            selected="@(selectedMealId == meal.MealID)"
+                                                                                                            data-calories="@meal.Calories">
+                                                                                                        @meal.MealName
+                                                                                                    </option>
                                                                                                 }
-                                                                                            </div>
+                                                                                            </select>
+                                                                                        </div>
+                                                                                        <div class="meal-info text-end" id="info-@menu.MenuID-@category-@mealType-@i">
+                                                                                            @if (selectedMeal != null)
+                                                                                            {
+                                                                                                <span class="badge bg-light text-dark">@selectedMeal.Calories سعرة حرارية</span>
+                                                                                            }
                                                                                         </div>
                                                                                     </div>
-                                                                                }
-                                                                            </div>
+                                                                                </div>
+                                                                            }
                                                                         </div>
-                                                                    }
-                                                                }
-
-                                                                if (!mealsOfCategory.Any())
-                                                                {
-                                                                    <div class="alert alert-light">
-                                                                        لا يوجد وجبات مسجلة لهذه الفئة. يرجى إضافة وجبات أولاً.
                                                                     </div>
                                                                 }
                                                             }
-                                                        </div>
+
+                                                            if (!mealsOfCategory.Any())
+                                                            {
+                                                                <div class="alert alert-light">
+                                                                    لا يوجد وجبات مسجلة لهذه الفئة. يرجى إضافة وجبات أولاً.
+                                                                </div>
+                                                            }
+                                                        }
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    }
+                                    </div>
                                 }
-                            </div>
+                            }
                         </div>
-                    }
-                </div>
+                    </div>
+                }
+            </div>
 
-                <div class="text-center mt-4 mb-3">
-                    <button type="submit" class="btn btn-lg btn-success px-5">
-                        <i class="bi bi-save me-2"></i>حفظ قائمة الطعام
-                    </button>
-                </div>
-            </form>
-        </div>
+            <div class="text-center mt-4 mb-3">
+                <button type="submit" class="btn btn-lg btn-success px-5">
+                    <i class="bi bi-save me-2"></i>حفظ قائمة الطعام
+                </button>
+            </div>
+        </form>
     </div>
 </div>
 

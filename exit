@@ -1,0 +1,184 @@
+[33mcommit 4ce2d4df70c27dfa2ed18457639b32cf7e4e0417[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Ayman Aziz <aaziz0010@stu.kau.edu.sa>
+Date:   Sat Mar 15 06:38:05 2025 +0300
+
+    Fixed all the routing
+
+[33mcommit f7a6b23e2061d63b159b0f7708efd78729d93285[m
+Merge: ffae565 f92f5e7
+Author: Ayman Aziz <aaziz0010@stu.kau.edu.sa>
+Date:   Sat Mar 15 05:57:30 2025 +0300
+
+    Conflict resolution
+
+[33mcommit ffae5654bbfa616496ecdc98c83644cc48f4d8ba[m
+Author: Ayman Aziz <aaziz0010@stu.kau.edu.sa>
+Date:   Fri Mar 14 21:16:15 2025 +0300
+
+    Fixed the database, organized all controllers, added all views and fixed the Admin Dashboard.
+
+[33mcommit f92f5e707009af7a1ad85019916178568b42c044[m
+Author: Ayman Aziz <aaziz0010@stu.kau.edu.sa>
+Date:   Sat Mar 8 22:03:07 2025 +0300
+
+    Saved Graphes
+
+[33mcommit aa0c53497331691be637263bdf81a29e54863c2d[m
+Author: Ayman Aziz <aaziz0010@stu.kau.edu.sa>
+Date:   Sat Mar 8 19:42:40 2025 +0300
+
+    Created Admin Nav Bar and Tickits Statistical Graphs
+
+[33mcommit 59452cef0933074ea1d35210c45944264ad546e8[m
+Author: Abdulaziz Almalki <aeidhaalmalki@stu.kau.edu.sa>
+Date:   Tue Mar 4 22:12:46 2025 +0300
+
+    Added admin dashboard and scanning qr code functionaility which updates the user's tickets
+
+[33mcommit 10577e0dd40c1073bfd62b6cacbda52de7d20da6[m
+Author: Abdulaziz Almalki <aeidhaalmalki@stu.kau.edu.sa>
+Date:   Tue Mar 4 02:23:10 2025 +0300
+
+    Completed user pages and functions like qr code generation and ticket purchasing (no payment gatewway and payment processing yet)
+
+[33mcommit 6fcffa3fcf324ae044dad5479298cbbb27c0e179[m
+Author: Abdulaziz Almalki <aeidhaalmalki@stu.kau.edu.sa>
+Date:   Sat Mar 1 07:02:22 2025 +0300
+
+    Added review system the ability to review and view meal reviews in the meal page. Created a new review table to hold reviews
+
+[33mcommit 45b52efdc33c7f6ca63f28d17f99a88b02fd1f19[m
+Author: Abdulaziz Almalki <aeidhaalmalki@stu.kau.edu.sa>
+Date:   Fri Feb 28 07:23:49 2025 +0300
+
+    Made the menu and meal pages dynamic to pull the data from the database. Also adjusted the meal model to use multiple attributes for nutritional info instead of json (done to avoid using a func that parses json)
+
+[33mcommit f3edef6f160f9388f34ee1c059ac4729cf94928d[m
+Author: Abdulaziz Almalki <aeidhaalmalki@stu.kau.edu.sa>
+Date:   Sun Feb 23 01:37:29 2025 +0300
+
+    Removed previous migration and AuthDbContext file in exchange for the default ApplicationDbContext. Added meal and menu models and populated the db with all the days and two example meals (to be filled later)
+
+[33mcommit 650e8497915f00e1cea7713b4e3f901850b89347[m
+Author: Ayman Aziz <aaziz0010@stu.kau.edu.sa>
+Date:   Thu Feb 20 13:10:26 2025 +0300
+
+    Added meal page
+
+[33mcommit 62f75b7726450d5446b6b92a9cf9f1dcb8e5dd0c[m
+Author: Ayman Aziz <aaziz0010@stu.kau.edu.sa>
+Date:   Wed Feb 19 00:57:49 2025 +0300
+
+    Update Design Again
+
+[33mcommit 00e136184ac2b780edb66d68547ac90901270cac[m
+Author: Ayman Aziz <aaziz0010@stu.kau.edu.sa>
+Date:   Wed Feb 19 00:35:38 2025 +0300
+
+    Fix All Account Manage Pages Designes
+
+[33mcommit 469a2178ce0b36ed930b554a1f41868715f64afe[m
+Author: Abdulaziz Almalki <aeidhaalmalki@stu.kau.edu.sa>
+Date:   Tue Feb 18 20:42:05 2025 +0300
+
+    Redesigned the websites' pages by Ayman
+
+[33mcommit 3ce88e85d70f61faf25f08a50a18181d7b382a5b[m
+Author: Abdulaziz Almalki <aeidhaalmalki@stu.kau.edu.sa>
+Date:   Mon Feb 17 18:57:05 2025 +0300
+
+    1. Added first and last names as fields for user registeration along with account management page for them. 2. Adjusted some of the design in the menu and account management pages to match the colors to green. 3.Rremoved previous migrations then reinitialized
+
+[33mcommit 7d090cae453d5087c955903f409e0bd037764e13[m
+Author: Abdulaziz Almalki <aeidhaalmalki@stu.kau.edu.sa>
+Date:   Sat Feb 15 19:08:22 2025 +0300
+
+    Implmented login/register functionaility and added many account management pages. Also translated validation messages in login and register pages
+
+[33mcommit c2a90640847c3378832d3cb96a3926c8eed3d854[m
+Author: Ayman Aziz <aaziz0010@stu.kau.edu.sa>
+Date:   Fri Feb 14 21:32:41 2025 +0300
+
+    Fixed the design and translated text to Arabic
+
+[33mcommit 9f96daa56cfa1d9ae4efbfd3b05e7c8b862d7d00[m
+Author: Abdulaziz Almalki <aeidhaalmalki@stu.kau.edu.sa>
+Date:   Thu Feb 13 18:24:55 2025 +0300
+
+    Added purhcase page
+
+[33mcommit cac193833a1d37503699b614b23442698d03406f[m
+Author: Abdulaziz Almalki <aeidhaalmalki@stu.kau.edu.sa>
+Date:   Thu Feb 13 18:24:07 2025 +0300
+
+    Added initial purchase tickets and view tickets pages
+
+[33mcommit 8299222d01778f6878bd99a4015976885430dccc[m
+Author: Abdulaziz Almalki <aeidhaalmalki@stu.kau.edu.sa>
+Date:   Thu Feb 13 00:48:38 2025 +0300
+
+    test commit
+
+[33mcommit 3f0c202e8988a212df6ef9b3156a78393f77a3b0[m
+Author: Ayman Aziz <aaziz0010@stu.kau.edu.sa>
+Date:   Wed Feb 12 16:48:51 2025 +0300
+
+    Home changed to User
+
+[33mcommit 666b1d2b8481a40d998cee601940f2f5b1e7711a[m
+Merge: bdf947f 63271e7
+Author: Zozami <69639842+Zozami@users.noreply.github.com>
+Date:   Tue Feb 11 21:25:30 2025 +0300
+
+    Merge pull request #3 from Zozami/master
+    
+    inital login and register page/function (only visual for now: not working)
+
+[33mcommit 63271e711f222eac6c90e98f110237eb2a68443d[m
+Author: Abdulaziz Almalki <abdulazizalmalki54@gmail.com>
+Date:   Tue Feb 11 21:23:11 2025 +0300
+
+    Fixed routing buttons on index page and added login and register pages accessible from the header
+
+[33mcommit bdf947f3f2911ff8c4e54ce10202fc8fad509f65[m
+Merge: a5b88f3 c409ef2
+Author: Zozami <69639842+Zozami@users.noreply.github.com>
+Date:   Thu Feb 6 21:17:59 2025 +0300
+
+    Merge pull request #2 from Zozami/master
+    
+    fixed the index page not stretching to the width of the page.
+
+[33mcommit c409ef24a5c302e0843608ac89d6ad4ad70aa5cd[m
+Author: Abdulaziz Almalki <abdulazizalmalki54@gmail.com>
+Date:   Thu Feb 6 21:16:41 2025 +0300
+
+    fixed the index page not stretching to the width of the page.
+    changed the color of the website to green: some problems on the day navbar in the menu page where the color of the text is blue (need to change it to green to match the website)
+
+[33mcommit a5b88f39d8257865ddf86b5527eaad731100db6f[m
+Merge: a6c97ae 56f7db4
+Author: Zozami <69639842+Zozami@users.noreply.github.com>
+Date:   Thu Feb 6 18:13:22 2025 +0300
+
+    Merge pull request #1 from Zozami/master
+    
+    (Testing git commits to github) changed a word on the index page
+
+[33mcommit 56f7db4f5647aa276d89f662dbe4328c3f33608c[m
+Author: Abdulaziz Almalki <abdulazizalmalki54@gmail.com>
+Date:   Thu Feb 6 18:10:03 2025 +0300
+
+    (Testing git commits to github) changed a word on the index page
+
+[33mcommit a6c97ae29e5d42311af3ef2805554599f1dee0a8[m
+Author: Abdulaziz Almalki <abdulazizalmalki54@gmail.com>
+Date:   Thu Feb 6 17:48:25 2025 +0300
+
+    Add project files.
+
+[33mcommit c8d6a697902fddb32ca650714c74f3803e52897e[m
+Author: Abdulaziz Almalki <abdulazizalmalki54@gmail.com>
+Date:   Thu Feb 6 17:48:19 2025 +0300
+
+    Add .gitattributes and .gitignore.

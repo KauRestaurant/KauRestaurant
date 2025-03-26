@@ -2,128 +2,133 @@
     ViewData["Title"] = "مسح التذاكر";
 }
 
-<div class="container my-5">
-    <div class="row">
-        <div class="col-lg-10 col-xl-8 mx-auto">
-            <!-- Main Card -->
-            <div class="card border-0 shadow">
-                <div class="card-header bg-white py-3">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h3 class="mb-0"><i class="bi bi-qr-code-scan me-2"></i>مسح التذاكر</h3>
-                        <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index" class="btn btn-success">
-                            <i class="bi bi-arrow-right me-1"></i> العودة للوحة التحكم
-                        </a>
-                    </div>
-                </div>
-                <div class="card-body p-4">
-                    <!-- Scanner and Results in Tabs -->
-                    <ul class="nav nav-tabs mb-4" id="scannerTabs" role="tablist">
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="scanner-tab" data-bs-toggle="tab"
-                                    data-bs-target="#scanner-content" type="button" role="tab" aria-selected="true">
-                                الماسح الضوئي
-                            </button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="results-tab" data-bs-toggle="tab"
-                                    data-bs-target="#results-content" type="button" role="tab" aria-selected="false">
-                                النتائج
-                            </button>
-                        </li>
-                    </ul>
-
-                    <div class="tab-content" id="scannerTabsContent">
-                        <!-- Scanner Tab -->
-                        <div class="tab-pane fade show active" id="scanner-content" role="tabpanel">
-                            <div class="text-center mb-4">
-                                <p class="text-muted">قم بتوجيه الكاميرا نحو رمز QR للتذكرة للتحقق منها</p>
-                                <div id="reader" class="mx-auto mb-4" style="max-width: 500px; min-height: 300px;"></div>
-
-                                <div class="d-flex justify-content-center gap-3 mt-3">
-                                    <button id="startButton" class="btn btn-success px-4">
-                                        <i class="bi bi-camera me-2"></i>تشغيل الكاميرا
-                                    </button>
-                                    <button id="stopButton" class="btn btn-outline-danger px-4" disabled>
-                                        <i class="bi bi-stop-circle me-2"></i>إيقاف المسح
-                                    </button>
-                                </div>
+<div>
+    <!-- Main Content Section -->
+    <div class="container-fluid py-4 py-lg-5 bg-white">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 col-xl-8 mx-auto">
+                    <!-- Main Card -->
+                    <div class="card border-0 shadow">
+                        <div class="card-header bg-white py-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h3 class="fw-bold mb-0"><i class="bi bi-qr-code-scan me-2"></i>مسح التذاكر</h3>
+                                <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index" class="btn btn-success">
+                                    <i class="bi bi-arrow-right me-1"></i> العودة للوحة التحكم
+                                </a>
                             </div>
                         </div>
+                        <div class="card-body p-4">
+                            <!-- Scanner and Results in Tabs -->
+                            <ul class="nav nav-tabs mb-4" id="scannerTabs" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active" id="scanner-tab" data-bs-toggle="tab"
+                                            data-bs-target="#scanner-content" type="button" role="tab" aria-selected="true">
+                                        الماسح الضوئي
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="results-tab" data-bs-toggle="tab"
+                                            data-bs-target="#results-content" type="button" role="tab" aria-selected="false">
+                                        النتائج
+                                    </button>
+                                </li>
+                            </ul>
 
-                        <!-- Results Tab -->
-                        <div class="tab-pane fade" id="results-content" role="tabpanel">
-                            <!-- Processing Message -->
-                            <div id="scanResult" class="d-none">
-                                <div class="text-center py-4">
-                                    <div class="spinner-border text-primary mb-3" role="status"></div>
-                                    <p class="mb-0">جاري التحقق من التذكرة...</p>
-                                </div>
-                            </div>
+                            <div class="tab-content" id="scannerTabsContent">
+                                <!-- Scanner Tab -->
+                                <div class="tab-pane fade show active" id="scanner-content" role="tabpanel">
+                                    <div class="text-center mb-4">
+                                        <p class="text-muted">قم بتوجيه الكاميرا نحو رمز QR للتذكرة للتحقق منها</p>
+                                        <div id="reader" class="mx-auto mb-4" style="max-width: 500px; min-height: 300px;"></div>
 
-                            <!-- Success Result -->
-                            <div id="resultSuccess" class="d-none">
-                                <div class="alert alert-success mb-3">
-                                    <i class="bi bi-check-circle me-2"></i> تم التحقق بنجاح
-                                </div>
-                                <div class="card bg-light border-0">
-                                    <div class="card-body">
-                                        <h5 class="card-title">معلومات التذكرة</h5>
-                                        <div class="row g-3 mt-2">
-                                            <div class="col-sm-6">
-                                                <div class="d-flex align-items-center">
-                                                    <span class="text-muted me-2">رقم التذكرة:</span>
-                                                    <span id="ticketId" class="fw-bold"></span>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <div class="d-flex align-items-center">
-                                                    <span class="text-muted me-2">نوع الوجبة:</span>
-                                                    <span id="mealType" class="fw-bold"></span>
-                                                </div>
-                                            </div>
-                                            <div class="col-12">
-                                                <div class="d-flex align-items-center">
-                                                    <span class="text-muted me-2">المستخدم:</span>
-                                                    <span id="userName" class="fw-bold"></span>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Scan another button -->
-                                        <div class="text-center mt-4">
-                                            <button id="scanAnotherBtn" class="btn btn-success">
-                                                <i class="bi bi-qr-code me-2"></i>مسح تذكرة أخرى
+                                        <div class="d-flex justify-content-center gap-3 mt-3">
+                                            <button id="startButton" class="btn btn-success px-4">
+                                                <i class="bi bi-camera me-2"></i>تشغيل الكاميرا
+                                            </button>
+                                            <button id="stopButton" class="btn btn-outline-danger px-4" disabled>
+                                                <i class="bi bi-stop-circle me-2"></i>إيقاف المسح
                                             </button>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <!-- Error Result -->
-                            <div id="resultError" class="d-none">
-                                <div class="alert alert-danger">
-                                    <i class="bi bi-exclamation-triangle me-2"></i>
-                                    <span id="errorMessage"></span>
-                                </div>
+                                <!-- Results Tab -->
+                                <div class="tab-pane fade" id="results-content" role="tabpanel">
+                                    <!-- Processing Message -->
+                                    <div id="scanResult" class="d-none">
+                                        <div class="text-center py-4">
+                                            <div class="spinner-border text-primary mb-3" role="status"></div>
+                                            <p class="mb-0">جاري التحقق من التذكرة...</p>
+                                        </div>
+                                    </div>
 
-                                <!-- Try again button -->
-                                <div class="text-center mt-4">
-                                    <button id="tryAgainBtn" class="btn btn-outline-success">
-                                        <i class="bi bi-arrow-repeat me-2"></i>حاول مرة أخرى
-                                    </button>
+                                    <!-- Success Result -->
+                                    <div id="resultSuccess" class="d-none">
+                                        <div class="alert alert-success mb-3">
+                                            <i class="bi bi-check-circle me-2"></i> تم التحقق بنجاح
+                                        </div>
+                                        <div class="card bg-light border-0">
+                                            <div class="card-body">
+                                                <h5 class="card-title">معلومات التذكرة</h5>
+                                                <div class="row g-3 mt-2">
+                                                    <div class="col-sm-6">
+                                                        <div class="d-flex align-items-center">
+                                                            <span class="text-muted me-2">رقم التذكرة:</span>
+                                                            <span id="ticketId" class="fw-bold"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="d-flex align-items-center">
+                                                            <span class="text-muted me-2">نوع الوجبة:</span>
+                                                            <span id="mealType" class="fw-bold"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <div class="d-flex align-items-center">
+                                                            <span class="text-muted me-2">المستخدم:</span>
+                                                            <span id="userName" class="fw-bold"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Scan another button -->
+                                                <div class="text-center mt-4">
+                                                    <button id="scanAnotherBtn" class="btn btn-success">
+                                                        <i class="bi bi-qr-code me-2"></i>مسح تذكرة أخرى
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Error Result -->
+                                    <div id="resultError" class="d-none">
+                                        <div class="alert alert-danger">
+                                            <i class="bi bi-exclamation-triangle me-2"></i>
+                                            <span id="errorMessage"></span>
+                                        </div>
+
+                                        <!-- Try again button -->
+                                        <div class="text-center mt-4">
+                                            <button id="tryAgainBtn" class="btn btn-outline-success">
+                                                <i class="bi bi-arrow-repeat me-2"></i>حاول مرة أخرى
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <!-- Hidden form with anti-forgery token -->
+            <form id="tokenForm" style="display:none;">
+                @Html.AntiForgeryToken()
+            </form>
         </div>
     </div>
-
-    <!-- Hidden form with anti-forgery token -->
-    <form id="tokenForm" style="display:none;">
-        @Html.AntiForgeryToken()
-    </form>
 </div>
 
 @section Scripts {

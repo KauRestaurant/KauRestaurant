@@ -6,239 +6,237 @@
     var restaurant = ViewBag.Restaurant as KauRestaurant.Models.Restaurant;
 }
 
-<div>
-    <!-- Main Content Section -->
-    <div class="container-fluid py-4 py-lg-5 bg-white">
-        <div class="container">
-            <!-- Card Header -->
-            <div class="card border-0 shadow mb-4">
-                <div class="card-header bg-white py-3">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h3 class="fw-bold mb-0">قائمة الأسبوع</h3>
-                        <div>
-                            <a class="btn btn-success" asp-area="User" asp-controller="Purchase" asp-action="Index">
-                                <i class="bi bi-plus-lg me-2"></i>شراء التذاكر
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Week Days -->
-                <div class="card-body p-0">
-                    <nav>
-                        <div class="nav nav-tabs nav-fill border-0" role="tablist">
-                            @foreach (var menu in Model)
-                            {
-                                if (menu.Day != "الجمعة" && menu.Day != "السبت")
-                                {
-                                    var isActive = menu == Model.FirstOrDefault(m => m.Day != "الجمعة" && m.Day != "السبت") ? "active" : "";
-                                    <button class="nav-link @isActive py-3 px-2 px-md-3"
-                                            data-bs-toggle="tab"
-                                            data-bs-target="#@menu.Day.ToLower()"
-                                            type="button"
-                                            role="tab">
-                                        @menu.Day
-                                    </button>
-                                }
-                            }
-                        </div>
-                    </nav>
-                </div>
-
-                <!-- Meal Times -->
-                <div class="card-body border-top text-center">
-                    <div class="row g-2 justify-content-center">
-                        @if (restaurant != null && restaurant.ServesBreakfast && restaurant.BreakfastOpenTime.HasValue && restaurant.BreakfastCloseTime.HasValue)
-                        {
-                            <div class="col-auto">
-                                <i class="bi bi-sun text-dark me-1"></i>الإفطار:
-                                @{
-                                    string breakfastOpen = FormatTimeSpanToAmPm(restaurant.BreakfastOpenTime.Value);
-                                    string breakfastClose = FormatTimeSpanToAmPm(restaurant.BreakfastCloseTime.Value);
-                                }
-                                @breakfastOpen - @breakfastClose
-                            </div>
-                            if (restaurant.ServesLunch || restaurant.ServesDinner)
-                            {
-                                <div class="col-auto d-none d-md-block">|</div>
-                            }
-                        }
-
-                        @if (restaurant != null && restaurant.ServesLunch && restaurant.LunchOpenTime.HasValue && restaurant.LunchCloseTime.HasValue)
-                        {
-                            <div class="col-auto">
-                                <i class="bi bi-brightness-high text-dark me-1"></i>الغداء:
-                                @{
-                                    string lunchOpen = FormatTimeSpanToAmPm(restaurant.LunchOpenTime.Value);
-                                    string lunchClose = FormatTimeSpanToAmPm(restaurant.LunchCloseTime.Value);
-                                }
-                                @lunchOpen - @lunchClose
-                            </div>
-                            if (restaurant.ServesDinner)
-                            {
-                                <div class="col-auto d-none d-md-block">|</div>
-                            }
-                        }
-
-                        @if (restaurant != null && restaurant.ServesDinner && restaurant.DinnerOpenTime.HasValue && restaurant.DinnerCloseTime.HasValue)
-                        {
-                            <div class="col-auto">
-                                <i class="bi bi-moon text-dark me-1"></i>العشاء:
-                                @{
-                                    string dinnerOpen = FormatTimeSpanToAmPm(restaurant.DinnerOpenTime.Value);
-                                    string dinnerClose = FormatTimeSpanToAmPm(restaurant.DinnerCloseTime.Value);
-                                }
-                                @dinnerOpen - @dinnerClose
-                            </div>
-                        }
-
-                        @if (restaurant == null ||
-                        (!restaurant.ServesBreakfast && !restaurant.ServesLunch && !restaurant.ServesDinner) ||
-                        (restaurant.ServesBreakfast && (!restaurant.BreakfastOpenTime.HasValue || !restaurant.BreakfastCloseTime.HasValue)) &&
-                        (restaurant.ServesLunch && (!restaurant.LunchOpenTime.HasValue || !restaurant.LunchCloseTime.HasValue)) &&
-                        (restaurant.ServesDinner && (!restaurant.DinnerOpenTime.HasValue || !restaurant.DinnerCloseTime.HasValue)))
-                        {
-                            <div class="col-auto">
-                                <i class="bi bi-info-circle text-dark me-1"></i>معلومات أوقات الوجبات غير متوفرة
-                            </div>
-                        }
+<!-- Main Content Section -->
+<div class="container-fluid py-4 py-lg-5 bg-white">
+    <div class="container">
+        <!-- Card Header -->
+        <div class="card border-0 shadow mb-4">
+            <div class="card-header bg-white py-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h3 class="fw-bold mb-0">قائمة الأسبوع</h3>
+                    <div>
+                        <a class="btn btn-success" asp-area="User" asp-controller="Purchase" asp-action="Index">
+                            <i class="bi bi-plus-lg me-2"></i>شراء التذاكر
+                        </a>
                     </div>
                 </div>
             </div>
 
-            <!-- Menu -->
-            <div class="tab-content" id="menuContent">
-                @foreach (var menu in Model)
-                {
-                    var isActive = menu == Model.FirstOrDefault() ? "show active" : "";
-                    <div class="tab-pane fade @isActive" id="@menu.Day.ToLower()">
-                        <div class="row" id="@(menu.Day.ToLower())Menu">
+            <!-- Week Days -->
+            <div class="card-body p-0">
+                <nav>
+                    <div class="nav nav-tabs nav-fill border-0" role="tablist">
+                        @foreach (var menu in Model)
+                        {
+                            if (menu.Day != "الجمعة" && menu.Day != "السبت")
+                            {
+                                var isActive = menu == Model.FirstOrDefault(m => m.Day != "الجمعة" && m.Day != "السبت") ? "active" : "";
+                                <button class="nav-link @isActive py-3 px-2 px-md-3"
+                                        data-bs-toggle="tab"
+                                        data-bs-target="#@menu.Day.ToLower()"
+                                        type="button"
+                                        role="tab">
+                                    @menu.Day
+                                </button>
+                            }
+                        }
+                    </div>
+                </nav>
+            </div>
+
+            <!-- Meal Times -->
+            <div class="card-body border-top text-center">
+                <div class="row g-2 justify-content-center">
+                    @if (restaurant != null && restaurant.ServesBreakfast && restaurant.BreakfastOpenTime.HasValue && restaurant.BreakfastCloseTime.HasValue)
+                    {
+                        <div class="col-auto">
+                            <i class="bi bi-sun text-dark me-1"></i>الإفطار:
                             @{
-                                var mealsByCategory = menu.MenuMeals
-                                ?.Where(mm => mm.Meal != null)
-                                .Select(mm => mm.Meal)
-                                .GroupBy(m => m.MealCategory)
-                                .ToDictionary(g => g.Key, g => g.ToList())
-                                ?? new Dictionary<string, List<KauRestaurant.Models.Meal>>();
+                                string breakfastOpen = FormatTimeSpanToAmPm(restaurant.BreakfastOpenTime.Value);
+                                string breakfastClose = FormatTimeSpanToAmPm(restaurant.BreakfastCloseTime.Value);
+                            }
+                            @breakfastOpen - @breakfastClose
+                        </div>
+                        if (restaurant.ServesLunch || restaurant.ServesDinner)
+                        {
+                            <div class="col-auto d-none d-md-block">|</div>
+                        }
+                    }
 
-                                var categories = new[] { "الإفطار", "الغداء", "العشاء" };
+                    @if (restaurant != null && restaurant.ServesLunch && restaurant.LunchOpenTime.HasValue && restaurant.LunchCloseTime.HasValue)
+                    {
+                        <div class="col-auto">
+                            <i class="bi bi-brightness-high text-dark me-1"></i>الغداء:
+                            @{
+                                string lunchOpen = FormatTimeSpanToAmPm(restaurant.LunchOpenTime.Value);
+                                string lunchClose = FormatTimeSpanToAmPm(restaurant.LunchCloseTime.Value);
+                            }
+                            @lunchOpen - @lunchClose
+                        </div>
+                        if (restaurant.ServesDinner)
+                        {
+                            <div class="col-auto d-none d-md-block">|</div>
+                        }
+                    }
 
-                                foreach (var category in categories)
-                                {
-                                    var meals = mealsByCategory.ContainsKey(category)
-                                    ? mealsByCategory[category]
-                                    : new List<KauRestaurant.Models.Meal>();
+                    @if (restaurant != null && restaurant.ServesDinner && restaurant.DinnerOpenTime.HasValue && restaurant.DinnerCloseTime.HasValue)
+                    {
+                        <div class="col-auto">
+                            <i class="bi bi-moon text-dark me-1"></i>العشاء:
+                            @{
+                                string dinnerOpen = FormatTimeSpanToAmPm(restaurant.DinnerOpenTime.Value);
+                                string dinnerClose = FormatTimeSpanToAmPm(restaurant.DinnerCloseTime.Value);
+                            }
+                            @dinnerOpen - @dinnerClose
+                        </div>
+                    }
 
-                                    var (icon, bgColor) = UIConstants.MealCategoryInfo.ContainsKey(category)
-                                    ? UIConstants.MealCategoryInfo[category]
-                                    : ("bi-question", "#6c757d");
+                    @if (restaurant == null ||
+                    (!restaurant.ServesBreakfast && !restaurant.ServesLunch && !restaurant.ServesDinner) ||
+                    (restaurant.ServesBreakfast && (!restaurant.BreakfastOpenTime.HasValue || !restaurant.BreakfastCloseTime.HasValue)) &&
+                    (restaurant.ServesLunch && (!restaurant.LunchOpenTime.HasValue || !restaurant.LunchCloseTime.HasValue)) &&
+                    (restaurant.ServesDinner && (!restaurant.DinnerOpenTime.HasValue || !restaurant.DinnerCloseTime.HasValue)))
+                    {
+                        <div class="col-auto">
+                            <i class="bi bi-info-circle text-dark me-1"></i>معلومات أوقات الوجبات غير متوفرة
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
 
-                                    var categoryId = $"{menu.Day.ToLower()}{category}";
+        <!-- Menu -->
+        <div class="tab-content" id="menuContent">
+            @foreach (var menu in Model)
+            {
+                var isActive = menu == Model.FirstOrDefault() ? "show active" : "";
+                <div class="tab-pane fade @isActive" id="@menu.Day.ToLower()">
+                    <div class="row" id="@(menu.Day.ToLower())Menu">
+                        @{
+                            var mealsByCategory = menu.MenuMeals
+                            ?.Where(mm => mm.Meal != null)
+                            .Select(mm => mm.Meal)
+                            .GroupBy(m => m.MealCategory)
+                            .ToDictionary(g => g.Key, g => g.ToList())
+                            ?? new Dictionary<string, List<KauRestaurant.Models.Meal>>();
 
-                                    <div class="col-12 col-md-4 mb-3">
-                                        <div class="accordion accordion-desktop">
-                                            <div class="accordion-item border-0 rounded shadow h-100">
-                                                <h2 class="accordion-header">
-                                                    <button class="accordion-button collapsed text-white rounded-top"
-                                                            style="background-color: @bgColor" type="button"
-                                                            data-bs-toggle="collapse" data-bs-target="#@categoryId">
-                                                        <i class="bi @icon me-2"></i>@category
-                                                    </button>
-                                                </h2>
-                                                <div id="@categoryId" class="accordion-collapse collapse show">
-                                                    <div class="accordion-body p-4">
-                                                        @if (meals.Any())
+                            var categories = new[] { "الإفطار", "الغداء", "العشاء" };
+
+                            foreach (var category in categories)
+                            {
+                                var meals = mealsByCategory.ContainsKey(category)
+                                ? mealsByCategory[category]
+                                : new List<KauRestaurant.Models.Meal>();
+
+                                var (icon, bgColor) = UIConstants.MealCategoryInfo.ContainsKey(category)
+                                ? UIConstants.MealCategoryInfo[category]
+                                : ("bi-question", "#6c757d");
+
+                                var categoryId = $"{menu.Day.ToLower()}{category}";
+
+                                <div class="col-12 col-md-4 mb-3">
+                                    <div class="accordion accordion-desktop">
+                                        <div class="accordion-item border-0 rounded shadow h-100">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button collapsed text-white rounded-top"
+                                                        style="background-color: @bgColor" type="button"
+                                                        data-bs-toggle="collapse" data-bs-target="#@categoryId">
+                                                    <i class="bi @icon me-2"></i>@category
+                                                </button>
+                                            </h2>
+                                            <div id="@categoryId" class="accordion-collapse collapse show">
+                                                <div class="accordion-body p-4">
+                                                    @if (meals.Any())
+                                                    {
+                                                        var mealsByType = meals
+                                                        .GroupBy(m => m.MealType)
+                                                        .OrderBy(g => g.Key != "الطبق الرئيسي")
+                                                        .ThenBy(g => g.Key != "طبق جانبي")
+                                                        .ToDictionary(g => g.Key, g => g.ToList());
+
+                                                        foreach (var typeGroup in mealsByType)
                                                         {
-                                                            var mealsByType = meals
-                                                            .GroupBy(m => m.MealType)
-                                                            .OrderBy(g => g.Key != "الطبق الرئيسي")
-                                                            .ThenBy(g => g.Key != "طبق جانبي")
-                                                            .ToDictionary(g => g.Key, g => g.ToList());
-
-                                                            foreach (var typeGroup in mealsByType)
-                                                            {
-                                                                <div class="mb-4">
-                                                                    <div class="d-flex align-items-center border-bottom pb-2 mb-3">
-                                                                        <span class="badge @(UIConstants.MealTypeBadgeColors.ContainsKey(typeGroup.Key) ?
+                                                            <div class="mb-4">
+                                                                <div class="d-flex align-items-center border-bottom pb-2 mb-3">
+                                                                    <span class="badge @(UIConstants.MealTypeBadgeColors.ContainsKey(typeGroup.Key) ?
                                                                             UIConstants.MealTypeBadgeColors[typeGroup.Key] : "bg-secondary")">
-                                                                            @typeGroup.Key
-                                                                        </span>
-                                                                    </div>
-                                                                    <div class="list-group list-group-flush">
-                                                                        @foreach (var meal in typeGroup.Value)
-                                                                        {
-                                                                            <div class="list-group-item px-0 py-1">
-                                                                                <a class="d-flex justify-content-between align-items-start text-decoration-none"
-                                                                                   asp-controller="Meal"
-                                                                                   asp-action="Index"
-                                                                                   asp-route-id="@meal.MealID">
-                                                                                    <div>
-                                                                                        <strong class="text-dark">@meal.MealName</strong>
-                                                                                    </div>
-                                                                                    <div>
-                                                                                        <span class="badge bg-light text-dark">@meal.Calories سعرة حرارية</span>
-                                                                                        @if (meal.Reviews != null && meal.Reviews.Any())
-                                                                                        {
-                                                                                            <div class="text-muted text-center small">
-                                                                                                @{
-                                                                                                    var avgRating = meal.Reviews.Average(r => r.Rating);
-                                                                                                    var fullStars = (int)Math.Floor(avgRating);
-                                                                                                    var hasHalfStar = avgRating - fullStars >= 0.5;
-                                                                                                    var emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
-                                                                                                }
-
-                                                                                                <!-- Half star if needed -->
-                                                                                                @if (hasHalfStar)
-                                                                                                {
-                                                                                                    <i class="bi bi-star-half text-warning"></i>
-                                                                                                }
-
-                                                                                                <!-- Full stars -->
-                                                                                                @for (int i = 0; i < fullStars; i++)
-                                                                                                {
-                                                                                                    <i class="bi bi-star-fill text-warning"></i>
-                                                                                                }
-
-                                                                                                <!-- Empty stars -->
-                                                                                                @for (int i = 0; i < emptyStars; i++)
-                                                                                                {
-                                                                                                    <i class="bi bi-star text-warning"></i>
-                                                                                                }
-
-                                                                                                <span class="ms-1">@avgRating.ToString("F1")</span>
-                                                                                            </div>
-                                                                                        }
-                                                                                        else
-                                                                                        {
-                                                                                            <div class="text-muted text-center small">
-                                                                                                <span class="ms-1">لا توجد تقييمات</span>
-                                                                                            </div>
-                                                                                        }
-                                                                                    </div>
-                                                                                </a>
-                                                                            </div>
-                                                                        }
-                                                                    </div>
+                                                                        @typeGroup.Key
+                                                                    </span>
                                                                 </div>
-                                                            }
-                                                        }
-                                                        else
-                                                        {
-                                                            <div class="alert alert-light">
-                                                                لا يوجد وجبات مسجلة لهذا اليوم
+                                                                <div class="list-group list-group-flush">
+                                                                    @foreach (var meal in typeGroup.Value)
+                                                                    {
+                                                                        <div class="list-group-item px-0 py-1">
+                                                                            <a class="d-flex justify-content-between align-items-start text-decoration-none"
+                                                                               asp-controller="Meal"
+                                                                               asp-action="Index"
+                                                                               asp-route-id="@meal.MealID">
+                                                                                <div>
+                                                                                    <strong class="text-dark">@meal.MealName</strong>
+                                                                                </div>
+                                                                                <div>
+                                                                                    <span class="badge bg-light text-dark">@meal.Calories سعرة حرارية</span>
+                                                                                    @if (meal.Reviews != null && meal.Reviews.Any())
+                                                                                    {
+                                                                                        <div class="text-muted text-center small">
+                                                                                            @{
+                                                                                                var avgRating = meal.Reviews.Average(r => r.Rating);
+                                                                                                var fullStars = (int)Math.Floor(avgRating);
+                                                                                                var hasHalfStar = avgRating - fullStars >= 0.5;
+                                                                                                var emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+                                                                                            }
+
+                                                                                            <!-- Half star if needed -->
+                                                                                            @if (hasHalfStar)
+                                                                                            {
+                                                                                                <i class="bi bi-star-half text-warning"></i>
+                                                                                            }
+
+                                                                                            <!-- Full stars -->
+                                                                                            @for (int i = 0; i < fullStars; i++)
+                                                                                            {
+                                                                                                <i class="bi bi-star-fill text-warning"></i>
+                                                                                            }
+
+                                                                                            <!-- Empty stars -->
+                                                                                            @for (int i = 0; i < emptyStars; i++)
+                                                                                            {
+                                                                                                <i class="bi bi-star text-warning"></i>
+                                                                                            }
+
+                                                                                            <span class="ms-1">@avgRating.ToString("F1")</span>
+                                                                                        </div>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <div class="text-muted text-center small">
+                                                                                            <span class="ms-1">لا توجد تقييمات</span>
+                                                                                        </div>
+                                                                                    }
+                                                                                </div>
+                                                                            </a>
+                                                                        </div>
+                                                                    }
+                                                                </div>
                                                             </div>
                                                         }
-                                                    </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="alert alert-light">
+                                                            لا يوجد وجبات مسجلة لهذا اليوم
+                                                        </div>
+                                                    }
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                }
+                                </div>
                             }
-                        </div>
+                        }
                     </div>
-                }
-            </div>
+                </div>
+            }
         </div>
     </div>
 </div>

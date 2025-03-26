@@ -5,191 +5,189 @@
     ViewData["Title"] = Model.MealName;
 }
 
-<div>
-    <!-- Meal Details Section -->
-    <div class="container-fluid py-4 py-lg-5 bg-white">
-        <div class="container">
-            <div class="row">
-                <!-- Meal Information -->
-                <div class="col-md-8 mb-4">
-                    <div class="card border-0 shadow">
+<!-- Meal Details Section -->
+<div class="container-fluid py-4 py-lg-5 bg-white">
+    <div class="container">
+        <div class="row">
+            <!-- Meal Information -->
+            <div class="col-md-8 mb-4">
+                <div class="card border-0 shadow">
 
-                        <!-- Card Header -->
-                        <div class="card-header bg-white py-3">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <h3 class="fw-bold mb-0">@Model.MealName</h3>
-                                <a href="javascript:history.back()" class="btn btn-success">
-                                    <i class="bi bi-arrow-left me-2"></i>العودة
-                                </a>
+                    <!-- Card Header -->
+                    <div class="card-header bg-white py-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h3 class="fw-bold mb-0">@Model.MealName</h3>
+                            <a href="javascript:history.back()" class="btn btn-success">
+                                <i class="bi bi-arrow-left me-2"></i>العودة
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="card-body p-4">
+                        <div class="mb-4">
+                            <!-- Meal Photo -->
+                            @if (!string.IsNullOrEmpty(Model.PicturePath))
+                            {
+                                <img src="@Url.Content(Model.PicturePath)" class="img-fluid" style="height: 300px; object-fit: cover;" alt="@Model.MealName" />
+                            }
+                            else
+                            {
+                                <img src="" class="img-fluid" style="height: 300px; object-fit: cover;" alt="@Model.MealName" />
+                            }
+                            <div class="d-flex align-items-center mb-3">
+                                <span class="badge @(UIConstants.MealTypeBadgeColors.ContainsKey(Model.MealType) ?
+                                          UIConstants.MealTypeBadgeColors[Model.MealType] : "bg-secondary") me-2">
+                                    @Model.MealType
+                                </span>
+                                <span class="badge bg-light text-dark">@Model.Calories سعرة حرارية</span>
                             </div>
+                            @if (!string.IsNullOrEmpty(Model.Description))
+                            {
+                                <p class="text-muted">@Model.Description</p>
+                            }
+                            else
+                            {
+                                <p class="text-muted">لا يوجد وصف لهذه الوجبة.</p>
+                            }
                         </div>
 
-                        <div class="card-body p-4">
-                            <div class="mb-4">
-                                <!-- Meal Photo -->
-                                @if (!string.IsNullOrEmpty(Model.PicturePath))
-                                {
-                                    <img src="@Url.Content(Model.PicturePath)" class="img-fluid" style="height: 300px; object-fit: cover;" alt="@Model.MealName" />
-                                }
-                                else
-                                {
-                                    <img src="" class="img-fluid" style="height: 300px; object-fit: cover;" alt="@Model.MealName" />
-                                }
-                                <div class="d-flex align-items-center mb-3">
-                                    <span class="badge @(UIConstants.MealTypeBadgeColors.ContainsKey(Model.MealType) ?
-                                          UIConstants.MealTypeBadgeColors[Model.MealType] : "bg-secondary") me-2">
-                                        @Model.MealType
-                                    </span>
-                                    <span class="badge bg-light text-dark">@Model.Calories سعرة حرارية</span>
+                        <div>
+                            <h4 class="fw-bold mb-3">معلومات غذائية</h4>
+                            <div class="row g-3">
+                                <div class="col-8 col-md-4">
+                                    <div class="border rounded p-3 text-center">
+                                        <div class="fw-bold text-success mb-1">البروتين</div>
+                                        <div>@Model.Protein جرام</div>
+                                    </div>
                                 </div>
-                                @if (!string.IsNullOrEmpty(Model.Description))
-                                {
-                                    <p class="text-muted">@Model.Description</p>
-                                }
-                                else
-                                {
-                                    <p class="text-muted">لا يوجد وصف لهذه الوجبة.</p>
-                                }
-                            </div>
-
-                            <div>
-                                <h4 class="fw-bold mb-3">معلومات غذائية</h4>
-                                <div class="row g-3">
-                                    <div class="col-8 col-md-4">
-                                        <div class="border rounded p-3 text-center">
-                                            <div class="fw-bold text-success mb-1">البروتين</div>
-                                            <div>@Model.Protein جرام</div>
-                                        </div>
+                                <div class="col-8 col-md-4">
+                                    <div class="border rounded p-3 text-center">
+                                        <div class="fw-bold text-success mb-1">الكربوهيدرات</div>
+                                        <div>@Model.Carbs جرام</div>
                                     </div>
-                                    <div class="col-8 col-md-4">
-                                        <div class="border rounded p-3 text-center">
-                                            <div class="fw-bold text-success mb-1">الكربوهيدرات</div>
-                                            <div>@Model.Carbs جرام</div>
-                                        </div>
-                                    </div>
-                                    <div class="col-8 col-md-4">
-                                        <div class="border rounded p-3 text-center">
-                                            <div class="fw-bold text-success mb-1">الدهون</div>
-                                            <div>@Model.Fat جرام</div>
-                                        </div>
+                                </div>
+                                <div class="col-8 col-md-4">
+                                    <div class="border rounded p-3 text-center">
+                                        <div class="fw-bold text-success mb-1">الدهون</div>
+                                        <div>@Model.Fat جرام</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Reviews Section -->
-                <div class="col-md-4">
-                    <div class="card border-0 shadow">
-                        <div class="card-body p-4">
-                            <!-- Reviews Header with Rating Summary -->
-                            @if (Model.Reviews != null && Model.Reviews.Any())
-                            {
-                                var averageRating = Model.Reviews.Average(r => r.Rating);
-                                var reviewCount = Model.Reviews.Count();
-                                <div class="d-flex flex-column mb-4">
-                                    <h3 class="fw-bold">التقييمات والمراجعات</h3>
+            <!-- Reviews Section -->
+            <div class="col-md-4">
+                <div class="card border-0 shadow">
+                    <div class="card-body p-4">
+                        <!-- Reviews Header with Rating Summary -->
+                        @if (Model.Reviews != null && Model.Reviews.Any())
+                        {
+                            var averageRating = Model.Reviews.Average(r => r.Rating);
+                            var reviewCount = Model.Reviews.Count();
+                            <div class="d-flex flex-column mb-4">
+                                <h3 class="fw-bold">التقييمات والمراجعات</h3>
+                                <div class="d-flex align-items-center">
+                                    <span class="display-6 fw-bold me-2">@averageRating.ToString("0.0")</span>
                                     <div class="d-flex align-items-center">
-                                        <span class="display-6 fw-bold me-2">@averageRating.ToString("0.0")</span>
-                                        <div class="d-flex align-items-center">
-                                            <div class="text-warning me-2">
+                                        <div class="text-warning me-2">
+                                            @for (int i = 1; i <= 5; i++)
+                                            {
+                                                @if (i <= Math.Round(averageRating))
+                                                {
+                                                    <i class="bi bi-star-fill"></i>
+                                                }
+                                                else
+                                                {
+                                                    <i class="bi bi-star"></i>
+                                                }
+                                            }
+                                        </div>
+                                        <small class="text-muted">(@reviewCount @(reviewCount == 1 ? "تقييم" : "تقييمات"))</small>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="mb-4">
+                                <h3 class="fw-bold">التقييمات والمراجعات</h3>
+                                <div class="text-muted">لا يوجد تقييمات بعد</div>
+                            </div>
+                        }
+
+                        <!-- Review Form -->
+                        <form class="mb-4" method="post" asp-controller="Meal" asp-action="submitReview">
+                            <input type="hidden" name="mealId" value="@Model.MealID" />
+                            <div class="mb-3">
+                                <label class="form-label">تقييمك</label>
+                                <div class="star-rating">
+                                    @for (int i = 5; i >= 1; i--)
+                                    {
+                                        <input type="radio" id="star@(i)" name="rating" value="@i" required />
+                                        <label for="star@(i)"><i class="bi bi-star-fill"></i></label>
+                                    }
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">تعليقك</label>
+                                <textarea class="form-control" name="comment" rows="3" placeholder="اكتب تعليقك هنا..." required></textarea>
+                            </div>
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <button type="submit" class="btn btn-success w-100">إرسال التقييم</button>
+                            }
+                            else
+                            {
+                                <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-success w-100">تسجيل الدخول للتقييم</a>
+                            }
+                        </form>
+
+                        <!-- Reviews List with Header -->
+                        @if (Model.Reviews != null && Model.Reviews.Any())
+                        {
+                            <hr class="my-3" />
+                            <h5 class="mb-3">آراء المستخدمين</h5>
+                            <div class="reviews-list">
+                                @foreach (var review in Model.Reviews.OrderByDescending(r => r.ReviewDate))
+                                {
+                                    <div class="border-bottom pb-3 mb-3">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <div class="text-warning">
                                                 @for (int i = 1; i <= 5; i++)
                                                 {
-                                                    @if (i <= Math.Round(averageRating))
+                                                    @if (i <= review.Rating)
                                                     {
-                                                        <i class="bi bi-star-fill"></i>
+                                                        <i class="bi bi-star-fill small"></i>
                                                     }
                                                     else
                                                     {
-                                                        <i class="bi bi-star"></i>
+                                                        <i class="bi bi-star small"></i>
                                                     }
                                                 }
                                             </div>
-                                            <small class="text-muted">(@reviewCount @(reviewCount == 1 ? "تقييم" : "تقييمات"))</small>
+                                            <small class="text-muted">@review.ReviewDate.ToString("dd/MM/yyyy")</small>
                                         </div>
+                                        <p class="mb-1 fw-semibold">@(review.Customer?.FirstName ?? "مستخدم") @(review.Customer?.LastName ?? "")</p>
+                                        <p class="mb-0 small">@review.ReviewText</p>
                                     </div>
-                                </div>
-                            }
-                            else
-                            {
-                                <div class="mb-4">
-                                    <h3 class="fw-bold">التقييمات والمراجعات</h3>
-                                    <div class="text-muted">لا يوجد تقييمات بعد</div>
-                                </div>
-                            }
-
-                            <!-- Review Form -->
-                            <form class="mb-4" method="post" asp-controller="Meal" asp-action="submitReview">
-                                <input type="hidden" name="mealId" value="@Model.MealID" />
-                                <div class="mb-3">
-                                    <label class="form-label">تقييمك</label>
-                                    <div class="star-rating">
-                                        @for (int i = 5; i >= 1; i--)
-                                        {
-                                            <input type="radio" id="star@(i)" name="rating" value="@i" required />
-                                            <label for="star@(i)"><i class="bi bi-star-fill"></i></label>
-                                        }
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">تعليقك</label>
-                                    <textarea class="form-control" name="comment" rows="3" placeholder="اكتب تعليقك هنا..." required></textarea>
-                                </div>
-                                @if (User.Identity.IsAuthenticated)
-                                {
-                                    <button type="submit" class="btn btn-success w-100">إرسال التقييم</button>
                                 }
-                                else
-                                {
-                                    <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-success w-100">تسجيل الدخول للتقييم</a>
-                                }
-                            </form>
-
-                            <!-- Reviews List with Header -->
-                            @if (Model.Reviews != null && Model.Reviews.Any())
-                            {
-                                <hr class="my-3" />
-                                <h5 class="mb-3">آراء المستخدمين</h5>
-                                <div class="reviews-list">
-                                    @foreach (var review in Model.Reviews.OrderByDescending(r => r.ReviewDate))
-                                    {
-                                        <div class="border-bottom pb-3 mb-3">
-                                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                                <div class="text-warning">
-                                                    @for (int i = 1; i <= 5; i++)
-                                                    {
-                                                        @if (i <= review.Rating)
-                                                        {
-                                                            <i class="bi bi-star-fill small"></i>
-                                                        }
-                                                        else
-                                                        {
-                                                            <i class="bi bi-star small"></i>
-                                                        }
-                                                    }
-                                                </div>
-                                                <small class="text-muted">@review.ReviewDate.ToString("dd/MM/yyyy")</small>
-                                            </div>
-                                            <p class="mb-1 fw-semibold">@(review.Customer?.FirstName ?? "مستخدم") @(review.Customer?.LastName ?? "")</p>
-                                            <p class="mb-0 small">@review.ReviewText</p>
-                                        </div>
-                                    }
-                                </div>
-                            }
-                            else
-                            {
-                                <hr class="my-3" />
-                                <div class="text-center text-muted py-3">
-                                    <i class="bi bi-chat-square-text display-6 mb-2"></i>
-                                    <p>كن أول من يقيم هذه الوجبة</p>
-                                </div>
-                            }
-                        </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <hr class="my-3" />
+                            <div class="text-center text-muted py-3">
+                                <i class="bi bi-chat-square-text display-6 mb-2"></i>
+                                <p>كن أول من يقيم هذه الوجبة</p>
+                            </div>
+                        }
                     </div>
                 </div>
-
             </div>
+
         </div>
     </div>
 </div>
