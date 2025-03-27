@@ -46,13 +46,7 @@
                         <!-- Tab Navigation -->
                         <ul class="nav nav-tabs border-0" id="footerTabs" role="tablist">
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link active px-4 py-3" id="social-media-tab" data-bs-toggle="tab"
-                                        data-bs-target="#social-media-content" type="button" role="tab">
-                                    <i class="bi bi-share me-2"></i>السوشيال ميديا
-                                </button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link px-4 py-3" id="faq-tab" data-bs-toggle="tab"
+                                <button class="nav-link active px-4 py-3" id="faq-tab" data-bs-toggle="tab"
                                         data-bs-target="#faq-content" type="button" role="tab">
                                     <i class="bi bi-question-circle me-2"></i>الأسئلة الشائعة
                                 </button>
@@ -67,105 +61,9 @@
 
                         <!-- Tab Content -->
                         <div class="tab-content" id="footerTabsContent">
-                            <!-- Social Media Tab -->
-                            <div class="tab-pane fade show active p-4" id="social-media-content" role="tabpanel">
-                                <div class="d-flex justify-content-between align-items-center mb-4">
-                                    <h4 class="mb-0">إدارة السوشيال ميديا</h4>
-                                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addSocialMediaModal">
-                                        <i class="bi bi-plus-lg me-2"></i>إضافة منصة جديدة
-                                    </button>
-                                </div>
-
-                                <!-- Social Media List -->
-                                <div class="table-responsive">
-                                    <table class="table table-hover align-middle">
-                                        <thead class="table-light">
-                                            <tr>
-                                                <th scope="col" width="60">#</th>
-                                                <th scope="col">المنصة</th>
-                                                <th scope="col">الأيقونة</th>
-                                                <th scope="col">الرابط</th>
-                                                <th scope="col" width="100">الترتيب</th>
-                                                <th scope="col" width="100">الحالة</th>
-                                                <th scope="col" width="150">الإجراءات</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @if (Model.SocialMediaAccounts != null && Model.SocialMediaAccounts.Any())
-                                            {
-                                                @foreach (var social in Model.SocialMediaAccounts.OrderBy(s => s.DisplayOrder))
-                                                {
-                                                    <tr>
-                                                        <td>@social.SocialMediaID</td>
-                                                        <td>@social.Name</td>
-                                                        <td><i class="bi @social.Icon fs-4"></i></td>
-                                                        <td>
-                                                            @if (!string.IsNullOrEmpty(social.Link))
-                                                            {
-                                                                <a href="@social.Link" target="_blank" class="text-truncate d-inline-block" style="max-width: 200px;">@social.Link</a>
-                                                            }
-                                                            else
-                                                            {
-                                                                <span class="text-muted">غير محدد</span>
-                                                            }
-                                                        </td>
-                                                        <td>@social.DisplayOrder</td>
-                                                        <td>
-                                                            @if (social.IsActive)
-                                                            {
-                                                                <span class="badge bg-success rounded-pill">نشط</span>
-                                                            }
-                                                            else
-                                                            {
-                                                                <span class="badge bg-secondary rounded-pill">غير نشط</span>
-                                                            }
-                                                        </td>
-                                                        <td>
-                                                            <div class="btn-group">
-                                                                <button type="button" class="btn btn-sm btn-outline-primary edit-social-btn"
-                                                                        data-id="@social.SocialMediaID"
-                                                                        data-name="@social.Name"
-                                                                        data-icon="@social.Icon"
-                                                                        data-link="@social.Link"
-                                                                        data-order="@social.DisplayOrder"
-                                                                        data-active="@social.IsActive.ToString().ToLower()"
-                                                                        data-bs-toggle="modal" data-bs-target="#editSocialMediaModal">
-                                                                    <i class="bi bi-pencil"></i>
-                                                                </button>
-                                                                <form method="post" asp-action="ToggleSocialMediaStatus" asp-route-id="@social.SocialMediaID" class="d-inline">
-                                                                    <button type="submit" class="btn btn-sm @(social.IsActive ? "btn-outline-secondary" : "btn-outline-success")" title="@(social.IsActive ? "تعطيل" : "تفعيل")">
-                                                                        <i class="bi @(social.IsActive ? "bi-x-circle" : "bi-check-circle")"></i>
-                                                                    </button>
-                                                                </form>
-                                                                <button type="button" class="btn btn-sm btn-outline-danger delete-social-btn"
-                                                                        data-id="@social.SocialMediaID"
-                                                                        data-name="@social.Name"
-                                                                        data-bs-toggle="modal" data-bs-target="#deleteSocialMediaModal">
-                                                                    <i class="bi bi-trash"></i>
-                                                                </button>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                }
-                                            }
-                                            else
-                                            {
-                                                <tr>
-                                                    <td colspan="7" class="text-center py-4">
-                                                        <div class="text-muted">
-                                                            <i class="bi bi-exclamation-circle fs-4 d-block mb-2"></i>
-                                                            لا توجد منصات سوشيال ميديا مضافة
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            }
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
 
                             <!-- FAQ Tab -->
-                            <div class="tab-pane fade p-4" id="faq-content" role="tabpanel">
+                            <div class="tab-pane fade show active p-4" id="faq-content" role="tabpanel">
                                 <div class="d-flex justify-content-between align-items-center mb-4">
                                     <h4 class="mb-0">إدارة الأسئلة الشائعة</h4>
                                     <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addFaqModal">
@@ -182,7 +80,6 @@
                                                 <tr>
                                                     <th scope="col" width="60">#</th>
                                                     <th scope="col">السؤال</th>
-                                                    <th scope="col" width="100">الترتيب</th>
                                                     <th scope="col" width="150">الإجراءات</th>
                                                 </tr>
                                             </thead>
@@ -190,12 +87,11 @@
                                                 @foreach (var faq in Model.FAQs.OrderBy(f => f.DisplayOrder))
                                                 {
                                                     <tr>
-                                                        <td>@faq.FAQID</td>
-                                                        <td class="text-truncate">@faq.Question</td>
                                                         <td>@faq.DisplayOrder</td>
+                                                        <td class="text-truncate">@faq.Question</td>
                                                         <td>
                                                             <div class="btn-group">
-                                                                <button type="button" class="btn btn-sm btn-outline-primary edit-faq-btn"
+                                                                <button type="button" class="btn btn-sm btn-outline-success edit-faq-btn"
                                                                         data-id="@faq.FAQID"
                                                                         data-question="@faq.Question"
                                                                         data-answer="@faq.Answer"
@@ -251,15 +147,15 @@
                                                 @foreach (var term in Model.Terms)
                                                 {
                                                     <tr>
-                                                        <td>@term.TermID</td>
+                                                        <td>@term.DisplayOrder</td>
                                                         <td>@(string.IsNullOrEmpty(term.Title) ? "الشروط والأحكام" : term.Title)</td>
                                                         <td>@term.LastUpdated.ToString("yyyy/MM/dd")</td>
                                                         <td>
                                                             <div class="btn-group">
-                                                                <button type="button" class="btn btn-sm btn-outline-primary edit-terms-btn"
+                                                                <button type="button" class="btn btn-sm btn-outline-success edit-terms-btn"
                                                                         data-id="@term.TermID"
                                                                         data-title="@term.Title"
-                                                                        data-content="@term.Content"
+                                                                        data-order="@term.DisplayOrder"
                                                                         data-bs-toggle="modal" data-bs-target="#editTermsModal">
                                                                     <i class="bi bi-pencil"></i>
                                                                 </button>
@@ -276,6 +172,14 @@
                                             </tbody>
                                         </table>
                                     </div>
+
+                                    <!-- Hidden content for edit operations -->
+                                    <div class="d-none">
+                                        @foreach (var term in Model.Terms)
+                                        {
+                                            <div id="term-content-@term.TermID">@Html.Raw(term.Content)</div>
+                                        }
+                                    </div>
                                 }
                                 else
                                 {
@@ -288,119 +192,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
-
-<!-- Social Media Modals -->
-<!-- Add Social Media Modal -->
-<div class="modal fade" id="addSocialMediaModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <form method="post" asp-action="AddSocialMedia">
-                <div class="modal-header">
-                    <h5 class="modal-title">إضافة منصة سوشيال ميديا</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label class="form-label">اسم المنصة</label>
-                        <input type="text" class="form-control" name="Name" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">الأيقونة (Bootstrap Icons)</label>
-                        <div class="input-group">
-                            <span class="input-group-text">bi-</span>
-                            <input type="text" class="form-control" name="Icon" placeholder="twitter" required>
-                        </div>
-                        <small class="text-muted">أدخل اسم الأيقونة فقط بدون البادئة bi-</small>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">الرابط</label>
-                        <input type="url" class="form-control" name="Link" placeholder="https://">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">ترتيب العرض</label>
-                        <input type="number" class="form-control" name="DisplayOrder" value="0" min="0">
-                    </div>
-                    <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" name="IsActive" checked>
-                        <label class="form-check-label">نشط</label>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
-                    <button type="submit" class="btn btn-success">إضافة</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<!-- Edit Social Media Modal -->
-<div class="modal fade" id="editSocialMediaModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <form method="post" asp-action="EditSocialMedia">
-                <input type="hidden" id="edit-social-id" name="SocialMediaID">
-                <div class="modal-header">
-                    <h5 class="modal-title">تعديل منصة سوشيال ميديا</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label class="form-label">اسم المنصة</label>
-                        <input type="text" id="edit-social-name" class="form-control" name="Name" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">الأيقونة (Bootstrap Icons)</label>
-                        <div class="input-group">
-                            <span class="input-group-text">bi-</span>
-                            <input type="text" id="edit-social-icon" class="form-control" name="Icon" required>
-                        </div>
-                        <small class="text-muted">أدخل اسم الأيقونة بدون البادئة bi-</small>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">الرابط</label>
-                        <input type="url" id="edit-social-link" class="form-control" name="Link">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">ترتيب العرض</label>
-                        <input type="number" id="edit-social-order" class="form-control" name="DisplayOrder" min="0">
-                    </div>
-                    <div class="form-check form-switch">
-                        <input class="form-check-input" id="edit-social-active" type="checkbox" name="IsActive">
-                        <label class="form-check-label">نشط</label>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
-                    <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<!-- Delete Social Media Modal -->
-<div class="modal fade" id="deleteSocialMediaModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <form method="post" asp-action="DeleteSocialMedia">
-                <input type="hidden" id="delete-social-id" name="id">
-                <div class="modal-header">
-                    <h5 class="modal-title">حذف منصة سوشيال ميديا</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p>هل أنت متأكد من رغبتك في حذف منصة "<span id="delete-social-name" class="fw-bold"></span>"؟</p>
-                    <p class="text-danger">هذا الإجراء لا يمكن التراجع عنه.</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
-                    <button type="submit" class="btn btn-danger">حذف</button>
-                </div>
-            </form>
         </div>
     </div>
 </div>
@@ -426,7 +217,7 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">ترتيب العرض</label>
-                        <input type="number" class="form-control" name="DisplayOrder" value="0" min="0">
+                        <input type="number" class="form-control" name="DisplayOrder" value="1" min="1">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -459,12 +250,12 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">ترتيب العرض</label>
-                        <input type="number" id="edit-faq-order" class="form-control" name="DisplayOrder" min="0">
+                        <input type="number" id="edit-faq-order" class="form-control" name="DisplayOrder" min="1">
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
-                    <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
+                    <button type="submit" class="btn btn-success">حفظ التغييرات</button>
                 </div>
             </form>
         </div>
@@ -505,13 +296,19 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="mb-3">
-                        <label class="form-label">العنوان</label>
-                        <input type="text" class="form-control" name="Title" maxlength="200">
+                    <div class="row">
+                        <div class="col-md-8 mb-3">
+                            <label class="form-label">العنوان</label>
+                            <input type="text" class="form-control" name="Title" maxlength="200">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">ترتيب العرض</label>
+                            <input type="number" class="form-control" name="DisplayOrder" value="1" min="1" style="text-align: right; width: 100%;">
+                        </div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">المحتوى</label>
-                        <textarea class="form-control" id="terms-content-editor" name="Content" rows="15" required></textarea>
+                        <textarea class="form-control content-editor" id="terms-content-editor" name="Content" rows="15" required></textarea>
                         <small class="text-muted">يمكنك استخدام HTML لتنسيق المحتوى.</small>
                     </div>
                 </div>
@@ -529,30 +326,38 @@
     <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content">
             <form method="post" asp-action="EditTerms">
-                <input type="hidden" id="edit-terms-id" name="TermsID">
+                <input type="hidden" id="edit-terms-id" name="TermID">
                 <div class="modal-header">
                     <h5 class="modal-title">تعديل الشروط والأحكام</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="mb-3">
-                        <label class="form-label">العنوان</label>
-                        <input type="text" id="edit-terms-title" class="form-control" name="Title" maxlength="200">
+                    <div class="row">
+                        <div class="col-md-8 mb-3">
+                            <label class="form-label">العنوان</label>
+                            <input type="text" id="edit-terms-title" class="form-control" name="Title" maxlength="200">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">ترتيب العرض</label>
+                            <input type="number" id="edit-terms-order" class="form-control" name="DisplayOrder" min="1" style="text-align: right; width: 100%;">
+                        </div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">المحتوى</label>
-                        <textarea class="form-control" id="edit-terms-content" name="Content" rows="15" required></textarea>
+                        <textarea class="form-control content-editor" id="edit-terms-content" name="Content" rows="15" required></textarea>
                         <small class="text-muted">يمكنك استخدام HTML لتنسيق المحتوى.</small>
                     </div>
                 </div>
+
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
-                    <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
+                    <button type="submit" class="btn btn-success">حفظ التغييرات</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
+
 
 <!-- Delete Terms Modal -->
 <div class="modal fade" id="deleteTermsModal" tabindex="-1" aria-hidden="true">
@@ -578,79 +383,125 @@
 </div>
 
 @section Scripts {
-    <!-- Use the CDN version with a valid API key or the self-hosted version -->
-    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize TinyMCE
-            tinymce.init({
-                selector: '#terms-content-editor, #edit-terms-content',
-                plugins: 'link lists table code',
-                toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist | link table | code',
-                height: 400,
-                directionality: 'rtl',
-                menubar: false,
-                entity_encoding: 'raw' // Helps with Arabic text
-            });
+        $(document).ready(function() {
+            // Make sure first tab is active
+            $('#faq-tab').tab('show');
 
-            // Social Media Edit Button
-            document.querySelectorAll('.edit-social-btn').forEach(function(button) {
-                button.addEventListener('click', function() {
-                    document.getElementById('edit-social-id').value = this.dataset.id;
-                    document.getElementById('edit-social-name').value = this.dataset.name;
-                    document.getElementById('edit-social-icon').value = this.dataset.icon.replace('bi-', '');
-                    document.getElementById('edit-social-link').value = this.dataset.link;
-                    document.getElementById('edit-social-order').value = this.dataset.order;
-                    document.getElementById('edit-social-active').checked = this.dataset.active === 'true';
-                });
-            });
+            // Add simple formatting toolbar to textareas
+            $('.content-editor').each(function() {
+                var $textarea = $(this);
+                var $toolbar = $('<div class="btn-toolbar mb-2" role="toolbar"></div>');
 
-            // Social Media Delete Button
-            document.querySelectorAll('.delete-social-btn').forEach(function(button) {
-                button.addEventListener('click', function() {
-                    document.getElementById('delete-social-id').value = this.dataset.id;
-                    document.getElementById('delete-social-name').textContent = this.dataset.name;
+                var $btnGroup = $('<div class="btn-group me-2" role="group"></div>');
+
+                // Add formatting buttons
+                $btnGroup.append('<button type="button" class="btn btn-sm btn-outline-secondary" data-format="bold"><i class="bi bi-type-bold"></i></button>');
+                $btnGroup.append('<button type="button" class="btn btn-sm btn-outline-secondary" data-format="italic"><i class="bi bi-type-italic"></i></button>');
+                $btnGroup.append('<button type="button" class="btn btn-sm btn-outline-secondary" data-format="heading"><i class="bi bi-type-h1"></i></button>');
+
+                var $btnGroup2 = $('<div class="btn-group me-2" role="group"></div>');
+                $btnGroup2.append('<button type="button" class="btn btn-sm btn-outline-secondary" data-format="ul"><i class="bi bi-list-ul"></i></button>');
+                $btnGroup2.append('<button type="button" class="btn btn-sm btn-outline-secondary" data-format="ol"><i class="bi bi-list-ol"></i></button>');
+                $btnGroup2.append('<button type="button" class="btn btn-sm btn-outline-secondary" data-format="link"><i class="bi bi-link"></i></button>');
+
+                $toolbar.append($btnGroup);
+                $toolbar.append($btnGroup2);
+
+                // Insert toolbar before textarea
+                $textarea.before($toolbar);
+
+                // Add click handlers
+                $toolbar.find('button').click(function() {
+                    var format = $(this).data('format');
+                    var textarea = $textarea[0];
+                    var start = textarea.selectionStart;
+                    var end = textarea.selectionEnd;
+                    var selectedText = textarea.value.substring(start, end);
+                    var replacement = '';
+
+                    switch(format) {
+                        case 'bold':
+                            replacement = '<strong>' + selectedText + '</strong>';
+                            break;
+                        case 'italic':
+                            replacement = '<em>' + selectedText + '</em>';
+                            break;
+                        case 'heading':
+                            replacement = '<h3>' + selectedText + '</h3>';
+                            break;
+                        case 'ul':
+                            var items = selectedText.split('\n');
+                            replacement = '<ul>\n';
+                            items.forEach(function(item) {
+                                if (item.trim()) {
+                                    replacement += '  <li>' + item + '</li>\n';
+                                }
+                            });
+                            replacement += '</ul>';
+                            break;
+                        case 'ol':
+                            var items = selectedText.split('\n');
+                            replacement = '<ol>\n';
+                            items.forEach(function(item) {
+                                if (item.trim()) {
+                                    replacement += '  <li>' + item + '</li>\n';
+                                }
+                            });
+                            replacement += '</ol>';
+                            break;
+                        case 'link':
+                            var url = prompt('أدخل الرابط:', 'https://');
+                            if (url) {
+                                replacement = '<a href="' + url + '">' + (selectedText || url) + '</a>';
+                            } else {
+                                return;
+                            }
+                            break;
+                    }
+
+                    // Insert the formatted text
+                    textarea.value = textarea.value.substring(0, start) + replacement + textarea.value.substring(end);
+
+                    // Set cursor position after the insertion
+                    textarea.focus();
+                    textarea.selectionStart = start + replacement.length;
+                    textarea.selectionEnd = start + replacement.length;
                 });
             });
 
             // FAQ Edit Button
-            document.querySelectorAll('.edit-faq-btn').forEach(function(button) {
-                button.addEventListener('click', function() {
-                    document.getElementById('edit-faq-id').value = this.dataset.id;
-                    document.getElementById('edit-faq-question').value = this.dataset.question;
-                    document.getElementById('edit-faq-answer').value = this.dataset.answer;
-                    document.getElementById('edit-faq-order').value = this.dataset.order;
-                });
+            $('.edit-faq-btn').click(function() {
+                $('#edit-faq-id').val($(this).data('id'));
+                $('#edit-faq-question').val($(this).data('question'));
+                $('#edit-faq-answer').val($(this).data('answer'));
+                $('#edit-faq-order').val($(this).data('order'));
             });
 
             // FAQ Delete Button
-            document.querySelectorAll('.delete-faq-btn').forEach(function(button) {
-                button.addEventListener('click', function() {
-                    document.getElementById('delete-faq-id').value = this.dataset.id;
-                    document.getElementById('delete-faq-question').textContent = this.dataset.question;
-                });
+            $('.delete-faq-btn').click(function() {
+                $('#delete-faq-id').val($(this).data('id'));
+                $('#delete-faq-question').text($(this).data('question'));
             });
 
             // Terms Edit Button
-            document.querySelectorAll('.edit-terms-btn').forEach(function(button) {
-                button.addEventListener('click', function() {
-                    document.getElementById('edit-terms-id').value = this.dataset.id;
-                    document.getElementById('edit-terms-title').value = this.dataset.title;
-
-                    // Set content directly instead of using AJAX
-                    tinymce.get('edit-terms-content').setContent(this.dataset.content || '');
-                });
+            $('.edit-terms-btn').click(function() {
+                $('#edit-terms-id').val($(this).data('id'));
+                $('#edit-terms-title').val($(this).data('title'));
+                $('#edit-terms-order').val($(this).data('order'));
+    
+                // Get content from hidden div
+                var content = $('#term-content-' + $(this).data('id')).html();
+                $('#edit-terms-content').val(content);
             });
 
 
+
             // Terms Delete Button
-            document.querySelectorAll('.delete-terms-btn').forEach(function(button) {
-                button.addEventListener('click', function() {
-                    document.getElementById('delete-terms-id').value = this.dataset.id;
-                    document.getElementById('delete-terms-title').textContent = this.dataset.title;
-                });
+            $('.delete-terms-btn').click(function() {
+                $('#delete-terms-id').val($(this).data('id'));
+                $('#delete-terms-title').text($(this).data('title'));
             });
         });
     </script>
 }
-

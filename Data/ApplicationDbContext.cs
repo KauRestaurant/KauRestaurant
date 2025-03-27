@@ -21,7 +21,6 @@ namespace KauRestaurant.Data
         public DbSet<Feedback> Feedbacks { get; set; }
         public DbSet<FAQ> FAQs { get; set; }
         public DbSet<Terms> Terms { get; set; }
-        public DbSet<SocialMedia> SocialMedia { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -483,46 +482,6 @@ namespace KauRestaurant.Data
                     Content = "يحتفظ المطعم بالحق في تعديل هذه الشروط في أي وقت. سيتم نشر التغييرات على موقعنا.",
                     LastUpdated = new DateTime(2025, 1, 15),
                     DisplayOrder = 5
-                }
-            );
-
-            // Seed SocialMedia data
-            modelBuilder.Entity<SocialMedia>().HasData(
-                new SocialMedia
-                {
-                    SocialMediaID = 1,
-                    Name = "تويتر",
-                    Icon = "bi-twitter",
-                    Link = "https://x.com/kauedu_sa",
-                    IsActive = true,
-                    DisplayOrder = 1
-                },
-                new SocialMedia
-                {
-                    SocialMediaID = 2,
-                    Name = "انستغرام",
-                    Icon = "bi-instagram",
-                    Link = "https://www.instagram.com/kauedu_sa/",
-                    IsActive = true,
-                    DisplayOrder = 2
-                },
-                new SocialMedia
-                {
-                    SocialMediaID = 3,
-                    Name = "يوتيوب",
-                    Icon = "bi-youtube",
-                    Link = "https://www.youtube.com/@kauedu_sa",
-                    IsActive = true,
-                    DisplayOrder = 3
-                },
-                new SocialMedia
-                {
-                    SocialMediaID = 4,
-                    Name = "لينكد إن",
-                    Icon = "bi-linkedin",
-                    Link = "https://www.linkedin.com/school/king-abdulaziz-university/posts/?feedView=all",
-                    IsActive = true,
-                    DisplayOrder = 4
                 }
             );
         }

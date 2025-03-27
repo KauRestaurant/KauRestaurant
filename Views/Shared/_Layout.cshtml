@@ -6,12 +6,6 @@
 	var currentPath = Context.Request.Path;
 	string currentController = ViewContext.RouteData.Values["Controller"]?.ToString() ?? "";
 	string currentAction = ViewContext.RouteData.Values["Action"]?.ToString() ?? "";
-
-	// Get social media links
-	var socialMediaLinks = DbContext.SocialMedia
-		.Where(s => s.IsActive)
-		.OrderBy(s => s.DisplayOrder)
-		.ToList();
 }
 
 <!DOCTYPE html>
@@ -115,28 +109,15 @@
 				<div class="col-md-4">
 					<h5 class="fw-bold pb-2">تابعنا</h5>
 					<div class="d-flex gap-3">
-						@if (socialMediaLinks != null && socialMediaLinks.Any())
-						{
-							@foreach (var social in socialMediaLinks)
-							{
-								@if (social.IsActive && !string.IsNullOrEmpty(social.Link))
-								{
-									<a href="@social.Link" class="text-white fs-4" target="_blank" title="@social.Name">
-										<i class="bi @social.Icon"></i>
-									</a>
-								}
-							}
-						}
-						else
-						{
-							<!-- Fallback icons if no active social media links are found -->
-							<a href="#" class="text-white fs-4" target="_blank">
-								<i class="bi bi-twitter"></i>
-							</a>
-							<a href="#" class="text-white fs-4" target="_blank">
-								<i class="bi bi-instagram"></i>
-							</a>
-						}
+						<a href="https://x.com/kauedu_sa" class="text-white fs-4" target="_blank">
+							<i class="bi bi-twitter"></i>
+						</a>
+						<a href="https://www.instagram.com/kauedu_sa/" class="text-white fs-4" target="_blank">
+							<i class="bi bi-instagram"></i>
+						</a>
+						<a href="https://www.linkedin.com/school/king-abdulaziz-university/posts/?feedView=all" class="text-white fs-4" target="_blank">
+							<i class="bi bi-linkedin"></i>
+						</a>
 					</div>
 				</div>
 			</div>
