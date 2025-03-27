@@ -30,12 +30,27 @@ namespace KauRestaurant.Data.Migrations
                 defaultValue: "");
 
             migrationBuilder.CreateTable(
+                name: "FAQs",
+                columns: table => new
+                {
+                    FAQID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Question = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    Answer = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: false),
+                    DisplayOrder = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FAQs", x => x.FAQID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Feedbacks",
                 columns: table => new
                 {
                     FeedbackID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserID = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserID = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     UserEmail = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Subject = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
@@ -49,8 +64,7 @@ namespace KauRestaurant.Data.Migrations
                         name: "FK_Feedbacks_AspNetUsers_UserID",
                         column: x => x.UserID,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -95,7 +109,7 @@ namespace KauRestaurant.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CustomerID = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TotalPaid = table.Column<float>(type: "real", nullable: false),
                     BreakfastTicketsCount = table.Column<int>(type: "int", nullable: false),
                     LunchTicketsCount = table.Column<int>(type: "int", nullable: false),
@@ -139,6 +153,39 @@ namespace KauRestaurant.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Restaurants", x => x.RestaurantID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SocialMedia",
+                columns: table => new
+                {
+                    SocialMediaID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Icon = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Link = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    DisplayOrder = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SocialMedia", x => x.SocialMediaID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Terms",
+                columns: table => new
+                {
+                    TermID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Content = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: false),
+                    LastUpdated = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DisplayOrder = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Terms", x => x.TermID);
                 });
 
             migrationBuilder.CreateTable(
@@ -203,9 +250,10 @@ namespace KauRestaurant.Data.Migrations
                     TicketID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     OrderID = table.Column<int>(type: "int", nullable: false),
-                    MealType = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     QRCode = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    IsRedeemed = table.Column<bool>(type: "bit", nullable: false)
+                    MealType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsRedeemed = table.Column<bool>(type: "bit", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -216,6 +264,18 @@ namespace KauRestaurant.Data.Migrations
                         principalTable: "Orders",
                         principalColumn: "OrderID",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "FAQs",
+                columns: new[] { "FAQID", "Answer", "DisplayOrder", "Question" },
+                values: new object[,]
+                {
+                    { 1, "يمكنك شراء تذاكر الوجبات من خلال تسجيل الدخول إلى حسابك، ثم الانتقال إلى صفحة شراء التذاكر واختيار عدد الوجبات التي ترغب بها لكل فترة (الإفطار، الغداء، العشاء).", 1, "كيف يمكنني شراء تذاكر وجبات؟" },
+                    { 2, "يعمل المطعم من الأحد إلى الخميس، وساعات العمل هي: الإفطار من 7:00 صباحًا إلى 10:30 صباحًا، الغداء من 12:00 ظهرًا إلى 3:00 عصرًا، والعشاء من 6:00 مساءً إلى 10:00 مساءً.", 2, "ما هي أوقات عمل المطعم؟" },
+                    { 3, "بعد شراء التذاكر، يمكنك عرض جميع تذاكرك في صفحة 'تذاكري'. عند زيارة المطعم، ما عليك سوى إظهار رمز QR الخاص بالتذكرة للموظف ليتم مسحه وتأكيد استخدام الوجبة.", 3, "كيف يمكنني استخدام التذاكر التي اشتريتها؟" },
+                    { 4, "لا يمكن إلغاء التذاكر بعد الشراء. لذا يرجى التأكد من اختيارك قبل إتمام عملية الشراء.", 4, "هل يمكنني إلغاء التذاكر التي اشتريتها؟" },
+                    { 5, "نعم، يمكنك الاطلاع على قائمة الطعام الأسبوعية في صفحة 'القائمة' على موقعنا. يتم تحديث القائمة أسبوعياً.", 5, "هل يمكنني معرفة قائمة الطعام مسبقاً؟" }
                 });
 
             migrationBuilder.InsertData(
@@ -263,6 +323,29 @@ namespace KauRestaurant.Data.Migrations
                 table: "Restaurants",
                 columns: new[] { "RestaurantID", "Address", "BreakfastCloseTime", "BreakfastOpenTime", "DaysOpen", "Description", "DinnerCloseTime", "DinnerOpenTime", "Email", "LocationUrl", "LunchCloseTime", "LunchOpenTime", "Name", "PhoneNumber", "PhotoPath", "ServesBreakfast", "ServesDinner", "ServesLunch" },
                 values: new object[] { 1, "جامعة الملك عبد العزيز، جدة، المملكة العربية السعودية", new TimeSpan(0, 10, 30, 0, 0), new TimeSpan(0, 7, 0, 0, 0), "من الأحد إلى الخميس", "في المطعم الجامعي الرسمي لجامعة الملك عبد العزيز، نقدم وجبات طازجة وعالية الجودة للطلاب وأعضاء هيئة التدريس. نحرص على تقديم أطباق متنوعة ومغذية في بيئة نظيفة ومرحبة.", new TimeSpan(0, 22, 0, 0, 0), new TimeSpan(0, 18, 0, 0, 0), "restaurant@kau.edu.sa", "https://maps.app.goo.gl/KFBdpmH7E88Lzvy49", new TimeSpan(0, 15, 0, 0, 0), new TimeSpan(0, 12, 0, 0, 0), "مطعم جامعة الملك عبدالعزيز", "+9665********", "/images/restaurant.png", true, true, true });
+
+            migrationBuilder.InsertData(
+                table: "SocialMedia",
+                columns: new[] { "SocialMediaID", "DisplayOrder", "Icon", "IsActive", "Link", "Name" },
+                values: new object[,]
+                {
+                    { 1, 1, "bi-twitter", true, "https://x.com/kauedu_sa", "تويتر" },
+                    { 2, 2, "bi-instagram", true, "https://www.instagram.com/kauedu_sa/", "انستغرام" },
+                    { 3, 3, "bi-youtube", true, "https://www.youtube.com/@kauedu_sa", "يوتيوب" },
+                    { 4, 4, "bi-linkedin", true, "https://www.linkedin.com/school/king-abdulaziz-university/posts/?feedView=all", "لينكد إن" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Terms",
+                columns: new[] { "TermID", "Content", "DisplayOrder", "LastUpdated", "Title" },
+                values: new object[,]
+                {
+                    { 1, "تنطبق هذه الشروط والأحكام على جميع الخدمات المقدمة من مطعم جامعة الملك عبدالعزيز.", 1, new DateTime(2025, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "عام" },
+                    { 2, "جميع المبيعات نهائية ولا يمكن استرداد قيمة التذاكر بعد الشراء. يجب استخدام التذاكر خلال الفصل الدراسي الذي تم شراؤها فيه. التذاكر غير قابلة للتحويل ويجب استخدامها من قبل مالك الحساب فقط.", 2, new DateTime(2025, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "التذاكر والدفع" },
+                    { 3, "يتعهد المستخدم بعدم إساءة استخدام الخدمة أو محاولة التحايل على النظام. يحتفظ المطعم بالحق في رفض الخدمة لأي شخص ينتهك هذه الشروط.", 3, new DateTime(2025, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "الاستخدام" },
+                    { 4, "نحن نحترم خصوصيتك ونلتزم بحماية بياناتك الشخصية وفقاً لسياسة الخصوصية الخاصة بنا.", 4, new DateTime(2025, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "الخصوصية" },
+                    { 5, "يحتفظ المطعم بالحق في تعديل هذه الشروط في أي وقت. سيتم نشر التغييرات على موقعنا.", 5, new DateTime(2025, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "التغييرات على الشروط" }
+                });
 
             migrationBuilder.InsertData(
                 table: "MenuMeals",
@@ -345,6 +428,9 @@ namespace KauRestaurant.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "FAQs");
+
+            migrationBuilder.DropTable(
                 name: "Feedbacks");
 
             migrationBuilder.DropTable(
@@ -355,6 +441,12 @@ namespace KauRestaurant.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Reviews");
+
+            migrationBuilder.DropTable(
+                name: "SocialMedia");
+
+            migrationBuilder.DropTable(
+                name: "Terms");
 
             migrationBuilder.DropTable(
                 name: "Tickets");

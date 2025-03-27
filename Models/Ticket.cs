@@ -1,8 +1,7 @@
-using KauRestaurant.Models;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace YourNamespace.Models
+namespace KauRestaurant.Models
 {
     public class Ticket
     {
@@ -13,13 +12,17 @@ namespace YourNamespace.Models
         public int OrderID { get; set; }
 
         [Required]
-        public string MealType { get; set; } // "Breakfast", "Lunch", or "Dinner"
+        [StringLength(255)]
+        public string QRCode { get; set; }
 
         [Required]
-        [StringLength(255)]
-        public string QRCode { get; set; } = string.Empty;
+        public string MealType { get; set; }
 
         public bool IsRedeemed { get; set; } = false;
+
+        [Required]
+        [Column(TypeName = "decimal(18, 2)")]
+        public decimal Price { get; set; }
 
         [ForeignKey("OrderID")]
         public virtual Order Order { get; set; }

@@ -9,8 +9,7 @@ namespace KauRestaurant.Models
         [Key]
         public int FeedbackID { get; set; }
 
-        [Required]
-        public string UserID { get; set; }  // Links to KauRestaurantUser
+        public string? UserID { get; set; }  // Links to KauRestaurantUser
 
         [Required]
         [StringLength(100)]

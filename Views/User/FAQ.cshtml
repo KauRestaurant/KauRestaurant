@@ -1,0 +1,88 @@
+﻿@model IEnumerable<KauRestaurant.Models.FAQ>
+@{
+    ViewData["Title"] = "الأسئلة الشائعة";
+}
+
+<div class="container-fluid py-4 py-lg-5 bg-white">
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card border-0 shadow">
+                    <!-- Page Header Card -->
+                    <div class="card-header bg-white py-3">
+                        <h2 class="fw-bold mb-0 text-center">الأسئلة الشائعة</h2>
+                    </div>
+                    <!-- FAQ Accordion -->
+                    <div class="card-body p-4">
+                        @if (Model != null && Model.Any())
+                        {
+                            <div class="accordion" id="faqAccordion">
+                                @foreach (var faq in Model.OrderBy(f => f.DisplayOrder))
+                                {
+                                    <div class="accordion-item border-0 mb-3">
+                                        <h2 class="accordion-header" id="heading-@faq.FAQID">
+                                            <button class="accordion-button collapsed shadow-sm rounded fw-bold"
+                                                    type="button"
+                                                    data-bs-toggle="collapse"
+                                                    data-bs-target="#collapse-@faq.FAQID"
+                                                    aria-expanded="false"
+                                                    aria-controls="collapse-@faq.FAQID">
+                                                @faq.Question
+                                            </button>
+                                        </h2>
+                                        <div id="collapse-@faq.FAQID"
+                                             class="accordion-collapse collapse"
+                                             aria-labelledby="heading-@faq.FAQID"
+                                             data-bs-parent="#faqAccordion">
+                                            <div class="accordion-body bg-light rounded-bottom p-4 mt-1">
+                                                @Html.Raw(faq.Answer.Replace("\n", "<br />"))
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="alert alert-info">
+                                <i class="bi bi-info-circle me-2"></i>لا توجد أسئلة شائعة متاحة حالياً.
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Box -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card border-0 shadow">
+                    <div class="card-body p-4 text-center">
+                        <h5 class="mb-3">لم تجد إجابة لسؤالك؟</h5>
+                        <p class="text-muted mb-4">يمكنك التواصل معنا مباشرة عبر نموذج التواصل أو عبر معلومات الاتصال</p>
+                        <a asp-area="User" asp-controller="Feedback" asp-action="Index" class="btn btn-success px-4">
+                            <i class="bi bi-envelope me-2"></i>تواصل معنا
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .accordion-button:not(.collapsed) {
+        background-color: #e8f5e9;
+        color: #2e7d32;
+        box-shadow: none;
+    }
+
+    .accordion-button:focus {
+        border-color: #a5d6a7;
+        box-shadow: 0 0 0 0.25rem rgba(76, 175, 80, 0.25);
+    }
+
+    .accordion-button::after {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%232e7d32'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+    }
+</style>

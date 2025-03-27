@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using YourNamespace.Models;
 
 namespace KauRestaurant.Controllers.User
 {
@@ -57,7 +56,7 @@ namespace KauRestaurant.Controllers.User
                 {
                     CustomerID = userId,
                     OrderDate = DateTime.Now,
-                    status = "Completed", // Immediately mark as completed since we're not doing payment processing
+                    Status = "Completed", // Immediately mark as completed since we're not doing payment processing
                     TotalPaid = totalAmount,
                     BreakfastTicketsCount = model.breakfastQty,
                     LunchTicketsCount = model.lunchQty,

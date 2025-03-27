@@ -5,9 +5,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QRCoder;
-using System;
-using System.Threading.Tasks;
-using YourNamespace.Models;
 
 public class QrCodeController : Controller
 {

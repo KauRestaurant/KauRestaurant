@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KauRestaurant.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250320184337_InitialCreate")]
+    [Migration("20250326152306_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -100,6 +100,69 @@ namespace KauRestaurant.Data.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("KauRestaurant.Models.FAQ", b =>
+                {
+                    b.Property<int>("FAQID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FAQID"));
+
+                    b.Property<string>("Answer")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Question")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.HasKey("FAQID");
+
+                    b.ToTable("FAQs");
+
+                    b.HasData(
+                        new
+                        {
+                            FAQID = 1,
+                            Answer = "يمكنك شراء تذاكر الوجبات من خلال تسجيل الدخول إلى حسابك، ثم الانتقال إلى صفحة شراء التذاكر واختيار عدد الوجبات التي ترغب بها لكل فترة (الإفطار، الغداء، العشاء).",
+                            DisplayOrder = 1,
+                            Question = "كيف يمكنني شراء تذاكر وجبات؟"
+                        },
+                        new
+                        {
+                            FAQID = 2,
+                            Answer = "يعمل المطعم من الأحد إلى الخميس، وساعات العمل هي: الإفطار من 7:00 صباحًا إلى 10:30 صباحًا، الغداء من 12:00 ظهرًا إلى 3:00 عصرًا، والعشاء من 6:00 مساءً إلى 10:00 مساءً.",
+                            DisplayOrder = 2,
+                            Question = "ما هي أوقات عمل المطعم؟"
+                        },
+                        new
+                        {
+                            FAQID = 3,
+                            Answer = "بعد شراء التذاكر، يمكنك عرض جميع تذاكرك في صفحة 'تذاكري'. عند زيارة المطعم، ما عليك سوى إظهار رمز QR الخاص بالتذكرة للموظف ليتم مسحه وتأكيد استخدام الوجبة.",
+                            DisplayOrder = 3,
+                            Question = "كيف يمكنني استخدام التذاكر التي اشتريتها؟"
+                        },
+                        new
+                        {
+                            FAQID = 4,
+                            Answer = "لا يمكن إلغاء التذاكر بعد الشراء. لذا يرجى التأكد من اختيارك قبل إتمام عملية الشراء.",
+                            DisplayOrder = 4,
+                            Question = "هل يمكنني إلغاء التذاكر التي اشتريتها؟"
+                        },
+                        new
+                        {
+                            FAQID = 5,
+                            Answer = "نعم، يمكنك الاطلاع على قائمة الطعام الأسبوعية في صفحة 'القائمة' على موقعنا. يتم تحديث القائمة أسبوعياً.",
+                            DisplayOrder = 5,
+                            Question = "هل يمكنني معرفة قائمة الطعام مسبقاً؟"
+                        });
+                });
+
             modelBuilder.Entity("KauRestaurant.Models.Feedback", b =>
                 {
                     b.Property<int>("FeedbackID")
@@ -127,7 +190,6 @@ namespace KauRestaurant.Data.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("UserID")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("UserName")
@@ -762,12 +824,12 @@ namespace KauRestaurant.Data.Migrations
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<float>("TotalPaid")
-                        .HasColumnType("real");
-
-                    b.Property<string>("status")
+                    b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<float>("TotalPaid")
+                        .HasColumnType("real");
 
                     b.HasKey("OrderID");
 
@@ -914,6 +976,181 @@ namespace KauRestaurant.Data.Migrations
                     b.ToTable("Reviews");
                 });
 
+            modelBuilder.Entity("KauRestaurant.Models.SocialMedia", b =>
+                {
+                    b.Property<int>("SocialMediaID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SocialMediaID"));
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Icon")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Link")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("SocialMediaID");
+
+                    b.ToTable("SocialMedia");
+
+                    b.HasData(
+                        new
+                        {
+                            SocialMediaID = 1,
+                            DisplayOrder = 1,
+                            Icon = "bi-twitter",
+                            IsActive = true,
+                            Link = "https://x.com/kauedu_sa",
+                            Name = "تويتر"
+                        },
+                        new
+                        {
+                            SocialMediaID = 3,
+                            DisplayOrder = 2,
+                            Icon = "bi-instagram",
+                            IsActive = true,
+                            Link = "https://www.instagram.com/kauedu_sa/",
+                            Name = "انستغرام"
+                        },
+                        new
+                        {
+                            SocialMediaID = 4,
+                            DisplayOrder = 3,
+                            Icon = "bi-youtube",
+                            IsActive = true,
+                            Link = "https://www.youtube.com/@kauedu_sa",
+                            Name = "يوتيوب"
+                        },
+                        new
+                        {
+                            SocialMediaID = 5,
+                            DisplayOrder = 4,
+                            Icon = "bi-linkedin",
+                            IsActive = true,
+                            Link = "https://www.linkedin.com/school/king-abdulaziz-university/posts/?feedView=all",
+                            Name = "لينكد إن"
+                        });
+                });
+
+            modelBuilder.Entity("KauRestaurant.Models.Terms", b =>
+                {
+                    b.Property<int>("TermID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TermID"));
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("LastUpdated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("TermID");
+
+                    b.ToTable("Terms");
+
+                    b.HasData(
+                        new
+                        {
+                            TermID = 1,
+                            Content = "تنطبق هذه الشروط والأحكام على جميع الخدمات المقدمة من مطعم جامعة الملك عبدالعزيز.",
+                            DisplayOrder = 1,
+                            LastUpdated = new DateTime(2025, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Title = "عام"
+                        },
+                        new
+                        {
+                            TermID = 2,
+                            Content = "جميع المبيعات نهائية ولا يمكن استرداد قيمة التذاكر بعد الشراء. يجب استخدام التذاكر خلال الفصل الدراسي الذي تم شراؤها فيه. التذاكر غير قابلة للتحويل ويجب استخدامها من قبل مالك الحساب فقط.",
+                            DisplayOrder = 2,
+                            LastUpdated = new DateTime(2025, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Title = "التذاكر والدفع"
+                        },
+                        new
+                        {
+                            TermID = 3,
+                            Content = "يتعهد المستخدم بعدم إساءة استخدام الخدمة أو محاولة التحايل على النظام. يحتفظ المطعم بالحق في رفض الخدمة لأي شخص ينتهك هذه الشروط.",
+                            DisplayOrder = 3,
+                            LastUpdated = new DateTime(2025, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Title = "الاستخدام"
+                        },
+                        new
+                        {
+                            TermID = 4,
+                            Content = "نحن نحترم خصوصيتك ونلتزم بحماية بياناتك الشخصية وفقاً لسياسة الخصوصية الخاصة بنا.",
+                            DisplayOrder = 4,
+                            LastUpdated = new DateTime(2025, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Title = "الخصوصية"
+                        },
+                        new
+                        {
+                            TermID = 5,
+                            Content = "يحتفظ المطعم بالحق في تعديل هذه الشروط في أي وقت. سيتم نشر التغييرات على موقعنا.",
+                            DisplayOrder = 5,
+                            LastUpdated = new DateTime(2025, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Title = "التغييرات على الشروط"
+                        });
+                });
+
+            modelBuilder.Entity("KauRestaurant.Models.Ticket", b =>
+                {
+                    b.Property<int>("TicketID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TicketID"));
+
+                    b.Property<bool>("IsRedeemed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("MealType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("OrderID")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<string>("QRCode")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.HasKey("TicketID");
+
+                    b.HasIndex("OrderID");
+
+                    b.ToTable("Tickets");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -1051,43 +1288,11 @@ namespace KauRestaurant.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("YourNamespace.Models.Ticket", b =>
-                {
-                    b.Property<int>("TicketID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TicketID"));
-
-                    b.Property<bool>("IsRedeemed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("MealType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("OrderID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("QRCode")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.HasKey("TicketID");
-
-                    b.HasIndex("OrderID");
-
-                    b.ToTable("Tickets");
-                });
-
             modelBuilder.Entity("KauRestaurant.Models.Feedback", b =>
                 {
                     b.HasOne("KauRestaurant.Areas.Identity.Data.KauRestaurantUser", "User")
                         .WithMany()
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserID");
 
                     b.Navigation("User");
                 });
@@ -1141,6 +1346,17 @@ namespace KauRestaurant.Data.Migrations
                     b.Navigation("Meal");
                 });
 
+            modelBuilder.Entity("KauRestaurant.Models.Ticket", b =>
+                {
+                    b.HasOne("KauRestaurant.Models.Order", "Order")
+                        .WithMany("Tickets")
+                        .HasForeignKey("OrderID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -1190,17 +1406,6 @@ namespace KauRestaurant.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("YourNamespace.Models.Ticket", b =>
-                {
-                    b.HasOne("KauRestaurant.Models.Order", "Order")
-                        .WithMany("Tickets")
-                        .HasForeignKey("OrderID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("KauRestaurant.Models.Meal", b =>

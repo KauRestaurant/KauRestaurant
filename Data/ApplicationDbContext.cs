@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using KauRestaurant.Models;
 using KauRestaurant.Areas.Identity.Data;
-using YourNamespace.Models;
 
 namespace KauRestaurant.Data
 {
@@ -20,9 +19,18 @@ namespace KauRestaurant.Data
         public DbSet<MenuMeal> MenuMeals { get; set; }
         public DbSet<Restaurant> Restaurants { get; set; }
         public DbSet<Feedback> Feedbacks { get; set; }
+        public DbSet<FAQ> FAQs { get; set; }
+        public DbSet<Terms> Terms { get; set; }
+        public DbSet<SocialMedia> SocialMedia { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            // Configure the Price property in Ticket table
+            modelBuilder.Entity<Ticket>()
+                .Property(t => t.Price)
+                .HasColumnType("decimal(18, 2)");
 
             modelBuilder.Entity<MenuMeal>().ToTable("MenuMeals");
 
@@ -53,7 +61,7 @@ namespace KauRestaurant.Data
 
             // Seed Meal data
             modelBuilder.Entity<Meal>().HasData(
-                // Sunday (الأحد) Breakfast (الإفطار)
+                // Breakfast (الإفطار)
                 new Meal
                 {
                     MealID = 1,
@@ -133,7 +141,7 @@ namespace KauRestaurant.Data
                     MealCategory = "الإفطار"
                 },
 
-                // Sunday (الأحد) Lunch (الغداء)
+                // Lunch (الغداء)
                 new Meal
                 {
                     MealID = 7,
@@ -213,7 +221,7 @@ namespace KauRestaurant.Data
                     MealCategory = "الغداء"
                 },
 
-                // Sunday (الأحد) Dinner (العشاء)
+                // Dinner (العشاء)
                 new Meal
                 {
                     MealID = 13,
@@ -347,14 +355,12 @@ namespace KauRestaurant.Data
 
                 // Monday (الإثنين) meals - MenuID = 2
                 new MenuMeal { MenuMealID = 19, MenuID = 2, MealID = 19 },
-                // Also add some Sunday meals to Monday
                 new MenuMeal { MenuMealID = 20, MenuID = 2, MealID = 1 },
                 new MenuMeal { MenuMealID = 21, MenuID = 2, MealID = 7 },
                 new MenuMeal { MenuMealID = 22, MenuID = 2, MealID = 13 },
 
                 // Tuesday (الثلاثاء) meals - MenuID = 3
                 new MenuMeal { MenuMealID = 23, MenuID = 3, MealID = 20 },
-                // Also add some meals from other days
                 new MenuMeal { MenuMealID = 24, MenuID = 3, MealID = 2 },
                 new MenuMeal { MenuMealID = 25, MenuID = 3, MealID = 8 },
                 new MenuMeal { MenuMealID = 26, MenuID = 3, MealID = 14 },
@@ -394,6 +400,129 @@ namespace KauRestaurant.Data
                     DinnerCloseTime = new TimeSpan(22, 0, 0), // 10:00 PM
                     ServesDinner = true,
                     DaysOpen = "من الأحد إلى الخميس"
+                }
+            );
+
+            // Seed FAQ data
+            modelBuilder.Entity<FAQ>().HasData(
+                new FAQ
+                {
+                    FAQID = 1,
+                    Question = "كيف يمكنني شراء تذاكر وجبات؟",
+                    Answer = "يمكنك شراء تذاكر الوجبات من خلال تسجيل الدخول إلى حسابك، ثم الانتقال إلى صفحة شراء التذاكر واختيار عدد الوجبات التي ترغب بها لكل فترة (الإفطار، الغداء، العشاء).",
+                    DisplayOrder = 1
+                },
+                new FAQ
+                {
+                    FAQID = 2,
+                    Question = "ما هي أوقات عمل المطعم؟",
+                    Answer = "يعمل المطعم من الأحد إلى الخميس، وساعات العمل هي: الإفطار من 7:00 صباحًا إلى 10:30 صباحًا، الغداء من 12:00 ظهرًا إلى 3:00 عصرًا، والعشاء من 6:00 مساءً إلى 10:00 مساءً.",
+                    DisplayOrder = 2
+                },
+                new FAQ
+                {
+                    FAQID = 3,
+                    Question = "كيف يمكنني استخدام التذاكر التي اشتريتها؟",
+                    Answer = "بعد شراء التذاكر، يمكنك عرض جميع تذاكرك في صفحة 'تذاكري'. عند زيارة المطعم، ما عليك سوى إظهار رمز QR الخاص بالتذكرة للموظف ليتم مسحه وتأكيد استخدام الوجبة.",
+                    DisplayOrder = 3
+                },
+                new FAQ
+                {
+                    FAQID = 4,
+                    Question = "هل يمكنني إلغاء التذاكر التي اشتريتها؟",
+                    Answer = "لا يمكن إلغاء التذاكر بعد الشراء. لذا يرجى التأكد من اختيارك قبل إتمام عملية الشراء.",
+                    DisplayOrder = 4
+                },
+                new FAQ
+                {
+                    FAQID = 5,
+                    Question = "هل يمكنني معرفة قائمة الطعام مسبقاً؟",
+                    Answer = "نعم، يمكنك الاطلاع على قائمة الطعام الأسبوعية في صفحة 'القائمة' على موقعنا. يتم تحديث القائمة أسبوعياً.",
+                    DisplayOrder = 5
+                }
+            );
+
+            // Seed Terms data as individual items
+            modelBuilder.Entity<Terms>().HasData(
+                new Terms
+                {
+                    TermID = 1,
+                    Title = "عام",
+                    Content = "تنطبق هذه الشروط والأحكام على جميع الخدمات المقدمة من مطعم جامعة الملك عبدالعزيز.",
+                    LastUpdated = new DateTime(2025, 1, 15),
+                    DisplayOrder = 1
+                },
+                new Terms
+                {
+                    TermID = 2,
+                    Title = "التذاكر والدفع",
+                    Content = "جميع المبيعات نهائية ولا يمكن استرداد قيمة التذاكر بعد الشراء. يجب استخدام التذاكر خلال الفصل الدراسي الذي تم شراؤها فيه. التذاكر غير قابلة للتحويل ويجب استخدامها من قبل مالك الحساب فقط.",
+                    LastUpdated = new DateTime(2025, 1, 15),
+                    DisplayOrder = 2
+                },
+                new Terms
+                {
+                    TermID = 3,
+                    Title = "الاستخدام",
+                    Content = "يتعهد المستخدم بعدم إساءة استخدام الخدمة أو محاولة التحايل على النظام. يحتفظ المطعم بالحق في رفض الخدمة لأي شخص ينتهك هذه الشروط.",
+                    LastUpdated = new DateTime(2025, 1, 15),
+                    DisplayOrder = 3
+                },
+                new Terms
+                {
+                    TermID = 4,
+                    Title = "الخصوصية",
+                    Content = "نحن نحترم خصوصيتك ونلتزم بحماية بياناتك الشخصية وفقاً لسياسة الخصوصية الخاصة بنا.",
+                    LastUpdated = new DateTime(2025, 1, 15),
+                    DisplayOrder = 4
+                },
+                new Terms
+                {
+                    TermID = 5,
+                    Title = "التغييرات على الشروط",
+                    Content = "يحتفظ المطعم بالحق في تعديل هذه الشروط في أي وقت. سيتم نشر التغييرات على موقعنا.",
+                    LastUpdated = new DateTime(2025, 1, 15),
+                    DisplayOrder = 5
+                }
+            );
+
+            // Seed SocialMedia data
+            modelBuilder.Entity<SocialMedia>().HasData(
+                new SocialMedia
+                {
+                    SocialMediaID = 1,
+                    Name = "تويتر",
+                    Icon = "bi-twitter",
+                    Link = "https://x.com/kauedu_sa",
+                    IsActive = true,
+                    DisplayOrder = 1
+                },
+                new SocialMedia
+                {
+                    SocialMediaID = 2,
+                    Name = "انستغرام",
+                    Icon = "bi-instagram",
+                    Link = "https://www.instagram.com/kauedu_sa/",
+                    IsActive = true,
+                    DisplayOrder = 2
+                },
+                new SocialMedia
+                {
+                    SocialMediaID = 3,
+                    Name = "يوتيوب",
+                    Icon = "bi-youtube",
+                    Link = "https://www.youtube.com/@kauedu_sa",
+                    IsActive = true,
+                    DisplayOrder = 3
+                },
+                new SocialMedia
+                {
+                    SocialMediaID = 4,
+                    Name = "لينكد إن",
+                    Icon = "bi-linkedin",
+                    Link = "https://www.linkedin.com/school/king-abdulaziz-university/posts/?feedView=all",
+                    IsActive = true,
+                    DisplayOrder = 4
                 }
             );
         }

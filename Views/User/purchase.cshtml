@@ -98,7 +98,7 @@
         // Disable button to prevent multiple submissions
         const purchaseButton = document.querySelector('button.btn-success.btn-lg');
         purchaseButton.disabled = true;
-        purchaseButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> جاري المعالجة...';
+        purchaseButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="Status" aria-hidden="true"></span> جاري المعالجة...';
 
         // Prepare data
         const data = {
@@ -120,8 +120,8 @@
         })
         .then(response => {
             if (!response.ok) {
-                console.error('Server returned:', response.status, response.statusText);
-                throw new Error('Network response was not ok: ' + response.status);
+                console.error('Server returned:', response.Status, response.StatusText);
+                throw new Error('Network response was not ok: ' + response.Status);
             }
             return response.json();
         })

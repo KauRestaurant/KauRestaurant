@@ -1,5 +1,5 @@
 ﻿using System.Text.Json;
-using YourNamespace.Models;
+using KauRestaurant.Models;
 
 namespace KauRestaurant.Services
 {

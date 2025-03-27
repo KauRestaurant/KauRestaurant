@@ -1,7 +1,6 @@
 ﻿using KauRestaurant.Areas.Identity.Data;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using YourNamespace.Models;
 
 namespace KauRestaurant.Models
 {
@@ -16,7 +15,7 @@ namespace KauRestaurant.Models
         [Required]
         public DateTime OrderDate { get; set; } = DateTime.Now;
 
-        public string status { get; set; } = "Pending"; // "Pending", "Completed", or "Cancelled"
+        public string Status { get; set; } = "Pending"; // "Pending", "Completed", or "Cancelled"
 
         public float TotalPaid { get; set; } = 0;
 

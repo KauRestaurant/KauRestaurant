@@ -1,5 +1,656 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model KauRestaurant.ViewModels.FooterManagementViewModel
 @{
+    ViewData["Title"] = "إدارة تذييل الصفحة";
 }
+
+<div class="container-fluid py-4 py-lg-5 bg-white">
+    <div class="container">
+        <!-- Page Header Card -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card border-0 shadow">
+                    <div class="card-header bg-white py-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h3 class="fw-bold mb-0"><i class="bi bi-layout-text-window-reverse me-2"></i>إدارة تذييل الصفحة</h3>
+                            <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index" class="btn btn-outline-success">
+                                <i class="bi bi-arrow-right me-1"></i>العودة للوحة التحكم
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Status Messages -->
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+                <i class="bi bi-check-circle me-2"></i> @TempData["SuccessMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+                <i class="bi bi-exclamation-triangle me-2"></i> @TempData["ErrorMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+
+        <!-- Management Tabs -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card border-0 shadow">
+                    <div class="card-body p-0">
+                        <!-- Tab Navigation -->
+                        <ul class="nav nav-tabs border-0" id="footerTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active px-4 py-3" id="social-media-tab" data-bs-toggle="tab"
+                                        data-bs-target="#social-media-content" type="button" role="tab">
+                                    <i class="bi bi-share me-2"></i>السوشيال ميديا
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link px-4 py-3" id="faq-tab" data-bs-toggle="tab"
+                                        data-bs-target="#faq-content" type="button" role="tab">
+                                    <i class="bi bi-question-circle me-2"></i>الأسئلة الشائعة
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link px-4 py-3" id="terms-tab" data-bs-toggle="tab"
+                                        data-bs-target="#terms-content" type="button" role="tab">
+                                    <i class="bi bi-shield-check me-2"></i>الشروط والأحكام
+                                </button>
+                            </li>
+                        </ul>
+
+                        <!-- Tab Content -->
+                        <div class="tab-content" id="footerTabsContent">
+                            <!-- Social Media Tab -->
+                            <div class="tab-pane fade show active p-4" id="social-media-content" role="tabpanel">
+                                <div class="d-flex justify-content-between align-items-center mb-4">
+                                    <h4 class="mb-0">إدارة السوشيال ميديا</h4>
+                                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addSocialMediaModal">
+                                        <i class="bi bi-plus-lg me-2"></i>إضافة منصة جديدة
+                                    </button>
+                                </div>
+
+                                <!-- Social Media List -->
+                                <div class="table-responsive">
+                                    <table class="table table-hover align-middle">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th scope="col" width="60">#</th>
+                                                <th scope="col">المنصة</th>
+                                                <th scope="col">الأيقونة</th>
+                                                <th scope="col">الرابط</th>
+                                                <th scope="col" width="100">الترتيب</th>
+                                                <th scope="col" width="100">الحالة</th>
+                                                <th scope="col" width="150">الإجراءات</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if (Model.SocialMediaAccounts != null && Model.SocialMediaAccounts.Any())
+                                            {
+                                                @foreach (var social in Model.SocialMediaAccounts.OrderBy(s => s.DisplayOrder))
+                                                {
+                                                    <tr>
+                                                        <td>@social.SocialMediaID</td>
+                                                        <td>@social.Name</td>
+                                                        <td><i class="bi @social.Icon fs-4"></i></td>
+                                                        <td>
+                                                            @if (!string.IsNullOrEmpty(social.Link))
+                                                            {
+                                                                <a href="@social.Link" target="_blank" class="text-truncate d-inline-block" style="max-width: 200px;">@social.Link</a>
+                                                            }
+                                                            else
+                                                            {
+                                                                <span class="text-muted">غير محدد</span>
+                                                            }
+                                                        </td>
+                                                        <td>@social.DisplayOrder</td>
+                                                        <td>
+                                                            @if (social.IsActive)
+                                                            {
+                                                                <span class="badge bg-success rounded-pill">نشط</span>
+                                                            }
+                                                            else
+                                                            {
+                                                                <span class="badge bg-secondary rounded-pill">غير نشط</span>
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            <div class="btn-group">
+                                                                <button type="button" class="btn btn-sm btn-outline-primary edit-social-btn"
+                                                                        data-id="@social.SocialMediaID"
+                                                                        data-name="@social.Name"
+                                                                        data-icon="@social.Icon"
+                                                                        data-link="@social.Link"
+                                                                        data-order="@social.DisplayOrder"
+                                                                        data-active="@social.IsActive.ToString().ToLower()"
+                                                                        data-bs-toggle="modal" data-bs-target="#editSocialMediaModal">
+                                                                    <i class="bi bi-pencil"></i>
+                                                                </button>
+                                                                <form method="post" asp-action="ToggleSocialMediaStatus" asp-route-id="@social.SocialMediaID" class="d-inline">
+                                                                    <button type="submit" class="btn btn-sm @(social.IsActive ? "btn-outline-secondary" : "btn-outline-success")" title="@(social.IsActive ? "تعطيل" : "تفعيل")">
+                                                                        <i class="bi @(social.IsActive ? "bi-x-circle" : "bi-check-circle")"></i>
+                                                                    </button>
+                                                                </form>
+                                                                <button type="button" class="btn btn-sm btn-outline-danger delete-social-btn"
+                                                                        data-id="@social.SocialMediaID"
+                                                                        data-name="@social.Name"
+                                                                        data-bs-toggle="modal" data-bs-target="#deleteSocialMediaModal">
+                                                                    <i class="bi bi-trash"></i>
+                                                                </button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <tr>
+                                                    <td colspan="7" class="text-center py-4">
+                                                        <div class="text-muted">
+                                                            <i class="bi bi-exclamation-circle fs-4 d-block mb-2"></i>
+                                                            لا توجد منصات سوشيال ميديا مضافة
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- FAQ Tab -->
+                            <div class="tab-pane fade p-4" id="faq-content" role="tabpanel">
+                                <div class="d-flex justify-content-between align-items-center mb-4">
+                                    <h4 class="mb-0">إدارة الأسئلة الشائعة</h4>
+                                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addFaqModal">
+                                        <i class="bi bi-plus-lg me-2"></i>إضافة سؤال جديد
+                                    </button>
+                                </div>
+
+                                <!-- FAQ List -->
+                                @if (Model.FAQs != null && Model.FAQs.Any())
+                                {
+                                    <div class="table-responsive">
+                                        <table class="table table-hover align-middle">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th scope="col" width="60">#</th>
+                                                    <th scope="col">السؤال</th>
+                                                    <th scope="col" width="100">الترتيب</th>
+                                                    <th scope="col" width="150">الإجراءات</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var faq in Model.FAQs.OrderBy(f => f.DisplayOrder))
+                                                {
+                                                    <tr>
+                                                        <td>@faq.FAQID</td>
+                                                        <td class="text-truncate">@faq.Question</td>
+                                                        <td>@faq.DisplayOrder</td>
+                                                        <td>
+                                                            <div class="btn-group">
+                                                                <button type="button" class="btn btn-sm btn-outline-primary edit-faq-btn"
+                                                                        data-id="@faq.FAQID"
+                                                                        data-question="@faq.Question"
+                                                                        data-answer="@faq.Answer"
+                                                                        data-order="@faq.DisplayOrder"
+                                                                        data-bs-toggle="modal" data-bs-target="#editFaqModal">
+                                                                    <i class="bi bi-pencil"></i>
+                                                                </button>
+                                                                <button type="button" class="btn btn-sm btn-outline-danger delete-faq-btn"
+                                                                        data-id="@faq.FAQID"
+                                                                        data-question="@faq.Question.Substring(0, Math.Min(faq.Question.Length, 30))"
+                                                                        data-bs-toggle="modal" data-bs-target="#deleteFaqModal">
+                                                                    <i class="bi bi-trash"></i>
+                                                                </button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="alert alert-info">
+                                        <i class="bi bi-info-circle me-2"></i> لا توجد أسئلة شائعة مضافة حالياً.
+                                    </div>
+                                }
+                            </div>
+
+                            <!-- Terms Tab -->
+                            <div class="tab-pane fade p-4" id="terms-content" role="tabpanel">
+                                <div class="d-flex justify-content-between align-items-center mb-4">
+                                    <h4 class="mb-0">إدارة الشروط والأحكام</h4>
+                                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addTermsModal">
+                                        <i class="bi bi-plus-lg me-2"></i>إضافة شروط جديدة
+                                    </button>
+                                </div>
+
+                                <!-- Terms List -->
+                                @if (Model.Terms != null && Model.Terms.Any())
+                                {
+                                    <div class="table-responsive">
+                                        <table class="table table-hover align-middle">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th scope="col" width="60">#</th>
+                                                    <th scope="col">العنوان</th>
+                                                    <th scope="col">تاريخ التحديث</th>
+                                                    <th scope="col" width="150">الإجراءات</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var term in Model.Terms)
+                                                {
+                                                    <tr>
+                                                        <td>@term.TermID</td>
+                                                        <td>@(string.IsNullOrEmpty(term.Title) ? "الشروط والأحكام" : term.Title)</td>
+                                                        <td>@term.LastUpdated.ToString("yyyy/MM/dd")</td>
+                                                        <td>
+                                                            <div class="btn-group">
+                                                                <button type="button" class="btn btn-sm btn-outline-primary edit-terms-btn"
+                                                                        data-id="@term.TermID"
+                                                                        data-title="@term.Title"
+                                                                        data-content="@term.Content"
+                                                                        data-bs-toggle="modal" data-bs-target="#editTermsModal">
+                                                                    <i class="bi bi-pencil"></i>
+                                                                </button>
+                                                                <button type="button" class="btn btn-sm btn-outline-danger delete-terms-btn"
+                                                                        data-id="@term.TermID"
+                                                                        data-title="@(string.IsNullOrEmpty(term.Title) ? "الشروط والأحكام" : term.Title)"
+                                                                        data-bs-toggle="modal" data-bs-target="#deleteTermsModal">
+                                                                    <i class="bi bi-trash"></i>
+                                                                </button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="alert alert-info">
+                                        <i class="bi bi-info-circle me-2"></i> لا توجد شروط وأحكام مضافة حالياً.
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Social Media Modals -->
+<!-- Add Social Media Modal -->
+<div class="modal fade" id="addSocialMediaModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form method="post" asp-action="AddSocialMedia">
+                <div class="modal-header">
+                    <h5 class="modal-title">إضافة منصة سوشيال ميديا</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">اسم المنصة</label>
+                        <input type="text" class="form-control" name="Name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">الأيقونة (Bootstrap Icons)</label>
+                        <div class="input-group">
+                            <span class="input-group-text">bi-</span>
+                            <input type="text" class="form-control" name="Icon" placeholder="twitter" required>
+                        </div>
+                        <small class="text-muted">أدخل اسم الأيقونة فقط بدون البادئة bi-</small>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">الرابط</label>
+                        <input type="url" class="form-control" name="Link" placeholder="https://">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">ترتيب العرض</label>
+                        <input type="number" class="form-control" name="DisplayOrder" value="0" min="0">
+                    </div>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" name="IsActive" checked>
+                        <label class="form-check-label">نشط</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="submit" class="btn btn-success">إضافة</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Social Media Modal -->
+<div class="modal fade" id="editSocialMediaModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form method="post" asp-action="EditSocialMedia">
+                <input type="hidden" id="edit-social-id" name="SocialMediaID">
+                <div class="modal-header">
+                    <h5 class="modal-title">تعديل منصة سوشيال ميديا</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">اسم المنصة</label>
+                        <input type="text" id="edit-social-name" class="form-control" name="Name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">الأيقونة (Bootstrap Icons)</label>
+                        <div class="input-group">
+                            <span class="input-group-text">bi-</span>
+                            <input type="text" id="edit-social-icon" class="form-control" name="Icon" required>
+                        </div>
+                        <small class="text-muted">أدخل اسم الأيقونة بدون البادئة bi-</small>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">الرابط</label>
+                        <input type="url" id="edit-social-link" class="form-control" name="Link">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">ترتيب العرض</label>
+                        <input type="number" id="edit-social-order" class="form-control" name="DisplayOrder" min="0">
+                    </div>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" id="edit-social-active" type="checkbox" name="IsActive">
+                        <label class="form-check-label">نشط</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Social Media Modal -->
+<div class="modal fade" id="deleteSocialMediaModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form method="post" asp-action="DeleteSocialMedia">
+                <input type="hidden" id="delete-social-id" name="id">
+                <div class="modal-header">
+                    <h5 class="modal-title">حذف منصة سوشيال ميديا</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>هل أنت متأكد من رغبتك في حذف منصة "<span id="delete-social-name" class="fw-bold"></span>"؟</p>
+                    <p class="text-danger">هذا الإجراء لا يمكن التراجع عنه.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="submit" class="btn btn-danger">حذف</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- FAQ Modals -->
+<!-- Add FAQ Modal -->
+<div class="modal fade" id="addFaqModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <form method="post" asp-action="AddFAQ">
+                <div class="modal-header">
+                    <h5 class="modal-title">إضافة سؤال جديد</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">السؤال</label>
+                        <input type="text" class="form-control" name="Question" required maxlength="500">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">الإجابة</label>
+                        <textarea class="form-control" name="Answer" rows="6" required maxlength="2000"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">ترتيب العرض</label>
+                        <input type="number" class="form-control" name="DisplayOrder" value="0" min="0">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="submit" class="btn btn-success">إضافة</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Edit FAQ Modal -->
+<div class="modal fade" id="editFaqModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <form method="post" asp-action="EditFAQ">
+                <input type="hidden" id="edit-faq-id" name="FAQID">
+                <div class="modal-header">
+                    <h5 class="modal-title">تعديل سؤال</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">السؤال</label>
+                        <input type="text" id="edit-faq-question" class="form-control" name="Question" required maxlength="500">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">الإجابة</label>
+                        <textarea id="edit-faq-answer" class="form-control" name="Answer" rows="6" required maxlength="2000"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">ترتيب العرض</label>
+                        <input type="number" id="edit-faq-order" class="form-control" name="DisplayOrder" min="0">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Delete FAQ Modal -->
+<div class="modal fade" id="deleteFaqModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form method="post" asp-action="DeleteFAQ">
+                <input type="hidden" id="delete-faq-id" name="id">
+                <div class="modal-header">
+                    <h5 class="modal-title">حذف سؤال</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>هل أنت متأكد من رغبتك في حذف السؤال "<span id="delete-faq-question" class="fw-bold"></span>"؟</p>
+                    <p class="text-danger">هذا الإجراء لا يمكن التراجع عنه.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="submit" class="btn btn-danger">حذف</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Terms Modals -->
+<!-- Add Terms Modal -->
+<div class="modal fade" id="addTermsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <form method="post" asp-action="AddTerms">
+                <div class="modal-header">
+                    <h5 class="modal-title">إضافة شروط وأحكام جديدة</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">العنوان</label>
+                        <input type="text" class="form-control" name="Title" maxlength="200">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">المحتوى</label>
+                        <textarea class="form-control" id="terms-content-editor" name="Content" rows="15" required></textarea>
+                        <small class="text-muted">يمكنك استخدام HTML لتنسيق المحتوى.</small>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="submit" class="btn btn-success">إضافة</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Terms Modal -->
+<div class="modal fade" id="editTermsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <form method="post" asp-action="EditTerms">
+                <input type="hidden" id="edit-terms-id" name="TermsID">
+                <div class="modal-header">
+                    <h5 class="modal-title">تعديل الشروط والأحكام</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">العنوان</label>
+                        <input type="text" id="edit-terms-title" class="form-control" name="Title" maxlength="200">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">المحتوى</label>
+                        <textarea class="form-control" id="edit-terms-content" name="Content" rows="15" required></textarea>
+                        <small class="text-muted">يمكنك استخدام HTML لتنسيق المحتوى.</small>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Terms Modal -->
+<div class="modal fade" id="deleteTermsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form method="post" asp-action="DeleteTerms">
+                <input type="hidden" id="delete-terms-id" name="id">
+                <div class="modal-header">
+                    <h5 class="modal-title">حذف شروط وأحكام</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>هل أنت متأكد من رغبتك في حذف "<span id="delete-terms-title" class="fw-bold"></span>"؟</p>
+                    <p class="text-danger">هذا الإجراء لا يمكن التراجع عنه.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="submit" class="btn btn-danger">حذف</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <!-- Use the CDN version with a valid API key or the self-hosted version -->
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize TinyMCE
+            tinymce.init({
+                selector: '#terms-content-editor, #edit-terms-content',
+                plugins: 'link lists table code',
+                toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist | link table | code',
+                height: 400,
+                directionality: 'rtl',
+                menubar: false,
+                entity_encoding: 'raw' // Helps with Arabic text
+            });
+
+            // Social Media Edit Button
+            document.querySelectorAll('.edit-social-btn').forEach(function(button) {
+                button.addEventListener('click', function() {
+                    document.getElementById('edit-social-id').value = this.dataset.id;
+                    document.getElementById('edit-social-name').value = this.dataset.name;
+                    document.getElementById('edit-social-icon').value = this.dataset.icon.replace('bi-', '');
+                    document.getElementById('edit-social-link').value = this.dataset.link;
+                    document.getElementById('edit-social-order').value = this.dataset.order;
+                    document.getElementById('edit-social-active').checked = this.dataset.active === 'true';
+                });
+            });
+
+            // Social Media Delete Button
+            document.querySelectorAll('.delete-social-btn').forEach(function(button) {
+                button.addEventListener('click', function() {
+                    document.getElementById('delete-social-id').value = this.dataset.id;
+                    document.getElementById('delete-social-name').textContent = this.dataset.name;
+                });
+            });
+
+            // FAQ Edit Button
+            document.querySelectorAll('.edit-faq-btn').forEach(function(button) {
+                button.addEventListener('click', function() {
+                    document.getElementById('edit-faq-id').value = this.dataset.id;
+                    document.getElementById('edit-faq-question').value = this.dataset.question;
+                    document.getElementById('edit-faq-answer').value = this.dataset.answer;
+                    document.getElementById('edit-faq-order').value = this.dataset.order;
+                });
+            });
+
+            // FAQ Delete Button
+            document.querySelectorAll('.delete-faq-btn').forEach(function(button) {
+                button.addEventListener('click', function() {
+                    document.getElementById('delete-faq-id').value = this.dataset.id;
+                    document.getElementById('delete-faq-question').textContent = this.dataset.question;
+                });
+            });
+
+            // Terms Edit Button
+            document.querySelectorAll('.edit-terms-btn').forEach(function(button) {
+                button.addEventListener('click', function() {
+                    document.getElementById('edit-terms-id').value = this.dataset.id;
+                    document.getElementById('edit-terms-title').value = this.dataset.title;
+
+                    // Set content directly instead of using AJAX
+                    tinymce.get('edit-terms-content').setContent(this.dataset.content || '');
+                });
+            });
+
+
+            // Terms Delete Button
+            document.querySelectorAll('.delete-terms-btn').forEach(function(button) {
+                button.addEventListener('click', function() {
+                    document.getElementById('delete-terms-id').value = this.dataset.id;
+                    document.getElementById('delete-terms-title').textContent = this.dataset.title;
+                });
+            });
+        });
+    </script>
+}
+

@@ -1,0 +1,76 @@
+﻿@model IEnumerable<KauRestaurant.Models.Terms>
+@{
+    ViewData["Title"] = "سياسة الخصوصية والشروط";
+}
+
+<div class="container-fluid py-4 py-lg-5 bg-white">
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card border-0 shadow">
+                    <!-- Page Header Card -->
+                    <div class="card-header bg-white py-3">
+                        <h2 class="fw-bold mb-0 text-center">سياسة الخصوصية والشروط</h2>
+                    </div>
+                    <!-- Terms and Conditions Content -->
+                    <div class="card-body p-4">
+                        @if (Model != null && Model.Any())
+                        {
+                            @foreach (var term in Model)
+                            {
+                                <div class="term-item mb-4">
+                                    <h4 class="term-title text-success fw-bold mb-3">@term.Title</h4>
+                                    @Html.Raw(term.Content)
+                                    <div class="term-meta text-muted mt-2">
+                                        <small>آخر تحديث: @term.LastUpdated.ToString("MMMM yyyy")</small>
+                                    </div>
+                                </div>
+                                <hr class="my-4" />
+                            }
+                            <div class="text-center mt-5 pt-3 border-top">
+                                <p class="text-muted">تمت مراجعة جميع الشروط والأحكام آخر مرة في @Model.Max(t => t.LastUpdated).ToString("MMMM yyyy")</p>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="alert alert-info">
+                                <i class="bi bi-info-circle me-2"></i>لم يتم العثور على محتوى سياسة الخصوصية والشروط.
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Box -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card border-0 shadow">
+                    <div class="card-body p-4 text-center">
+                        <h5 class="mb-3">هل لديك أسئلة حول سياسة الخصوصية والشروط؟</h5>
+                        <p class="text-muted mb-4">يمكنك التواصل معنا مباشرة عبر نموذج التواصل أو عبر معلومات الاتصال</p>
+                        <a asp-area="User" asp-controller="Feedback" asp-action="Index" class="btn btn-success px-4">
+                            <i class="bi bi-envelope me-2"></i>تواصل معنا
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .terms-content h1, .terms-content h2, .terms-content h3, .terms-content h4 {
+        color: #2e7d32;
+        margin-top: 1.5rem;
+    }
+
+    .terms-content ul {
+        padding-right: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .terms-content li {
+        margin-bottom: 0.5rem;
+    }
+</style>
