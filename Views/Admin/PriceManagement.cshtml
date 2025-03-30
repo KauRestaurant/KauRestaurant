@@ -1,5 +1,211 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model KauRestaurant.Controllers.Admin.TicketPriceViewModel
 @{
+    ViewData["Title"] = "إدارة أسعار التذاكر";
 }
+
+<!-- Main Content Section -->
+<div class="container-fluid py-4 py-lg-5 bg-white">
+    <div class="container">
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+                @TempData["SuccessMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+                @TempData["ErrorMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+
+        <div class="card border-0 shadow">
+            <!-- Card Header -->
+            <div class="card-header bg-white py-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h3 class="fw-bold mb-0"><i class="bi bi-currency-exchange me-2"></i>إدارة أسعار التذاكر</h3>
+                </div>
+            </div>
+
+            <!-- Card Body -->
+            <div class="card-body p-4">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="alert alert-info mb-4">
+                            <i class="bi bi-info-circle me-2"></i>
+                            <strong>ملاحظة:</strong> يمكنك تعديل أسعار التذاكر لكل وجبة. ستنعكس الأسعار الجديدة على جميع التذاكر المباعة بعد التحديث.
+                        </div>
+
+                        <form method="post" asp-action="UpdatePrices">
+                            <div class="row g-4">
+                                <!-- Breakfast Ticket Price -->
+                                <div class="col-md-4">
+                                    <div class="card border-0 shadow-sm h-100">
+                                        <div class="card-body text-center p-4">
+                                            <div class="display-1 mb-3 text-warning">
+                                                <i class="bi bi-sun"></i>
+                                            </div>
+                                            <h4 class="mb-3">تذكرة الإفطار</h4>
+                                            <div class="form-floating mb-3 rtl-input">
+                                                <input type="number" asp-for="BreakfastPrice" class="form-control"
+                                                       step="0.01" min="0.01" required placeholder=" "
+                                                       value="@Model.BreakfastPrice.ToString("F2")">
+                                                <label asp-for="BreakfastPrice">سعر تذكرة الإفطار (ريال)</label>
+                                            </div>
+                                            <span asp-validation-for="BreakfastPrice" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Lunch Ticket Price -->
+                                <div class="col-md-4">
+                                    <div class="card border-0 shadow-sm h-100">
+                                        <div class="card-body text-center p-4">
+                                            <div class="display-1 mb-3 text-primary">
+                                                <i class="bi bi-brightness-high"></i>
+                                            </div>
+                                            <h4 class="mb-3">تذكرة الغداء</h4>
+                                            <div class="form-floating mb-3 rtl-input">
+                                                <input type="number" asp-for="LunchPrice" class="form-control"
+                                                       step="0.01" min="0.01" required placeholder=" "
+                                                       value="@Model.LunchPrice.ToString("F2")">
+                                                <label asp-for="LunchPrice">سعر تذكرة الغداء (ريال)</label>
+                                            </div>
+                                            <span asp-validation-for="LunchPrice" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Dinner Ticket Price -->
+                                <div class="col-md-4">
+                                    <div class="card border-0 shadow-sm h-100">
+                                        <div class="card-body text-center p-4">
+                                            <div class="display-1 mb-3 text-dark">
+                                                <i class="bi bi-moon"></i>
+                                            </div>
+                                            <h4 class="mb-3">تذكرة العشاء</h4>
+                                            <div class="form-floating mb-3 rtl-input">
+                                                <input type="number" asp-for="DinnerPrice" class="form-control"
+                                                       step="0.01" min="0.01" required placeholder=" "
+                                                       value="@Model.DinnerPrice.ToString("F2")">
+                                                <label asp-for="DinnerPrice">سعر تذكرة العشاء (ريال)</label>
+                                            </div>
+                                            <span asp-validation-for="DinnerPrice" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="text-center mt-4">
+                                <button type="submit" class="btn btn-success btn-lg px-5">
+                                    <i class="bi bi-save me-2"></i>حفظ الأسعار
+                                </button>
+                            </div>
+                        </form>
+
+                        <div class="mt-5">
+                            <h4 class="mb-3">سجل تحديثات الأسعار</h4>
+                            <div class="table-responsive">
+                                <table class="table table-hover table-striped">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>نوع الوجبة</th>
+                                            <th>السعر (ريال)</th>
+                                            <th>آخر تحديث</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <span class="text-warning"><i class="bi bi-sun me-2"></i></span>
+                                                الإفطار
+                                            </td>
+                                            <td>@Model.BreakfastPrice.ToString("F2") ريال</td>
+                                            <td id="breakfastLastUpdate">-</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <span class="text-primary"><i class="bi bi-brightness-high me-2"></i></span>
+                                                الغداء
+                                            </td>
+                                            <td>@Model.LunchPrice.ToString("F2") ريال</td>
+                                            <td id="lunchLastUpdate">-</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <span class="text-dark"><i class="bi bi-moon me-2"></i></span>
+                                                العشاء
+                                            </td>
+                                            <td>@Model.DinnerPrice.ToString("F2") ريال</td>
+                                            <td id="dinnerLastUpdate">-</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Form validation
+        $(document).ready(function () {
+            $('form').on('submit', function (e) {
+                let isValid = true;
+                $('input[type="number"]').each(function () {
+                    const val = parseFloat($(this).val());
+                    if (isNaN(val) || val <= 0) {
+                        alert('يرجى إدخال أسعار صحيحة أكبر من صفر');
+                        isValid = false;
+                        return false;
+                    }
+                });
+                return isValid;
+            });
+
+            // Format numbers in input fields
+            $('input[type="number"]').on('change', function() {
+                const val = parseFloat($(this).val());
+                if (!isNaN(val)) {
+                    $(this).val(val.toFixed(2));
+                }
+            });
+        });
+
+        // Set current date for last update
+        const now = new Date();
+        const formattedDate = now.toLocaleString('ar-SA', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+
+        document.getElementById('breakfastLastUpdate').textContent = formattedDate;
+        document.getElementById('lunchLastUpdate').textContent = formattedDate;
+        document.getElementById('dinnerLastUpdate').textContent = formattedDate;
+    </script>
+}
+
+<style>
+    .rtl-input {
+        direction: rtl;
+    }
+
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+</style>

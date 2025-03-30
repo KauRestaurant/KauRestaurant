@@ -24,6 +24,8 @@ builder.Services.AddRazorPages();
 
 builder.Services.AddScoped<TicketQrService>();
 
+builder.Services.AddScoped<TicketPriceService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

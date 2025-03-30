@@ -1,6 +1,7 @@
 ﻿using KauRestaurant.Areas.Identity.Data;
 using KauRestaurant.Data;
 using KauRestaurant.Models;
+using KauRestaurant.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,19 +15,26 @@ namespace KauRestaurant.Controllers.User
         private readonly ApplicationDbContext _context;
         private readonly UserManager<KauRestaurantUser> _userManager;
         private readonly ILogger<PurchaseController> _logger;
+        private readonly TicketPriceService _ticketPriceService;
 
         public PurchaseController(
             ApplicationDbContext context,
             UserManager<KauRestaurantUser> userManager,
-            ILogger<PurchaseController> logger)
+            ILogger<PurchaseController> logger,
+            TicketPriceService ticketPriceService)
         {
             _context = context;
             _userManager = userManager;
             _logger = logger;
+            _ticketPriceService = ticketPriceService; // Fixed: Added the assignment
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            // Get the current prices and pass them to the view
+            var ticketPrices = await _ticketPriceService.GetAllTicketPrices();
+            ViewBag.TicketPrices = ticketPrices;
+
             return View("~/Views/User/Purchase.cshtml");
         }
 
@@ -49,15 +57,20 @@ namespace KauRestaurant.Controllers.User
                 }
 
                 // Calculate total price
-                float totalAmount = model.breakfastQty * 7 + model.lunchQty * 10 + model.dinnerQty * 10;
+                var ticketPrices = await _ticketPriceService.GetAllTicketPrices();
+                var breakfastPrice = ticketPrices["الإفطار"];
+                var lunchPrice = ticketPrices["الغداء"];
+                var dinnerPrice = ticketPrices["العشاء"];
+
+                var totalAmount = model.breakfastQty * breakfastPrice + model.lunchQty * lunchPrice + model.dinnerQty * dinnerPrice;
 
                 // Create new order
                 var order = new Order
                 {
                     CustomerID = userId,
                     OrderDate = DateTime.Now,
-                    Status = "Completed", // Immediately mark as completed since we're not doing payment processing
-                    TotalPaid = totalAmount,
+                    Status = "Completed", // Immediately mark as completed
+                    TotalPaid = (float)totalAmount,
                     BreakfastTicketsCount = model.breakfastQty,
                     LunchTicketsCount = model.lunchQty,
                     DinnerTicketsCount = model.dinnerQty
@@ -80,7 +93,8 @@ namespace KauRestaurant.Controllers.User
                         OrderID = order.OrderID,
                         MealType = "الإفطار", // Breakfast
                         QRCode = Guid.NewGuid().ToString(),
-                        IsRedeemed = false
+                        IsRedeemed = false,
+                        Price = breakfastPrice // Set the current price
                     });
                 }
 
@@ -92,7 +106,8 @@ namespace KauRestaurant.Controllers.User
                         OrderID = order.OrderID,
                         MealType = "الغداء", // Lunch
                         QRCode = Guid.NewGuid().ToString(),
-                        IsRedeemed = false
+                        IsRedeemed = false,
+                        Price = lunchPrice // Set the current price
                     });
                 }
 
@@ -104,7 +119,8 @@ namespace KauRestaurant.Controllers.User
                         OrderID = order.OrderID,
                         MealType = "العشاء", // Dinner
                         QRCode = Guid.NewGuid().ToString(),
-                        IsRedeemed = false
+                        IsRedeemed = false,
+                        Price = dinnerPrice // Set the current price
                     });
                 }
 

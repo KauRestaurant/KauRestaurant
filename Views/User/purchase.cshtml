@@ -2,6 +2,12 @@
 @{
     ViewData["Title"] = "شراء التذاكر";
     var requestToken = Antiforgery.GetAndStoreTokens(Context).RequestToken;
+
+    // Get ticket prices from ViewBag
+    var ticketPrices = ViewBag.TicketPrices as Dictionary<string, decimal>;
+    var breakfastPrice = ticketPrices != null && ticketPrices.ContainsKey("الإفطار") ? ticketPrices["الإفطار"] : 7m;
+    var lunchPrice = ticketPrices != null && ticketPrices.ContainsKey("الغداء") ? ticketPrices["الغداء"] : 10m;
+    var dinnerPrice = ticketPrices != null && ticketPrices.ContainsKey("العشاء") ? ticketPrices["العشاء"] : 10m;
 }
 
 <!-- Main Content Section -->
@@ -26,10 +32,49 @@
                 <div class="card-body p-3">
                     <!-- Hidden antiforgery token -->
                     <input type="hidden" name="__RequestVerificationToken" value="@requestToken" />
+                    <input type="hidden" id="breakfastPrice" value="@breakfastPrice" />
+                    <input type="hidden" id="lunchPrice" value="@lunchPrice" />
+                    <input type="hidden" id="dinnerPrice" value="@dinnerPrice" />
 
                     <!-- Ticket Input Sections -->
                     <div class="row justify-content-center">
-                        <div class="col-12" id="ticketSection"></div>
+                        <div class="col-12" id="ticketSection">
+                            <!-- Breakfast -->
+                            <div class="p-4 text-center">
+                                <h5 class="border-bottom pb-2 mb-3">
+                                    <i class="bi bi-sun me-2"></i> الإفطار <span class="fw-bold text-success">(@breakfastPrice ريال)</span>
+                                </h5>
+                                <div class="d-flex align-items-center justify-content-center gap-3">
+                                    <button type="button" class="btn btn-outline-success fw-bold px-3" onclick="adjustQuantity('breakfastQty', -1)">-</button>
+                                    <input type="text" class="form-control text-center" style="width: 90px;" min="0" value="0" id="breakfastQty">
+                                    <button type="button" class="btn btn-outline-success fw-bold px-3" onclick="adjustQuantity('breakfastQty', 1)">+</button>
+                                </div>
+                            </div>
+
+                            <!-- Lunch -->
+                            <div class="p-4 text-center">
+                                <h5 class="border-bottom pb-2 mb-3">
+                                    <i class="bi bi-brightness-high me-2"></i> الغداء <span class="fw-bold text-success">(@lunchPrice ريال)</span>
+                                </h5>
+                                <div class="d-flex align-items-center justify-content-center gap-3">
+                                    <button type="button" class="btn btn-outline-success fw-bold px-3" onclick="adjustQuantity('lunchQty', -1)">-</button>
+                                    <input type="text" class="form-control text-center" style="width: 90px;" min="0" value="0" id="lunchQty">
+                                    <button type="button" class="btn btn-outline-success fw-bold px-3" onclick="adjustQuantity('lunchQty', 1)">+</button>
+                                </div>
+                            </div>
+
+                            <!-- Dinner -->
+                            <div class="p-4 text-center">
+                                <h5 class="border-bottom pb-2 mb-3">
+                                    <i class="bi bi-moon me-2"></i> العشاء <span class="fw-bold text-success">(@dinnerPrice ريال)</span>
+                                </h5>
+                                <div class="d-flex align-items-center justify-content-center gap-3">
+                                    <button type="button" class="btn btn-outline-success fw-bold px-3" onclick="adjustQuantity('dinnerQty', -1)">-</button>
+                                    <input type="text" class="form-control text-center" style="width: 90px;" min="0" value="0" id="dinnerQty">
+                                    <button type="button" class="btn btn-outline-success fw-bold px-3" onclick="adjustQuantity('dinnerQty', 1)">+</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="d-flex justify-content-between align-items-center mt-4">
@@ -48,29 +93,6 @@
 </div>
 
 <script>
-    function createTicketCard(name, price, icon, id) {
-        return `
-            <div class="p-4 text-center">
-                <h5 class="border-bottom pb-2 mb-3">
-                    <i class="bi ${icon} me-2"></i> ${name} <span class="fw-bold text-success">(${price} ريال)</span>
-                </h5>
-                <div class="d-flex align-items-center justify-content-center gap-3">
-                    <button type="button" class="btn btn-outline-success fw-bold px-3" onclick="adjustQuantity('${id}', -1)">-</button>
-                    <input type="text" class="form-control text-center" style="width: 90px;" min="0" value="0" id="${id}">
-                    <button type="button" class="btn btn-outline-success fw-bold px-3" onclick="adjustQuantity('${id}', 1)">+</button>
-                </div>
-            </div>
-        `;
-    }
-
-    function renderTickets() {
-        const ticketSection = document.getElementById('ticketSection');
-        ticketSection.innerHTML =
-            createTicketCard('الإفطار', 7, 'bi-sun', 'breakfastQty') +
-            createTicketCard('الغداء', 10, 'bi-brightness-high', 'lunchQty') +
-            createTicketCard('العشاء', 10, 'bi-moon', 'dinnerQty');
-    }
-
     function adjustQuantity(id, change) {
         const input = document.getElementById(id);
         input.value = Math.max(0, parseInt(input.value || 0) + change);
@@ -78,10 +100,16 @@
     }
 
     function calculateTotals() {
-        const breakfast = parseInt(document.getElementById('breakfastQty').value) * 7;
-        const lunch = parseInt(document.getElementById('lunchQty').value) * 10;
-        const dinner = parseInt(document.getElementById('dinnerQty').value) * 10;
-        document.getElementById('grandTotal').textContent = `${breakfast + lunch + dinner} ريال`;
+        const breakfastQty = parseInt(document.getElementById('breakfastQty').value) || 0;
+        const lunchQty = parseInt(document.getElementById('lunchQty').value) || 0;
+        const dinnerQty = parseInt(document.getElementById('dinnerQty').value) || 0;
+
+        const breakfastPrice = parseFloat(document.getElementById('breakfastPrice').value);
+        const lunchPrice = parseFloat(document.getElementById('lunchPrice').value);
+        const dinnerPrice = parseFloat(document.getElementById('dinnerPrice').value);
+
+        const total = (breakfastQty * breakfastPrice) + (lunchQty * lunchPrice) + (dinnerQty * dinnerPrice);
+        document.getElementById('grandTotal').textContent = `${total.toFixed(2)} ريال`;
     }
 
     function purchaseTickets() {
@@ -98,7 +126,7 @@
         // Disable button to prevent multiple submissions
         const purchaseButton = document.querySelector('button.btn-success.btn-lg');
         purchaseButton.disabled = true;
-        purchaseButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="Status" aria-hidden="true"></span> جاري المعالجة...';
+        purchaseButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> جاري المعالجة...';
 
         // Prepare data
         const data = {
@@ -120,8 +148,8 @@
         })
         .then(response => {
             if (!response.ok) {
-                console.error('Server returned:', response.Status, response.StatusText);
-                throw new Error('Network response was not ok: ' + response.Status);
+                console.error('Server returned:', response.status, response.statusText);
+                throw new Error('Network response was not ok: ' + response.status);
             }
             return response.json();
         })
@@ -144,8 +172,6 @@
         });
     }
 
-
-    // Initialize
-    renderTickets();
+    // Initialize totals
     calculateTotals();
 </script>

@@ -21,6 +21,8 @@ namespace KauRestaurant.Data
         public DbSet<Feedback> Feedbacks { get; set; }
         public DbSet<FAQ> FAQs { get; set; }
         public DbSet<Terms> Terms { get; set; }
+        public DbSet<TicketPrice> TicketPrices { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
