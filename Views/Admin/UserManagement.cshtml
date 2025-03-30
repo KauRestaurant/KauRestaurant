@@ -54,9 +54,13 @@
                             <label class="form-label">كلمة المرور</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-key"></i></span>
-                                <input type="password" name="Password" class="form-control" required
+                                <input type="password" name="Password" class="form-control password-input" required
                                        minlength="6" placeholder="٦ أحرف على الأقل" />
+                                <button type="button" class="btn btn-outline-secondary toggle-password">
+                                    <i class="bi bi-eye"></i>
+                                </button>
                             </div>
+                            <div class="password-strength mt-2"></div>
                         </div>
                         <div class="col-md-4 mb-3">
                             <label class="form-label">الاسم الأول</label>
@@ -129,11 +133,11 @@
                                 <tr>
                                     <td>
                                         <i class="bi bi-person-badge me-2"></i>
-                                        @user.FirstName @user.LastName
+                                        <span id="user-name-@user.Id">@user.FirstName @user.LastName</span>
                                     </td>
                                     <td>
                                         <i class="bi bi-envelope me-2"></i>
-                                        @user.Email
+                                        <span id="user-email-@user.Id">@user.Email</span>
                                     </td>
                                     <td>
                                         @{
@@ -151,19 +155,30 @@
                                     </td>
                                     <td>
                                         <div class="d-flex align-items-center gap-2">
-                                            <form method="post" asp-action="ChangeRole" class="d-inline-flex align-items-center">
-                                                <input type="hidden" name="userId" value="@user.Id" />
-                                                <select name="newRole" class="form-select form-select-sm me-2" style="width: auto;">
-                                                    <option value="A1" selected="@(user.CurrentRole == "A1")">A1 - مشرف رئيسي</option>
-                                                    <option value="A2" selected="@(user.CurrentRole == "A2")">A2 - مشرف إداري</option>
-                                                    <option value="A3" selected="@(user.CurrentRole == "A3")">A3 - مشرف مساعد</option>
-                                                </select>
-                                                <button type="submit" class="btn btn-sm btn-primary"
-                                                        data-bs-toggle="tooltip" title="تغيير مستوى الصلاحية">
-                                                    <i class="bi bi-check2"></i>
-                                                </button>
-                                            </form>
+                                            <!-- Edit User Button -->
+                                            <button type="button" class="btn btn-sm btn-info btn-edit-user"
+                                                    data-user-id="@user.Id"
+                                                    data-user-firstname="@user.FirstName"
+                                                    data-user-lastname="@user.LastName"
+                                                    data-user-email="@user.Email"
+                                                    data-user-role="@user.CurrentRole"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#editUserModal"
+                                                    title="تعديل المستخدم">
+                                                <i class="bi bi-pencil"></i>
+                                            </button>
 
+                                            <!-- Change Password Button -->
+                                            <button type="button" class="btn btn-sm btn-warning"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#changePasswordModal"
+                                                    data-user-id="@user.Id"
+                                                    data-user-name="@user.FirstName @user.LastName"
+                                                    title="تغيير كلمة المرور">
+                                                <i class="bi bi-key"></i>
+                                            </button>
+
+                                            <!-- Delete User Button -->
                                             <form method="post" asp-action="DeleteUser" class="d-inline"
                                                   onsubmit="return confirm('هل أنت متأكد من حذف هذا المشرف؟ لا يمكن التراجع عن هذا الإجراء.');">
                                                 <input type="hidden" name="userId" value="@user.Id" />
@@ -186,6 +201,151 @@
     </div>
 </div>
 
+<!-- Edit User Modal -->
+<div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editUserModalLabel">تعديل بيانات المشرف</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editUserForm" method="post">
+                    <input type="hidden" id="editUserId" name="userId">
+
+                    <!-- Personal Information Tab -->
+                    <div class="mb-4">
+                        <h6 class="fw-bold mb-3">
+                            <i class="bi bi-person-badge me-2"></i>المعلومات الشخصية
+                        </h6>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="editUserFirstName" class="form-label">الاسم الأول</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                    <input type="text" class="form-control" id="editUserFirstName" name="firstName" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="editUserLastName" class="form-label">الاسم الأخير</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                    <input type="text" class="form-control" id="editUserLastName" name="lastName" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-end mt-3">
+                            <button type="button" id="updateNameBtn" class="btn btn-primary" onclick="submitForm('UpdateName')">
+                                <i class="bi bi-check-lg me-1"></i>تحديث المعلومات الشخصية
+                            </button>
+                        </div>
+                    </div>
+                    <hr>
+
+                    <!-- Email Information Tab -->
+                    <div class="mb-4">
+                        <h6 class="fw-bold mb-3">
+                            <i class="bi bi-envelope me-2"></i>البريد الإلكتروني
+                        </h6>
+                        <div class="alert alert-warning small">
+                            <i class="bi bi-exclamation-triangle me-2"></i>
+                            ملاحظة: تغيير البريد الإلكتروني سيؤدي إلى تسجيل خروج المستخدم إذا كان متصلاً حالياً.
+                        </div>
+                        <div class="mb-3">
+                            <label for="editUserEmail" class="form-label">البريد الإلكتروني</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                                <input type="email" class="form-control" id="editUserEmail" name="newEmail" required>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <button type="button" id="updateEmailBtn" class="btn btn-primary" onclick="submitForm('UpdateEmail')">
+                                <i class="bi bi-check-lg me-1"></i>تحديث البريد الإلكتروني
+                            </button>
+                        </div>
+                    </div>
+                    <hr>
+
+                    <!-- Role Information Tab -->
+                    <div>
+                        <h6 class="fw-bold mb-3">
+                            <i class="bi bi-shield-lock me-2"></i>مستوى الصلاحية
+                        </h6>
+                        <div class="mb-3">
+                            <label for="editUserRole" class="form-label">مستوى الصلاحية</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-shield-lock"></i></span>
+                                <select class="form-select" id="editUserRole" name="newRole" required>
+                                    <option value="A1">A1 - مشرف رئيسي</option>
+                                    <option value="A2">A2 - مشرف إداري</option>
+                                    <option value="A3">A3 - مشرف مساعد</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <button type="button" id="updateRoleBtn" class="btn btn-primary" onclick="submitForm('ChangeRole')">
+                                <i class="bi bi-check-lg me-1"></i>تحديث الصلاحية
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Change Password Modal -->
+<div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="changePasswordModalLabel">تغيير كلمة المرور</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post" asp-action="ChangePassword" id="changePasswordForm">
+                <div class="modal-body">
+                    <input type="hidden" name="userId" id="passwordUserId" value="">
+                    <div class="mb-3">
+                        <h6 class="mb-3" id="passwordUserName"></h6>
+                        <label class="form-label">كلمة المرور الجديدة</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-key"></i></span>
+                            <input type="password" name="newPassword" class="form-control password-input"
+                                   required minlength="6" placeholder="٦ أحرف على الأقل" />
+                            <button type="button" class="btn btn-outline-secondary toggle-password">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
+                        <div class="password-strength mt-2"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">تأكيد كلمة المرور الجديدة</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-key-fill"></i></span>
+                            <input type="password" name="confirmPassword" class="form-control password-input"
+                                   required minlength="6" />
+                            <button type="button" class="btn btn-outline-secondary toggle-password">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="alert alert-warning">
+                        <i class="bi bi-exclamation-triangle me-2"></i>
+                        سيتم تسجيل خروج المستخدم بعد تغيير كلمة المرور.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="submit" class="btn btn-warning">حفظ كلمة المرور</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 @section Scripts {
     <script>
         $(document).ready(function() {
@@ -195,9 +355,23 @@
                 return new bootstrap.Tooltip(tooltipTriggerEl)
             });
 
-            // Add password strength indicator
-            $('input[name="Password"]').on('input', function() {
-                var password = $(this).val();
+            // Toggle password visibility
+            $('.toggle-password').on('click', function() {
+                var inputField = $(this).closest('.input-group').find('.password-input');
+                var icon = $(this).find('i');
+
+                if (inputField.attr('type') === 'password') {
+                    inputField.attr('type', 'text');
+                    icon.removeClass('bi-eye').addClass('bi-eye-slash');
+                } else {
+                    inputField.attr('type', 'password');
+                    icon.removeClass('bi-eye-slash').addClass('bi-eye');
+                }
+            });
+
+            // Password strength indicator function
+            function updatePasswordStrength(input) {
+                var password = $(input).val();
                 var strength = 0;
 
                 if (password.length >= 8) strength++;
@@ -209,12 +383,8 @@
                 var strengthClass = ['danger', 'warning', 'warning', 'success', 'success'][strength - 1] || 'danger';
                 var strengthText = ['ضعيف جداً', 'ضعيف', 'متوسط', 'قوي', 'قوي جداً'][strength - 1] || 'ضعيف جداً';
 
-                // Update password strength indicator if it exists, create it if it doesn't
-                var indicator = $(this).closest('.input-group').siblings('.password-strength');
-                if (indicator.length === 0) {
-                    $(this).closest('.input-group').after('<div class="password-strength mt-2"></div>');
-                    indicator = $(this).closest('.input-group').siblings('.password-strength');
-                }
+                // Update password strength indicator
+                var indicator = $(input).closest('.input-group').siblings('.password-strength');
 
                 if (password.length > 0) {
                     indicator.html(`<div class="progress" style="height: 5px;">
@@ -224,7 +394,61 @@
                 } else {
                     indicator.empty();
                 }
+            }
+
+            // Add password strength indicator for create user form
+            $('input[name="Password"]').on('input', function() {
+                updatePasswordStrength(this);
+            });
+
+            // Add password strength indicator for change password modals
+            $('input[name="newPassword"]').on('input', function() {
+                updatePasswordStrength(this);
+            });
+
+            // Password confirmation validation
+            $('#changePasswordForm').on('submit', function(e) {
+                var newPassword = $(this).find('input[name="newPassword"]').val();
+                var confirmPassword = $(this).find('input[name="confirmPassword"]').val();
+
+                if (newPassword !== confirmPassword) {
+                    e.preventDefault();
+                    alert('كلمات المرور غير متطابقة');
+                }
+            });
+
+            // Edit user button click handler
+            $('.btn-edit-user').on('click', function() {
+                var userId = $(this).data('user-id');
+                var firstName = $(this).data('user-firstname');
+                var lastName = $(this).data('user-lastname');
+                var email = $(this).data('user-email');
+                var role = $(this).data('user-role');
+
+                // Set form values
+                $('#editUserId').val(userId);
+                $('#editUserFirstName').val(firstName);
+                $('#editUserLastName').val(lastName);
+                $('#editUserEmail').val(email);
+                $('#editUserRole').val(role);
+            });
+
+            // Change password button click handler
+            $('[data-bs-target="#changePasswordModal"]').on('click', function() {
+                var userId = $(this).data('user-id');
+                var userName = $(this).data('user-name');
+
+                // Set user ID in the password change form
+                $('#passwordUserId').val(userId);
+                $('#passwordUserName').text('تغيير كلمة المرور للمستخدم: ' + userName);
             });
         });
+
+        // Form submission function
+        function submitForm(action) {
+            var form = document.getElementById('editUserForm');
+            form.action = action;
+            form.submit();
+        }
     </script>
 }

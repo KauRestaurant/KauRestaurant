@@ -89,6 +89,133 @@ namespace KauRestaurant.Controllers.Admin
         }
 
         [HttpPost]
+        public async Task<IActionResult> UpdateName(string userId, string firstName, string lastName)
+        {
+            if (string.IsNullOrEmpty(firstName) || string.IsNullOrEmpty(lastName))
+            {
+                TempData["ErrorMessage"] = "الاسم الأول والأخير مطلوبان";
+                return RedirectToAction(nameof(Index));
+            }
+
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                TempData["ErrorMessage"] = "المستخدم غير موجود";
+                return RedirectToAction(nameof(Index));
+            }
+
+            user.FirstName = firstName;
+            user.LastName = lastName;
+
+            var result = await _userManager.UpdateAsync(user);
+            if (result.Succeeded)
+            {
+                TempData["SuccessMessage"] = "تم تحديث اسم المستخدم بنجاح";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "فشل تحديث اسم المستخدم";
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateEmail(string userId, string newEmail)
+        {
+            if (string.IsNullOrEmpty(newEmail))
+            {
+                TempData["ErrorMessage"] = "البريد الإلكتروني مطلوب";
+                return RedirectToAction(nameof(Index));
+            }
+
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                TempData["ErrorMessage"] = "المستخدم غير موجود";
+                return RedirectToAction(nameof(Index));
+            }
+
+            // Check if email is already in use
+            var existingUser = await _userManager.FindByEmailAsync(newEmail);
+            if (existingUser != null && existingUser.Id != userId)
+            {
+                TempData["ErrorMessage"] = "البريد الإلكتروني مستخدم بالفعل";
+                return RedirectToAction(nameof(Index));
+            }
+
+            user.Email = newEmail;
+            user.UserName = newEmail; // Since email is used as username
+            user.NormalizedEmail = newEmail.ToUpper();
+            user.NormalizedUserName = newEmail.ToUpper();
+
+            var result = await _userManager.UpdateAsync(user);
+            if (result.Succeeded)
+            {
+                TempData["SuccessMessage"] = "تم تحديث البريد الإلكتروني بنجاح";
+
+                // If changing the current user's email, sign them out
+                if (User.Identity.Name == user.Email)
+                {
+                    return RedirectToAction("Logout", "Account", new { area = "Identity" });
+                }
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "فشل تحديث البريد الإلكتروني";
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(string userId, string newPassword, string confirmPassword)
+        {
+            if (string.IsNullOrEmpty(newPassword) || newPassword.Length < 6)
+            {
+                TempData["ErrorMessage"] = "كلمة المرور يجب أن تكون 6 أحرف على الأقل";
+                return RedirectToAction(nameof(Index));
+            }
+
+            if (newPassword != confirmPassword)
+            {
+                TempData["ErrorMessage"] = "كلمات المرور غير متطابقة";
+                return RedirectToAction(nameof(Index));
+            }
+
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                TempData["ErrorMessage"] = "المستخدم غير موجود";
+                return RedirectToAction(nameof(Index));
+            }
+
+            // Remove current password and set the new one
+            var removePasswordResult = await _userManager.RemovePasswordAsync(user);
+            if (!removePasswordResult.Succeeded)
+            {
+                TempData["ErrorMessage"] = "فشل تغيير كلمة المرور";
+                return RedirectToAction(nameof(Index));
+            }
+
+            var addPasswordResult = await _userManager.AddPasswordAsync(user, newPassword);
+            if (addPasswordResult.Succeeded)
+            {
+                TempData["SuccessMessage"] = "تم تغيير كلمة المرور بنجاح";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "فشل تغيير كلمة المرور";
+                foreach (var error in addPasswordResult.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
         public async Task<IActionResult> CreateUser(CreateUserViewModel model)
         {
             // Validate that the role is an admin role
