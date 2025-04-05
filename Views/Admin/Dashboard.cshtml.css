@@ -1,0 +1,15 @@
+﻿.icon-wrapper {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.admin-card {
+    transition: transform 0.2s;
+}
+
+    .admin-card:hover {
+        transform: translateY(-5px);
+    }

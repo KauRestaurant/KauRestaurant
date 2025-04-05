@@ -1,6 +1,21 @@
 ﻿@model List<KauRestaurant.Controllers.Admin.UserViewModel>
 @{
     ViewData["Title"] = "إدارة المشرفين";
+
+    // Order users by role priority (A1, A2, A3)
+    var orderedUsers = Model.OrderBy(u =>
+    {
+        switch (u.CurrentRole)
+        {
+            case "A1": return 1;
+            case "A2": return 2;
+            case "A3": return 3;
+            default: return 4;
+        }
+    }).ToList();
+    
+    // Create a new instance for form validation
+    var createViewModel = new KauRestaurant.Controllers.Admin.CreateUserViewModel();
 }
 
 <!-- Main Content Section -->
@@ -9,17 +24,18 @@
         @if (TempData["SuccessMessage"] != null)
         {
             <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
-                @TempData["SuccessMessage"]
+                <i class="bi bi-check-circle-fill me-2"></i>@TempData["SuccessMessage"]
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         }
         @if (TempData["ErrorMessage"] != null)
         {
             <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
-                @TempData["ErrorMessage"]
+                <i class="bi bi-exclamation-circle-fill me-2"></i>@TempData["ErrorMessage"]
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         }
+
 
         <!-- Add New Admin Card -->
         <div class="card border-0 shadow mb-4">
@@ -27,69 +43,77 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <h3 class="fw-bold mb-0">
                         <i class="bi bi-person-plus-fill me-2"></i>إضافة مشرف جديد
-                        <small class="text-muted fs-6 fw-normal">(مستويات الصلاحية A1, A2, A3)</small>
                     </h3>
                 </div>
             </div>
             <div class="card-body">
-                <div class="alert alert-info mb-4">
-                    <i class="bi bi-info-circle me-2"></i>
-                    <strong>ملاحظة:</strong> مستويات الصلاحية:
-                    <ul class="mb-0 mt-2">
-                        <li>A1 - مشرف رئيسي (كافة الصلاحيات)</li>
-                        <li>A2 - مشرف إداري (إدارة المحتوى والقوائم)</li>
-                        <li>A3 - مشرف مساعد (مراجعة التقارير والتعليقات)</li>
-                    </ul>
-                </div>
+                
                 <form method="post" asp-action="CreateUser">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label class="form-label">البريد الإلكتروني</label>
+                            <label asp-for="@createViewModel.Email" class="form-label">البريد الإلكتروني</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-envelope"></i></span>
-                                <input type="email" name="Email" class="form-control" required />
+                                <input asp-for="@createViewModel.Email" class="form-control" />
                             </div>
+                            <span asp-validation-for="@createViewModel.Email" class="text-danger d-block mt-1"></span>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label class="form-label">كلمة المرور</label>
+                            <label asp-for="@createViewModel.Password" class="form-label">كلمة المرور</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-key"></i></span>
-                                <input type="password" name="Password" class="form-control password-input" required
+                                <input asp-for="@createViewModel.Password" class="form-control password-input"
                                        minlength="6" placeholder="٦ أحرف على الأقل" />
-                                <button type="button" class="btn btn-outline-secondary toggle-password">
-                                    <i class="bi bi-eye"></i>
-                                </button>
                             </div>
+                            <span asp-validation-for="@createViewModel.Password" class="text-danger d-block mt-1"></span>
                             <div class="password-strength mt-2"></div>
                         </div>
                         <div class="col-md-4 mb-3">
-                            <label class="form-label">الاسم الأول</label>
+                            <label asp-for="@createViewModel.FirstName" class="form-label">الاسم الأول</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-person"></i></span>
-                                <input type="text" name="FirstName" class="form-control" required />
+                                <input asp-for="@createViewModel.FirstName" class="form-control" />
                             </div>
+                            <span asp-validation-for="@createViewModel.FirstName" class="text-danger d-block mt-1"></span>
                         </div>
                         <div class="col-md-4 mb-3">
-                            <label class="form-label">الاسم الأخير</label>
+                            <label asp-for="@createViewModel.LastName" class="form-label">الاسم الأخير</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-person"></i></span>
-                                <input type="text" name="LastName" class="form-control" required />
+                                <input asp-for="@createViewModel.LastName" class="form-control" />
                             </div>
+                            <span asp-validation-for="@createViewModel.LastName" class="text-danger d-block mt-1"></span>
                         </div>
                         <div class="col-md-4 mb-3">
-                            <label class="form-label">مستوى الصلاحية</label>
+                            <label asp-for="@createViewModel.Role" class="form-label">مستوى الصلاحية</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-shield-lock"></i></span>
-                                <select name="Role" class="form-select" required>
+                                <select asp-for="@createViewModel.Role" class="form-select">
                                     <option value="" disabled selected>اختر مستوى الصلاحية</option>
                                     <option value="A1">A1 - مشرف رئيسي</option>
                                     <option value="A2">A2 - مشرف إداري</option>
                                     <option value="A3">A3 - مشرف مساعد</option>
                                 </select>
                             </div>
+                            <span asp-validation-for="@createViewModel.Role" class="text-danger d-block mt-1"></span>
                         </div>
                     </div>
-                    <div class="text-end">
+                    <div class="alert alert-info mb-4">
+                        <i class="bi bi-info-circle me-2"></i>
+                        <strong>ملاحظة:</strong> مستويات الصلاحية:
+                        <ul class="mb-0 mt-2">
+                            <li>A1 - مشرف رئيسي (كافة الصلاحيات)</li>
+                            <li>A2 - مشرف إداري (إدارة المحتوى والقوائم)</li>
+                            <li>A3 - مشرف مساعد (مراجعة التقارير والتعليقات)</li>
+                        </ul>
+                    </div>
+                    <div class="d-flex justify-content-between pt-3 border-top">
+                        <a asp-controller="Dashboard" asp-action="Index" class="btn btn-outline-success">
+                            <i class="bi bi-arrow-right me-1"></i>
+                            <span class="d-none d-md-inline">عودة إلى لوحة التحكم</span>
+                            <span class="d-inline d-md-none">العودة</span>
+                        </a>
                         <button type="submit" class="btn btn-success">
                             <i class="bi bi-plus-circle me-2"></i>إضافة مشرف
                         </button>
@@ -98,13 +122,13 @@
             </div>
         </div>
 
+        <!-- Rest of your file remains unchanged -->
         <!-- Admins List Card -->
         <div class="card border-0 shadow">
             <div class="card-header bg-white py-3">
                 <div class="d-flex justify-content-between align-items-center">
                     <h3 class="fw-bold mb-0">
                         <i class="bi bi-people-fill me-2"></i>قائمة المشرفين
-                        <small class="text-muted fs-6 fw-normal">(المستخدمين ذوي الصلاحيات الإدارية فقط)</small>
                     </h3>
                 </div>
             </div>
@@ -128,7 +152,7 @@
                                     </td>
                                 </tr>
                             }
-                            @foreach (var user in Model)
+                            @foreach (var user in orderedUsers)
                             {
                                 <tr>
                                     <td>
@@ -143,20 +167,56 @@
                                         @{
                                             var (badgeClass, roleText) = user.CurrentRole switch
                                             {
-                                                "A1" => ("bg-danger", "مشرف رئيسي"),
-                                                "A2" => ("bg-primary", "مشرف إداري"),
-                                                "A3" => ("bg-success", "مشرف مساعد"),
+                                                "A1" => ("bg-A1", "مشرف رئيسي"),
+                                                "A2" => ("bg-A2", "مشرف إداري"),
+                                                "A3" => ("bg-A3", "مشرف مساعد"),
                                                 _ => ("bg-secondary", user.CurrentRole)
                                             };
                                         }
                                         <span class="badge @badgeClass">
                                             @user.CurrentRole - @roleText
                                         </span>
-                                    </td>
-                                    <td>
-                                        <div class="d-flex align-items-center gap-2">
+                                        <div class="d-flex align-items-center gap-2 mt-1 d-inline d-md-none">
                                             <!-- Edit User Button -->
                                             <button type="button" class="btn btn-sm btn-info btn-edit-user"
+                                                    data-user-id="@user.Id"
+                                                    data-user-firstname="@user.FirstName"
+                                                    data-user-lastname="@user.LastName"
+                                                    data-user-email="@user.Email"
+                                                    data-user-role="@user.CurrentRole"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#editUserModal"
+                                                    title="تعديل المستخدم">
+                                                <i class="bi bi-pencil"></i>
+                                            </button>
+
+                                            <!-- Change Password Button -->
+                                            <button type="button" class="btn btn-sm btn-warning"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#changePasswordModal"
+                                                    data-user-id="@user.Id"
+                                                    data-user-name="@user.FirstName @user.LastName"
+                                                    title="تغيير كلمة المرور">
+                                                <i class="bi bi-key"></i>
+                                            </button>
+
+                                            <!-- Delete User Button -->
+                                            <form method="post" asp-action="DeleteUser" class="d-inline"
+                                                  onsubmit="return confirm('هل أنت متأكد من حذف هذا المشرف؟ لا يمكن التراجع عن هذا الإجراء.');">
+                                                <input type="hidden" name="userId" value="@user.Id" />
+                                                <button type="submit" class="btn btn-sm btn-danger"
+                                                @(User.Identity.Name == user.Email ? "disabled" : "")
+                                                        data-bs-toggle="tooltip"
+                                                        title="@(User.Identity.Name == user.Email ? "لا يمكنك حذف حسابك الحالي" : "حذف المشرف")">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex align-items-center gap-2 d-none d-md-inline">
+                                            <!-- Edit User Button -->
+                                            <button type="button" class="btn btn-sm btn-success btn-edit-user"
                                                     data-user-id="@user.Id"
                                                     data-user-firstname="@user.FirstName"
                                                     data-user-lastname="@user.LastName"
@@ -210,7 +270,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="editUserForm" method="post">
+                <form id="editUserForm" method="post" asp-action="UpdateUser">
                     <input type="hidden" id="editUserId" name="userId">
 
                     <!-- Personal Information Tab -->
@@ -225,6 +285,7 @@
                                     <span class="input-group-text"><i class="bi bi-person"></i></span>
                                     <input type="text" class="form-control" id="editUserFirstName" name="firstName" required>
                                 </div>
+                                <span class="text-danger field-validation-valid" data-valmsg-for="firstName" data-valmsg-replace="true"></span>
                             </div>
                             <div class="col-md-6">
                                 <label for="editUserLastName" class="form-label">الاسم الأخير</label>
@@ -232,12 +293,8 @@
                                     <span class="input-group-text"><i class="bi bi-person"></i></span>
                                     <input type="text" class="form-control" id="editUserLastName" name="lastName" required>
                                 </div>
+                                <span class="text-danger field-validation-valid" data-valmsg-for="lastName" data-valmsg-replace="true"></span>
                             </div>
-                        </div>
-                        <div class="d-flex justify-content-end mt-3">
-                            <button type="button" id="updateNameBtn" class="btn btn-primary" onclick="submitForm('UpdateName')">
-                                <i class="bi bi-check-lg me-1"></i>تحديث المعلومات الشخصية
-                            </button>
                         </div>
                     </div>
                     <hr>
@@ -257,17 +314,13 @@
                                 <span class="input-group-text"><i class="bi bi-envelope"></i></span>
                                 <input type="email" class="form-control" id="editUserEmail" name="newEmail" required>
                             </div>
-                        </div>
-                        <div class="d-flex justify-content-end">
-                            <button type="button" id="updateEmailBtn" class="btn btn-primary" onclick="submitForm('UpdateEmail')">
-                                <i class="bi bi-check-lg me-1"></i>تحديث البريد الإلكتروني
-                            </button>
+                            <span class="text-danger field-validation-valid" data-valmsg-for="newEmail" data-valmsg-replace="true"></span>
                         </div>
                     </div>
                     <hr>
 
                     <!-- Role Information Tab -->
-                    <div>
+                    <div class="mb-4">
                         <h6 class="fw-bold mb-3">
                             <i class="bi bi-shield-lock me-2"></i>مستوى الصلاحية
                         </h6>
@@ -281,17 +334,19 @@
                                     <option value="A3">A3 - مشرف مساعد</option>
                                 </select>
                             </div>
+                            <span class="text-danger field-validation-valid" data-valmsg-for="newRole" data-valmsg-replace="true"></span>
                         </div>
-                        <div class="d-flex justify-content-end">
-                            <button type="button" id="updateRoleBtn" class="btn btn-primary" onclick="submitForm('ChangeRole')">
-                                <i class="bi bi-check-lg me-1"></i>تحديث الصلاحية
-                            </button>
-                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-success">
+                            <i class="bi bi-check-lg me-2"></i>حفظ التغييرات
+                        </button>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+                <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">إلغاء</button>
             </div>
         </div>
     </div>
@@ -315,10 +370,8 @@
                             <span class="input-group-text"><i class="bi bi-key"></i></span>
                             <input type="password" name="newPassword" class="form-control password-input"
                                    required minlength="6" placeholder="٦ أحرف على الأقل" />
-                            <button type="button" class="btn btn-outline-secondary toggle-password">
-                                <i class="bi bi-eye"></i>
-                            </button>
                         </div>
+                        <span class="text-danger field-validation-valid" data-valmsg-for="newPassword" data-valmsg-replace="true"></span>
                         <div class="password-strength mt-2"></div>
                     </div>
                     <div class="mb-3">
@@ -327,10 +380,8 @@
                             <span class="input-group-text"><i class="bi bi-key-fill"></i></span>
                             <input type="password" name="confirmPassword" class="form-control password-input"
                                    required minlength="6" />
-                            <button type="button" class="btn btn-outline-secondary toggle-password">
-                                <i class="bi bi-eye"></i>
-                            </button>
                         </div>
+                        <span class="text-danger field-validation-valid" data-valmsg-for="confirmPassword" data-valmsg-replace="true"></span>
                     </div>
                     <div class="alert alert-warning">
                         <i class="bi bi-exclamation-triangle me-2"></i>
@@ -338,8 +389,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
-                    <button type="submit" class="btn btn-warning">حفظ كلمة المرور</button>
+                    <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="submit" class="btn btn-success">حفظ كلمة المرور</button>
                 </div>
             </form>
         </div>
@@ -347,108 +398,7 @@
 </div>
 
 @section Scripts {
-    <script>
-        $(document).ready(function() {
-            // Initialize Bootstrap tooltips
-            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-            var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
-                return new bootstrap.Tooltip(tooltipTriggerEl)
-            });
-
-            // Toggle password visibility
-            $('.toggle-password').on('click', function() {
-                var inputField = $(this).closest('.input-group').find('.password-input');
-                var icon = $(this).find('i');
-
-                if (inputField.attr('type') === 'password') {
-                    inputField.attr('type', 'text');
-                    icon.removeClass('bi-eye').addClass('bi-eye-slash');
-                } else {
-                    inputField.attr('type', 'password');
-                    icon.removeClass('bi-eye-slash').addClass('bi-eye');
-                }
-            });
-
-            // Password strength indicator function
-            function updatePasswordStrength(input) {
-                var password = $(input).val();
-                var strength = 0;
-
-                if (password.length >= 8) strength++;
-                if (password.match(/[a-z]/)) strength++;
-                if (password.match(/[A-Z]/)) strength++;
-                if (password.match(/[0-9]/)) strength++;
-                if (password.match(/[^a-zA-Z0-9]/)) strength++;
-
-                var strengthClass = ['danger', 'warning', 'warning', 'success', 'success'][strength - 1] || 'danger';
-                var strengthText = ['ضعيف جداً', 'ضعيف', 'متوسط', 'قوي', 'قوي جداً'][strength - 1] || 'ضعيف جداً';
-
-                // Update password strength indicator
-                var indicator = $(input).closest('.input-group').siblings('.password-strength');
-
-                if (password.length > 0) {
-                    indicator.html(`<div class="progress" style="height: 5px;">
-                        <div class="progress-bar bg-${strengthClass}" style="width: ${strength * 20}%"></div>
-                    </div>
-                    <small class="text-${strengthClass} mt-1 d-block">قوة كلمة المرور: ${strengthText}</small>`);
-                } else {
-                    indicator.empty();
-                }
-            }
-
-            // Add password strength indicator for create user form
-            $('input[name="Password"]').on('input', function() {
-                updatePasswordStrength(this);
-            });
-
-            // Add password strength indicator for change password modals
-            $('input[name="newPassword"]').on('input', function() {
-                updatePasswordStrength(this);
-            });
-
-            // Password confirmation validation
-            $('#changePasswordForm').on('submit', function(e) {
-                var newPassword = $(this).find('input[name="newPassword"]').val();
-                var confirmPassword = $(this).find('input[name="confirmPassword"]').val();
-
-                if (newPassword !== confirmPassword) {
-                    e.preventDefault();
-                    alert('كلمات المرور غير متطابقة');
-                }
-            });
-
-            // Edit user button click handler
-            $('.btn-edit-user').on('click', function() {
-                var userId = $(this).data('user-id');
-                var firstName = $(this).data('user-firstname');
-                var lastName = $(this).data('user-lastname');
-                var email = $(this).data('user-email');
-                var role = $(this).data('user-role');
-
-                // Set form values
-                $('#editUserId').val(userId);
-                $('#editUserFirstName').val(firstName);
-                $('#editUserLastName').val(lastName);
-                $('#editUserEmail').val(email);
-                $('#editUserRole').val(role);
-            });
-
-            // Change password button click handler
-            $('[data-bs-target="#changePasswordModal"]').on('click', function() {
-                var userId = $(this).data('user-id');
-                var userName = $(this).data('user-name');
-
-                // Set user ID in the password change form
-                $('#passwordUserId').val(userId);
-                $('#passwordUserName').text('تغيير كلمة المرور للمستخدم: ' + userName);
-            });
-        });
-
-        // Form submission function
-        function submitForm(action) {
-            var form = document.getElementById('editUserForm');
-            form.action = action;
-            form.submit();
-        }
-    </script>
+    <script src="~/js/userManagement.js" asp-append-version="true"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 }

@@ -8,8 +8,15 @@
         <!-- Status messages -->
         @if (TempData["StatusMessage"] != null)
         {
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <i class="bi bi-check-circle-fill me-2"></i>@TempData["StatusMessage"]
+            <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+                @TempData["StatusMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+                @TempData["ErrorMessage"]
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         }
@@ -20,24 +27,49 @@
             <div class="col-md-12 mb-4">
                 <div class="card shadow border-0">
                     <div class="card-header bg-white py-3">
-                        <h3 class="fw-bold mb-0 text-center">اتصل بنا</h3>
+                        <h2 class="fw-bold mb-0 text-center">اتصل بنا</h2>
                     </div>
                     <div class="card-body p-4">
-                        <form asp-controller="Feedback" asp-action="Submit" method="post">
+                        <form asp-controller="Feedback" asp-action="Submit" method="post" class="needs-validation" novalidate>
                             @Html.AntiForgeryToken()
+                            <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
 
-                            <div class="mb-3">
-                                <label for="subject" class="form-label">الموضوع</label>
-                                <input type="text" id="subject" name="subject" class="form-control" required />
+                            <div class="form-floating mb-3">
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    <input name="userName" value="@Model.NewFeedback.UserName" class="form-control" placeholder="الاسم" readonly />
+                                }
+                                else
+                                {
+                                    <input name="userName" value="@Model.NewFeedback.UserName" class="form-control" placeholder="الاسم" required />
+                                }
+                                <label for="userName">الاسم</label>
                             </div>
 
-                            <div class="mb-3">
-                                <label for="text" class="form-label">الرسالة</label>
-                                <textarea id="text" name="text" class="form-control" rows="4" required></textarea>
+                            <div class="form-floating mb-3">
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    <input name="userEmail" value="@Model.NewFeedback.UserEmail" class="form-control" placeholder="البريد الإلكتروني" readonly />
+                                }
+                                else
+                                {
+                                    <input name="userEmail" value="@Model.NewFeedback.UserEmail" class="form-control" placeholder="البريد الإلكتروني" required />
+                                }
+                                <label for="userEmail">البريد الإلكتروني</label>
                             </div>
 
-                            <div class="text-end mt-4">
-                                <button type="submit" class="btn btn-success px-4">
+                            <div class="form-floating mb-3">
+                                <input name="subject" value="@Model.NewFeedback.Subject" class="form-control" placeholder="الموضوع" required />
+                                <label for="subject">الموضوع</label>
+                            </div>
+
+                            <div class="form-floating mb-4">
+                                <textarea name="text" class="form-control" placeholder="الرسالة" style="height: 120px" required>@Model.NewFeedback.Text</textarea>
+                                <label for="text">الرسالة</label>
+                            </div>
+
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-success">
                                     <i class="bi bi-send me-2"></i>إرسال
                                 </button>
                             </div>
@@ -46,12 +78,12 @@
                 </div>
             </div>
 
-            <!-- Previous feedback -->
-            <div class="col-md-12 mb-4">
-                <h3 class="fw-bold mb-3"><i class="bi bi-envelope-open me-2"></i>رسائلي السابقة</h3>
+            <!-- Previous feedback (only shown for registered users) -->
+            @if (User.Identity.IsAuthenticated && Model.UserFeedbacks.Any())
+            {
+                <div class="col-md-12 mb-4">
+                    <h3 class="fw-bold mb-3"><i class="bi bi-envelope-open me-2"></i>رسائلي السابقة</h3>
 
-                @if (Model.UserFeedbacks.Any())
-                {
                     <div class="accordion shadow-sm" id="feedbackAccordion">
                         @foreach (var feedback in Model.UserFeedbacks)
                         {
@@ -73,14 +105,17 @@
                             </div>
                         }
                     </div>
-                }
-                else
-                {
+                </div>
+            }
+            else if (User.Identity.IsAuthenticated)
+            {
+                <div class="col-md-12 mb-4">
+                    <h3 class="fw-bold mb-3"><i class="bi bi-envelope-open me-2"></i>رسائلي السابقة</h3>
                     <div class="alert alert-info">
                         <i class="bi bi-info-circle me-2"></i>لم ترسل أي رسائل سابقة
                     </div>
-                }
-            </div>
+                </div>
+            }
         </div>
     </div>
 </div>

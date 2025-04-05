@@ -1,0 +1,8 @@
+﻿#reader {
+    max-width: 500px;
+    min-height: 300px;
+}
+
+#tokenForm {
+    display: none;
+}

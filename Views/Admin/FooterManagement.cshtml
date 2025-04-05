@@ -13,7 +13,9 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <h3 class="fw-bold mb-0"><i class="bi bi-layout-text-window-reverse me-2"></i>إدارة تذييل الصفحة</h3>
                             <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index" class="btn btn-outline-success">
-                                <i class="bi bi-arrow-right me-1"></i>العودة للوحة التحكم
+                                <i class="bi bi-arrow-right me-1"></i>
+                                <span class="d-none d-md-inline">عودة إلى لوحة التحكم</span>
+                                <span class="d-inline d-md-none">العودة</span>
                             </a>
                         </div>
                     </div>
@@ -67,7 +69,9 @@
                                 <div class="d-flex justify-content-between align-items-center mb-4">
                                     <h4 class="mb-0">إدارة الأسئلة الشائعة</h4>
                                     <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addFaqModal">
-                                        <i class="bi bi-plus-lg me-2"></i>إضافة سؤال جديد
+                                        <i class="bi bi-plus-lg me-2"></i>
+                                        <span class="d-none d-md-inline">إضافة سؤال جديد</span>
+                                        <span class="d-inline d-md-none">إضافة</span>
                                     </button>
                                 </div>
 
@@ -80,7 +84,7 @@
                                                 <tr>
                                                     <th scope="col" width="60">#</th>
                                                     <th scope="col">السؤال</th>
-                                                    <th scope="col" width="150">الإجراءات</th>
+                                                    <th scope="col" width="110" class="text-center">الإجراءات</th> <!-- Fixed width and centered -->
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -89,8 +93,10 @@
                                                     <tr>
                                                         <td>@faq.DisplayOrder</td>
                                                         <td class="text-truncate">@faq.Question</td>
-                                                        <td>
-                                                            <div class="btn-group">
+                                                        <td class="text-center">
+                                                            <!-- Center the buttons -->
+                                                            <div class="d-flex justify-content-center gap-1">
+                                                                <!-- Use flex and center buttons with minimal gap -->
                                                                 <button type="button" class="btn btn-sm btn-outline-success edit-faq-btn"
                                                                         data-id="@faq.FAQID"
                                                                         data-question="@faq.Question"
@@ -126,7 +132,9 @@
                                 <div class="d-flex justify-content-between align-items-center mb-4">
                                     <h4 class="mb-0">إدارة الشروط والأحكام</h4>
                                     <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addTermsModal">
-                                        <i class="bi bi-plus-lg me-2"></i>إضافة شروط جديدة
+                                        <i class="bi bi-plus-lg me-2"></i>
+                                        <span class="d-none d-md-inline">إضافة شروط جديدة</span>
+                                        <span class="d-inline d-md-none">إضافة</span>
                                     </button>
                                 </div>
 
@@ -138,9 +146,9 @@
                                             <thead class="table-light">
                                                 <tr>
                                                     <th scope="col" width="60">#</th>
-                                                    <th scope="col">العنوان</th>
-                                                    <th scope="col">تاريخ التحديث</th>
-                                                    <th scope="col" width="150">الإجراءات</th>
+                                                    <th scope="col">العنوان</th> <!-- Removed text-truncate class -->
+                                                    <th scope="col" class="d-none d-md-table-cell">آخر التحديث</th> <!-- Changed d-inline to d-table-cell -->
+                                                    <th scope="col" width="110" class="text-center">الإجراءات</th> <!-- Fixed width and centered -->
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -149,9 +157,11 @@
                                                     <tr>
                                                         <td>@term.DisplayOrder</td>
                                                         <td>@(string.IsNullOrEmpty(term.Title) ? "الشروط والأحكام" : term.Title)</td>
-                                                        <td>@term.LastUpdated.ToString("yyyy/MM/dd")</td>
-                                                        <td>
-                                                            <div class="btn-group">
+                                                        <td class="d-none d-md-table-cell">@term.LastUpdated.ToString("yyyy/MM/dd")</td> <!-- Changed d-inline to d-table-cell -->
+                                                        <td class="text-center">
+                                                            <!-- Center the buttons -->
+                                                            <div class="d-flex justify-content-center gap-1">
+                                                                <!-- Use flex and center buttons with minimal gap -->
                                                                 <button type="button" class="btn btn-sm btn-outline-success edit-terms-btn"
                                                                         data-id="@term.TermID"
                                                                         data-title="@term.Title"
@@ -209,19 +219,29 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label class="form-label">السؤال</label>
-                        <input type="text" class="form-control" name="Question" required maxlength="500">
+                        <input type="text" class="form-control" name="Question" required maxlength="500"
+                               oninvalid="this.setCustomValidity('الرجاء إدخال السؤال')"
+                               oninput="this.setCustomValidity('')">
                     </div>
                     <div class="mb-3">
                         <label class="form-label">الإجابة</label>
-                        <textarea class="form-control" name="Answer" rows="6" required maxlength="2000"></textarea>
+                        <textarea class="form-control" name="Answer" rows="6" required maxlength="2000"
+                                  oninvalid="this.setCustomValidity('الرجاء إدخال الإجابة')"
+                                  oninput="this.setCustomValidity('')"></textarea>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">ترتيب العرض</label>
-                        <input type="number" class="form-control" name="DisplayOrder" value="1" min="1">
+                        <input type="number" class="form-control" name="DisplayOrder" value="1" min="1" max="@(Model.FAQs?.Count() + 1 ?? 1)"
+                               oninvalid="this.setCustomValidity('الرجاء إدخال رقم الترتيب')"
+                               oninput="this.setCustomValidity('')">
+                        <small class="order-info">
+                            <i class="bi bi-info-circle"></i>
+                            سيتم تعديل ترتيب العناصر الأخرى تلقائياً عند تغيير الترتيب
+                        </small>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">إلغاء</button>
                     <button type="submit" class="btn btn-success">إضافة</button>
                 </div>
             </form>
@@ -242,19 +262,29 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label class="form-label">السؤال</label>
-                        <input type="text" id="edit-faq-question" class="form-control" name="Question" required maxlength="500">
+                        <input type="text" id="edit-faq-question" class="form-control" name="Question" required maxlength="500"
+                               oninvalid="this.setCustomValidity('الرجاء إدخال السؤال')"
+                               oninput="this.setCustomValidity('')">
                     </div>
                     <div class="mb-3">
                         <label class="form-label">الإجابة</label>
-                        <textarea id="edit-faq-answer" class="form-control" name="Answer" rows="6" required maxlength="2000"></textarea>
+                        <textarea id="edit-faq-answer" class="form-control" name="Answer" rows="6" required maxlength="2000"
+                                  oninvalid="this.setCustomValidity('الرجاء إدخال الإجابة')"
+                                  oninput="this.setCustomValidity('')"></textarea>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">ترتيب العرض</label>
-                        <input type="number" id="edit-faq-order" class="form-control" name="DisplayOrder" min="1">
+                        <input type="number" id="edit-faq-order" class="form-control" name="DisplayOrder" min="1" max="@(Model.FAQs?.Count() ?? 1)"
+                               oninvalid="this.setCustomValidity('الرجاء إدخال رقم الترتيب')"
+                               oninput="this.setCustomValidity('')">
+                        <small class="order-info">
+                            <i class="bi bi-info-circle"></i>
+                            سيتم تعديل ترتيب العناصر الأخرى تلقائياً عند تغيير الترتيب
+                        </small>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">إلغاء</button>
                     <button type="submit" class="btn btn-success">حفظ التغييرات</button>
                 </div>
             </form>
@@ -277,7 +307,7 @@
                     <p class="text-danger">هذا الإجراء لا يمكن التراجع عنه.</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">إلغاء</button>
                     <button type="submit" class="btn btn-danger">حذف</button>
                 </div>
             </form>
@@ -303,17 +333,24 @@
                         </div>
                         <div class="col-md-4 mb-3">
                             <label class="form-label">ترتيب العرض</label>
-                            <input type="number" class="form-control" name="DisplayOrder" value="1" min="1" style="text-align: right; width: 100%;">
+                            <input type="number" class="form-control" name="DisplayOrder" value="1" min="1" max="@(Model.Terms?.Count() + 1 ?? 1)"
+                                   oninvalid="this.setCustomValidity('الرجاء إدخال رقم الترتيب')"
+                                   oninput="this.setCustomValidity('')">
+                            <small class="order-info">
+                                <i class="bi bi-info-circle"></i>
+                                سيتم تعديل ترتيب العناصر الأخرى تلقائياً عند تغيير الترتيب
+                            </small>
                         </div>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">المحتوى</label>
-                        <textarea class="form-control content-editor" id="terms-content-editor" name="Content" rows="15" required></textarea>
-                        <small class="text-muted">يمكنك استخدام HTML لتنسيق المحتوى.</small>
+                        <div class="mb-3">
+                            <label class="form-label">المحتوى</label>
+                            <textarea class="form-control content-editor" id="terms-content-editor" name="Content" rows="15" required
+                                      oninvalid="this.setCustomValidity('الرجاء إدخال المحتوى')"
+                                      oninput="this.setCustomValidity('')"></textarea>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">إلغاء</button>
                     <button type="submit" class="btn btn-success">إضافة</button>
                 </div>
             </form>
@@ -339,18 +376,25 @@
                         </div>
                         <div class="col-md-4 mb-3">
                             <label class="form-label">ترتيب العرض</label>
-                            <input type="number" id="edit-terms-order" class="form-control" name="DisplayOrder" min="1" style="text-align: right; width: 100%;">
+                            <input type="number" id="edit-terms-order" class="form-control" name="DisplayOrder" min="1" max="@(Model.Terms?.Count() ?? 1)"
+                                   oninvalid="this.setCustomValidity('الرجاء إدخال رقم الترتيب')"
+                                   oninput="this.setCustomValidity('')">
+                            <small class="order-info">
+                                <i class="bi bi-info-circle"></i>
+                                سيتم تعديل ترتيب العناصر الأخرى تلقائياً عند تغيير الترتيب
+                            </small>
                         </div>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">المحتوى</label>
-                        <textarea class="form-control content-editor" id="edit-terms-content" name="Content" rows="15" required></textarea>
-                        <small class="text-muted">يمكنك استخدام HTML لتنسيق المحتوى.</small>
+                        <div class="mb-3">
+                            <label class="form-label">المحتوى</label>
+                            <textarea class="form-control content-editor" id="edit-terms-content" name="Content" rows="15" required
+                                      oninvalid="this.setCustomValidity('الرجاء إدخال المحتوى')"
+                                      oninput="this.setCustomValidity('')"></textarea>
+                        </div>
                     </div>
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">إلغاء</button>
                     <button type="submit" class="btn btn-success">حفظ التغييرات</button>
                 </div>
             </form>
@@ -374,7 +418,7 @@
                     <p class="text-danger">هذا الإجراء لا يمكن التراجع عنه.</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">إلغاء</button>
                     <button type="submit" class="btn btn-danger">حذف</button>
                 </div>
             </form>
@@ -383,125 +427,5 @@
 </div>
 
 @section Scripts {
-    <script>
-        $(document).ready(function() {
-            // Make sure first tab is active
-            $('#faq-tab').tab('show');
-
-            // Add simple formatting toolbar to textareas
-            $('.content-editor').each(function() {
-                var $textarea = $(this);
-                var $toolbar = $('<div class="btn-toolbar mb-2" role="toolbar"></div>');
-
-                var $btnGroup = $('<div class="btn-group me-2" role="group"></div>');
-
-                // Add formatting buttons
-                $btnGroup.append('<button type="button" class="btn btn-sm btn-outline-secondary" data-format="bold"><i class="bi bi-type-bold"></i></button>');
-                $btnGroup.append('<button type="button" class="btn btn-sm btn-outline-secondary" data-format="italic"><i class="bi bi-type-italic"></i></button>');
-                $btnGroup.append('<button type="button" class="btn btn-sm btn-outline-secondary" data-format="heading"><i class="bi bi-type-h1"></i></button>');
-
-                var $btnGroup2 = $('<div class="btn-group me-2" role="group"></div>');
-                $btnGroup2.append('<button type="button" class="btn btn-sm btn-outline-secondary" data-format="ul"><i class="bi bi-list-ul"></i></button>');
-                $btnGroup2.append('<button type="button" class="btn btn-sm btn-outline-secondary" data-format="ol"><i class="bi bi-list-ol"></i></button>');
-                $btnGroup2.append('<button type="button" class="btn btn-sm btn-outline-secondary" data-format="link"><i class="bi bi-link"></i></button>');
-
-                $toolbar.append($btnGroup);
-                $toolbar.append($btnGroup2);
-
-                // Insert toolbar before textarea
-                $textarea.before($toolbar);
-
-                // Add click handlers
-                $toolbar.find('button').click(function() {
-                    var format = $(this).data('format');
-                    var textarea = $textarea[0];
-                    var start = textarea.selectionStart;
-                    var end = textarea.selectionEnd;
-                    var selectedText = textarea.value.substring(start, end);
-                    var replacement = '';
-
-                    switch(format) {
-                        case 'bold':
-                            replacement = '<strong>' + selectedText + '</strong>';
-                            break;
-                        case 'italic':
-                            replacement = '<em>' + selectedText + '</em>';
-                            break;
-                        case 'heading':
-                            replacement = '<h3>' + selectedText + '</h3>';
-                            break;
-                        case 'ul':
-                            var items = selectedText.split('\n');
-                            replacement = '<ul>\n';
-                            items.forEach(function(item) {
-                                if (item.trim()) {
-                                    replacement += '  <li>' + item + '</li>\n';
-                                }
-                            });
-                            replacement += '</ul>';
-                            break;
-                        case 'ol':
-                            var items = selectedText.split('\n');
-                            replacement = '<ol>\n';
-                            items.forEach(function(item) {
-                                if (item.trim()) {
-                                    replacement += '  <li>' + item + '</li>\n';
-                                }
-                            });
-                            replacement += '</ol>';
-                            break;
-                        case 'link':
-                            var url = prompt('أدخل الرابط:', 'https://');
-                            if (url) {
-                                replacement = '<a href="' + url + '">' + (selectedText || url) + '</a>';
-                            } else {
-                                return;
-                            }
-                            break;
-                    }
-
-                    // Insert the formatted text
-                    textarea.value = textarea.value.substring(0, start) + replacement + textarea.value.substring(end);
-
-                    // Set cursor position after the insertion
-                    textarea.focus();
-                    textarea.selectionStart = start + replacement.length;
-                    textarea.selectionEnd = start + replacement.length;
-                });
-            });
-
-            // FAQ Edit Button
-            $('.edit-faq-btn').click(function() {
-                $('#edit-faq-id').val($(this).data('id'));
-                $('#edit-faq-question').val($(this).data('question'));
-                $('#edit-faq-answer').val($(this).data('answer'));
-                $('#edit-faq-order').val($(this).data('order'));
-            });
-
-            // FAQ Delete Button
-            $('.delete-faq-btn').click(function() {
-                $('#delete-faq-id').val($(this).data('id'));
-                $('#delete-faq-question').text($(this).data('question'));
-            });
-
-            // Terms Edit Button
-            $('.edit-terms-btn').click(function() {
-                $('#edit-terms-id').val($(this).data('id'));
-                $('#edit-terms-title').val($(this).data('title'));
-                $('#edit-terms-order').val($(this).data('order'));
-    
-                // Get content from hidden div
-                var content = $('#term-content-' + $(this).data('id')).html();
-                $('#edit-terms-content').val(content);
-            });
-
-
-
-            // Terms Delete Button
-            $('.delete-terms-btn').click(function() {
-                $('#delete-terms-id').val($(this).data('id'));
-                $('#delete-terms-title').text($(this).data('title'));
-            });
-        });
-    </script>
+    <script src="~/js/footerManagement.js" asp-append-version="true"></script>
 }

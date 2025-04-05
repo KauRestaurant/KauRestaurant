@@ -9,7 +9,6 @@ using System.Security.Claims;
 
 namespace KauRestaurant.Controllers.User
 {
-    [Authorize]
     public class FeedbackController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -25,34 +24,41 @@ namespace KauRestaurant.Controllers.User
 
         public async Task<IActionResult> Index()
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            // Get all feedback for this user
-            var userFeedbacks = await _context.Feedbacks
-                .Where(f => f.UserID == userId)
-                .OrderByDescending(f => f.CreatedDate)
-                .ToListAsync();
-
-            // Prepare model for the view
-            var user = await _userManager.GetUserAsync(User);
-
             var viewModel = new FeedbackViewModel
             {
-                UserFeedbacks = userFeedbacks,
-                NewFeedback = new Feedback
+                UserFeedbacks = new List<Feedback>(),
+                NewFeedback = new Feedback()
+            };
+
+            // Check if user is authenticated
+            if (User.Identity.IsAuthenticated)
+            {
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                // Get all feedback for this user
+                var userFeedbacks = await _context.Feedbacks
+                    .Where(f => f.UserID == userId)
+                    .OrderByDescending(f => f.CreatedDate)
+                    .ToListAsync();
+
+                // Prepare model for the view
+                var user = await _userManager.GetUserAsync(User);
+
+                viewModel.UserFeedbacks = userFeedbacks;
+                viewModel.NewFeedback = new Feedback
                 {
                     UserID = userId,
                     UserName = $"{user.FirstName} {user.LastName}",
                     UserEmail = user.Email ?? string.Empty
-                }
-            };
+                };
+            }
 
             return View("~/Views/User/Feedback.cshtml", viewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Submit(string subject, string text)
+        public async Task<IActionResult> Submit(string subject, string text, string userName, string userEmail)
         {
             try
             {
@@ -62,18 +68,35 @@ namespace KauRestaurant.Controllers.User
                     return RedirectToAction(nameof(Index));
                 }
 
-                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                var user = await _userManager.GetUserAsync(User);
-
                 var feedback = new Feedback
                 {
-                    UserID = userId,
-                    UserName = $"{user.FirstName} {user.LastName}",
-                    UserEmail = user.Email ?? string.Empty,
                     Subject = subject,
                     Text = text,
                     CreatedDate = DateTime.Now
                 };
+
+                // Set user information based on authentication status
+                if (User.Identity.IsAuthenticated)
+                {
+                    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                    var user = await _userManager.GetUserAsync(User);
+
+                    feedback.UserID = userId;
+                    feedback.UserName = $"{user.FirstName} {user.LastName}";
+                    feedback.UserEmail = user.Email ?? string.Empty;
+                }
+                else
+                {
+                    // For non-registered users, use the provided name and email
+                    if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(userEmail))
+                    {
+                        TempData["ErrorMessage"] = "يجب إدخال الاسم والبريد الإلكتروني";
+                        return RedirectToAction(nameof(Index));
+                    }
+
+                    feedback.UserName = userName;
+                    feedback.UserEmail = userEmail;
+                }
 
                 _context.Feedbacks.Add(feedback);
                 await _context.SaveChangesAsync();

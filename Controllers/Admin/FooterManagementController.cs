@@ -52,10 +52,24 @@ namespace KauRestaurant.Controllers.Admin
             {
                 if (ModelState.IsValid)
                 {
+                    // Adjust display orders of existing FAQs if needed
+                    if (model.DisplayOrder < int.MaxValue)
+                    {
+                        var existingFaqs = await _context.FAQs
+                            .Where(f => f.DisplayOrder >= model.DisplayOrder)
+                            .OrderBy(f => f.DisplayOrder)
+                            .ToListAsync();
+
+                        foreach (var faq in existingFaqs)
+                        {
+                            faq.DisplayOrder += 1;
+                        }
+                    }
+
                     await _context.FAQs.AddAsync(model);
                     await _context.SaveChangesAsync();
 
-                    TempData["SuccessMessage"] = "تمت إضافة السؤال الشائع بنجاح.";
+                    TempData["SuccessMessage"] = "تمت إضافة السؤال بنجاح.";
                 }
                 else
                 {
@@ -65,7 +79,7 @@ namespace KauRestaurant.Controllers.Admin
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error adding FAQ");
-                TempData["ErrorMessage"] = "حدث خطأ أثناء إضافة السؤال الشائع.";
+                TempData["ErrorMessage"] = "حدث خطأ أثناء إضافة السؤال.";
             }
 
             return RedirectToAction(nameof(Index));
@@ -82,16 +96,26 @@ namespace KauRestaurant.Controllers.Admin
                     var existingFAQ = await _context.FAQs.FindAsync(model.FAQID);
                     if (existingFAQ == null)
                     {
-                        TempData["ErrorMessage"] = "لم يتم العثور على السؤال الشائع.";
+                        TempData["ErrorMessage"] = "لم يتم العثور على السؤال.";
                         return RedirectToAction(nameof(Index));
                     }
 
+                    // Store the old display order
+                    int oldDisplayOrder = existingFAQ.DisplayOrder;
+                    int newDisplayOrder = model.DisplayOrder;
+
+                    // Update the FAQ 
                     existingFAQ.Question = model.Question;
                     existingFAQ.Answer = model.Answer;
-                    existingFAQ.DisplayOrder = model.DisplayOrder;
+
+                    // If the display order changed, adjust all affected FAQs
+                    if (oldDisplayOrder != newDisplayOrder)
+                    {
+                        await AdjustFAQDisplayOrder(existingFAQ, oldDisplayOrder, newDisplayOrder);
+                    }
 
                     await _context.SaveChangesAsync();
-                    TempData["SuccessMessage"] = "تم تحديث السؤال الشائع بنجاح.";
+                    TempData["SuccessMessage"] = "تم تحديث السؤال بنجاح.";
                 }
                 else
                 {
@@ -101,10 +125,47 @@ namespace KauRestaurant.Controllers.Admin
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error updating FAQ");
-                TempData["ErrorMessage"] = "حدث خطأ أثناء تحديث السؤال الشائع.";
+                TempData["ErrorMessage"] = "حدث خطأ أثناء تحديث السؤال.";
             }
 
             return RedirectToAction(nameof(Index));
+        }
+
+        // Helper method to adjust FAQ display orders
+        private async Task AdjustFAQDisplayOrder(FAQ currentFaq, int oldOrder, int newOrder)
+        {
+            // Get all FAQs except the current one
+            var faqs = await _context.FAQs
+                .Where(f => f.FAQID != currentFaq.FAQID)
+                .OrderBy(f => f.DisplayOrder)
+                .ToListAsync();
+
+            if (newOrder < oldOrder) // Moving item up (lower number)
+            {
+                // Increment display order for items between new and old positions
+                foreach (var faq in faqs)
+                {
+                    if (faq.DisplayOrder >= newOrder && faq.DisplayOrder < oldOrder)
+                    {
+                        faq.DisplayOrder += 1;
+                    }
+                }
+                // Set the new order for the current FAQ
+                currentFaq.DisplayOrder = newOrder;
+            }
+            else if (newOrder > oldOrder) // Moving item down (higher number)
+            {
+                // Decrement display order for items between old and new positions
+                foreach (var faq in faqs)
+                {
+                    if (faq.DisplayOrder > oldOrder && faq.DisplayOrder <= newOrder)
+                    {
+                        faq.DisplayOrder -= 1;
+                    }
+                }
+                // Set the new order for the current FAQ
+                currentFaq.DisplayOrder = newOrder;
+            }
         }
 
         [HttpPost]
@@ -116,19 +177,32 @@ namespace KauRestaurant.Controllers.Admin
                 var faq = await _context.FAQs.FindAsync(id);
                 if (faq == null)
                 {
-                    TempData["ErrorMessage"] = "لم يتم العثور على السؤال الشائع.";
+                    TempData["ErrorMessage"] = "لم يتم العثور على السؤال.";
                     return RedirectToAction(nameof(Index));
                 }
 
+                int deletedOrder = faq.DisplayOrder;
                 _context.FAQs.Remove(faq);
+
+                // Adjust the display order of items after the deleted item
+                var faqs = await _context.FAQs
+                    .Where(f => f.DisplayOrder > deletedOrder)
+                    .OrderBy(f => f.DisplayOrder)
+                    .ToListAsync();
+
+                foreach (var item in faqs)
+                {
+                    item.DisplayOrder -= 1;
+                }
+
                 await _context.SaveChangesAsync();
 
-                TempData["SuccessMessage"] = "تم حذف السؤال الشائع بنجاح.";
+                TempData["SuccessMessage"] = "تم حذف السؤال بنجاح.";
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error deleting FAQ");
-                TempData["ErrorMessage"] = "حدث خطأ أثناء حذف السؤال الشائع.";
+                TempData["ErrorMessage"] = "حدث خطأ أثناء حذف السؤال.";
             }
 
             return RedirectToAction(nameof(Index));
@@ -148,6 +222,20 @@ namespace KauRestaurant.Controllers.Admin
                 {
                     // Set the LastUpdated to current date
                     model.LastUpdated = DateTime.Now;
+
+                    // Adjust display orders of existing Terms if needed
+                    if (model.DisplayOrder < int.MaxValue)
+                    {
+                        var existingTerms = await _context.Terms
+                            .Where(t => t.DisplayOrder >= model.DisplayOrder)
+                            .OrderBy(t => t.DisplayOrder)
+                            .ToListAsync();
+
+                        foreach (var term in existingTerms)
+                        {
+                            term.DisplayOrder += 1;
+                        }
+                    }
 
                     await _context.Terms.AddAsync(model);
                     await _context.SaveChangesAsync();
@@ -183,10 +271,20 @@ namespace KauRestaurant.Controllers.Admin
                         return RedirectToAction(nameof(Index));
                     }
 
+                    // Store the old display order
+                    int oldDisplayOrder = term.DisplayOrder;
+                    int newDisplayOrder = model.DisplayOrder;
+
+                    // Update term properties
                     term.Title = model.Title;
                     term.Content = model.Content;
-                    term.DisplayOrder = model.DisplayOrder; // This line is missing in the original code
                     term.LastUpdated = DateTime.UtcNow;
+
+                    // If the display order changed, adjust all affected Terms
+                    if (oldDisplayOrder != newDisplayOrder)
+                    {
+                        await AdjustTermsDisplayOrder(term, oldDisplayOrder, newDisplayOrder);
+                    }
 
                     await _context.SaveChangesAsync();
                     TempData["SuccessMessage"] = "تم تحديث الشروط والأحكام بنجاح";
@@ -205,6 +303,43 @@ namespace KauRestaurant.Controllers.Admin
             return RedirectToAction(nameof(Index));
         }
 
+        // Helper method to adjust Terms display orders
+        private async Task AdjustTermsDisplayOrder(Terms currentTerm, int oldOrder, int newOrder)
+        {
+            // Get all Terms except the current one
+            var terms = await _context.Terms
+                .Where(t => t.TermID != currentTerm.TermID)
+                .OrderBy(t => t.DisplayOrder)
+                .ToListAsync();
+
+            if (newOrder < oldOrder) // Moving item up (lower number)
+            {
+                // Increment display order for items between new and old positions
+                foreach (var term in terms)
+                {
+                    if (term.DisplayOrder >= newOrder && term.DisplayOrder < oldOrder)
+                    {
+                        term.DisplayOrder += 1;
+                    }
+                }
+                // Set the new order for the current Term
+                currentTerm.DisplayOrder = newOrder;
+            }
+            else if (newOrder > oldOrder) // Moving item down (higher number)
+            {
+                // Decrement display order for items between old and new positions
+                foreach (var term in terms)
+                {
+                    if (term.DisplayOrder > oldOrder && term.DisplayOrder <= newOrder)
+                    {
+                        term.DisplayOrder -= 1;
+                    }
+                }
+                // Set the new order for the current Term
+                currentTerm.DisplayOrder = newOrder;
+            }
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteTerms(int id)
@@ -218,7 +353,20 @@ namespace KauRestaurant.Controllers.Admin
                     return RedirectToAction(nameof(Index));
                 }
 
+                int deletedOrder = terms.DisplayOrder;
                 _context.Terms.Remove(terms);
+
+                // Adjust the display order of items after the deleted item
+                var remainingTerms = await _context.Terms
+                    .Where(t => t.DisplayOrder > deletedOrder)
+                    .OrderBy(t => t.DisplayOrder)
+                    .ToListAsync();
+
+                foreach (var item in remainingTerms)
+                {
+                    item.DisplayOrder -= 1;
+                }
+
                 await _context.SaveChangesAsync();
 
                 TempData["SuccessMessage"] = "تم حذف الشروط والأحكام بنجاح.";
@@ -264,4 +412,3 @@ namespace KauRestaurant.ViewModels
         public IEnumerable<Terms> Terms { get; set; } = new List<Terms>();
     }
 }
-

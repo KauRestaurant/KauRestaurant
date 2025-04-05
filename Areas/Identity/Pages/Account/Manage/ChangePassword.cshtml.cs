@@ -53,28 +53,29 @@ namespace KauRestaurant.Areas.Identity.Pages.Account.Manage
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
+            [Required(ErrorMessage = "كلمة المرور الحالية مطلوبة")]
             [DataType(DataType.Password)]
-            [Display(Name = "Current password")]
+            [Display(Name = "كلمة المرور الحالية")]
             public string OldPassword { get; set; }
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [Required(ErrorMessage = "كلمة المرور الجديدة مطلوبة")]
+            [StringLength(100, ErrorMessage = "يجب أن تكون {0} على الأقل {2} وعلى الأكثر {1} حرفًا.", MinimumLength = 6)]
             [DataType(DataType.Password)]
-            [Display(Name = "New password")]
+            [Display(Name = "كلمة المرور الجديدة")]
             public string NewPassword { get; set; }
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
+            [Required(ErrorMessage = "تأكيد كلمة المرور الجديدة مطلوب")]
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm new password")]
-            [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
+            [Display(Name = "تأكيد كلمة المرور الجديدة")]
+            [Compare("NewPassword", ErrorMessage = "كلمة المرور الجديدة وتأكيد كلمة المرور غير متطابقين.")]
             public string ConfirmPassword { get; set; }
         }
 
@@ -83,7 +84,7 @@ namespace KauRestaurant.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"تعذر تحميل المستخدم.");
             }
 
             var hasPassword = await _userManager.HasPasswordAsync(user);
@@ -105,7 +106,7 @@ namespace KauRestaurant.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"تعذر تحميل المستخدم.");
             }
 
             var changePasswordResult = await _userManager.ChangePasswordAsync(user, Input.OldPassword, Input.NewPassword);
@@ -120,7 +121,7 @@ namespace KauRestaurant.Areas.Identity.Pages.Account.Manage
 
             await _signInManager.RefreshSignInAsync(user);
             _logger.LogInformation("User changed their password successfully.");
-            StatusMessage = "Your password has been changed.";
+            StatusMessage = "تم تغيير كلمة المرور بنجاح.";
 
             return RedirectToPage();
         }

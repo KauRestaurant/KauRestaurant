@@ -68,9 +68,9 @@ namespace KauRestaurant.Areas.Identity.Pages.Account.Manage
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
-            [EmailAddress]
-            [Display(Name = "New email")]
+            [Required(ErrorMessage = "البريد الإلكتروني الجديد مطلوب")]
+            [EmailAddress(ErrorMessage = "البريد الإلكتروني غير صالح")]
+            [Display(Name = "البريد الإلكتروني الجديد")]
             public string NewEmail { get; set; }
         }
 
@@ -81,7 +81,7 @@ namespace KauRestaurant.Areas.Identity.Pages.Account.Manage
 
             Input = new InputModel
             {
-                NewEmail = email,
+                NewEmail = string.Empty,
             };
 
             IsEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user);

@@ -1,0 +1,11 @@
+﻿canvas {
+    min-height: 300px;
+}
+
+#noPurchaseData, #noRedeemedData, #noTopRatedData, #noLowestRatedData {
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}

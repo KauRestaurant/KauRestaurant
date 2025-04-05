@@ -147,23 +147,59 @@ body {
     }
 
 
-/* Custom category styling */
-.bg-primary {
-    background-color: #198754 !important; /* Main green */
-    color: #ffffff !important;
+/* Custom Background Colors */
+.bg-breakfast,
+.bg-A1 {
+    background-color: #007e6a;
 }
 
-.bg-info {
-    background-color: #75c994 !important; /* Lighter green */
-    color: #212529 !important;
+.bg-lunch,
+.bg-A2 {
+    background-color: #006252;
 }
 
-.bg-warning {
-    background-color: #e6c16f !important; /* Warm gold/amber color */
-    color: #212529 !important;
+.bg-dinner,
+.bg-A3 {
+    background-color: #004a3e;
 }
 
-.bg-secondary {
-    background-color: #6c8075 !important; /* Muted green-gray */
-    color: #ffffff !important;
+.bg-main-dish {
+    background-color: #4CAF50;
+    color: #ffffff;
+}
+
+.bg-side-dish {
+    background-color: #07cf11;
+    color: #ffffff;
+}
+
+.bg-dessert {
+    background-color: #e6941b;
+    color: #ffffff;
+}
+
+.bg-drink {
+    background-color: #26A69A;
+    color: #ffffff;
+}
+
+/* Prevent accordion button color change when activated */
+.accordion-button.bg-breakfast:not(.collapsed) {
+    background-color: #2e7d32 !important;
+    color: white !important;
+}
+
+.accordion-button.bg-lunch:not(.collapsed) {
+    background-color: #1b5e20 !important;
+    color: white !important;
+}
+
+.accordion-button.bg-dinner:not(.collapsed) {
+    background-color: #004d40 !important;
+    color: white !important;
+}
+
+.accordion-button:focus {
+    box-shadow: none;
+    border-color: rgba(0,0,0,.125);
 }

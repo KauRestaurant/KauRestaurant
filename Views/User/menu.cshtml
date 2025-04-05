@@ -109,7 +109,7 @@
         <div class="tab-content" id="menuContent">
             @foreach (var menu in Model)
             {
-                var isActive = menu == Model.FirstOrDefault() ? "show active" : "";
+                var isActive = menu == Model.FirstOrDefault(m => m.Day != "الجمعة" && m.Day != "السبت") ? "show active" : "";
                 <div class="tab-pane fade @isActive" id="@menu.Day.ToLower()">
                     <div class="row" id="@(menu.Day.ToLower())Menu">
                         @{
@@ -128,9 +128,13 @@
                                 ? mealsByCategory[category]
                                 : new List<KauRestaurant.Models.Meal>();
 
-                                var (icon, bgColor) = UIConstants.MealCategoryInfo.ContainsKey(category)
-                                ? UIConstants.MealCategoryInfo[category]
-                                : ("bi-question", "#6c757d");
+                                var (icon, bgColor) = category switch
+                                {
+                                    "الإفطار" => ("bi-sun", "bg-breakfast"),
+                                    "الغداء" => ("bi-brightness-high", "bg-lunch"),
+                                    "العشاء" => ("bi-moon", "bg-dinner"),
+                                    _ => ("bi-question", "#6c757d")
+                                };
 
                                 var categoryId = $"{menu.Day.ToLower()}{category}";
 
@@ -138,13 +142,14 @@
                                     <div class="accordion accordion-desktop">
                                         <div class="accordion-item border-0 rounded shadow h-100">
                                             <h2 class="accordion-header">
-                                                <button class="accordion-button collapsed text-white rounded-top"
-                                                        style="background-color: @bgColor" type="button"
-                                                        data-bs-toggle="collapse" data-bs-target="#@categoryId">
+                                                <button class="accordion-button collapsed text-white rounded-top @bgColor"
+                                                        type="button"
+                                                        data-bs-toggle="collapse"
+                                                        data-bs-target="#@categoryId">
                                                     <i class="bi @icon me-2"></i>@category
                                                 </button>
                                             </h2>
-                                            <div id="@categoryId" class="accordion-collapse collapse show">
+                                            <div id="@categoryId" class="accordion-collapse collapse">
                                                 <div class="accordion-body p-4">
                                                     @if (meals.Any())
                                                     {
@@ -152,19 +157,24 @@
                                                         .GroupBy(m => m.MealType)
                                                         .OrderBy(g => g.Key != "الطبق الرئيسي")
                                                         .ThenBy(g => g.Key != "طبق جانبي")
-                                                        .ToDictionary(g => g.Key, g => g.ToList());
+                                                        .ThenBy(g => g.Key != "حلوى")
+                                                        .ThenBy(g => g.Key != "مشروب");
 
                                                         foreach (var typeGroup in mealsByType)
                                                         {
                                                             <div class="mb-4">
                                                                 <div class="d-flex align-items-center border-bottom pb-2 mb-3">
-                                                                    <span class="badge @(UIConstants.MealTypeBadgeColors.ContainsKey(typeGroup.Key) ?
-                                                                            UIConstants.MealTypeBadgeColors[typeGroup.Key] : "bg-secondary")">
+                                                                    <span class="badge @(
+                                                                            typeGroup.Key == "الطبق الرئيسي" ? "bg-main-dish" :
+                                                                            typeGroup.Key == "طبق جانبي" ? "bg-side-dish" :
+                                                                            typeGroup.Key == "حلوى" ? "bg-dessert" :
+                                                                            typeGroup.Key == "مشروب" ? "bg-drink" : 
+                                                                        "bg-success")">
                                                                         @typeGroup.Key
                                                                     </span>
                                                                 </div>
                                                                 <div class="list-group list-group-flush">
-                                                                    @foreach (var meal in typeGroup.Value)
+                                                                    @foreach (var meal in typeGroup)
                                                                     {
                                                                         <div class="list-group-item px-0 py-1">
                                                                             <a class="d-flex justify-content-between align-items-start text-decoration-none"
@@ -175,7 +185,7 @@
                                                                                     <strong class="text-dark">@meal.MealName</strong>
                                                                                 </div>
                                                                                 <div>
-                                                                                    <span class="badge bg-light text-dark">@meal.Calories سعرة حرارية</span>
+                                                                                    <span class="badge bg-white text-dark">@meal.Calories سعرة حرارية</span>
                                                                                     @if (meal.Reviews != null && meal.Reviews.Any())
                                                                                     {
                                                                                         <div class="text-muted text-center small">
@@ -223,7 +233,7 @@
                                                     }
                                                     else
                                                     {
-                                                        <div class="alert alert-light">
+                                                        <div class="alert alert-white">
                                                             لا يوجد وجبات مسجلة لهذا اليوم
                                                         </div>
                                                     }

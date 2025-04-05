@@ -13,19 +13,23 @@ namespace KauRestaurant.Models
 
         [Required]
         [StringLength(100)]
+        [Display(Name = "الاسم")]
         public string UserName { get; set; }
 
         [Required]
         [EmailAddress]
         [StringLength(100)]
+        [Display(Name = "البريد الإلكتروني")]
         public string UserEmail { get; set; }
 
         [Required]
         [StringLength(200)]
+        [Display(Name = "الموضوع")]
         public string Subject { get; set; }
 
         [Required]
         [StringLength(2000)]
+        [Display(Name = "الرسالة")]
         public string Text { get; set; }
 
         [Required]

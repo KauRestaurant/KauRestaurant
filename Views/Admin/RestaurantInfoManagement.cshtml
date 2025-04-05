@@ -46,7 +46,7 @@
                                 @if (!string.IsNullOrEmpty(Model.PhotoPath))
                                 {
                                     <div class="mb-2">
-                                        <img src="@Model.PhotoPath" style="max-height: 150px; max-width: 100%;" class="img-thumbnail" alt="صورة المطعم" />
+                                        <img src="@Model.PhotoPath" class="img-thumbnail" alt="صورة المطعم" />
                                     </div>
                                 }
                                 <input type="file" name="photo" class="form-control" accept="image/*" />
@@ -101,7 +101,7 @@
                             <div class="row mx-2">
                                 <div class="col-md-4 mb-3">
                                     <div class="card h-100">
-                                        <div class="card-header text-white" style="background: #2e7d32">
+                                        <div class="card-header text-white bg-breakfast">
                                             <div class="form-check">
                                                 <input asp-for="ServesBreakfast" class="form-check-input" type="checkbox" id="servesBreakfastTop" />
                                                 <label class="form-check-label fw-bold text-white" for="servesBreakfastTop">
@@ -126,7 +126,7 @@
 
                                 <div class="col-md-4 mb-3">
                                     <div class="card h-100">
-                                        <div class="card-header text-white" style="background: #1b5e20">
+                                        <div class="card-header text-white bg-lunch">
                                             <div class="form-check">
                                                 <input asp-for="ServesLunch" class="form-check-input" type="checkbox" id="servesLunchTop" />
                                                 <label class="form-check-label fw-bold text-white" for="servesLunchTop">
@@ -151,7 +151,7 @@
 
                                 <div class="col-md-4 mb-3">
                                     <div class="card h-100">
-                                        <div class="card-header text-white" style="background: #004d40">
+                                        <div class="card-header text-white bg-dinner">
                                             <div class="form-check">
                                                 <input asp-for="ServesDinner" class="form-check-input" type="checkbox" id="servesDinnerTop" />
                                                 <label class="form-check-label fw-bold text-white" for="servesDinnerTop">
@@ -178,12 +178,12 @@
                     </div>
 
                     <div class="d-flex justify-content-between pt-3 border-top">
-                        <a asp-controller="Dashboard" asp-action="Index" class="btn btn-secondary">
+                        <a asp-controller="Dashboard" asp-action="Index" class="btn btn-outline-success">
                             <i class="bi bi-arrow-right me-1"></i>
                             <span class="d-none d-md-inline">عودة إلى لوحة التحكم</span>
                             <span class="d-inline d-md-none">العودة</span>
                         </a>
-                        <button type="submit" class="btn btn-success px-4">
+                        <button type="submit" class="btn btn-success px-3">
                             <i class="bi bi-save me-2"></i>
                             <span class="d-none d-md-inline">حفظ المعلومات</span>
                             <span class="d-inline d-md-none">حفظ</span>
@@ -196,61 +196,7 @@
 </div>
 
 @section Scripts {
-    <script>
-        // Enable/disable time inputs based on checkbox status
-        document.addEventListener('DOMContentLoaded', function() {
-            function toggleTimeFields(checkboxId, timeFieldClass) {
-                const checkbox = document.getElementById(checkboxId);
-                if (!checkbox) return; // Guard against null references
-
-                const timeFields = document.querySelectorAll(`.${timeFieldClass}`);
-
-                checkbox.addEventListener('change', function() {
-                    for (let field of timeFields) {
-                        field.disabled = !this.checked;
-                    }
-                });
-
-                // Initialize on page load
-                for (let field of timeFields) {
-                    field.disabled = !checkbox.checked;
-                }
-            }
-
-            // Setup for each meal type
-            toggleTimeFields('servesBreakfastTop', 'breakfast-time-top');
-            toggleTimeFields('servesLunchTop', 'lunch-time-top');
-            toggleTimeFields('servesDinnerTop', 'dinner-time-top');
-
-            // Add classes to time inputs
-            const breakfastOpenTime = document.querySelector('[asp-for="BreakfastOpenTime"]');
-            if (breakfastOpenTime) breakfastOpenTime.classList.add('breakfast-time-top');
-
-            const breakfastCloseTime = document.querySelector('[asp-for="BreakfastCloseTime"]');
-            if (breakfastCloseTime) breakfastCloseTime.classList.add('breakfast-time-top');
-
-            const lunchOpenTime = document.querySelector('[asp-for="LunchOpenTime"]');
-            if (lunchOpenTime) lunchOpenTime.classList.add('lunch-time-top');
-
-            const lunchCloseTime = document.querySelector('[asp-for="LunchCloseTime"]');
-            if (lunchCloseTime) lunchCloseTime.classList.add('lunch-time-top');
-
-            const dinnerOpenTime = document.querySelector('[asp-for="DinnerOpenTime"]');
-            if (dinnerOpenTime) dinnerOpenTime.classList.add('dinner-time-top');
-
-            const dinnerCloseTime = document.querySelector('[asp-for="DinnerCloseTime"]');
-            if (dinnerCloseTime) dinnerCloseTime.classList.add('dinner-time-top');
-        });
-
-        document.getElementById('restaurantForm').addEventListener('submit', function(e) {
-        // Enable all disabled fields before submitting
-            const disabledFields = document.querySelectorAll('input[disabled]');
-            disabledFields.forEach(field => {
-                field.disabled = false;
-            });
-        });
-    </script>
-
+    <script src="~/js/restaurantInfoManagement.js" asp-append-version="true"></script>
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }

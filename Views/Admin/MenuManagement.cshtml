@@ -32,9 +32,11 @@
                     <div class="d-flex justify-content-between align-items-center">
                         <h3 class="fw-bold mb-0"><i class="bi bi-journal-text me-2"></i>إدارة قائمة الأسبوع</h3>
                         <div>
-                            <button type="submit" class="btn btn-success">
-                                <i class="bi bi-save me-2"></i>حفظ التغييرات
-                            </button>
+                            <a asp-area="Admin" asp-controller="MealManagement" asp-action="Index" class="btn btn-success">
+                                <i class="bi bi-plus-lg me-2"></i>
+                                <span class="d-none d-md-inline">إضافة وجبة جديدة</span>
+                                <span class="d-inline d-md-none">إضافة</span>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -66,7 +68,7 @@
             <div class="tab-content" id="menuContent">
                 @foreach (var menu in Model)
                 {
-                    var isActive = menu == Model.FirstOrDefault() ? "show active" : "";
+                    var isActive = menu == Model.FirstOrDefault(m => m.Day != "الجمعة" && m.Day != "السبت") ? "show active" : "";
                     <div class="tab-pane fade @isActive" id="@menu.Day.ToLower()">
                         <div class="row" id="@(menu.Day.ToLower())Menu">
                             @{
@@ -82,9 +84,13 @@
 
                                 foreach (var category in categories)
                                 {
-                                    var (icon, bgColor) = UIConstants.MealCategoryInfo.ContainsKey(category)
-                                    ? UIConstants.MealCategoryInfo[category]
-                                    : ("bi-question", "#6c757d");
+                                    var (icon, bgColor) = category switch
+                                    {
+                                        "الإفطار" => ("bi-sun", "bg-breakfast"),
+                                        "الغداء" => ("bi-brightness-high", "bg-lunch"),
+                                        "العشاء" => ("bi-moon", "bg-dinner"),
+                                        _ => ("bi-question", "#6c757d")
+                                    };
 
                                     var categoryId = $"{menu.Day.ToLower()}{category}";
 
@@ -92,13 +98,14 @@
                                         <div class="accordion accordion-desktop">
                                             <div class="accordion-item border-0 rounded shadow h-100">
                                                 <h2 class="accordion-header">
-                                                    <button class="accordion-button collapsed text-white rounded-top"
-                                                            style="background-color: @bgColor" type="button"
-                                                            data-bs-toggle="collapse" data-bs-target="#@categoryId">
+                                                    <button class="accordion-button collapsed text-white rounded-top @bgColor"
+                                                            type="button"
+                                                            data-bs-toggle="collapse"
+                                                            data-bs-target="#@categoryId">
                                                         <i class="bi @icon me-2"></i>@category
                                                     </button>
                                                 </h2>
-                                                <div id="@categoryId" class="accordion-collapse collapse show">
+                                                <div id="@categoryId" class="accordion-collapse collapse">
                                                     <div class="accordion-body p-4">
                                                         @{
                                                             // Get meals available for this category
@@ -113,12 +120,13 @@
 
                                                             var mealTypes = new[] { "الطبق الرئيسي", "طبق جانبي", "حلوى", "مشروب" };
 
-                                                            foreach (var mealType in mealTypes)
+                                                            if (mealsOfCategory.Any())
                                                             {
-                                                                var mealsOfType = mealsOfCategory.Where(m => m.MealType == mealType).ToList();
-
-                                                                if (mealsOfType.Any())
+                                                                foreach (var mealType in mealTypes)
                                                                 {
+                                                                    var mealsOfType = mealsOfCategory.Where(m => m.MealType == mealType).ToList();
+
+                                                                    // Always show all meal type sections regardless of whether there are meals available
                                                                     // Get currently selected meals for this day, category, and type
                                                                     var selectedMeals = selectedMealsOfCategory
                                                                     .Where(m => m.MealType == mealType)
@@ -126,8 +134,12 @@
 
                                                                     <div class="mb-4">
                                                                         <div class="d-flex align-items-center border-bottom pb-2 mb-3">
-                                                                            <span class="badge @(UIConstants.MealTypeBadgeColors.ContainsKey(mealType) ?
-                                                                                    UIConstants.MealTypeBadgeColors[mealType] : "bg-secondary")">
+                                                                            <span class="badge @(
+                                                                                    mealType == "الطبق الرئيسي" ? "bg-main-dish" :
+                                                                                    mealType == "طبق جانبي" ? "bg-side-dish" :
+                                                                                    mealType == "حلوى" ? "bg-dessert" :
+                                                                                    mealType == "مشروب" ? "bg-drink" :
+                                                                                "bg-secondary")">
                                                                                 @mealType
                                                                             </span>
                                                                         </div>
@@ -140,7 +152,7 @@
 
                                                                                 <div class="list-group-item px-0 py-1">
                                                                                     <div class="d-flex justify-content-between align-items-center">
-                                                                                        <div class="w-75">
+                                                                                        <div class="dropdown-container" style="width: 70%; min-width: 150px;">
                                                                                             <select name="@selectName" class="form-select meal-dropdown"
                                                                                                     aria-label="اختر وجبة" data-menu-id="@menu.MenuID"
                                                                                                     data-category="@category" data-type="@mealType"
@@ -156,10 +168,14 @@
                                                                                                 }
                                                                                             </select>
                                                                                         </div>
-                                                                                        <div class="meal-info text-end" id="info-@menu.MenuID-@category-@mealType-@i">
+                                                                                        <div class="meal-info text-end" style="width: 30%; min-width: 100px; text-align: left;" id="info-@menu.MenuID-@category-@mealType-@i">
                                                                                             @if (selectedMeal != null)
                                                                                             {
-                                                                                                <span class="badge bg-light text-dark">@selectedMeal.Calories سعرة حرارية</span>
+                                                                                                <span class="badge bg-light text-dark" style="width: 100px; display: inline-block; text-align: center;">@selectedMeal.Calories سعرة حرارية</span>
+                                                                                            }
+                                                                                            else
+                                                                                            {
+                                                                                                <span class="badge bg-light text-dark opacity-0" style="width: 100px; display: inline-block;">0 سعرة حرارية</span>
                                                                                             }
                                                                                         </div>
                                                                                     </div>
@@ -169,9 +185,47 @@
                                                                     </div>
                                                                 }
                                                             }
-
-                                                            if (!mealsOfCategory.Any())
+                                                            else
                                                             {
+                                                                // Even if there are no meals in this category, still show all meal type sections
+                                                                foreach (var mealType in mealTypes)
+                                                                {
+                                                                    <div class="mb-4">
+                                                                        <div class="d-flex align-items-center border-bottom pb-2 mb-3">
+                                                                            <span class="badge @(
+                                                                                    mealType == "الطبق الرئيسي" ? "bg-main-dish" :
+                                                                                    mealType == "طبق جانبي" ? "bg-side-dish" :
+                                                                                    mealType == "حلوى" ? "bg-dessert" :
+                                                                                    mealType == "مشروب" ? "bg-drink" :
+                                                                                "bg-secondary")">
+                                                                                @mealType
+                                                                            </span>
+                                                                        </div>
+                                                                        <div class="list-group list-group-flush">
+                                                                            @for (int i = 0; i < 2; i++)
+                                                                            {
+                                                                                var selectName = $"mealSelections[{menu.MenuID}][{category}][{mealType}][{i}]";
+
+                                                                                <div class="list-group-item px-0 py-1">
+                                                                                    <div class="d-flex justify-content-between align-items-center">
+                                                                                        <div class="dropdown-container" style="width: 70%; min-width: 150px;">
+                                                                                            <select name="@selectName" class="form-select meal-dropdown"
+                                                                                                    aria-label="اختر وجبة" data-menu-id="@menu.MenuID"
+                                                                                                    data-category="@category" data-type="@mealType"
+                                                                                                    data-index="@i">
+                                                                                                <option value="0">اختر...</option>
+                                                                                            </select>
+                                                                                        </div>
+                                                                                        <div class="meal-info text-end" style="width: 30%; min-width: 100px; text-align: left;" id="info-@menu.MenuID-@category-@mealType-@i">
+                                                                                            <span class="badge bg-light text-dark opacity-0" style="width: 100px; display: inline-block;">0 سعرة حرارية</span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            }
+                                                                        </div>
+                                                                    </div>
+                                                                }
+
                                                                 <div class="alert alert-light">
                                                                     لا يوجد وجبات مسجلة لهذه الفئة. يرجى إضافة وجبات أولاً.
                                                                 </div>
@@ -189,9 +243,16 @@
                 }
             </div>
 
-            <div class="text-center mt-4 mb-3">
-                <button type="submit" class="btn btn-lg btn-success px-5">
-                    <i class="bi bi-save me-2"></i>حفظ قائمة الطعام
+            <div class="d-flex justify-content-between pt-3 border-top">
+                <a asp-controller="Dashboard" asp-action="Index" class="btn btn-outline-success">
+                    <i class="bi bi-arrow-right me-1"></i>
+                    <span class="d-none d-md-inline">عودة إلى لوحة التحكم</span>
+                    <span class="d-inline d-md-none">العودة</span>
+                </a>
+                <button type="submit" class="btn btn-success px-3">
+                    <i class="bi bi-save me-2"></i>
+                    <span class="d-none d-md-inline">حفظ التغييرات</span>
+                    <span class="d-inline d-md-none">حفظ</span>
                 </button>
             </div>
         </form>
@@ -199,39 +260,20 @@
 </div>
 
 @section Scripts {
-    <script>
-        $(document).ready(function() {
-            // Update meal info when dropdown selection changes
-            $('.meal-dropdown').change(function() {
-                const menuId = $(this).data('menu-id');
-                const category = $(this).data('category');
-                const type = $(this).data('type');
-                const index = $(this).data('index');
-                const selectedOption = $(this).find('option:selected');
-                const calories = selectedOption.data('calories');
-                const infoElement = $(`#info-${menuId}-${category}-${type}-${index}`);
+    <script src="~/js/menuManagement.js" asp-append-version="true"></script>
+    <style>
+        /* Additional styles to ensure consistency */
+        .form-select.meal-dropdown {
+            width: 100%;
+        }
 
-                if (selectedOption.val() !== '0' && calories) {
-                    infoElement.html(`<span class="badge bg-light text-dark">${calories} سعرة حرارية</span>`);
-                } else {
-                    infoElement.empty();
-                }
-            });
-        });
-    </script>
-}
+        .meal-info {
+            min-width: 100px;
+        }
 
-@functions {
-    private string FormatTimeSpanToAmPm(TimeSpan time)
-    {
-        int hour = time.Hours;
-        string amPm = hour >= 12 ? "مساءً" : "صباحاً";
-
-        // Convert to 12-hour format
-        hour = hour % 12;
-        if (hour == 0) hour = 12; // 0 hour should be displayed as 12 in 12-hour format
-
-        // Format with leading zeros for minutes
-        return $"{hour}:{time.Minutes:D2} {amPm}";
-    }
+        /* Keep consistent height for rows */
+        .list-group-item .d-flex {
+            min-height: 38px;
+        }
+    </style>
 }

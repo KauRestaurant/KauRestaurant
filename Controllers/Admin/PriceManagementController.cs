@@ -25,11 +25,20 @@ namespace KauRestaurant.Controllers.Admin
         public async Task<IActionResult> Index()
         {
             // Get the current price settings
+            var breakfastPrice = await _context.TicketPrices.FirstOrDefaultAsync(tp => tp.MealType == "الإفطار");
+            var lunchPrice = await _context.TicketPrices.FirstOrDefaultAsync(tp => tp.MealType == "الغداء");
+            var dinnerPrice = await _context.TicketPrices.FirstOrDefaultAsync(tp => tp.MealType == "العشاء");
+
             var model = new TicketPriceViewModel
             {
-                BreakfastPrice = await GetTicketPrice("الإفطار"),
-                LunchPrice = await GetTicketPrice("الغداء"),
-                DinnerPrice = await GetTicketPrice("العشاء")
+                BreakfastPrice = breakfastPrice?.Price ?? 7m,
+                BreakfastLastUpdated = breakfastPrice?.LastUpdated ?? DateTime.Now,
+
+                LunchPrice = lunchPrice?.Price ?? 10m,
+                LunchLastUpdated = lunchPrice?.LastUpdated ?? DateTime.Now,
+
+                DinnerPrice = dinnerPrice?.Price ?? 10m,
+                DinnerLastUpdated = dinnerPrice?.LastUpdated ?? DateTime.Now
             };
 
             return View("~/Views/Admin/PriceManagement.cshtml", model);
@@ -131,16 +140,22 @@ namespace KauRestaurant.Controllers.Admin
         [Display(Name = "سعر تذكرة الإفطار")]
         public decimal BreakfastPrice { get; set; }
 
+        public DateTime BreakfastLastUpdated { get; set; }
+
         [Required]
         [Range(0.01, 1000.00, ErrorMessage = "يجب أن يكون السعر أكبر من صفر وأقل من 1000")]
         [DisplayFormat(DataFormatString = "{0:F2}", ApplyFormatInEditMode = true)]
         [Display(Name = "سعر تذكرة الغداء")]
         public decimal LunchPrice { get; set; }
+        
+        public DateTime LunchLastUpdated { get; set; }
 
         [Required]
         [Range(0.01, 1000.00, ErrorMessage = "يجب أن يكون السعر أكبر من صفر وأقل من 1000")]
         [DisplayFormat(DataFormatString = "{0:F2}", ApplyFormatInEditMode = true)]
         [Display(Name = "سعر تذكرة العشاء")]
         public decimal DinnerPrice { get; set; }
+
+        public DateTime DinnerLastUpdated { get; set; }
     }
 }

@@ -1,0 +1,14 @@
+﻿#displayedMealImage {
+    height: 180px;
+    object-fit: cover;
+}
+
+#displayedMealDescription {
+    max-height: 60px;
+    overflow: hidden;
+}
+
+#currentMealImage {
+    max-height: 150px;
+    display: none;
+}

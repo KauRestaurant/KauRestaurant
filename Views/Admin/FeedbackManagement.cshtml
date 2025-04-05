@@ -90,7 +90,7 @@
                 }
 
                 <div class="d-flex justify-content-between pt-3 border-top mt-4">
-                    <a asp-controller="Dashboard" asp-action="Index" class="btn btn-secondary">
+                    <a asp-controller="Dashboard" asp-action="Index" class="btn btn-outline-success">
                         <i class="bi bi-arrow-right me-1"></i>
                         <span class="d-none d-md-inline">عودة إلى لوحة التحكم</span>
                         <span class="d-inline d-md-none">العودة</span>
@@ -101,39 +101,8 @@
     </div>
 </div>
 
-<style>
-    .clickable {
-        cursor: pointer;
-    }
-
-    .table thead th {
-        font-weight: bold;
-    }
-
-    /* Improve mobile display */
-    @@media (max-width: 767.98px) {
-        .table td, .table th {
-            padding: 0.5rem;
-            font-size: 0.9rem;
-        }
-
-        .card-body {
-            padding: 0.75rem;
-        }
-    }
-</style>
-
 @section Scripts {
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const rows = document.querySelectorAll('.clickable');
-            rows.forEach(row => {
-                row.addEventListener('mouseenter', () => row.classList.add('table-active'));
-                row.addEventListener('mouseleave', () => row.classList.remove('table-active'));
-            });
-        });
-    </script>
-
+    <script src="~/js/feedbackManagement.js" asp-append-version="true"></script>
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }

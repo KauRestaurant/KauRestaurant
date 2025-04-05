@@ -29,7 +29,9 @@
         <div class="card border-0 shadow mb-4">
             <div class="card-header bg-white py-3">
                 <div class="d-flex justify-content-between align-items-center">
-                    <h3 class="fw-bold mb-0">قائمة اليوم - @Model.Day</h3>
+                    <h3 class="fw-bold mb-0">قائمة اليوم
+                        <span class="d-none d-md-inline"> - @Model.Day</span>
+                    </h3>
                     <div>
                         <a class="btn btn-success" asp-area="User" asp-controller="Menu" asp-action="Index">
                             <i class="bi bi-grid-3x3-gap me-2"></i>قائمة الأسبوع
@@ -117,18 +119,17 @@
 
                             var (icon, bgColor) = category switch
                             {
-                                "الإفطار" => ("bi-sun", "#2e7d32"),
-                                "الغداء" => ("bi-brightness-high", "#1b5e20"),
-                                "العشاء" => ("bi-moon", "#004d40"),
+                                "الإفطار" => ("bi-sun", "bg-breakfast"),
+                                "الغداء" => ("bi-brightness-high", "bg-lunch"),
+                                "العشاء" => ("bi-moon", "bg-dinner"),
                                 _ => ("bi-question", "#6c757d")
                             };
 
                             <div class="col-12 col-md-4 mb-3">
-                                <div class="accordion-desktop">
-                                    <div class="border-0 rounded shadow h-100">
-                                        <h2>
-                                            <button class="accordion-button collapsed text-white rounded-top"
-                                                    style="background-color: @bgColor;"
+                                <div class="accordion accordion-desktop">
+                                    <div class="accordion-item border-0 rounded shadow h-100">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed text-white rounded-top @bgColor"
                                                     type="button"
                                                     data-bs-toggle="collapse"
                                                     data-bs-target="#today@(category)">
@@ -142,13 +143,20 @@
                                                     var mealsByType = meals
                                                     .GroupBy(m => m.MealType)
                                                     .OrderBy(g => g.Key != "الطبق الرئيسي")
-                                                    .ThenBy(g => g.Key != "طبق جانبي");
+                                                    .ThenBy(g => g.Key != "طبق جانبي")
+                                                    .ThenBy(g => g.Key != "حلوى")
+                                                    .ThenBy(g => g.Key != "مشروب");
+
                                                     foreach (var typeGroup in mealsByType)
                                                     {
                                                         <div class="mb-4">
                                                             <div class="d-flex align-items-center border-bottom pb-2 mb-3">
-                                                                <span class="badge @(UIConstants.MealTypeBadgeColors.ContainsKey(typeGroup.Key) ?
-                                                                        UIConstants.MealTypeBadgeColors[typeGroup.Key] : "bg-secondary")">
+                                                                <span class="badge @(
+                                                                        typeGroup.Key == "الطبق الرئيسي" ? "bg-main-dish" :
+                                                                        typeGroup.Key == "طبق جانبي" ? "bg-side-dish" :
+                                                                        typeGroup.Key == "حلوى" ? "bg-dessert" :
+                                                                        typeGroup.Key == "مشروب" ? "bg-drink" :
+                                                                    "bg-success")">
                                                                     @typeGroup.Key
                                                                 </span>
                                                             </div>
@@ -164,7 +172,7 @@
                                                                                 <strong class="text-dark">@meal.MealName</strong>
                                                                             </div>
                                                                             <div>
-                                                                                <span class="badge bg-light text-dark">@meal.Calories سعرة حرارية</span>
+                                                                                <span class="badge bg-white text-dark">@meal.Calories سعرة حرارية</span>
                                                                                 @if (meal.Reviews != null && meal.Reviews.Any())
                                                                                 {
                                                                                     <div class="text-muted text-center small">
@@ -212,7 +220,7 @@
                                                 }
                                                 else
                                                 {
-                                                    <div class="alert alert-light">
+                                                    <div class="alert alert-white">
                                                         لا يوجد وجبات مسجلة لهذا اليوم
                                                     </div>
                                                 }

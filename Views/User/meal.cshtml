@@ -28,15 +28,19 @@
                             <!-- Meal Photo -->
                             @if (!string.IsNullOrEmpty(Model.PicturePath))
                             {
-                                <img src="@Url.Content(Model.PicturePath)" class="img-fluid" style="height: 300px; object-fit: cover;" alt="@Model.MealName" />
+                                <img src="@Url.Content(Model.PicturePath)" class="img-fluid" alt="@Model.MealName" />
                             }
                             else
                             {
-                                <img src="" class="img-fluid" style="height: 300px; object-fit: cover;" alt="@Model.MealName" />
+                                <img src="" class="img-fluid" alt="@Model.MealName" />
                             }
                             <div class="d-flex align-items-center mb-3">
-                                <span class="badge @(UIConstants.MealTypeBadgeColors.ContainsKey(Model.MealType) ?
-                                          UIConstants.MealTypeBadgeColors[Model.MealType] : "bg-secondary") me-2">
+                                <span class="badge @(
+                                    Model.MealType == "الطبق الرئيسي" ? "bg-main-dish" :
+                                    Model.MealType == "طبق جانبي" ? "bg-side-dish" :
+                                    Model.MealType == "حلوى" ? "bg-dessert" :
+                                    Model.MealType == "مشروب" ? "bg-drink" :
+                                    "bg-success") me-2">
                                     @Model.MealType
                                 </span>
                                 <span class="badge bg-light text-dark">@Model.Calories سعرة حرارية</span>
@@ -54,19 +58,19 @@
                         <div>
                             <h4 class="fw-bold mb-3">معلومات غذائية</h4>
                             <div class="row g-3">
-                                <div class="col-8 col-md-4">
+                                <div class="col-12 col-md-4">
                                     <div class="border rounded p-3 text-center">
                                         <div class="fw-bold text-success mb-1">البروتين</div>
                                         <div>@Model.Protein جرام</div>
                                     </div>
                                 </div>
-                                <div class="col-8 col-md-4">
+                                <div class="col-12 col-md-4">
                                     <div class="border rounded p-3 text-center">
                                         <div class="fw-bold text-success mb-1">الكربوهيدرات</div>
                                         <div>@Model.Carbs جرام</div>
                                     </div>
                                 </div>
-                                <div class="col-8 col-md-4">
+                                <div class="col-12 col-md-4">
                                     <div class="border rounded p-3 text-center">
                                         <div class="fw-bold text-success mb-1">الدهون</div>
                                         <div>@Model.Fat جرام</div>
@@ -191,42 +195,4 @@
         </div>
     </div>
 </div>
-
-<style>
-    .star-rating {
-        direction: ltr;
-        display: inline-flex;
-        flex-direction: row-reverse;
-        gap: 0.25rem;
-    }
-
-        .star-rating input {
-            display: none;
-        }
-
-        .star-rating label {
-            color: #ddd;
-            cursor: pointer;
-            font-size: 1.5rem;
-            transition: color 0.2s;
-            line-height: 1;
-        }
-
-            .star-rating label:hover,
-            .star-rating label:hover ~ label,
-            .star-rating input:checked ~ label {
-                color: #ffc107;
-            }
-
-    .reviews-list {
-        max-height: 350px;
-        overflow-y: auto;
-    }
-
-    .text-warning .bi-star-fill,
-    .text-warning .bi-star {
-        line-height: 1;
-        font-size: 1rem;
-    }
-</style>
 

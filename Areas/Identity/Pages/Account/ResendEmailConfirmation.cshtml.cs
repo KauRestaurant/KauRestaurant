@@ -46,8 +46,9 @@ namespace KauRestaurant.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
-            [EmailAddress]
+            [Required(ErrorMessage = "البريد الإلكتروني مطلوب")]
+            [EmailAddress(ErrorMessage = "البريد الإلكتروني غير صالح")]
+            [Display(Name = "البريد الإلكتروني")]
             public string Email { get; set; }
         }
 
@@ -65,7 +66,7 @@ namespace KauRestaurant.Areas.Identity.Pages.Account
             var user = await _userManager.FindByEmailAsync(Input.Email);
             if (user == null)
             {
-                ModelState.AddModelError(string.Empty, "Verification email sent. Please check your email.");
+                ModelState.AddModelError(string.Empty, "تم إرسال بريد إلكتروني للتحقق. يرجى التحقق من بريدك الإلكتروني.");
                 return Page();
             }
 
@@ -79,10 +80,10 @@ namespace KauRestaurant.Areas.Identity.Pages.Account
                 protocol: Request.Scheme);
             await _emailSender.SendEmailAsync(
                 Input.Email,
-                "Confirm your email",
-                $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                "تأكيد بريدك الإلكتروني",
+                $"يرجى تأكيد حسابك من خلال <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>النقر هنا</a>.");
 
-            ModelState.AddModelError(string.Empty, "Verification email sent. Please check your email.");
+            ModelState.AddModelError(string.Empty, "تم إرسال بريد إلكتروني للتحقق. يرجى التحقق من بريدك الإلكتروني.");
             return Page();
         }
     }

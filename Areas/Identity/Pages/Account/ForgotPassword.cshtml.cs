@@ -45,11 +45,11 @@ namespace KauRestaurant.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
-            [EmailAddress]
+            [Required(ErrorMessage = "البريد الإلكتروني مطلوب")]
+            [EmailAddress(ErrorMessage = "البريد الإلكتروني غير صالح")]
+            [Display(Name = "البريد الإلكتروني")]
             public string Email { get; set; }
         }
-
         public async Task<IActionResult> OnPostAsync()
         {
             if (ModelState.IsValid)
@@ -73,8 +73,8 @@ namespace KauRestaurant.Areas.Identity.Pages.Account
 
                 await _emailSender.SendEmailAsync(
                     Input.Email,
-                    "Reset Password",
-                    $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    "إعادة تعيين كلمة المرور",
+                    $"الرجاء إعادة تعيين كلمة المرور الخاصة بك من خلال <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>النقر هنا</a>.");
 
                 return RedirectToPage("./ForgotPasswordConfirmation");
             }

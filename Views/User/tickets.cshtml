@@ -77,7 +77,7 @@
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between align-items-center mb-3">
                                         <h6 class="card-title mb-0">تذاكر الإفطار</h6>
-                                        <span class="badge" style="background: #2e7d32">الإفطار</span>
+                                        <span class="badge bg-breakfast">الإفطار</span>
                                     </div>
                                     <p class="card-text small mb-3">
                                         @if (restaurant != null && restaurant.ServesBreakfast && restaurant.BreakfastOpenTime.HasValue && restaurant.BreakfastCloseTime.HasValue)
@@ -117,11 +117,11 @@
 
                         <!-- Lunch Card -->
                         <div class="col-12 col-md-4">
-                            <div class="card h-100 @(Model.LunchCount > 0 ? "border-primary" : "border")">
+                            <div class="card h-100 @(Model.LunchCount > 0 ? "border-success" : "border")">
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between align-items-center mb-3">
                                         <h6 class="card-title mb-0">تذاكر الغداء</h6>
-                                        <span class="badge" style="background: #1b5e20">الغداء</span>
+                                        <span class="badge bg-lunch">الغداء</span>
                                     </div>
                                     <p class="card-text small mb-3">
                                         @if (restaurant != null && restaurant.ServesLunch && restaurant.LunchOpenTime.HasValue && restaurant.LunchCloseTime.HasValue)
@@ -161,11 +161,11 @@
 
                         <!-- Dinner Card -->
                         <div class="col-12 col-md-4">
-                            <div class="card h-100 @(Model.DinnerCount > 0 ? "border-secondary" : "border")">
+                            <div class="card h-100 @(Model.DinnerCount > 0 ? "border-success" : "border")">
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between align-items-center mb-3">
                                         <h6 class="card-title mb-0">تذاكر العشاء</h6>
-                                        <span class="badge" style="background: #004d40">العشاء</span>
+                                        <span class="badge bg-dinner">العشاء</span>
                                     </div>
                                     <p class="card-text small mb-3">
                                         @if (restaurant != null && restaurant.ServesDinner && restaurant.DinnerOpenTime.HasValue && restaurant.DinnerCloseTime.HasValue)
@@ -228,51 +228,14 @@
                         </div>
                     </div>
                 </div>
-                <!-- End QR Modal -->
-
             </div>
-            <!-- End Card Body -->
         </div>
-        <!-- End Card -->
     </div>
-    <!-- End .container -->
 </div>
-<!-- End .container-fluid -->
 
-<script>
-    function showQrCode(ticketId, mealType) {
-        if (!ticketId) {
-            alert("No ticket available.");
-            return;
-        }
-
-        // Update the ticket ID display
-        document.getElementById('ticketIdDisplay').textContent = 'تذكرة #' + ticketId;
-
-        // Set the QR code image source with ticket data
-        const qrCodeImage = document.getElementById('qrCodeImage');
-
-        // Generate the QR code URL - removed validUntil parameter
-        const qrUrl = '@Url.Action("GenerateQrCode", "QrCode")' +
-            '?ticketId=' + ticketId +
-            '&mealType=' + encodeURIComponent(mealType);
-
-        // Set the image source to load the QR code
-        qrCodeImage.src = qrUrl;
-
-        // Display meal type in the modal
-        const mealTypeElement = document.getElementById('mealTypeDisplay');
-        if (mealTypeElement) {
-            mealTypeElement.textContent = mealType;
-        }
-    }
-
-    // Add a close handler to the modal to clear the QR code when closed
-    $('#qrModal').on('hidden.bs.modal', function () {
-        document.getElementById('qrCodeImage').src = '';
-    });
-</script>
-
+@section Scripts {
+    <script src="~/js/tickets.js" asp-append-version="true"></script>
+}
 
 @functions {
     private string FormatTimeSpanToAmPm(TimeSpan time)

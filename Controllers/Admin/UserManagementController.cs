@@ -55,16 +55,9 @@ namespace KauRestaurant.Controllers.Admin
         }
 
         [HttpPost]
-        public async Task<IActionResult> ChangeRole(string userId, string newRole)
+        public async Task<IActionResult> UpdateUser(string userId, string firstName, string lastName, string newEmail, string newRole)
         {
-            // Validate that the new role is an admin role
-            var adminRoles = new[] { "A1", "A2", "A3" };
-            if (!adminRoles.Contains(newRole))
-            {
-                TempData["ErrorMessage"] = "مستوى الصلاحية غير صالح";
-                return RedirectToAction(nameof(Index));
-            }
-
+            // Check if user exists
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
@@ -72,97 +65,114 @@ namespace KauRestaurant.Controllers.Admin
                 return RedirectToAction(nameof(Index));
             }
 
-            var currentRoles = await _userManager.GetRolesAsync(user);
+            bool needsSignOut = false;
+            bool success = true;
+            List<string> successMessages = new List<string>();
+            List<string> errorMessages = new List<string>();
 
-            // Verify this user has an admin role
-            if (!currentRoles.Any(r => adminRoles.Contains(r)))
+            // Update name if changed
+            if (!string.IsNullOrEmpty(firstName) && !string.IsNullOrEmpty(lastName) &&
+                (user.FirstName != firstName || user.LastName != lastName))
             {
-                TempData["ErrorMessage"] = "هذا المستخدم غير مصرح له بالصلاحيات الإدارية";
-                return RedirectToAction(nameof(Index));
-            }
+                user.FirstName = firstName;
+                user.LastName = lastName;
 
-            await _userManager.RemoveFromRolesAsync(user, currentRoles);
-            await _userManager.AddToRoleAsync(user, newRole);
-
-            TempData["SuccessMessage"] = "تم تغيير صلاحية المشرف بنجاح";
-            return RedirectToAction(nameof(Index));
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> UpdateName(string userId, string firstName, string lastName)
-        {
-            if (string.IsNullOrEmpty(firstName) || string.IsNullOrEmpty(lastName))
-            {
-                TempData["ErrorMessage"] = "الاسم الأول والأخير مطلوبان";
-                return RedirectToAction(nameof(Index));
-            }
-
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user == null)
-            {
-                TempData["ErrorMessage"] = "المستخدم غير موجود";
-                return RedirectToAction(nameof(Index));
-            }
-
-            user.FirstName = firstName;
-            user.LastName = lastName;
-
-            var result = await _userManager.UpdateAsync(user);
-            if (result.Succeeded)
-            {
-                TempData["SuccessMessage"] = "تم تحديث اسم المستخدم بنجاح";
-            }
-            else
-            {
-                TempData["ErrorMessage"] = "فشل تحديث اسم المستخدم";
-            }
-
-            return RedirectToAction(nameof(Index));
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> UpdateEmail(string userId, string newEmail)
-        {
-            if (string.IsNullOrEmpty(newEmail))
-            {
-                TempData["ErrorMessage"] = "البريد الإلكتروني مطلوب";
-                return RedirectToAction(nameof(Index));
-            }
-
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user == null)
-            {
-                TempData["ErrorMessage"] = "المستخدم غير موجود";
-                return RedirectToAction(nameof(Index));
-            }
-
-            // Check if email is already in use
-            var existingUser = await _userManager.FindByEmailAsync(newEmail);
-            if (existingUser != null && existingUser.Id != userId)
-            {
-                TempData["ErrorMessage"] = "البريد الإلكتروني مستخدم بالفعل";
-                return RedirectToAction(nameof(Index));
-            }
-
-            user.Email = newEmail;
-            user.UserName = newEmail; // Since email is used as username
-            user.NormalizedEmail = newEmail.ToUpper();
-            user.NormalizedUserName = newEmail.ToUpper();
-
-            var result = await _userManager.UpdateAsync(user);
-            if (result.Succeeded)
-            {
-                TempData["SuccessMessage"] = "تم تحديث البريد الإلكتروني بنجاح";
-
-                // If changing the current user's email, sign them out
-                if (User.Identity.Name == user.Email)
+                var nameResult = await _userManager.UpdateAsync(user);
+                if (nameResult.Succeeded)
                 {
-                    return RedirectToAction("Logout", "Account", new { area = "Identity" });
+                    successMessages.Add("تم تحديث الاسم بنجاح");
+                }
+                else
+                {
+                    success = false;
+                    errorMessages.Add("فشل تحديث الاسم");
+                }
+            }
+
+            // Update email if changed
+            if (!string.IsNullOrEmpty(newEmail) && user.Email != newEmail)
+            {
+                // Check if email is already in use
+                var existingUser = await _userManager.FindByEmailAsync(newEmail);
+                if (existingUser != null && existingUser.Id != userId)
+                {
+                    success = false;
+                    errorMessages.Add("البريد الإلكتروني مستخدم بالفعل");
+                }
+                else
+                {
+                    user.Email = newEmail;
+                    user.UserName = newEmail; // Since email is used as username
+                    user.NormalizedEmail = newEmail.ToUpper();
+                    user.NormalizedUserName = newEmail.ToUpper();
+
+                    var emailResult = await _userManager.UpdateAsync(user);
+                    if (emailResult.Succeeded)
+                    {
+                        successMessages.Add("تم تحديث البريد الإلكتروني بنجاح");
+
+                        // If changing the current user's email, sign them out after all updates
+                        if (User.Identity.Name == user.Email)
+                        {
+                            needsSignOut = true;
+                        }
+                    }
+                    else
+                    {
+                        success = false;
+                        errorMessages.Add("فشل تحديث البريد الإلكتروني");
+                    }
+                }
+            }
+
+            // Update role if changed
+            var adminRoles = new[] { "A1", "A2", "A3" };
+            if (!string.IsNullOrEmpty(newRole) && adminRoles.Contains(newRole))
+            {
+                var currentRoles = await _userManager.GetRolesAsync(user);
+                var currentAdminRole = currentRoles.FirstOrDefault(r => adminRoles.Contains(r));
+
+                if (currentAdminRole != newRole)
+                {
+                    await _userManager.RemoveFromRolesAsync(user, currentRoles);
+                    var roleResult = await _userManager.AddToRoleAsync(user, newRole);
+
+                    if (roleResult.Succeeded)
+                    {
+                        successMessages.Add("تم تحديث الصلاحية بنجاح");
+                    }
+                    else
+                    {
+                        success = false;
+                        errorMessages.Add("فشل تحديث الصلاحية");
+                    }
+                }
+            }
+
+            // Set appropriate messages
+            if (success)
+            {
+                if (successMessages.Count > 0)
+                {
+                    TempData["SuccessMessage"] = string.Join("، ", successMessages);
+                }
+                else
+                {
+                    TempData["SuccessMessage"] = "لم يتم إجراء أي تغييرات";
                 }
             }
             else
             {
-                TempData["ErrorMessage"] = "فشل تحديث البريد الإلكتروني";
+                if (errorMessages.Count > 0)
+                {
+                    TempData["ErrorMessage"] = string.Join("، ", errorMessages);
+                }
+            }
+
+            // Redirect to logout if current user's email was changed
+            if (needsSignOut)
+            {
+                return RedirectToAction("Logout", "Account", new { area = "Identity" });
             }
 
             return RedirectToAction(nameof(Index));
@@ -306,24 +316,24 @@ namespace KauRestaurant.Controllers.Admin
 
     public class CreateUserViewModel
     {
-        [Required]
-        [EmailAddress]
+        [Required(ErrorMessage = "البريد الإلكتروني مطلوب")]
+        [EmailAddress(ErrorMessage = "الرجاء إدخال بريد إلكتروني صحيح")]
         public string Email { get; set; }
 
-        [Required]
-        [StringLength(50)]
+        [Required(ErrorMessage = "الاسم الأول مطلوب")]
+        [StringLength(50, ErrorMessage = "الاسم الأول يجب أن يكون أقل من {1} حرف")]
         public string FirstName { get; set; }
 
-        [Required]
-        [StringLength(50)]
+        [Required(ErrorMessage = "الاسم الأخير مطلوب")]
+        [StringLength(50, ErrorMessage = "الاسم الأخير يجب أن يكون أقل من {1} حرف")]
         public string LastName { get; set; }
 
-        [Required]
-        [StringLength(100, MinimumLength = 6)]
+        [Required(ErrorMessage = "كلمة المرور مطلوبة")]
+        [StringLength(100, MinimumLength = 6, ErrorMessage = "كلمة المرور يجب أن تحتوي على {2} أحرف على الأقل")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "مستوى الصلاحية مطلوب")]
         public string Role { get; set; }
     }
 }

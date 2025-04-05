@@ -27,11 +27,11 @@
                             <div class="col-12 mb-4">
                                 @if (!string.IsNullOrEmpty(Model.PhotoPath))
                                 {
-                                    <img src="@Model.PhotoPath" class="img-fluid" style="height: 300px; object-fit: cover;" alt="صورة المطعم">
+                                    <img src="@Model.PhotoPath" class="img-fluid" alt="صورة المطعم">
                                 }
                                 else
                                 {
-                                    <img src="" class="img-fluid" style="height: 300px; object-fit: cover;" alt="صورة المطعم">
+                                    <img src="" class="img-fluid" alt="صورة المطعم">
                                 }
                             </div>
 
@@ -55,7 +55,7 @@
                                     {
                                         <li class="list-group-item d-flex align-items-center border-0">
                                             <div class="me-3">
-                                                <span class="badge rounded-pill text-white" style="background: #2e7d32">الفطور</span>
+                                                <span class="badge rounded-pill text-white bg-breakfast">الفطور</span>
                                             </div>
                                             <div>
                                                 @if (Model.BreakfastOpenTime.HasValue && Model.BreakfastCloseTime.HasValue)
@@ -74,7 +74,7 @@
                                     {
                                         <li class="list-group-item d-flex align-items-center border-0">
                                             <div class="me-3">
-                                                <span class="badge rounded-pill text-white" style="background: #1b5e20">الغداء</span>
+                                                <span class="badge rounded-pill text-white bg-lunch">الغداء</span>
                                             </div>
                                             <div>
                                                 @if (Model.LunchOpenTime.HasValue && Model.LunchCloseTime.HasValue)
@@ -93,7 +93,7 @@
                                     {
                                         <li class="list-group-item d-flex align-items-center border-0">
                                             <div class="me-3">
-                                                <span class="badge rounded-pill text-white" style="background: #004d40">العشاء</span>
+                                                <span class="badge rounded-pill text-white bg-dinner">العشاء</span>
                                             </div>
                                             <div>
                                                 @if (Model.DinnerOpenTime.HasValue && Model.DinnerCloseTime.HasValue)

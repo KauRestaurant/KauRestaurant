@@ -8,21 +8,22 @@
     <!-- Main Content Section -->
     <div class="container-fluid py-4 bg-light">
         <div class="container max-w-600">
-            <div class="card border-0 shadow" style="background-color: rgba(255, 255, 255, 0.98)">
-                <div class="card-header text-white py-3" style="background-color: #2e7d32;">
-                    <h3 class="h5 mb-0">إعادة إرسال تأكيد البريد الإلكتروني</h3>
+            <div class="card border-0 shadow">
+                <div class="card-header bg-white py-3">
+                    <h3 class="fw-bold mb-0">إعادة إرسال تأكيد البريد الإلكتروني</h3>
                 </div>
                 <div class="card-body p-4">
                     <form method="post">
-                        <div asp-validation-summary="All" class="text-danger mb-3" role="alert"></div>
-                        <div class="form-floating mb-4 shadow-sm">
-                            <input asp-for="Input.Email" class="form-control" aria-required="true"
-                                   placeholder="name@example.com" dir="ltr" />
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
+                        <div class="form-floating mb-4">
+                            <input asp-for="Input.Email" class="form-control" autocomplete="username"
+                                   aria-required="true" placeholder="name@example.com" dir="ltr"
+                                   data-val-required="البريد الإلكتروني مطلوب" />
                             <label asp-for="Input.Email" class="form-label">البريد الإلكتروني</label>
                             <span asp-validation-for="Input.Email" class="text-danger"></span>
                         </div>
                         <div class="d-grid">
-                            <button type="submit" class="btn btn-success btn-lg shadow-sm">إعادة الإرسال</button>
+                            <button type="submit" class="btn btn-success">إعادة الإرسال</button>
                         </div>
                         <div class="mt-4 text-center">
                             <p class="mb-1">

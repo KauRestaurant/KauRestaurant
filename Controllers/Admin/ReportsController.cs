@@ -2,6 +2,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace KauRestaurant.Controllers.Admin
 {
@@ -22,51 +25,49 @@ namespace KauRestaurant.Controllers.Admin
             return View("~/Views/Admin/Reports.cshtml");
         }
 
-        public class TicketStatistics
-        {
-            public List<int> PurchasedTickets { get; set; }
-            public List<int> RedeemedTickets { get; set; }
-            public List<string> Labels { get; set; }
-        }
-
         [HttpGet]
-        public async Task<IActionResult> GetTicketStatistics()
+        public IActionResult GetTicketStatistics()
         {
             try
             {
+                // Get last 6 months
                 var today = DateTime.Today;
-                var last6Months = Enumerable.Range(0, 6)
-                    .Select(i => today.AddMonths(-i))
-                    .OrderBy(d => d)
-                    .ToList();
+                var months = new List<DateTime>();
 
-                var statistics = new TicketStatistics
+                for (int i = 5; i >= 0; i--)
                 {
-                    PurchasedTickets = new List<int>(),
-                    RedeemedTickets = new List<int>(),
-                    Labels = last6Months.Select(d => d.ToString("MMM yyyy")).ToList()
-                };
-
-                foreach (var date in last6Months)
-                {
-                    var startDate = new DateTime(date.Year, date.Month, 1);
-                    var endDate = startDate.AddMonths(1);
-
-                    // Get purchased tickets count
-                    var purchasedCount = await _context.Tickets
-                        .Where(t => t.Order.OrderDate >= startDate && t.Order.OrderDate < endDate)
-                        .CountAsync();
-
-                    // Get redeemed tickets count
-                    var redeemedCount = await _context.Tickets
-                        .Where(t => t.Order.OrderDate >= startDate && t.Order.OrderDate < endDate && t.IsRedeemed)
-                        .CountAsync();
-
-                    statistics.PurchasedTickets.Add(purchasedCount);
-                    statistics.RedeemedTickets.Add(redeemedCount);
+                    months.Add(today.AddMonths(-i));
                 }
 
-                return Json(statistics);
+                var labels = months.Select(m => m.ToString("MMM yyyy")).ToArray();
+
+                var purchasedTickets = new int[6];
+                var redeemedTickets = new int[6];
+
+                for (int i = 0; i < 6; i++)
+                {
+                    var startOfMonth = new DateTime(months[i].Year, months[i].Month, 1);
+                    var endOfMonth = startOfMonth.AddMonths(1).AddDays(-1);
+
+                    // Count purchased tickets for this month
+                    purchasedTickets[i] = _context.Tickets
+                        .Where(t => t.Order.OrderDate >= startOfMonth && t.Order.OrderDate <= endOfMonth)
+                        .Count();
+
+                    // Count redeemed tickets for this month
+                    redeemedTickets[i] = _context.Tickets
+                        .Where(t => t.IsRedeemed && t.Order.OrderDate >= startOfMonth && t.Order.OrderDate <= endOfMonth)
+                        .Count();
+                }
+
+                var data = new
+                {
+                    labels = labels,
+                    purchasedTickets = purchasedTickets,
+                    redeemedTickets = redeemedTickets
+                };
+
+                return Json(data);
             }
             catch (Exception ex)
             {
@@ -76,39 +77,41 @@ namespace KauRestaurant.Controllers.Admin
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetMealRatings()
+        public IActionResult GetMealRatings()
         {
             try
             {
-                // Get top rated meals
-                var topRatedMeals = await _context.Meals
+                // Get top 5 highest rated meals
+                var topRated = _context.Meals
                     .Where(m => m.Reviews.Count > 0)
-                    .OrderByDescending(m => m.Reviews.Average(r => r.Rating))
-                    .Take(5)
                     .Select(m => new
                     {
                         name = m.MealName,
-                        rating = Math.Round(m.Reviews.Average(r => r.Rating), 1)
+                        rating = m.Reviews.Average(r => r.Rating)
                     })
-                    .ToListAsync();
-
-                // Get lowest rated meals
-                var lowestRatedMeals = await _context.Meals
-                    .Where(m => m.Reviews.Count > 0)
-                    .OrderBy(m => m.Reviews.Average(r => r.Rating))
+                    .OrderByDescending(m => m.rating)
                     .Take(5)
+                    .ToList();
+
+                // Get top 5 lowest rated meals
+                var lowestRated = _context.Meals
+                    .Where(m => m.Reviews.Count > 0)
                     .Select(m => new
                     {
                         name = m.MealName,
-                        rating = Math.Round(m.Reviews.Average(r => r.Rating), 1)
+                        rating = m.Reviews.Average(r => r.Rating)
                     })
-                    .ToListAsync();
+                    .OrderBy(m => m.rating)
+                    .Take(5)
+                    .ToList();
 
-                return Json(new
+                var data = new
                 {
-                    topRated = topRatedMeals,
-                    lowestRated = lowestRatedMeals
-                });
+                    topRated = topRated,
+                    lowestRated = lowestRated
+                };
+
+                return Json(data);
             }
             catch (Exception ex)
             {

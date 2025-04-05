@@ -3,6 +3,9 @@
 
 @{
     ViewData["Title"] = "إدارة الوجبات";
+
+    // Create new meal instance for validation in add form
+    var newMeal = new KauRestaurant.Models.Meal();
 }
 
 <!-- Main Content Section -->
@@ -30,7 +33,9 @@
                     <h3 class="fw-bold mb-0"><i class="bi bi-egg-fried me-2"></i>إدارة الوجبات</h3>
                     <div>
                         <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addMealModal">
-                            <i class="bi bi-plus-lg me-2"></i>إضافة وجبة جديدة
+                            <i class="bi bi-plus-lg me-2"></i>
+                            <span class="d-none d-md-inline">إضافة وجبة جديدة</span>
+                            <span class="d-inline d-md-none">إضافة</span>
                         </button>
                     </div>
                 </div>
@@ -79,14 +84,18 @@
                         <div class="card border-0 shadow h-100">
                             <div class="position-relative">
                                 <img src="@(string.IsNullOrEmpty(meal.PicturePath) ? "/images/meal-placeholder.png" : meal.PicturePath)"
-                                     class="card-img-top" alt="@meal.MealName" style="height:180px; object-fit:cover;">
+                                     class="card-img-top" id="displayedMealImage" alt="@meal.MealName">
                                 <div class="position-absolute top-0 start-0 p-2">
                                     @{
-                                        var (icon, bgColor) = UIConstants.MealCategoryInfo.ContainsKey(meal.MealCategory)
-                                        ? UIConstants.MealCategoryInfo[meal.MealCategory]
-                                        : ("bi-question", "#6c757d");
+                                        var (icon, bgColor) = meal.MealCategory switch
+                                        {
+                                            "الإفطار" => ("bi-sun", "bg-breakfast"),
+                                            "الغداء" => ("bi-brightness-high", "bg-lunch"),
+                                            "العشاء" => ("bi-moon", "bg-dinner"),
+                                            _ => ("bi-question", "#6c757d")
+                                        };
                                     }
-                                    <span class="badge" style="background-color: @bgColor">
+                                    <span class="badge @bgColor">
                                         <i class="bi @icon me-1"></i>@meal.MealCategory
                                     </span>
                                 </div>
@@ -94,12 +103,16 @@
                             <div class="card-body">
                                 <div class="d-flex justify-content-between align-items-start mb-2">
                                     <h5 class="card-title fw-bold">@meal.MealName</h5>
-                                    <span class="badge @(UIConstants.MealTypeBadgeColors.ContainsKey(meal.MealType) ?
-                                               UIConstants.MealTypeBadgeColors[meal.MealType] : "bg-secondary")">
+                                    <span class="badge @(
+                                            meal.MealType == "الطبق الرئيسي" ? "bg-main-dish" :
+                                            meal.MealType == "طبق جانبي" ? "bg-side-dish" :
+                                            meal.MealType == "حلوى" ? "bg-dessert" :
+                                            meal.MealType == "مشروب" ? "bg-drink" :
+                                        "bg-success")">
                                         @meal.MealType
                                     </span>
                                 </div>
-                                <p class="card-text small text-muted mb-2" style="max-height:60px; overflow:hidden;">
+                                <p class="card-text small text-muted mb-2" id="displayedMealDescription">
                                     @meal.Description
                                 </p>
                                 <div class="d-flex justify-content-between align-items-center mb-2">
@@ -172,60 +185,70 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
                     <div class="row g-3">
                         <div class="col-md-6">
-                            <label for="mealName" class="form-label">اسم الوجبة</label>
-                            <input type="text" class="form-control" id="mealName" name="MealName" required maxlength="100">
+                            <label asp-for="@newMeal.MealName" class="form-label">اسم الوجبة</label>
+                            <input asp-for="@newMeal.MealName" type="text" class="form-control" id="mealName" maxlength="100">
+                            <span asp-validation-for="@newMeal.MealName" class="text-danger d-block mt-1"></span>
                         </div>
                         <div class="col-md-6">
                             <div class="row g-2">
                                 <div class="col-6">
-                                    <label for="mealCategory" class="form-label">فئة الوجبة</label>
-                                    <select class="form-select" id="mealCategory" name="MealCategory" required>
+                                    <label asp-for="@newMeal.MealCategory" class="form-label">فئة الوجبة</label>
+                                    <select asp-for="@newMeal.MealCategory" class="form-select" id="mealCategory">
                                         <option value="الإفطار">الإفطار</option>
                                         <option value="الغداء">الغداء</option>
                                         <option value="العشاء">العشاء</option>
                                     </select>
+                                    <span asp-validation-for="@newMeal.MealCategory" class="text-danger d-block mt-1"></span>
                                 </div>
                                 <div class="col-6">
-                                    <label for="mealType" class="form-label">نوع الوجبة</label>
-                                    <select class="form-select" id="mealType" name="MealType" required>
+                                    <label asp-for="@newMeal.MealType" class="form-label">نوع الوجبة</label>
+                                    <select asp-for="@newMeal.MealType" class="form-select" id="mealType">
                                         <option value="الطبق الرئيسي">الطبق الرئيسي</option>
                                         <option value="طبق جانبي">طبق جانبي</option>
                                         <option value="حلوى">حلوى</option>
                                         <option value="مشروب">مشروب</option>
                                     </select>
+                                    <span asp-validation-for="@newMeal.MealType" class="text-danger d-block mt-1"></span>
                                 </div>
                             </div>
                         </div>
                         <div class="col-12">
-                            <label for="mealDescription" class="form-label">وصف الوجبة</label>
-                            <textarea class="form-control" id="mealDescription" name="Description" rows="3" maxlength="500"></textarea>
+                            <label asp-for="@newMeal.Description" class="form-label">وصف الوجبة</label>
+                            <textarea asp-for="@newMeal.Description" class="form-control" id="mealDescription" rows="3" maxlength="500"></textarea>
+                            <span asp-validation-for="@newMeal.Description" class="text-danger d-block mt-1"></span>
                         </div>
                         <div class="col-12">
                             <label for="mealPicture" class="form-label">صورة الوجبة</label>
                             <input type="file" class="form-control" id="mealPicture" name="Picture" accept="image/*">
+                            <span class="text-danger field-validation-valid" data-valmsg-for="Picture" data-valmsg-replace="true"></span>
                         </div>
                         <div class="col-md-3">
-                            <label for="mealCalories" class="form-label">السعرات الحرارية</label>
-                            <input type="number" class="form-control" id="mealCalories" name="Calories" min="0" max="2000" required>
+                            <label asp-for="@newMeal.Calories" class="form-label">السعرات الحرارية</label>
+                            <input asp-for="@newMeal.Calories" type="number" class="form-control" id="mealCalories" min="0" max="2000">
+                            <span asp-validation-for="@newMeal.Calories" class="text-danger d-block mt-1"></span>
                         </div>
                         <div class="col-md-3">
-                            <label for="mealProtein" class="form-label">البروتين (جرام)</label>
-                            <input type="number" class="form-control" id="mealProtein" name="Protein" min="0" max="200" required>
+                            <label asp-for="@newMeal.Protein" class="form-label">البروتين (جرام)</label>
+                            <input asp-for="@newMeal.Protein" type="number" class="form-control" id="mealProtein" min="0" max="200">
+                            <span asp-validation-for="@newMeal.Protein" class="text-danger d-block mt-1"></span>
                         </div>
                         <div class="col-md-3">
-                            <label for="mealCarbs" class="form-label">الكربوهيدرات (جرام)</label>
-                            <input type="number" class="form-control" id="mealCarbs" name="Carbs" min="0" max="200" required>
+                            <label asp-for="@newMeal.Carbs" class="form-label">الكربوهيدرات (جرام)</label>
+                            <input asp-for="@newMeal.Carbs" type="number" class="form-control" id="mealCarbs" min="0" max="200">
+                            <span asp-validation-for="@newMeal.Carbs" class="text-danger d-block mt-1"></span>
                         </div>
                         <div class="col-md-3">
-                            <label for="mealFat" class="form-label">الدهون (جرام)</label>
-                            <input type="number" class="form-control" id="mealFat" name="Fat" min="0" max="200" required>
+                            <label asp-for="@newMeal.Fat" class="form-label">الدهون (جرام)</label>
+                            <input asp-for="@newMeal.Fat" type="number" class="form-control" id="mealFat" min="0" max="200">
+                            <span asp-validation-for="@newMeal.Fat" class="text-danger d-block mt-1"></span>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">إلغاء</button>
                     <button type="submit" class="btn btn-success">إضافة الوجبة</button>
                 </div>
             </form>
@@ -244,10 +267,12 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    <div class="validation-summary text-danger mb-3"></div>
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label for="editMealName" class="form-label">اسم الوجبة</label>
                             <input type="text" class="form-control" id="editMealName" name="MealName" required maxlength="100">
+                            <span class="text-danger field-validation-valid" data-valmsg-for="MealName" data-valmsg-replace="true"></span>
                         </div>
                         <div class="col-md-6">
                             <div class="row g-2">
@@ -258,6 +283,7 @@
                                         <option value="الغداء">الغداء</option>
                                         <option value="العشاء">العشاء</option>
                                     </select>
+                                    <span class="text-danger field-validation-valid" data-valmsg-for="MealCategory" data-valmsg-replace="true"></span>
                                 </div>
                                 <div class="col-6">
                                     <label for="editMealType" class="form-label">نوع الوجبة</label>
@@ -267,41 +293,48 @@
                                         <option value="حلوى">حلوى</option>
                                         <option value="مشروب">مشروب</option>
                                     </select>
+                                    <span class="text-danger field-validation-valid" data-valmsg-for="MealType" data-valmsg-replace="true"></span>
                                 </div>
                             </div>
                         </div>
                         <div class="col-12">
                             <label for="editMealDescription" class="form-label">وصف الوجبة</label>
                             <textarea class="form-control" id="editMealDescription" name="Description" rows="3" maxlength="500"></textarea>
+                            <span class="text-danger field-validation-valid" data-valmsg-for="Description" data-valmsg-replace="true"></span>
                         </div>
                         <div class="col-12">
                             <div class="mb-2">
-                                <img id="currentMealImage" src="" alt="صورة الوجبة الحالية" class="img-thumbnail" style="max-height: 150px; display: none;">
+                                <img id="currentMealImage" src="" alt="صورة الوجبة الحالية" class="img-thumbnail">
                             </div>
                             <label for="editMealPicture" class="form-label">تغيير صورة الوجبة (اترك فارغاً للاحتفاظ بالصورة الحالية)</label>
                             <input type="file" class="form-control" id="editMealPicture" name="Picture" accept="image/*">
+                            <span class="text-danger field-validation-valid" data-valmsg-for="Picture" data-valmsg-replace="true"></span>
                             <input type="hidden" id="currentPicturePath" name="CurrentPicturePath" value="">
                         </div>
                         <div class="col-md-3">
                             <label for="editMealCalories" class="form-label">السعرات الحرارية</label>
                             <input type="number" class="form-control" id="editMealCalories" name="Calories" min="0" max="2000" required>
+                            <span class="text-danger field-validation-valid" data-valmsg-for="Calories" data-valmsg-replace="true"></span>
                         </div>
                         <div class="col-md-3">
                             <label for="editMealProtein" class="form-label">البروتين (جرام)</label>
                             <input type="number" class="form-control" id="editMealProtein" name="Protein" min="0" max="200" required>
+                            <span class="text-danger field-validation-valid" data-valmsg-for="Protein" data-valmsg-replace="true"></span>
                         </div>
                         <div class="col-md-3">
                             <label for="editMealCarbs" class="form-label">الكربوهيدرات (جرام)</label>
                             <input type="number" class="form-control" id="editMealCarbs" name="Carbs" min="0" max="200" required>
+                            <span class="text-danger field-validation-valid" data-valmsg-for="Carbs" data-valmsg-replace="true"></span>
                         </div>
                         <div class="col-md-3">
                             <label for="editMealFat" class="form-label">الدهون (جرام)</label>
                             <input type="number" class="form-control" id="editMealFat" name="Fat" min="0" max="200" required>
+                            <span class="text-danger field-validation-valid" data-valmsg-for="Fat" data-valmsg-replace="true"></span>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">إلغاء</button>
                     <button type="submit" class="btn btn-success">حفظ التغييرات</button>
                 </div>
             </form>
@@ -325,7 +358,7 @@
                     <p class="text-danger">لا يمكن التراجع عن هذا الإجراء.</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">إلغاء</button>
                     <button type="submit" class="btn btn-danger">نعم، قم بالحذف</button>
                 </div>
             </form>
@@ -334,74 +367,7 @@
 </div>
 
 @section Scripts {
-    <script>
-        $(document).ready(function() {
-            // Meal filtering functionality
-            $("#categoryFilter, #typeFilter, #searchFilter").on("change keyup", function() {
-                var categoryFilter = $("#categoryFilter").val().toLowerCase();
-                var typeFilter = $("#typeFilter").val().toLowerCase();
-                var searchFilter = $("#searchFilter").val().toLowerCase();
-
-                $(".meal-item").each(function() {
-                    var category = $(this).data("category").toLowerCase();
-                    var type = $(this).data("type").toLowerCase();
-                    var name = $(this).data("name").toLowerCase();
-
-                    // Show/hide based on filters
-                    var matchCategory = categoryFilter === "" || category === categoryFilter;
-                    var matchType = typeFilter === "" || type === typeFilter;
-                    var matchSearch = searchFilter === "" || name.includes(searchFilter);
-
-                    if (matchCategory && matchType && matchSearch) {
-                        $(this).show();
-                    } else {
-                        $(this).hide();
-                    }
-                });
-            });
-
-            // Edit meal button click
-            $(".btn-edit-meal").click(function() {
-                var mealId = $(this).data("meal-id");
-                var mealName = $(this).data("meal-name");
-                var mealDescription = $(this).data("meal-description");
-                var mealCalories = $(this).data("meal-calories");
-                var mealProtein = $(this).data("meal-protein");
-                var mealCarbs = $(this).data("meal-carbs");
-                var mealFat = $(this).data("meal-fat");
-                var mealCategory = $(this).data("meal-category");
-                var mealType = $(this).data("meal-type");
-                var mealPicture = $(this).data("meal-picture");
-
-                // Set values in the edit form
-                $("#editMealId").val(mealId);
-                $("#editMealName").val(mealName);
-                $("#editMealDescription").val(mealDescription);
-                $("#editMealCalories").val(mealCalories);
-                $("#editMealProtein").val(mealProtein);
-                $("#editMealCarbs").val(mealCarbs);
-                $("#editMealFat").val(mealFat);
-                $("#editMealCategory").val(mealCategory);
-                $("#editMealType").val(mealType);
-                $("#currentPicturePath").val(mealPicture);
-
-                // Show the current meal image if available
-                if (mealPicture && mealPicture !== "") {
-                    $("#currentMealImage").attr("src", mealPicture).show();
-                } else {
-                    $("#currentMealImage").hide();
-                }
-            });
-
-            // Delete meal button click
-            $(".btn-delete-meal").click(function() {
-                var mealId = $(this).data("meal-id");
-                var mealName = $(this).data("meal-name");
-
-                // Set the meal ID and name in the delete confirmation modal
-                $("#deleteMealId").val(mealId);
-                $("#deleteMealName").text(mealName);
-            });
-        });
-    </script>
+    <script src="~/js/mealManagement.js" asp-append-version="true"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 }
