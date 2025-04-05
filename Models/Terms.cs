@@ -7,15 +7,15 @@ namespace KauRestaurant.Models
         [Key]
         public int TermID { get; set; }
 
-        [Required]
-        [StringLength(100)]
+        [Required(ErrorMessage = "العنوان مطلوب")]
+        [StringLength(100, ErrorMessage = "يجب ألا يزيد العنوان عن 100 حرف")]
         public string Title { get; set; }
 
-        [Required]
-        [StringLength(2000)]
+        [Required(ErrorMessage = "المحتوى مطلوب")]
+        [StringLength(2000, ErrorMessage = "يجب ألا يزيد المحتوى عن 2000 حرف")]
         public string Content { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "تاريخ التحديث مطلوب")]
         public DateTime LastUpdated { get; set; } = DateTime.Now;
 
         public int DisplayOrder { get; set; } = 0;

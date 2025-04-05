@@ -52,31 +52,27 @@ namespace KauRestaurant.Controllers.Admin
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateMeal(string MealName, string Description,
-            int Calories, int Protein, int Carbs, int Fat, string MealCategory, string MealType,
-            IFormFile Picture)
+        public async Task<IActionResult> CreateMeal([Bind(Prefix = "newMeal")] Meal meal, IFormFile Picture)
         {
             try
             {
-                // Manual validation
-                if (string.IsNullOrEmpty(MealName) || string.IsNullOrEmpty(MealCategory) || string.IsNullOrEmpty(MealType))
+                // Only check for required text fields
+                if (string.IsNullOrEmpty(meal.MealName) || string.IsNullOrEmpty(meal.MealCategory) ||
+                    string.IsNullOrEmpty(meal.MealType) || string.IsNullOrEmpty(meal.Description))
                 {
+                    // Log the validation failure with details for debugging
+                    _logger.LogWarning($"Form validation failed: Name={meal.MealName}, Category={meal.MealCategory}, " +
+                                      $"Type={meal.MealType}, Description={meal.Description}");
+
                     TempData["ErrorMessage"] = "اسم الوجبة وفئتها ونوعها مطلوبة";
                     return RedirectToAction(nameof(Index));
                 }
 
-                // Create new meal
-                var meal = new Meal
-                {
-                    MealName = MealName,
-                    Description = Description ?? string.Empty,
-                    Calories = Calories,
-                    Protein = Protein,
-                    Carbs = Carbs,
-                    Fat = Fat,
-                    MealCategory = MealCategory,
-                    MealType = MealType
-                };
+                // Set default values for numeric fields if they're 0
+                if (meal.Calories <= 0) meal.Calories = 1;
+                if (meal.Protein <= 0) meal.Protein = 1;
+                if (meal.Carbs <= 0) meal.Carbs = 1;
+                if (meal.Fat <= 0) meal.Fat = 1;
 
                 // Handle picture upload
                 if (Picture != null && Picture.Length > 0)
@@ -85,8 +81,8 @@ namespace KauRestaurant.Controllers.Admin
                 }
                 else
                 {
-                    // Set default image
-                    meal.PicturePath = "/images/meal-placeholder.png";
+                    // Set default image path
+                    meal.PicturePath = "/images/meal.png";
                 }
 
                 _context.Add(meal);
@@ -103,15 +99,16 @@ namespace KauRestaurant.Controllers.Admin
             }
         }
 
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateMeal(int MealID, string MealName, string Description,
             int Calories, int Protein, int Carbs, int Fat, string MealCategory, string MealType,
-            IFormFile Picture)
+            IFormFile Picture, bool RemoveImage = false)
         {
             try
             {
-                _logger.LogInformation($"Update meal request for ID: {MealID}, Name: {MealName}");
+                _logger.LogInformation($"Update meal request for ID: {MealID}, Name: {MealName}, RemoveImage: {RemoveImage}");
 
                 // Manual validation
                 if (string.IsNullOrEmpty(MealName) || string.IsNullOrEmpty(MealCategory) || string.IsNullOrEmpty(MealType))
@@ -141,31 +138,31 @@ namespace KauRestaurant.Controllers.Admin
                 meal.MealCategory = MealCategory;
                 meal.MealType = MealType;
 
-                // Handle picture upload
-                if (Picture != null && Picture.Length > 0)
+                // Handle picture upload or removal
+                if (RemoveImage)
+                {
+                    // User wants to remove the image, set to default
+                    meal.PicturePath = "/images/meal.png";
+
+                    // Delete old image if it's not the default and it exists
+                    if (!string.IsNullOrEmpty(oldPicturePath) &&
+                        !oldPicturePath.Equals("/images/meal.png") &&
+                        oldPicturePath.StartsWith("/images/meals/"))
+                    {
+                        await DeleteImageFile(oldPicturePath);
+                    }
+                }
+                else if (Picture != null && Picture.Length > 0)
                 {
                     // Save new image
                     meal.PicturePath = await SaveMealImage(Picture);
 
                     // Delete old image if it's not the default and it exists
                     if (!string.IsNullOrEmpty(oldPicturePath) &&
-                        !oldPicturePath.Equals("/images/meal-placeholder.png") &&
+                        !oldPicturePath.Equals("/images/meal.png") &&
                         oldPicturePath.StartsWith("/images/meals/"))
                     {
-                        string oldFilePath = Path.Combine(_webHostEnvironment.WebRootPath, oldPicturePath.TrimStart('/'));
-                        if (System.IO.File.Exists(oldFilePath))
-                        {
-                            try
-                            {
-                                System.IO.File.Delete(oldFilePath);
-                                _logger.LogInformation($"Deleted old image: {oldFilePath}");
-                            }
-                            catch (Exception ex)
-                            {
-                                _logger.LogWarning(ex, $"Could not delete old image: {oldFilePath}");
-                                // Continue execution even if the file delete fails
-                            }
-                        }
+                        await DeleteImageFile(oldPicturePath);
                     }
                 }
 
@@ -181,6 +178,26 @@ namespace KauRestaurant.Controllers.Admin
                 return RedirectToAction(nameof(Index));
             }
         }
+
+        // Helper method to delete image files
+        private async Task DeleteImageFile(string imagePath)
+        {
+            string filePath = Path.Combine(_webHostEnvironment.WebRootPath, imagePath.TrimStart('/'));
+            if (System.IO.File.Exists(filePath))
+            {
+                try
+                {
+                    System.IO.File.Delete(filePath);
+                    _logger.LogInformation($"Deleted old image: {filePath}");
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogWarning(ex, $"Could not delete old image: {filePath}");
+                    // Continue execution even if the file delete fails
+                }
+            }
+        }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -218,7 +235,7 @@ namespace KauRestaurant.Controllers.Admin
 
                 // Handle image deletion
                 if (!string.IsNullOrEmpty(meal.PicturePath) &&
-                    !meal.PicturePath.Equals("/images/meal-placeholder.png") &&
+                    !meal.PicturePath.Equals("/images/meal.png") &&
                     meal.PicturePath.StartsWith("/images/meals/"))
                 {
                     string filePath = Path.Combine(_webHostEnvironment.WebRootPath, meal.PicturePath.TrimStart('/'));

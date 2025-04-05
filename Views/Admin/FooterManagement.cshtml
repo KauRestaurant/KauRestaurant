@@ -219,21 +219,17 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label class="form-label">السؤال</label>
-                        <input type="text" class="form-control" name="Question" required maxlength="500"
-                               oninvalid="this.setCustomValidity('الرجاء إدخال السؤال')"
-                               oninput="this.setCustomValidity('')">
+                        <input type="text" class="form-control" name="Question" asp-for="Question" />
+                        <span class="text-danger" asp-validation-for="Question"></span>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">الإجابة</label>
-                        <textarea class="form-control" name="Answer" rows="6" required maxlength="2000"
-                                  oninvalid="this.setCustomValidity('الرجاء إدخال الإجابة')"
-                                  oninput="this.setCustomValidity('')"></textarea>
+                        <textarea class="form-control" name="Answer" asp-for="Answer" rows="6"></textarea>
+                        <span class="text-danger" asp-validation-for="Answer"></span>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">ترتيب العرض</label>
-                        <input type="number" class="form-control" name="DisplayOrder" value="1" min="1" max="@(Model.FAQs?.Count() + 1 ?? 1)"
-                               oninvalid="this.setCustomValidity('الرجاء إدخال رقم الترتيب')"
-                               oninput="this.setCustomValidity('')">
+                        <input type="number" class="form-control" name="DisplayOrder" asp-for="DisplayOrder" value="1" max="@(Model.FAQs?.Count() + 1 ?? 1)">
                         <small class="order-info">
                             <i class="bi bi-info-circle"></i>
                             سيتم تعديل ترتيب العناصر الأخرى تلقائياً عند تغيير الترتيب
@@ -249,12 +245,13 @@
     </div>
 </div>
 
+
 <!-- Edit FAQ Modal -->
 <div class="modal fade" id="editFaqModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <form method="post" asp-action="EditFAQ">
-                <input type="hidden" id="edit-faq-id" name="FAQID">
+                <input type="hidden" id="edit-faq-id" name="FAQID" asp-for="FAQID">
                 <div class="modal-header">
                     <h5 class="modal-title">تعديل سؤال</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -262,21 +259,17 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label class="form-label">السؤال</label>
-                        <input type="text" id="edit-faq-question" class="form-control" name="Question" required maxlength="500"
-                               oninvalid="this.setCustomValidity('الرجاء إدخال السؤال')"
-                               oninput="this.setCustomValidity('')">
+                        <input type="text" id="edit-faq-question" class="form-control" name="Question" asp-for="Question" />
+                        <span class="text-danger" asp-validation-for="Question"></span>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">الإجابة</label>
-                        <textarea id="edit-faq-answer" class="form-control" name="Answer" rows="6" required maxlength="2000"
-                                  oninvalid="this.setCustomValidity('الرجاء إدخال الإجابة')"
-                                  oninput="this.setCustomValidity('')"></textarea>
+                        <textarea id="edit-faq-answer" class="form-control" name="Answer" asp-for="Answer" rows="6"></textarea>
+                        <span class="text-danger" asp-validation-for="Answer"></span>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">ترتيب العرض</label>
-                        <input type="number" id="edit-faq-order" class="form-control" name="DisplayOrder" min="1" max="@(Model.FAQs?.Count() ?? 1)"
-                               oninvalid="this.setCustomValidity('الرجاء إدخال رقم الترتيب')"
-                               oninput="this.setCustomValidity('')">
+                        <input type="number" id="edit-faq-order" class="form-control" name="DisplayOrder" asp-for="DisplayOrder" max="@(Model.FAQs?.Count() ?? 1)">
                         <small class="order-info">
                             <i class="bi bi-info-circle"></i>
                             سيتم تعديل ترتيب العناصر الأخرى تلقائياً عند تغيير الترتيب
@@ -329,13 +322,12 @@
                     <div class="row">
                         <div class="col-md-8 mb-3">
                             <label class="form-label">العنوان</label>
-                            <input type="text" class="form-control" name="Title" maxlength="200">
+                            <input type="text" class="form-control" name="Title" asp-for="Title">
+                            <span class="text-danger" asp-validation-for="Title"></span>
                         </div>
                         <div class="col-md-4 mb-3">
                             <label class="form-label">ترتيب العرض</label>
-                            <input type="number" class="form-control" name="DisplayOrder" value="1" min="1" max="@(Model.Terms?.Count() + 1 ?? 1)"
-                                   oninvalid="this.setCustomValidity('الرجاء إدخال رقم الترتيب')"
-                                   oninput="this.setCustomValidity('')">
+                            <input type="number" class="form-control" name="DisplayOrder" asp-for="DisplayOrder" value="1" max="@(Model.Terms?.Count() + 1 ?? 1)">
                             <small class="order-info">
                                 <i class="bi bi-info-circle"></i>
                                 سيتم تعديل ترتيب العناصر الأخرى تلقائياً عند تغيير الترتيب
@@ -343,9 +335,8 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">المحتوى</label>
-                            <textarea class="form-control content-editor" id="terms-content-editor" name="Content" rows="15" required
-                                      oninvalid="this.setCustomValidity('الرجاء إدخال المحتوى')"
-                                      oninput="this.setCustomValidity('')"></textarea>
+                            <textarea class="form-control content-editor" id="terms-content-editor" name="Content" asp-for="Content" rows="15"></textarea>
+                            <span class="text-danger" asp-validation-for="Content"></span>
                         </div>
                     </div>
                 </div>
@@ -363,7 +354,7 @@
     <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content">
             <form method="post" asp-action="EditTerms">
-                <input type="hidden" id="edit-terms-id" name="TermID">
+                <input type="hidden" id="edit-terms-id" name="TermID" asp-for="TermID">
                 <div class="modal-header">
                     <h5 class="modal-title">تعديل الشروط والأحكام</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -372,13 +363,12 @@
                     <div class="row">
                         <div class="col-md-8 mb-3">
                             <label class="form-label">العنوان</label>
-                            <input type="text" id="edit-terms-title" class="form-control" name="Title" maxlength="200">
+                            <input type="text" id="edit-terms-title" class="form-control" name="Title" asp-for="Title">
+                            <span class="text-danger" asp-validation-for="Title"></span>
                         </div>
                         <div class="col-md-4 mb-3">
                             <label class="form-label">ترتيب العرض</label>
-                            <input type="number" id="edit-terms-order" class="form-control" name="DisplayOrder" min="1" max="@(Model.Terms?.Count() ?? 1)"
-                                   oninvalid="this.setCustomValidity('الرجاء إدخال رقم الترتيب')"
-                                   oninput="this.setCustomValidity('')">
+                            <input type="number" id="edit-terms-order" class="form-control" name="DisplayOrder" asp-for="DisplayOrder" max="@(Model.Terms?.Count() ?? 1)">
                             <small class="order-info">
                                 <i class="bi bi-info-circle"></i>
                                 سيتم تعديل ترتيب العناصر الأخرى تلقائياً عند تغيير الترتيب
@@ -386,13 +376,11 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">المحتوى</label>
-                            <textarea class="form-control content-editor" id="edit-terms-content" name="Content" rows="15" required
-                                      oninvalid="this.setCustomValidity('الرجاء إدخال المحتوى')"
-                                      oninput="this.setCustomValidity('')"></textarea>
+                            <textarea class="form-control content-editor" id="edit-terms-content" name="Content" asp-for="Content" rows="15"></textarea>
+                            <span class="text-danger" asp-validation-for="Content"></span>
                         </div>
                     </div>
                 </div>
-
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">إلغاء</button>
                     <button type="submit" class="btn btn-success">حفظ التغييرات</button>
@@ -428,4 +416,6 @@
 
 @section Scripts {
     <script src="~/js/footerManagement.js" asp-append-version="true"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 }

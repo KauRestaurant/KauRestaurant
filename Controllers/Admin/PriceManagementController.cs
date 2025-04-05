@@ -61,18 +61,16 @@ namespace KauRestaurant.Controllers.Admin
                     await UpdateTicketPrice("العشاء", model.DinnerPrice);
 
                     TempData["SuccessMessage"] = "تم تحديث أسعار التذاكر بنجاح";
+                    return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)
                 {
                     TempData["ErrorMessage"] = "حدث خطأ أثناء تحديث الأسعار: " + ex.Message;
                 }
             }
-            else
-            {
-                TempData["ErrorMessage"] = "يرجى التحقق من صحة البيانات المدخلة";
-            }
-
-            return RedirectToAction(nameof(Index));
+            // If we get here, there was a validation error
+            // Return the view with the model to show validation errors
+            return View("~/Views/Admin/PriceManagement.cshtml", model);
         }
 
         // Helper method to get the price for a specific ticket type
@@ -134,7 +132,7 @@ namespace KauRestaurant.Controllers.Admin
 
     public class TicketPriceViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "يرجى إدخال سعر تذكرة الإفطار")]
         [Range(0.01, 1000.00, ErrorMessage = "يجب أن يكون السعر أكبر من صفر وأقل من 1000")]
         [DisplayFormat(DataFormatString = "{0:F2}", ApplyFormatInEditMode = true)]
         [Display(Name = "سعر تذكرة الإفطار")]
@@ -142,15 +140,15 @@ namespace KauRestaurant.Controllers.Admin
 
         public DateTime BreakfastLastUpdated { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "يرجى إدخال سعر تذكرة الغداء")]
         [Range(0.01, 1000.00, ErrorMessage = "يجب أن يكون السعر أكبر من صفر وأقل من 1000")]
         [DisplayFormat(DataFormatString = "{0:F2}", ApplyFormatInEditMode = true)]
         [Display(Name = "سعر تذكرة الغداء")]
         public decimal LunchPrice { get; set; }
-        
+
         public DateTime LunchLastUpdated { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "يرجى إدخال سعر تذكرة العشاء")]
         [Range(0.01, 1000.00, ErrorMessage = "يجب أن يكون السعر أكبر من صفر وأقل من 1000")]
         [DisplayFormat(DataFormatString = "{0:F2}", ApplyFormatInEditMode = true)]
         [Display(Name = "سعر تذكرة العشاء")]

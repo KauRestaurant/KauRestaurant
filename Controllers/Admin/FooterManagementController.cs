@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -410,5 +411,31 @@ namespace KauRestaurant.ViewModels
     {
         public IEnumerable<FAQ> FAQs { get; set; } = new List<FAQ>();
         public IEnumerable<Terms> Terms { get; set; } = new List<Terms>();
+
+        // Properties for FAQ form
+        public int FAQID { get; set; }
+        [Required(ErrorMessage = "السؤال مطلوب")]
+        [StringLength(500, ErrorMessage = "يجب ألا يتجاوز طول السؤال 500 حرف")]
+        public string Question { get; set; }
+
+        [Required(ErrorMessage = "الإجابة مطلوبة")]
+        [StringLength(2000, ErrorMessage = "يجب ألا يتجاوز طول الإجابة 2000 حرف")]
+        public string Answer { get; set; }
+
+        // Properties for Terms form
+        public int TermID { get; set; }
+        [Required(ErrorMessage = "العنوان مطلوب")]
+        [StringLength(100, ErrorMessage = "يجب ألا يزيد العنوان عن 100 حرف")]
+        public string Title { get; set; }
+
+        [Required(ErrorMessage = "المحتوى مطلوب")]
+        [StringLength(2000, ErrorMessage = "يجب ألا يزيد المحتوى عن 2000 حرف")]
+        public string Content { get; set; }
+
+        [Required(ErrorMessage = "تاريخ التحديث مطلوب")]
+        public DateTime LastUpdated { get; set; } = DateTime.Now;
+
+        public int DisplayOrder { get; set; } = 0;
     }
+
 }

@@ -303,8 +303,16 @@
                             <span class="text-danger field-validation-valid" data-valmsg-for="Description" data-valmsg-replace="true"></span>
                         </div>
                         <div class="col-12">
-                            <div class="mb-2">
+                            <div class="mb-2" id="currentImageContainer">
                                 <img id="currentMealImage" src="" alt="صورة الوجبة الحالية" class="img-thumbnail">
+                            </div>
+                            <div class="mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="removeImage" name="RemoveImage" value="true">
+                                    <label class="form-check-label" for="removeImage">
+                                        حذف الصورة الحالية واستخدام الصورة الافتراضية
+                                    </label>
+                                </div>
                             </div>
                             <label for="editMealPicture" class="form-label">تغيير صورة الوجبة (اترك فارغاً للاحتفاظ بالصورة الحالية)</label>
                             <input type="file" class="form-control" id="editMealPicture" name="Picture" accept="image/*">
