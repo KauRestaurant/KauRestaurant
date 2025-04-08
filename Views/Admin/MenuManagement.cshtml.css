@@ -1,0 +1,13 @@
+﻿/* Additional styles to ensure consistency */
+.form-select.meal-dropdown {
+    width: 100%;
+}
+
+.meal-info {
+    min-width: 100px;
+}
+
+/* Keep consistent height for rows */
+.list-group-item .d-flex {
+    min-height: 38px;
+}

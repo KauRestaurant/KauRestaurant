@@ -6,7 +6,7 @@
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
-        <li class="nav-item d-flex gap-2 px-3 m-1 px-sm-0 m-sm-0">
+        <li class="nav-item d-flex gap-2 px-3 m-1 px-md-0 m-md-0 ms-md-3 mt-md-2">
             @if (User.IsInRole("User"))
             {
                 <div class="d-flex align-items-center gap-2">
@@ -33,7 +33,7 @@
     }
     else
     {
-        <li class="nav-item d-flex gap-2 px-3 m-1 px-sm-0 m-sm-0">
+        <li class="nav-item d-flex gap-2 px-3 m-1 px-md-0 m-md-0 ms-md-3 mt-md-2">
             <a class="btn btn-outline-light" asp-area="Identity" asp-page="/Account/Login">
                 <i class="bi bi-box-arrow-in-right me-2"></i>تسجيل الدخول
             </a>

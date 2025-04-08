@@ -1,11 +1,33 @@
-﻿canvas {
-    min-height: 300px;
+﻿/* Essential chart sizing */
+canvas {
+    height: 300px;
+    width: 100%;
 }
 
+/* Styling for the "no data" containers */
 #noPurchaseData, #noRedeemedData, #noTopRatedData, #noLowestRatedData {
-    min-height: 300px;
+    height: 300px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+}
+
+/* Fix spacing issues with content and footer */
+.main-content {
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+.container-fluid.py-4.py-lg-5.bg-white {
+    padding-bottom: 0 !important;
+}
+
+/* Chart container sizing */
+#purchasesChartContainer,
+#redeemedChartContainer,
+#topRatedContainer,
+#lowestRatedContainer {
+    height: 300px;
+    overflow: hidden;
 }

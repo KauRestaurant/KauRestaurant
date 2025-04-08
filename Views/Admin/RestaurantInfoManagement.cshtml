@@ -32,7 +32,7 @@
                     <input type="hidden" asp-for="RestaurantID" />
 
                     <div class="row mb-4">
-                        <div class="col-md-6 mb-3">
+                        <div class="col-lg-6 mb-3">
                             <h5 class="border-bottom pb-2 mb-3">المعلومات الأساسية</h5>
 
                             <div class="mb-3">
@@ -58,15 +58,7 @@
                                 <textarea asp-for="Description" class="form-control" rows="3"></textarea>
                                 <span asp-validation-for="Description" class="text-danger"></span>
                             </div>
-
-                            <div class="mb-3">
-                                <label asp-for="DaysOpen" class="form-label fw-bold">أيام العمل</label>
-                                <input asp-for="DaysOpen" class="form-control" placeholder="مثال: السبت,الأحد,الاثنين,الثلاثاء,الأربعاء" />
-                                <span asp-validation-for="DaysOpen" class="text-danger"></span>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6 mb-3">
+                            
                             <h5 class="border-bottom pb-2 mb-3">معلومات الاتصال والعنوان</h5>
 
                             <div class="mb-3">
@@ -77,29 +69,37 @@
 
                             <div class="mb-3">
                                 <label asp-for="LocationUrl" class="form-label fw-bold">رابط الموقع على الخريطة <span class="text-danger">*</span></label>
-                                <input asp-for="LocationUrl" class="form-control"/>
+                                <input asp-for="LocationUrl" class="form-control" />
                                 <span asp-validation-for="LocationUrl" class="text-danger"></span>
                                 <small class="form-text text-muted">رابط من خرائط جوجل</small>
                             </div>
 
                             <div class="row">
-                                <div class="col-md-6 mb-3">
+                                <div class="col-lg-6 mb-3">
                                     <label asp-for="PhoneNumber" class="form-label fw-bold">رقم الهاتف</label>
                                     <input asp-for="PhoneNumber" class="form-control" />
                                     <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                                 </div>
 
-                                <div class="col-md-6 mb-3">
+                                <div class="col-lg-6 mb-3">
                                     <label asp-for="Email" class="form-label fw-bold">البريد الإلكتروني</label>
                                     <input asp-for="Email" class="form-control" />
                                     <span asp-validation-for="Email" class="text-danger"></span>
                                 </div>
                             </div>
+                        </div>
 
-                            <h5 class="border-bottom pb-2 my-3">أوقات الوجبات</h5>
+                        <div class="col-lg-6 mb-3">
+                            <h5 class="border-bottom pb-2 mb-3">أوقات العمل والوجبات</h5>
 
-                            <div class="row mx-2">
-                                <div class="col-md-4 mb-3">
+                            <div class="mb-3">
+                                <label asp-for="DaysOpen" class="form-label fw-bold">أيام العمل</label>
+                                <input asp-for="DaysOpen" class="form-control" placeholder="مثال: السبت,الأحد,الاثنين,الثلاثاء,الأربعاء" />
+                                <span asp-validation-for="DaysOpen" class="text-danger"></span>
+                            </div>
+
+                            <div class="mx-2">
+                                <div class="mb-3">
                                     <div class="card h-100">
                                         <div class="card-header text-white bg-breakfast">
                                             <div class="form-check">
@@ -124,7 +124,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-4 mb-3">
+                                <div class="mb-3">
                                     <div class="card h-100">
                                         <div class="card-header text-white bg-lunch">
                                             <div class="form-check">
@@ -149,7 +149,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-4 mb-3">
+                                <div class="mb-3">
                                     <div class="card h-100">
                                         <div class="card-header text-white bg-dinner">
                                             <div class="form-check">

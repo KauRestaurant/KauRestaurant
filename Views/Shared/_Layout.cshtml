@@ -24,7 +24,7 @@
 </head>
 <body>
 	<header>
-		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<nav class="navbar navbar-expand-xl navbar-dark bg-dark">
 			<div class="container py-2">
 				<a class="navbar-brand d-flex align-items-center" asp-area="User" asp-controller="Home" asp-action="Index">
 					<img src="~/images/logo.png" alt="شعار الجامعة" height="38" class="ms-3">
@@ -58,11 +58,6 @@
 								<i class="bi bi-collection me-2"></i> تذاكري
 							</a>
 						</li>
-						<li class="nav-item px-1">
-							<a class="nav-link @(currentController == "RestaurantInfo" && currentAction == "Index" ? "active" : "") rounded px-3 py-2" asp-area="User" asp-controller="RestaurantInfo" asp-action="Index">
-								<i class="bi bi-geo-alt me-2"></i> معلومات المطعم
-							</a>
-						</li>
 					</ul>
 
 					<div class="ms-auto">
@@ -89,6 +84,11 @@
 				<div class="col-md-4 mb-3 mb-md-0">
 					<h5 class="fw-bold pb-2">روابط مهمة</h5>
 					<ul class="list-unstyled mb-0">
+						<li class="py-1">
+							<a class="text-white text-decoration-none" asp-area="User" asp-controller="RestaurantInfo" asp-action="Index">
+								<i class="bi bi-geo-alt me-2"></i>معلومات المطعم
+							</a>
+						</li>
 						<li class="py-1">
 							<a class="text-white text-decoration-none" asp-area="User" asp-controller="FAQ" asp-action="Index">
 								<i class="bi bi-question-circle me-2"></i>الأسئلة الشائعة

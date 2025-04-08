@@ -6,7 +6,7 @@ html {
 }
 
 
-@media (min-width: 768px) {
+@media (min-width: 992px) {
     html {
         font-size: 16px;
     }
@@ -183,19 +183,19 @@ body {
     color: #ffffff;
 }
 
-/* Prevent accordion button color change when activated */
+/* Keep accordion button colors consistent when activated */
 .accordion-button.bg-breakfast:not(.collapsed) {
-    background-color: #2e7d32 !important;
+    background-color: #007e6a !important;
     color: white !important;
 }
 
 .accordion-button.bg-lunch:not(.collapsed) {
-    background-color: #1b5e20 !important;
+    background-color: #006252 !important;
     color: white !important;
 }
 
 .accordion-button.bg-dinner:not(.collapsed) {
-    background-color: #004d40 !important;
+    background-color: #004a3e !important;
     color: white !important;
 }
 

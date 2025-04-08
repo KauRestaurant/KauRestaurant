@@ -38,7 +38,7 @@ button.accept-policy {
 }
 
 /* Sidebar Styles - Only for desktop */
-@media (min-width: 768px) {
+@media (min-width: 992px) {
     .sidebar {
         position: fixed;
         top: 0;

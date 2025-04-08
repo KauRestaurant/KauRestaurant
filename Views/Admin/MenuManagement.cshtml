@@ -94,7 +94,7 @@
 
                                     var categoryId = $"{menu.Day.ToLower()}{category}";
 
-                                    <div class="col-12 col-md-4 mb-3">
+                                    <div class="col-12 col-lg-4 mb-3">
                                         <div class="accordion accordion-desktop">
                                             <div class="accordion-item border-0 rounded shadow h-100">
                                                 <h2 class="accordion-header">
@@ -261,19 +261,4 @@
 
 @section Scripts {
     <script src="~/js/menuManagement.js" asp-append-version="true"></script>
-    <style>
-        /* Additional styles to ensure consistency */
-        .form-select.meal-dropdown {
-            width: 100%;
-        }
-
-        .meal-info {
-            min-width: 100px;
-        }
-
-        /* Keep consistent height for rows */
-        .list-group-item .d-flex {
-            min-height: 38px;
-        }
-    </style>
 }
