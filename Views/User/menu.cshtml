@@ -138,6 +138,14 @@
 
                                 var categoryId = $"{menu.Day.ToLower()}{category}";
 
+                                bool mealDisabled = false;
+                                if (category == "الإفطار" && restaurant != null && !restaurant.ServesBreakfast)
+                                    mealDisabled = true;
+                                else if (category == "الغداء" && restaurant != null && !restaurant.ServesLunch)
+                                    mealDisabled = true;
+                                else if (category == "العشاء" && restaurant != null && !restaurant.ServesDinner)
+                                    mealDisabled = true;
+
                                 <div class="col-12 col-lg-4 mb-3">
                                     <div class="accordion accordion-desktop">
                                         <div class="accordion-item border-0 rounded shadow h-100">
@@ -147,10 +155,24 @@
                                                         data-bs-toggle="collapse"
                                                         data-bs-target="#@categoryId">
                                                     <i class="bi @icon me-2"></i>@category
+                                                    @if (mealDisabled)
+                                                    {
+                                                        <span class="ms-2 badge bg-warning text-dark">
+                                                            <i class="bi bi-exclamation-triangle me-1"></i>الخدمة معطلة
+                                                        </span>
+                                                    }
                                                 </button>
                                             </h2>
                                             <div id="@categoryId" class="accordion-collapse collapse">
                                                 <div class="accordion-body p-4">
+                                                    @if (mealDisabled)
+                                                    {
+                                                        <div class="alert alert-warning small mb-3">
+                                                            <i class="bi bi-exclamation-triangle me-2"></i>
+                                                            تم إيقاف خدمة @category مؤقتاً من قبل الإدارة
+                                                        </div>
+                                                    }
+
                                                     @if (meals.Any())
                                                     {
                                                         var mealsByType = meals
@@ -168,7 +190,7 @@
                                                                             typeGroup.Key == "الطبق الرئيسي" ? "bg-main-dish" :
                                                                             typeGroup.Key == "طبق جانبي" ? "bg-side-dish" :
                                                                             typeGroup.Key == "حلوى" ? "bg-dessert" :
-                                                                            typeGroup.Key == "مشروب" ? "bg-drink" : 
+                                                                            typeGroup.Key == "مشروب" ? "bg-drink" :
                                                                         "bg-success")">
                                                                         @typeGroup.Key
                                                                     </span>
@@ -264,4 +286,4 @@
         // Format with leading zeros for minutes
         return $"{hour}:{time.Minutes:D2} {amPm}";
     }
-            }
+}

@@ -1,5 +1,20 @@
 ﻿@{
     ViewData["Title"] = "التقارير والإحصائيات";
+
+    // Fetch meal types and ticket types from ViewBag (will be populated by controller)
+    var mealTypes = ViewBag.MealTypes as List<string> ?? new List<string>();
+    var ticketTypes = ViewBag.TicketTypes as List<string> ?? new List<string>();
+
+    // If ViewBag doesn't have the data, provide defaults based on what we know from the model
+    if (!mealTypes.Any())
+    {
+        mealTypes = new List<string> { "الطبق الرئيسي", "طبق جانبي", "حلوى", "مشروب" };
+    }
+
+    if (!ticketTypes.Any())
+    {
+        ticketTypes = new List<string> { "الإفطار", "الغداء", "العشاء" };
+    }
 }
 
 <!-- Main Content Section -->
@@ -28,7 +43,18 @@
             <div class="col-md-6 mb-4 mb-md-0">
                 <div class="card border-0 shadow h-100">
                     <div class="card-header bg-white py-3">
-                        <h5 class="mb-0 fw-bold"><i class="bi bi-ticket-perforated me-2"></i>إحصائيات شراء التذاكر</h5>
+                        <div class="d-flex flex-column flex-xxl-row justify-content-xxl-between align-items-xxl-center">
+                            <h5 class="mb-0 fw-bold">
+                                <i class="bi bi-ticket-perforated me-2"></i>إحصائيات شراء التذاكر
+                            </h5>
+                            <select id="ticketTypeFilterPurchases" class="form-select form-select-sm mt-3 mt-xxl-0 max-w-xxl-200">
+                                <option value="">جميع أنواع التذاكر</option>
+                                @foreach (var type in ticketTypes)
+                                {
+                                    <option value="@type">@type</option>
+                                }
+                            </select>
+                        </div>
                     </div>
                     <div class="card-body p-4">
                         <div id="purchasesChartContainer">
@@ -45,7 +71,18 @@
             <div class="col-md-6">
                 <div class="card border-0 shadow h-100">
                     <div class="card-header bg-white py-3">
-                        <h5 class="mb-0 fw-bold"><i class="bi bi-qr-code-scan me-2"></i>إحصائيات استخدام التذاكر</h5>
+                        <div class="d-flex flex-column flex-xxl-row justify-content-xxl-between align-items-xxl-center">
+                            <h5 class="mb-0 fw-bold">
+                                <i class="bi bi-qr-code-scan me-2"></i>إحصائيات استخدام التذاكر
+                            </h5>
+                            <select id="ticketTypeFilterRedeemed" class="form-select form-select-sm mt-3 mt-xxl-0 max-w-xxl-200">
+                                <option value="">جميع أنواع التذاكر</option>
+                                @foreach (var type in ticketTypes)
+                                {
+                                    <option value="@type">@type</option>
+                                }
+                            </select>
+                        </div>
                     </div>
                     <div class="card-body p-4">
                         <div id="redeemedChartContainer">
@@ -65,7 +102,18 @@
             <div class="col-md-6 mb-4 mb-md-0">
                 <div class="card border-0 shadow h-100">
                     <div class="card-header bg-white py-3">
-                        <h5 class="mb-0 fw-bold"><i class="bi bi-star-fill me-2"></i>أعلى 5 وجبات تقييماً</h5>
+                        <div class="d-flex flex-column flex-xxl-row justify-content-xxl-between align-items-xxl-center">
+                            <h5 class="mb-0 fw-bold">
+                                <i class="bi bi-star-fill me-2"></i>أعلى 5 وجبات تقييماً
+                            </h5>
+                            <select id="mealTypeFilterTopRated" class="form-select form-select-sm mt-3 mt-xxl-0 max-w-xxl-200">
+                                <option value="">جميع أنواع الوجبات</option>
+                                @foreach (var type in mealTypes)
+                                {
+                                    <option value="@type">@type</option>
+                                }
+                            </select>
+                        </div>
                     </div>
                     <div class="card-body p-4">
                         <div id="topRatedContainer">
@@ -82,7 +130,18 @@
             <div class="col-md-6">
                 <div class="card border-0 shadow h-100">
                     <div class="card-header bg-white py-3">
-                        <h5 class="mb-0 fw-bold"><i class="bi bi-star me-2"></i>أقل 5 وجبات تقييماً</h5>
+                        <div class="d-flex flex-column flex-xxl-row justify-content-xxl-between align-items-xxl-center">
+                            <h5 class="mb-0 fw-bold">
+                                <i class="bi bi-star me-2"></i>أقل 5 وجبات تقييماً
+                            </h5>
+                            <select id="mealTypeFilterLowestRated" class="form-select form-select-sm mt-3 mt-xxl-0 max-w-xxl-200">
+                                <option value="">جميع أنواع الوجبات</option>
+                                @foreach (var type in mealTypes)
+                                {
+                                    <option value="@type">@type</option>
+                                }
+                            </select>
+                        </div>
                     </div>
                     <div class="card-body p-4">
                         <div id="lowestRatedContainer">

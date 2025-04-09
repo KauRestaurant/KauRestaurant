@@ -22,11 +22,19 @@ namespace KauRestaurant.Controllers.Admin
 
         public IActionResult Index()
         {
+            // Fetch meal types and ticket types for the view
+            ViewBag.MealTypes = _context.Meals
+                .Select(m => m.MealType)
+                .Distinct()
+                .ToList();
+
+            ViewBag.TicketTypes = new List<string> { "الإفطار", "الغداء", "العشاء" };
+
             return View("~/Views/Admin/Reports.cshtml");
         }
 
         [HttpGet]
-        public IActionResult GetTicketStatistics()
+        public IActionResult GetTicketStatistics(string ticketType = null)
         {
             try
             {
@@ -49,15 +57,23 @@ namespace KauRestaurant.Controllers.Admin
                     var startOfMonth = new DateTime(months[i].Year, months[i].Month, 1);
                     var endOfMonth = startOfMonth.AddMonths(1).AddDays(-1);
 
-                    // Count purchased tickets for this month
-                    purchasedTickets[i] = _context.Tickets
-                        .Where(t => t.Order.OrderDate >= startOfMonth && t.Order.OrderDate <= endOfMonth)
-                        .Count();
+                    // Base queries
+                    var purchasedQuery = _context.Tickets
+                        .Where(t => t.Order.OrderDate >= startOfMonth && t.Order.OrderDate <= endOfMonth);
 
-                    // Count redeemed tickets for this month
-                    redeemedTickets[i] = _context.Tickets
-                        .Where(t => t.IsRedeemed && t.Order.OrderDate >= startOfMonth && t.Order.OrderDate <= endOfMonth)
-                        .Count();
+                    var redeemedQuery = _context.Tickets
+                        .Where(t => t.IsRedeemed && t.Order.OrderDate >= startOfMonth && t.Order.OrderDate <= endOfMonth);
+
+                    // Apply ticket type filter if provided
+                    if (!string.IsNullOrEmpty(ticketType))
+                    {
+                        purchasedQuery = purchasedQuery.Where(t => t.MealType == ticketType);
+                        redeemedQuery = redeemedQuery.Where(t => t.MealType == ticketType);
+                    }
+
+                    // Count tickets
+                    purchasedTickets[i] = purchasedQuery.Count();
+                    redeemedTickets[i] = redeemedQuery.Count();
                 }
 
                 var data = new
@@ -77,30 +93,36 @@ namespace KauRestaurant.Controllers.Admin
         }
 
         [HttpGet]
-        public IActionResult GetMealRatings()
+        public IActionResult GetMealRatings(string mealType = null)
         {
             try
             {
-                // Get top 5 highest rated meals
-                var topRated = _context.Meals
-                    .Where(m => m.Reviews.Count > 0)
+                // Base query for meals with reviews
+                var mealsQuery = _context.Meals
+                    .Where(m => m.Reviews.Count > 0);
+
+                // Apply meal type filter if provided
+                if (!string.IsNullOrEmpty(mealType))
+                {
+                    mealsQuery = mealsQuery.Where(m => m.MealType == mealType);
+                }
+
+                var mealsWithRatings = mealsQuery
                     .Select(m => new
                     {
                         name = m.MealName,
                         rating = m.Reviews.Average(r => r.Rating)
                     })
+                    .ToList();
+
+                // Get top 5 highest rated meals
+                var topRated = mealsWithRatings
                     .OrderByDescending(m => m.rating)
                     .Take(5)
                     .ToList();
 
                 // Get top 5 lowest rated meals
-                var lowestRated = _context.Meals
-                    .Where(m => m.Reviews.Count > 0)
-                    .Select(m => new
-                    {
-                        name = m.MealName,
-                        rating = m.Reviews.Average(r => r.Rating)
-                    })
+                var lowestRated = mealsWithRatings
                     .OrderBy(m => m.rating)
                     .Take(5)
                     .ToList();

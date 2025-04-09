@@ -1,4 +1,10 @@
-﻿// Function to create gradient
+﻿// Chart instance variables to track and manage chart instances
+let purchasesChart = null;
+let redeemedChart = null;
+let topRatedChart = null;
+let lowestRatedChart = null;
+
+// Function to create gradient
 function createGradient(ctx, colorStart, colorEnd) {
     const gradient = ctx.createLinearGradient(0, 0, 0, 400);
     gradient.addColorStop(0, colorStart);
@@ -11,12 +17,258 @@ function hasData(dataArray) {
     return dataArray && dataArray.some(value => value > 0);
 }
 
+// Function to update the purchases chart with new data
+function updatePurchasesChart(data) {
+    const purchasesCanvas = document.getElementById('ticketPurchasesChart');
+    const noPurchaseData = document.getElementById('noPurchaseData');
+
+    if (data.purchasedTickets && data.purchasedTickets.length > 0) {
+        purchasesCanvas.classList.remove('d-none');
+        noPurchaseData.classList.add('d-none');
+
+        const purchasesCtx = purchasesCanvas.getContext('2d');
+        const purchasesGradient = createGradient(purchasesCtx, 'rgba(76, 175, 80, 0.7)', 'rgba(76, 175, 80, 0.1)');
+
+        // Destroy previous chart instance if it exists
+        if (purchasesChart) {
+            purchasesChart.destroy();
+        }
+
+        purchasesChart = new Chart(purchasesCtx, {
+            type: 'line',
+            data: {
+                labels: data.labels,
+                datasets: [{
+                    label: 'التذاكر المشتراة',
+                    data: data.purchasedTickets,
+                    fill: true,
+                    backgroundColor: purchasesGradient,
+                    borderColor: 'rgb(76, 175, 80)',
+                    tension: 0.3
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'عدد التذاكر'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'الشهر'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top'
+                    }
+                }
+            }
+        });
+    } else {
+        purchasesCanvas.classList.add('d-none');
+        noPurchaseData.classList.remove('d-none');
+    }
+}
+
+// Function to update the redeemed tickets chart with new data
+function updateRedeemedChart(data) {
+    const redeemedCanvas = document.getElementById('ticketRedeemedChart');
+    const noRedeemedData = document.getElementById('noRedeemedData');
+
+    if (data.redeemedTickets && data.redeemedTickets.length > 0) {
+        redeemedCanvas.classList.remove('d-none');
+        noRedeemedData.classList.add('d-none');
+
+        const redeemedCtx = redeemedCanvas.getContext('2d');
+        const redeemedGradient = createGradient(redeemedCtx, 'rgba(255, 152, 0, 0.7)', 'rgba(255, 152, 0, 0.1)');
+
+        // Destroy previous chart instance if it exists
+        if (redeemedChart) {
+            redeemedChart.destroy();
+        }
+
+        redeemedChart = new Chart(redeemedCtx, {
+            type: 'line',
+            data: {
+                labels: data.labels,
+                datasets: [{
+                    label: 'التذاكر المستخدمة',
+                    data: data.redeemedTickets,
+                    fill: true,
+                    backgroundColor: redeemedGradient,
+                    borderColor: 'rgb(255, 152, 0)',
+                    tension: 0.3
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'عدد التذاكر'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'الشهر'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top'
+                    }
+                }
+            }
+        });
+    } else {
+        redeemedCanvas.classList.add('d-none');
+        noRedeemedData.classList.remove('d-none');
+    }
+}
+
+// Function to update the top rated meals chart with new data
+function updateTopRatedChart(data) {
+    const topRatedCanvas = document.getElementById('topRatedChart');
+    const noTopRatedData = document.getElementById('noTopRatedData');
+
+    if (data.topRated && data.topRated.length > 0) {
+        topRatedCanvas.classList.remove('d-none');
+        noTopRatedData.classList.add('d-none');
+
+        const mealNames = data.topRated.map(item => item.name);
+        const ratings = data.topRated.map(item => item.rating);
+
+        // Destroy previous chart instance if it exists
+        if (topRatedChart) {
+            topRatedChart.destroy();
+        }
+
+        topRatedChart = new Chart(topRatedCanvas, {
+            type: 'bar',
+            data: {
+                labels: mealNames,
+                datasets: [{
+                    label: 'التقييم',
+                    data: ratings,
+                    backgroundColor: [
+                        'rgba(76, 175, 80, 0.7)',
+                        'rgba(76, 175, 80, 0.65)',
+                        'rgba(76, 175, 80, 0.6)',
+                        'rgba(76, 175, 80, 0.55)',
+                        'rgba(76, 175, 80, 0.5)'
+                    ],
+                    borderColor: 'rgba(76, 175, 80, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        max: 5,
+                        title: {
+                            display: true,
+                            text: 'التقييم (من 5)'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+    } else {
+        topRatedCanvas.classList.add('d-none');
+        noTopRatedData.classList.remove('d-none');
+    }
+}
+
+// Function to update the lowest rated meals chart with new data
+function updateLowestRatedChart(data) {
+    const lowestRatedCanvas = document.getElementById('lowestRatedChart');
+    const noLowestRatedData = document.getElementById('noLowestRatedData');
+
+    if (data.lowestRated && data.lowestRated.length > 0) {
+        lowestRatedCanvas.classList.remove('d-none');
+        noLowestRatedData.classList.add('d-none');
+
+        const mealNames = data.lowestRated.map(item => item.name);
+        const ratings = data.lowestRated.map(item => item.rating);
+
+        // Destroy previous chart instance if it exists
+        if (lowestRatedChart) {
+            lowestRatedChart.destroy();
+        }
+
+        lowestRatedChart = new Chart(lowestRatedCanvas, {
+            type: 'bar',
+            data: {
+                labels: mealNames,
+                datasets: [{
+                    label: 'التقييم',
+                    data: ratings,
+                    backgroundColor: [
+                        'rgba(244, 67, 54, 0.7)',
+                        'rgba(244, 67, 54, 0.65)',
+                        'rgba(244, 67, 54, 0.6)',
+                        'rgba(244, 67, 54, 0.55)',
+                        'rgba(244, 67, 54, 0.5)'
+                    ],
+                    borderColor: 'rgba(244, 67, 54, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        max: 5,
+                        title: {
+                            display: true,
+                            text: 'التقييم (من 5)'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+    } else {
+        lowestRatedCanvas.classList.add('d-none');
+        noLowestRatedData.classList.remove('d-none');
+    }
+}
+
 // Fetch and render ticket charts
 async function loadTicketCharts() {
     try {
         // Get the URL from the global configuration
         const ticketStatsUrl = window.reportsConfig?.urls?.ticketStats || '/Admin/Reports/GetTicketStatistics';
-        
+
         const response = await fetch(ticketStatsUrl);
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
@@ -25,113 +277,9 @@ async function loadTicketCharts() {
         const data = await response.json();
         console.log("Ticket data received:", data);
 
-        // Handle Purchases Chart
-        const purchasesCanvas = document.getElementById('ticketPurchasesChart');
-        const noPurchaseData = document.getElementById('noPurchaseData');
-
-        if (data.purchasedTickets && data.purchasedTickets.length > 0) {
-            purchasesCanvas.classList.remove('d-none');
-            noPurchaseData.classList.add('d-none');
-
-            const purchasesCtx = purchasesCanvas.getContext('2d');
-            const purchasesGradient = createGradient(purchasesCtx, 'rgba(76, 175, 80, 0.7)', 'rgba(76, 175, 80, 0.1)');
-
-            new Chart(purchasesCtx, {
-                type: 'line',
-                data: {
-                    labels: data.labels,
-                    datasets: [{
-                        label: 'التذاكر المشتراة',
-                        data: data.purchasedTickets,
-                        fill: true,
-                        backgroundColor: purchasesGradient,
-                        borderColor: 'rgb(76, 175, 80)',
-                        tension: 0.3
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'عدد التذاكر'
-                            }
-                        },
-                        x: {
-                            title: {
-                                display: true,
-                                text: 'الشهر'
-                            }
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            position: 'top'
-                        }
-                    }
-                }
-            });
-        } else {
-            purchasesCanvas.classList.add('d-none');
-            noPurchaseData.classList.remove('d-none');
-        }
-
-        // Handle Redeemed Chart
-        const redeemedCanvas = document.getElementById('ticketRedeemedChart');
-        const noRedeemedData = document.getElementById('noRedeemedData');
-
-        if (data.redeemedTickets && data.redeemedTickets.length > 0) {
-            redeemedCanvas.classList.remove('d-none');
-            noRedeemedData.classList.add('d-none');
-
-            const redeemedCtx = redeemedCanvas.getContext('2d');
-            const redeemedGradient = createGradient(redeemedCtx, 'rgba(255, 152, 0, 0.7)', 'rgba(255, 152, 0, 0.1)');
-
-            new Chart(redeemedCtx, {
-                type: 'line',
-                data: {
-                    labels: data.labels,
-                    datasets: [{
-                        label: 'التذاكر المستخدمة',
-                        data: data.redeemedTickets,
-                        fill: true,
-                        backgroundColor: redeemedGradient,
-                        borderColor: 'rgb(255, 152, 0)',
-                        tension: 0.3
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'عدد التذاكر'
-                            }
-                        },
-                        x: {
-                            title: {
-                                display: true,
-                                text: 'الشهر'
-                            }
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            position: 'top'
-                        }
-                    }
-                }
-            });
-        } else {
-            redeemedCanvas.classList.add('d-none');
-            noRedeemedData.classList.remove('d-none');
-        }
+        // Update charts with initial data
+        updatePurchasesChart(data);
+        updateRedeemedChart(data);
     } catch (error) {
         console.error('Error loading ticket chart data:', error);
         // Show error message for both charts
@@ -147,7 +295,7 @@ async function loadMealRatingCharts() {
     try {
         // Get the URL from the global configuration
         const mealRatingsUrl = window.reportsConfig?.urls?.mealRatings || '/Admin/Reports/GetMealRatings';
-        
+
         const response = await fetch(mealRatingsUrl);
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
@@ -156,115 +304,9 @@ async function loadMealRatingCharts() {
         const data = await response.json();
         console.log("Meal ratings data received:", data);
 
-        // Handle Top Rated Meals Chart
-        const topRatedCanvas = document.getElementById('topRatedChart');
-        const noTopRatedData = document.getElementById('noTopRatedData');
-
-        if (data.topRated && data.topRated.length > 0) {
-            topRatedCanvas.classList.remove('d-none');
-            noTopRatedData.classList.add('d-none');
-
-            const mealNames = data.topRated.map(item => item.name);
-            const ratings = data.topRated.map(item => item.rating);
-
-            new Chart(topRatedCanvas, {
-                type: 'bar',
-                data: {
-                    labels: mealNames,
-                    datasets: [{
-                        label: 'التقييم',
-                        data: ratings,
-                        backgroundColor: [
-                            'rgba(76, 175, 80, 0.7)',
-                            'rgba(76, 175, 80, 0.65)',
-                            'rgba(76, 175, 80, 0.6)',
-                            'rgba(76, 175, 80, 0.55)',
-                            'rgba(76, 175, 80, 0.5)'
-                        ],
-                        borderColor: 'rgba(76, 175, 80, 1)',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    indexAxis: 'y',
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        x: {
-                            beginAtZero: true,
-                            max: 5,
-                            title: {
-                                display: true,
-                                text: 'التقييم (من 5)'
-                            }
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
-                    }
-                }
-            });
-        } else {
-            topRatedCanvas.classList.add('d-none');
-            noTopRatedData.classList.remove('d-none');
-        }
-
-        // Handle Lowest Rated Meals Chart
-        const lowestRatedCanvas = document.getElementById('lowestRatedChart');
-        const noLowestRatedData = document.getElementById('noLowestRatedData');
-
-        if (data.lowestRated && data.lowestRated.length > 0) {
-            lowestRatedCanvas.classList.remove('d-none');
-            noLowestRatedData.classList.add('d-none');
-
-            const mealNames = data.lowestRated.map(item => item.name);
-            const ratings = data.lowestRated.map(item => item.rating);
-
-            new Chart(lowestRatedCanvas, {
-                type: 'bar',
-                data: {
-                    labels: mealNames,
-                    datasets: [{
-                        label: 'التقييم',
-                        data: ratings,
-                        backgroundColor: [
-                            'rgba(244, 67, 54, 0.7)',
-                            'rgba(244, 67, 54, 0.65)',
-                            'rgba(244, 67, 54, 0.6)',
-                            'rgba(244, 67, 54, 0.55)',
-                            'rgba(244, 67, 54, 0.5)'
-                        ],
-                        borderColor: 'rgba(244, 67, 54, 1)',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    indexAxis: 'y',
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        x: {
-                            beginAtZero: true,
-                            max: 5,
-                            title: {
-                                display: true,
-                                text: 'التقييم (من 5)'
-                            }
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
-                    }
-                }
-            });
-        } else {
-            lowestRatedCanvas.classList.add('d-none');
-            noLowestRatedData.classList.remove('d-none');
-        }
+        // Update charts with initial data
+        updateTopRatedChart(data);
+        updateLowestRatedChart(data);
     } catch (error) {
         console.error('Error loading meal rating chart data:', error);
         // Show error message for both charts
@@ -275,13 +317,91 @@ async function loadMealRatingCharts() {
     }
 }
 
+// Function to fetch ticket statistics with filters
+function fetchTicketStats(ticketType, chartType) {
+    const url = new URL(window.reportsConfig.urls.ticketStats, window.location.origin);
+    if (ticketType) {
+        url.searchParams.append('ticketType', ticketType);
+    }
+
+    fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Update charts based on the chartType
+            if (chartType === 'purchases' || chartType === 'both') {
+                updatePurchasesChart(data);
+            }
+            if (chartType === 'redeemed' || chartType === 'both') {
+                updateRedeemedChart(data);
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching ticket stats:', error);
+        });
+}
+
+// Function to fetch meal ratings with filters
+function fetchMealRatings(mealType, ratingType) {
+    const url = new URL(window.reportsConfig.urls.mealRatings, window.location.origin);
+    if (mealType) {
+        url.searchParams.append('mealType', mealType);
+    }
+
+    fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Update charts based on the ratingType
+            if (ratingType === 'top' || ratingType === 'both') {
+                updateTopRatedChart(data);
+            }
+            if (ratingType === 'lowest' || ratingType === 'both') {
+                updateLowestRatedChart(data);
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching meal ratings:', error);
+        });
+}
+
 // Load all charts when page loads
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Check if the configuration exists first
     if (typeof window.reportsConfig === 'undefined') {
         console.warn("Reports configuration not found. Using default URLs.");
     }
-    
+
+    // Load initial charts
     loadTicketCharts();
     loadMealRatingCharts();
+
+    // Set up filter event listeners
+    document.getElementById('ticketTypeFilterPurchases')?.addEventListener('change', function () {
+        const ticketType = this.value;
+        fetchTicketStats(ticketType, 'purchases');
+    });
+
+    document.getElementById('ticketTypeFilterRedeemed')?.addEventListener('change', function () {
+        const ticketType = this.value;
+        fetchTicketStats(ticketType, 'redeemed');
+    });
+
+    document.getElementById('mealTypeFilterTopRated')?.addEventListener('change', function () {
+        const mealType = this.value;
+        fetchMealRatings(mealType, 'top');
+    });
+
+    document.getElementById('mealTypeFilterLowestRated')?.addEventListener('change', function () {
+        const mealType = this.value;
+        fetchMealRatings(mealType, 'lowest');
+    });
 });

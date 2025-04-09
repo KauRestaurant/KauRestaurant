@@ -28,7 +28,7 @@
                 <h3 class="fw-bold mb-0"><i class="bi bi-shop me-2"></i>إدارة معلومات المطعم</h3>
             </div>
             <div class="card-body p-4">
-                <form asp-controller="RestaurantInfoManagement" asp-action="Update" method="post" enctype="multipart/form-data">
+                <form asp-controller="RestaurantInfoManagement" asp-action="Update" method="post" enctype="multipart/form-data" id="restaurantForm">
                     <input type="hidden" asp-for="RestaurantID" />
 
                     <div class="row mb-4">
@@ -37,7 +37,7 @@
 
                             <div class="mb-3">
                                 <label asp-for="Name" class="form-label fw-bold">اسم المطعم <span class="text-danger">*</span></label>
-                                <input asp-for="Name" class="form-control"/>
+                                <input asp-for="Name" class="form-control" />
                                 <span asp-validation-for="Name" class="text-danger"></span>
                             </div>
 
@@ -58,7 +58,7 @@
                                 <textarea asp-for="Description" class="form-control" rows="3"></textarea>
                                 <span asp-validation-for="Description" class="text-danger"></span>
                             </div>
-                            
+
                             <h5 class="border-bottom pb-2 mb-3">معلومات الاتصال والعنوان</h5>
 
                             <div class="mb-3">
@@ -114,11 +114,13 @@
                                                 <label asp-for="BreakfastOpenTime" class="form-label">وقت بدء الفطور</label>
                                                 <input asp-for="BreakfastOpenTime" class="form-control breakfast-time-top" type="time" />
                                                 <span asp-validation-for="BreakfastOpenTime" class="text-danger"></span>
+                                                <div class="text-danger meal-time-error breakfast-error" style="display:none">وقت بدء الفطور مطلوب</div>
                                             </div>
                                             <div class="mb-3">
                                                 <label asp-for="BreakfastCloseTime" class="form-label">وقت انتهاء الفطور</label>
                                                 <input asp-for="BreakfastCloseTime" class="form-control breakfast-time-top" type="time" />
                                                 <span asp-validation-for="BreakfastCloseTime" class="text-danger"></span>
+                                                <div class="text-danger meal-time-error breakfast-error" style="display:none">وقت انتهاء الفطور مطلوب</div>
                                             </div>
                                         </div>
                                     </div>
@@ -139,11 +141,13 @@
                                                 <label asp-for="LunchOpenTime" class="form-label">وقت بدء الغداء</label>
                                                 <input asp-for="LunchOpenTime" class="form-control lunch-time-top" type="time" />
                                                 <span asp-validation-for="LunchOpenTime" class="text-danger"></span>
+                                                <div class="text-danger meal-time-error lunch-error" style="display:none">وقت بدء الغداء مطلوب</div>
                                             </div>
                                             <div class="mb-3">
                                                 <label asp-for="LunchCloseTime" class="form-label">وقت انتهاء الغداء</label>
                                                 <input asp-for="LunchCloseTime" class="form-control lunch-time-top" type="time" />
                                                 <span asp-validation-for="LunchCloseTime" class="text-danger"></span>
+                                                <div class="text-danger meal-time-error lunch-error" style="display:none">وقت انتهاء الغداء مطلوب</div>
                                             </div>
                                         </div>
                                     </div>
@@ -164,11 +168,13 @@
                                                 <label asp-for="DinnerOpenTime" class="form-label">وقت بدء العشاء</label>
                                                 <input asp-for="DinnerOpenTime" class="form-control dinner-time-top" type="time" />
                                                 <span asp-validation-for="DinnerOpenTime" class="text-danger"></span>
+                                                <div class="text-danger meal-time-error dinner-error" style="display:none">وقت بدء العشاء مطلوب</div>
                                             </div>
                                             <div class="mb-3">
                                                 <label asp-for="DinnerCloseTime" class="form-label">وقت انتهاء العشاء</label>
                                                 <input asp-for="DinnerCloseTime" class="form-control dinner-time-top" type="time" />
                                                 <span asp-validation-for="DinnerCloseTime" class="text-danger"></span>
+                                                <div class="text-danger meal-time-error dinner-error" style="display:none">وقت انتهاء العشاء مطلوب</div>
                                             </div>
                                         </div>
                                     </div>

@@ -93,6 +93,13 @@
                                     };
 
                                     var categoryId = $"{menu.Day.ToLower()}{category}";
+                                    bool mealDisabled = false;
+                                    if (category == "الإفطار" && restaurant != null && !restaurant.ServesBreakfast)
+                                        mealDisabled = true;
+                                    else if (category == "الغداء" && restaurant != null && !restaurant.ServesLunch)
+                                        mealDisabled = true;
+                                    else if (category == "العشاء" && restaurant != null && !restaurant.ServesDinner)
+                                        mealDisabled = true;
 
                                     <div class="col-12 col-lg-4 mb-3">
                                         <div class="accordion accordion-desktop">
@@ -103,6 +110,12 @@
                                                             data-bs-toggle="collapse"
                                                             data-bs-target="#@categoryId">
                                                         <i class="bi @icon me-2"></i>@category
+                                                        @if (mealDisabled)
+                                                        {
+                                                            <span class="ms-2 badge bg-warning text-dark">
+                                                                <i class="bi bi-exclamation-triangle me-1"></i>الخدمة معطلة
+                                                            </span>
+                                                        }
                                                     </button>
                                                 </h2>
                                                 <div id="@categoryId" class="accordion-collapse collapse">

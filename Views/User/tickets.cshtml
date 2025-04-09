@@ -90,6 +90,14 @@
                                         }
                                     </p>
 
+                                    @if (restaurant != null && !restaurant.ServesBreakfast)
+                                    {
+                                        <div class="alert alert-warning small mb-3">
+                                            <i class="bi bi-exclamation-triangle me-2"></i>
+                                            تم إيقاف خدمة الإفطار مؤقتاً من قبل الإدارة
+                                        </div>
+                                    }
+
                                     @if (Model.BreakfastCount > 0)
                                     {
                                         <div class="text-center mb-3">
@@ -98,7 +106,8 @@
                                         </div>
                                         <button class="btn btn-success w-100 text-white"
                                                 data-bs-toggle="modal" data-bs-target="#qrModal"
-                                                onclick="showQrCode(@Model.BreakfastTickets.FirstOrDefault()?.TicketID, 'الإفطار')">
+                                                onclick="showQrCode(@Model.BreakfastTickets.FirstOrDefault()?.TicketID, 'الإفطار')"
+                                        @(restaurant != null && !restaurant.ServesBreakfast ? "disabled" : "")>
                                             <i class="bi bi-qr-code me-2"></i> استرد الآن
                                         </button>
                                     }
@@ -134,6 +143,14 @@
                                         }
                                     </p>
 
+                                    @if (restaurant != null && !restaurant.ServesLunch)
+                                    {
+                                        <div class="alert alert-warning small mb-3">
+                                            <i class="bi bi-exclamation-triangle me-2"></i>
+                                            تم إيقاف خدمة الغداء مؤقتاً من قبل الإدارة
+                                        </div>
+                                    }
+
                                     @if (Model.LunchCount > 0)
                                     {
                                         <div class="text-center mb-3">
@@ -142,7 +159,8 @@
                                         </div>
                                         <button class="btn btn-success w-100 text-white"
                                                 data-bs-toggle="modal" data-bs-target="#qrModal"
-                                                onclick="showQrCode(@Model.LunchTickets.FirstOrDefault()?.TicketID, 'الغداء')">
+                                                onclick="showQrCode(@Model.LunchTickets.FirstOrDefault()?.TicketID, 'الغداء')"
+                                        @(restaurant != null && !restaurant.ServesLunch ? "disabled" : "")>
                                             <i class="bi bi-qr-code me-2"></i> استرد الآن
                                         </button>
                                     }
@@ -178,6 +196,14 @@
                                         }
                                     </p>
 
+                                    @if (restaurant != null && !restaurant.ServesDinner)
+                                    {
+                                        <div class="alert alert-warning small mb-3">
+                                            <i class="bi bi-exclamation-triangle me-2"></i>
+                                            تم إيقاف خدمة العشاء مؤقتاً من قبل الإدارة
+                                        </div>
+                                    }
+
                                     @if (Model.DinnerCount > 0)
                                     {
                                         <div class="text-center mb-3">
@@ -186,7 +212,8 @@
                                         </div>
                                         <button class="btn btn-success w-100 text-white"
                                                 data-bs-toggle="modal" data-bs-target="#qrModal"
-                                                onclick="showQrCode(@Model.DinnerTickets.FirstOrDefault()?.TicketID, 'العشاء')">
+                                                onclick="showQrCode(@Model.DinnerTickets.FirstOrDefault()?.TicketID, 'العشاء')"
+                                        @(restaurant != null && !restaurant.ServesDinner ? "disabled" : "")>
                                             <i class="bi bi-qr-code me-2"></i> استرد الآن
                                         </button>
                                     }

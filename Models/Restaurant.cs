@@ -42,26 +42,23 @@ namespace KauRestaurant.Models
         public string Email { get; set; }
 
         // Working hours for different meal periods
+        // Models/Restaurant.cs - Update these properties:
+
         // Breakfast working hours
-        [Required(ErrorMessage = "وقت فتح الإفطار مطلوب")]
         public TimeSpan? BreakfastOpenTime { get; set; }
-        [Required(ErrorMessage = "وقت إغلاق الإفطار مطلوب")]
         public TimeSpan? BreakfastCloseTime { get; set; }
-        public bool ServesBreakfast { get; set; } = true;
+        public bool ServesBreakfast { get; set; } = false;
 
         // Lunch working hours
-        [Required(ErrorMessage = "وقت فتح الغداء مطلوب")]
         public TimeSpan? LunchOpenTime { get; set; }
-        [Required(ErrorMessage = "وقت إغلاق الغداء مطلوب")]
         public TimeSpan? LunchCloseTime { get; set; }
-        public bool ServesLunch { get; set; } = true;
+        public bool ServesLunch { get; set; } = false;
 
         // Dinner working hours
-        [Required(ErrorMessage = "وقت فتح العشاء مطلوب")]
         public TimeSpan? DinnerOpenTime { get; set; }
-        [Required(ErrorMessage = "وقت إغلاق العشاء مطلوب")]
         public TimeSpan? DinnerCloseTime { get; set; }
-        public bool ServesDinner { get; set; } = true;
+        public bool ServesDinner { get; set; } = false;
+
 
         // Days of operation (comma-separated string like "Mon,Tue,Wed,Thu,Fri")
         [Required(ErrorMessage = "أيام العمل مطلوبة")]
