@@ -82,21 +82,18 @@
                                     <p class="card-text small mb-3">
                                         @if (restaurant != null && restaurant.ServesBreakfast && restaurant.BreakfastOpenTime.HasValue && restaurant.BreakfastCloseTime.HasValue)
                                         {
-                                            <span>صالحة خلال ساعات الإفطار (@FormatTimeSpanToAmPm(restaurant.BreakfastOpenTime.Value) - @FormatTimeSpanToAmPm(restaurant.BreakfastCloseTime.Value))</span>
+                                            <div class="small mb-3 py-1">
+                                                صالحة خلال ساعات الإفطار (@FormatTimeSpanToAmPm(restaurant.BreakfastOpenTime.Value) - @FormatTimeSpanToAmPm(restaurant.BreakfastCloseTime.Value))
+                                            </div>
                                         }
                                         else
                                         {
-                                            <span>صالحة خلال ساعات الإفطار</span>
+                                            <div class="alert alert-warning small mb-3 py-1">
+                                                <i class="bi bi-exclamation-triangle me-2"></i>
+                                                تم إيقاف خدمة الإفطار مؤقتاً من قبل الإدارة
+                                            </div>
                                         }
                                     </p>
-
-                                    @if (restaurant != null && !restaurant.ServesBreakfast)
-                                    {
-                                        <div class="alert alert-warning small mb-3">
-                                            <i class="bi bi-exclamation-triangle me-2"></i>
-                                            تم إيقاف خدمة الإفطار مؤقتاً من قبل الإدارة
-                                        </div>
-                                    }
 
                                     @if (Model.BreakfastCount > 0)
                                     {
@@ -135,21 +132,18 @@
                                     <p class="card-text small mb-3">
                                         @if (restaurant != null && restaurant.ServesLunch && restaurant.LunchOpenTime.HasValue && restaurant.LunchCloseTime.HasValue)
                                         {
-                                            <span>صالحة خلال ساعات الغداء (@FormatTimeSpanToAmPm(restaurant.LunchOpenTime.Value) - @FormatTimeSpanToAmPm(restaurant.LunchCloseTime.Value))</span>
+                                            <div class="small mb-3 py-1">
+                                                صالحة خلال ساعات الغداء (@FormatTimeSpanToAmPm(restaurant.LunchOpenTime.Value) - @FormatTimeSpanToAmPm(restaurant.LunchCloseTime.Value))
+                                            </div>
                                         }
                                         else
                                         {
-                                            <span>صالحة خلال ساعات الغداء</span>
+                                            <div class="alert alert-warning small mb-3 py-1">
+                                                <i class="bi bi-exclamation-triangle me-2"></i>
+                                                تم إيقاف خدمة الغداء مؤقتاً من قبل الإدارة
+                                            </div>
                                         }
                                     </p>
-
-                                    @if (restaurant != null && !restaurant.ServesLunch)
-                                    {
-                                        <div class="alert alert-warning small mb-3">
-                                            <i class="bi bi-exclamation-triangle me-2"></i>
-                                            تم إيقاف خدمة الغداء مؤقتاً من قبل الإدارة
-                                        </div>
-                                    }
 
                                     @if (Model.LunchCount > 0)
                                     {
@@ -188,21 +182,18 @@
                                     <p class="card-text small mb-3">
                                         @if (restaurant != null && restaurant.ServesDinner && restaurant.DinnerOpenTime.HasValue && restaurant.DinnerCloseTime.HasValue)
                                         {
-                                            <span>صالحة خلال ساعات العشاء (@FormatTimeSpanToAmPm(restaurant.DinnerOpenTime.Value) - @FormatTimeSpanToAmPm(restaurant.DinnerCloseTime.Value))</span>
+                                            <div class="small mb-3 py-1">
+                                                صالحة خلال ساعات العشاء (@FormatTimeSpanToAmPm(restaurant.DinnerOpenTime.Value) - @FormatTimeSpanToAmPm(restaurant.DinnerCloseTime.Value))
+                                            </div>
                                         }
                                         else
                                         {
-                                            <span>صالحة خلال ساعات العشاء</span>
+                                            <div class="alert alert-warning small mb-3 py-1">
+                                                <i class="bi bi-exclamation-triangle me-2"></i>
+                                                تم إيقاف خدمة العشاء مؤقتاً من قبل الإدارة
+                                            </div>
                                         }
                                     </p>
-
-                                    @if (restaurant != null && !restaurant.ServesDinner)
-                                    {
-                                        <div class="alert alert-warning small mb-3">
-                                            <i class="bi bi-exclamation-triangle me-2"></i>
-                                            تم إيقاف خدمة العشاء مؤقتاً من قبل الإدارة
-                                        </div>
-                                    }
 
                                     @if (Model.DinnerCount > 0)
                                     {
