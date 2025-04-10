@@ -248,8 +248,7 @@
                         </div>
                         <div class="col-md-3">
                             <label asp-for="@newMeal.Calories" class="form-label">السعرات الحرارية</label>
-                            <input asp-for="@newMeal.Calories" type="number" class="form-control" id="mealCalories" min="0" max="2000" readonly>
-                            <small class="text-muted">يتم حساب السعرات الحرارية تلقائياً</small>
+                            <input asp-for="@newMeal.Calories" type="number" class="form-control" id="mealCalories" min="0" max="2000">
                             <span asp-validation-for="@newMeal.Calories" class="text-danger d-block mt-1"></span>
                         </div>
                         <div class="col-md-3">
