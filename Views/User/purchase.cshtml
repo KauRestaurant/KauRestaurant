@@ -2,12 +2,18 @@
 @{
     ViewData["Title"] = "شراء التذاكر";
     var requestToken = Antiforgery.GetAndStoreTokens(Context).RequestToken;
+    var restaurant = ViewBag.Restaurant as KauRestaurant.Models.Restaurant;
 
     // Get ticket prices from ViewBag
     var ticketPrices = ViewBag.TicketPrices as Dictionary<string, decimal>;
     var breakfastPrice = ticketPrices != null && ticketPrices.ContainsKey("الإفطار") ? ticketPrices["الإفطار"] : 7m;
     var lunchPrice = ticketPrices != null && ticketPrices.ContainsKey("الغداء") ? ticketPrices["الغداء"] : 10m;
     var dinnerPrice = ticketPrices != null && ticketPrices.ContainsKey("العشاء") ? ticketPrices["العشاء"] : 10m;
+
+    // Define meal status - make sure these are always set, even if restaurant is null
+    bool breakfastDisabled = restaurant != null && !restaurant.ServesBreakfast;
+    bool lunchDisabled = restaurant != null && !restaurant.ServesLunch;
+    bool dinnerDisabled = restaurant != null && !restaurant.ServesDinner;
 }
 
 <!-- Main Content Section -->
@@ -52,6 +58,17 @@
                     <input type="hidden" id="breakfastPrice" value="@breakfastPrice" />
                     <input type="hidden" id="lunchPrice" value="@lunchPrice" />
                     <input type="hidden" id="dinnerPrice" value="@dinnerPrice" />
+                    <input type="hidden" id="breakfastDisabled" value="@breakfastDisabled.ToString().ToLower()" />
+                    <input type="hidden" id="lunchDisabled" value="@lunchDisabled.ToString().ToLower()" />
+                    <input type="hidden" id="dinnerDisabled" value="@dinnerDisabled.ToString().ToLower()" />
+
+                    @if (restaurant == null)
+                    {
+                        <div class="alert alert-info mb-3">
+                            <i class="bi bi-info-circle me-2"></i>
+                            لم يتم العثور على معلومات المطعم - يرجى التواصل مع الإدارة
+                        </div>
+                    }
 
                     <!-- Ticket Input Sections -->
                     <div class="row justify-content-center">
@@ -60,8 +77,23 @@
                             <div class="p-4 text-center">
                                 <h5 class="border-bottom pb-2 mb-3">
                                     <i class="bi bi-sun me-2"></i> الإفطار <span class="fw-bold text-success">(@breakfastPrice ريال)</span>
+                                    @if (breakfastDisabled)
+                                    {
+                                        <span class="ms-2 badge bg-warning text-dark">
+                                            <i class="bi bi-exclamation-triangle"></i>
+                                        </span>
+                                    }
                                 </h5>
-                                <div class="d-flex align-items-center justify-content-center gap-3">
+
+                                @if (breakfastDisabled)
+                                {
+                                    <div class="alert alert-warning mb-3 meal-warning">
+                                        <i class="bi bi-exclamation-triangle me-2"></i>
+                                        تم إيقاف خدمة الإفطار مؤقتاً من قبل الإدارة - يمكنك شراء التذاكر واستخدامها لاحقاً عند إعادة تفعيل الخدمة
+                                    </div>
+                                }
+
+                                <div class="d-flex align-items-center justify-content-center gap-3 @(breakfastDisabled ? "meal-disabled" : "")">
                                     <button type="button" class="btn btn-outline-success fw-bold px-3" onclick="adjustQuantity('breakfastQty', -1)">-</button>
                                     <input type="text" class="form-control text-center ticket-quantity" min="0" value="0" id="breakfastQty">
                                     <button type="button" class="btn btn-outline-success fw-bold px-3" onclick="adjustQuantity('breakfastQty', 1)">+</button>
@@ -72,8 +104,23 @@
                             <div class="p-4 text-center">
                                 <h5 class="border-bottom pb-2 mb-3">
                                     <i class="bi bi-brightness-high me-2"></i> الغداء <span class="fw-bold text-success">(@lunchPrice ريال)</span>
+                                    @if (lunchDisabled)
+                                    {
+                                        <span class="ms-2 badge bg-warning text-dark">
+                                            <i class="bi bi-exclamation-triangle"></i>
+                                        </span>
+                                    }
                                 </h5>
-                                <div class="d-flex align-items-center justify-content-center gap-3">
+
+                                @if (lunchDisabled)
+                                {
+                                    <div class="alert alert-warning mb-3 meal-warning">
+                                        <i class="bi bi-exclamation-triangle me-2"></i>
+                                        تم إيقاف خدمة الغداء مؤقتاً من قبل الإدارة - يمكنك شراء التذاكر واستخدامها لاحقاً عند إعادة تفعيل الخدمة
+                                    </div>
+                                }
+
+                                <div class="d-flex align-items-center justify-content-center gap-3 @(lunchDisabled ? "meal-disabled" : "")">
                                     <button type="button" class="btn btn-outline-success fw-bold px-3" onclick="adjustQuantity('lunchQty', -1)">-</button>
                                     <input type="text" class="form-control text-center ticket-quantity" min="0" value="0" id="lunchQty">
                                     <button type="button" class="btn btn-outline-success fw-bold px-3" onclick="adjustQuantity('lunchQty', 1)">+</button>
@@ -84,8 +131,23 @@
                             <div class="p-4 text-center">
                                 <h5 class="border-bottom pb-2 mb-3">
                                     <i class="bi bi-moon me-2"></i> العشاء <span class="fw-bold text-success">(@dinnerPrice ريال)</span>
+                                    @if (dinnerDisabled)
+                                    {
+                                        <span class="ms-2 badge bg-warning text-dark">
+                                            <i class="bi bi-exclamation-triangle"></i>
+                                         </span>
+                                    }
                                 </h5>
-                                <div class="d-flex align-items-center justify-content-center gap-3">
+
+                                @if (dinnerDisabled)
+                                {
+                                    <div class="alert alert-warning mb-3 meal-warning">
+                                        <i class="bi bi-exclamation-triangle me-2"></i>
+                                        تم إيقاف خدمة العشاء مؤقتاً من قبل الإدارة - يمكنك شراء التذاكر واستخدامها لاحقاً عند إعادة تفعيل الخدمة
+                                    </div>
+                                }
+
+                                <div class="d-flex align-items-center justify-content-center gap-3 @(dinnerDisabled ? "meal-disabled" : "")">
                                     <button type="button" class="btn btn-outline-success fw-bold px-3" onclick="adjustQuantity('dinnerQty', -1)">-</button>
                                     <input type="text" class="form-control text-center ticket-quantity" min="0" value="0" id="dinnerQty">
                                     <button type="button" class="btn btn-outline-success fw-bold px-3" onclick="adjustQuantity('dinnerQty', 1)">+</button>

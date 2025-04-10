@@ -5,6 +5,7 @@ using KauRestaurant.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace KauRestaurant.Controllers.User
@@ -34,6 +35,10 @@ namespace KauRestaurant.Controllers.User
             // Get the current prices and pass them to the view
             var ticketPrices = await _ticketPriceService.GetAllTicketPrices();
             ViewBag.TicketPrices = ticketPrices;
+
+            // Get restaurant information
+            var restaurant = await _context.Restaurants.FirstOrDefaultAsync();
+            ViewBag.Restaurant = restaurant;
 
             return View("~/Views/User/Purchase.cshtml");
         }

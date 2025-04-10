@@ -1,6 +1,12 @@
 ﻿@model KauRestaurant.Controllers.Admin.TicketPriceViewModel
 @{
     ViewData["Title"] = "إدارة أسعار التذاكر";
+    var restaurant = ViewBag.Restaurant as KauRestaurant.Models.Restaurant;
+
+    // Define meal status based on restaurant settings
+    bool breakfastDisabled = restaurant != null && !restaurant.ServesBreakfast;
+    bool lunchDisabled = restaurant != null && !restaurant.ServesLunch;
+    bool dinnerDisabled = restaurant != null && !restaurant.ServesDinner;
 }
 
 <!-- Main Content Section -->
@@ -44,10 +50,18 @@
                                 <div class="col-md-4">
                                     <div class="card border-0 shadow-sm h-100">
                                         <div class="card-body text-center p-4">
-                                            <div class="display-1 mb-3 text-warning">
+                                            <div class="display-1 mb-3">
                                                 <i class="bi bi-sun"></i>
                                             </div>
-                                            <h4 class="mb-3">تذكرة الإفطار</h4>
+                                            <h4 class="mb-3">
+                                                تذكرة الإفطار
+                                                @if (breakfastDisabled)
+                                                {
+                                                    <span class="ms-2 badge bg-warning text-dark">
+                                                        <i class="bi bi-exclamation-triangle"></i>
+                                                    </span>
+                                                }
+                                            </h4>
                                             <div class="form-floating mb-3 rtl-input">
                                                 <input type="number" asp-for="BreakfastPrice" class="form-control"
                                                        step="0.01" placeholder=" "
@@ -63,10 +77,18 @@
                                 <div class="col-md-4">
                                     <div class="card border-0 shadow-sm h-100">
                                         <div class="card-body text-center p-4">
-                                            <div class="display-1 mb-3 text-primary">
+                                            <div class="display-1 mb-3">
                                                 <i class="bi bi-brightness-high"></i>
                                             </div>
-                                            <h4 class="mb-3">تذكرة الغداء</h4>
+                                            <h4 class="mb-3">
+                                                تذكرة الغداء
+                                                @if (lunchDisabled)
+                                                {
+                                                    <span class="ms-2 badge bg-warning text-dark">
+                                                        <i class="bi bi-exclamation-triangle"></i>
+                                                    </span>
+                                                }
+                                            </h4>
                                             <div class="form-floating mb-3 rtl-input">
                                                 <input type="number" asp-for="LunchPrice" class="form-control"
                                                        step="0.01" placeholder=" "
@@ -82,10 +104,18 @@
                                 <div class="col-md-4">
                                     <div class="card border-0 shadow-sm h-100">
                                         <div class="card-body text-center p-4">
-                                            <div class="display-1 mb-3 text-dark">
+                                            <div class="display-1 mb-3">
                                                 <i class="bi bi-moon"></i>
                                             </div>
-                                            <h4 class="mb-3">تذكرة العشاء</h4>
+                                            <h4 class="mb-3">
+                                                تذكرة العشاء
+                                                @if (dinnerDisabled)
+                                                {
+                                                    <span class="ms-2 badge bg-warning text-dark">
+                                                        <i class="bi bi-exclamation-triangle"></i>
+                                                    </span>
+                                                }
+                                            </h4>
                                             <div class="form-floating mb-3 rtl-input">
                                                 <input type="number" asp-for="DinnerPrice" class="form-control"
                                                        step="0.01" placeholder=" "
@@ -98,7 +128,7 @@
                                 </div>
                             </div>
 
-                            <div class="d-flex justify-content-between pt-3 border-top">
+                            <div class="d-flex justify-content-between pt-3">
                                 <a asp-controller="Dashboard" asp-action="Index" class="btn btn-outline-success">
                                     <i class="bi bi-arrow-right me-1"></i>
                                     <span class="d-none d-md-inline">عودة إلى لوحة التحكم</span>
@@ -119,34 +149,68 @@
                                     <thead class="table-light">
                                         <tr>
                                             <th>نوع الوجبة</th>
-                                            <th>السعر (ريال)</th>
+                                            <th>السعر</th>
                                             <th>آخر تحديث</th>
+                                            <th>الحالة</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td>
-                                                <span class="text-warning"><i class="bi bi-sun me-2"></i></span>
-                                                الإفطار
-                                            </td>
+                                            <td>الإفطار</td>
                                             <td>@Model.BreakfastPrice.ToString("F2") ريال</td>
                                             <td>@Model.BreakfastLastUpdated.ToString("yyyy/MM/dd")</td>
+                                            <td>
+                                                @if (breakfastDisabled)
+                                                {
+                                                    <span class="badge bg-warning text-dark">
+                                                        <i class="bi bi-exclamation-triangle me-1"></i>معطلة
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-success">
+                                                        <i class="bi bi-check-circle me-1"></i>مفعلة
+                                                    </span>
+                                                }
+                                            </td>
                                         </tr>
                                         <tr>
-                                            <td>
-                                                <span class="text-primary"><i class="bi bi-brightness-high me-2"></i></span>
-                                                الغداء
-                                            </td>
+                                            <td>الغداء</td>
                                             <td>@Model.LunchPrice.ToString("F2") ريال</td>
                                             <td>@Model.LunchLastUpdated.ToString("yyyy/MM/dd")</td>
+                                            <td>
+                                                @if (lunchDisabled)
+                                                {
+                                                    <span class="badge bg-warning text-dark">
+                                                        <i class="bi bi-exclamation-triangle me-1"></i>معطلة
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-success">
+                                                        <i class="bi bi-check-circle me-1"></i>مفعلة
+                                                    </span>
+                                                }
+                                            </td>
                                         </tr>
                                         <tr>
-                                            <td>
-                                                <span class="text-dark"><i class="bi bi-moon me-2"></i></span>
-                                                العشاء
-                                            </td>
+                                            <td>العشاء</td>
                                             <td>@Model.DinnerPrice.ToString("F2") ريال</td>
                                             <td>@Model.DinnerLastUpdated.ToString("yyyy/MM/dd")</td>
+                                            <td>
+                                                @if (dinnerDisabled)
+                                                {
+                                                    <span class="badge bg-warning text-dark">
+                                                        <i class="bi bi-exclamation-triangle me-1"></i>معطلة
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-success">
+                                                        <i class="bi bi-check-circle me-1"></i>مفعلة
+                                                    </span>
+                                                }
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>

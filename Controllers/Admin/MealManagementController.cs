@@ -40,6 +40,10 @@ namespace KauRestaurant.Controllers.Admin
                     .ThenBy(m => m.MealName)
                     .ToListAsync();
 
+                // Get restaurant information to check if meal times are disabled
+                var restaurant = await _context.Restaurants.FirstOrDefaultAsync();
+                ViewBag.Restaurant = restaurant;
+
                 return View("~/Views/Admin/MealManagement.cshtml", meals);
             }
             catch (Exception ex)

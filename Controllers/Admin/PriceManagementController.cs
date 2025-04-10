@@ -41,6 +41,10 @@ namespace KauRestaurant.Controllers.Admin
                 DinnerLastUpdated = dinnerPrice?.LastUpdated ?? DateTime.Now
             };
 
+            // Get restaurant information to check if meal times are disabled
+            var restaurant = await _context.Restaurants.FirstOrDefaultAsync();
+            ViewBag.Restaurant = restaurant;
+
             return View("~/Views/Admin/PriceManagement.cshtml", model);
         }
 
@@ -68,6 +72,11 @@ namespace KauRestaurant.Controllers.Admin
                     TempData["ErrorMessage"] = "حدث خطأ أثناء تحديث الأسعار: " + ex.Message;
                 }
             }
+
+            // Get restaurant information again for the view
+            var restaurant = await _context.Restaurants.FirstOrDefaultAsync();
+            ViewBag.Restaurant = restaurant;
+
             // If we get here, there was a validation error
             // Return the view with the model to show validation errors
             return View("~/Views/Admin/PriceManagement.cshtml", model);

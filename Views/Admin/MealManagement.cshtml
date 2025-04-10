@@ -6,6 +6,14 @@
 
     // Create new meal instance for validation in add form
     var newMeal = new KauRestaurant.Models.Meal();
+
+    // Get restaurant information to check which meal times are disabled
+    var restaurant = ViewBag.Restaurant as KauRestaurant.Models.Restaurant;
+
+    // Define meal status based on restaurant settings
+    bool breakfastDisabled = restaurant != null && !restaurant.ServesBreakfast;
+    bool lunchDisabled = restaurant != null && !restaurant.ServesLunch;
+    bool dinnerDisabled = restaurant != null && !restaurant.ServesDinner;
 }
 
 <!-- Main Content Section -->
@@ -77,6 +85,11 @@
             {
                 foreach (var meal in Model)
                 {
+                    // Check if meal's category is disabled
+                    bool isMealDisabled = meal.MealCategory == "الإفطار" && breakfastDisabled ||
+                    meal.MealCategory == "الغداء" && lunchDisabled ||
+                    meal.MealCategory == "العشاء" && dinnerDisabled;
+
                     <div class="col-md-6 col-lg-4 mb-4 meal-item"
                          data-category="@meal.MealCategory"
                          data-type="@meal.MealType"
@@ -98,11 +111,19 @@
                                     <span class="badge @bgColor">
                                         <i class="bi @icon me-1"></i>@meal.MealCategory
                                     </span>
+                                    @if (isMealDisabled)
+                                    {
+                                        <span class="ms-2 badge bg-warning text-dark">
+                                            <i class="bi bi-exclamation-triangle me-1"></i>وقت معطل
+                                        </span>
+                                    }
                                 </div>
                             </div>
                             <div class="card-body">
                                 <div class="d-flex justify-content-between align-items-start mb-2">
-                                    <h5 class="card-title fw-bold">@meal.MealName</h5>
+                                    <h5 class="card-title fw-bold">
+                                        @meal.MealName
+                                    </h5>
                                     <span class="badge @(
                                             meal.MealType == "الطبق الرئيسي" ? "bg-main-dish" :
                                             meal.MealType == "طبق جانبي" ? "bg-side-dish" :
