@@ -107,6 +107,13 @@
                             معاينة المطعم
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link rounded px-3 py-2 @(currentPath.StartsWithSegments("/Identity/Account/Manage") ? "active" : "")"
+                           asp-area="Identity" asp-page="/Account/Manage/Index">
+                            <i class="bi bi-person-circle me-2"></i>
+                            إدارة الملف الشخصي
+                        </a>
+                    </li>
                     <li class="nav-item ms-3 mt-2">
                         <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
                             <button type="submit" class="nav-link btn btn-link text-white btn btn-success px-3">
@@ -212,6 +219,13 @@
                                asp-area="User" asp-controller="Home" asp-action="Index">
                                 <i class="bi bi-eye me-2"></i>
                                 معاينة المطعم
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link rounded px-3 py-2 @(currentPath.StartsWithSegments("/Identity/Account/Manage") ? "active" : "")"
+                               asp-area="Identity" asp-page="/Account/Manage/Index">
+                                <i class="bi bi-person-circle me-2"></i>
+                                إدارة الملف الشخصي
                             </a>
                         </li>
                         <li class="nav-item px-1 ms-3 mt-2">

@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace KauRestaurant.Controllers.Admin
 {
-    [Authorize(Roles = "A1,A2")]
+    [Authorize(Roles = "A1,A2,A3")]
     public class MealManagementController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -302,5 +302,36 @@ namespace KauRestaurant.Controllers.Admin
                 throw; // Re-throw to be handled by the calling method
             }
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteReview(int reviewId, int returnToMealId)
+        {
+            try
+            {
+                var review = await _context.Reviews.FindAsync(reviewId);
+                if (review == null)
+                {
+                    TempData["ErrorMessage"] = "لم يتم العثور على التقييم";
+                    // Fix: Use the correct route to the meal page
+                    return RedirectToAction("Index", "Meal", new { id = returnToMealId, area = "" });
+                }
+
+                _context.Reviews.Remove(review);
+                await _context.SaveChangesAsync();
+
+                TempData["SuccessMessage"] = "تم حذف التقييم بنجاح";
+                // Fix: Use the correct route to the meal page
+                return RedirectToAction("Index", "Meal", new { id = returnToMealId, area = "" });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error deleting review ID: {reviewId}");
+                TempData["ErrorMessage"] = "حدث خطأ أثناء حذف التقييم";
+                // Fix: Use the correct route to the meal page  
+                return RedirectToAction("Index", "Meal", new { id = returnToMealId, area = "" });
+            }
+        }
+
     }
 }

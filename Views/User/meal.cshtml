@@ -173,11 +173,32 @@
                                                 }
                                             </div>
                                             <small class="text-muted">@review.ReviewDate.ToString("dd/MM/yyyy")</small>
+
+                                            @if (User.IsInRole("A1") || User.IsInRole("A2") || User.IsInRole("A3"))
+                                            {
+                                                <button type="button" class="btn btn-sm text-danger border-0 p-0"
+                                                        title="حذف التقييم"
+                                                        onclick="prepareDeleteReview(@review.ReviewID)">
+                                                    <i class="bi bi-x-circle"></i>
+                                                </button>
+                                            }
                                         </div>
-                                        <p class="mb-1 fw-semibold">@(review.Customer?.FirstName ?? "مستخدم") @(review.Customer?.LastName ?? "")</p>
-                                        <p class="mb-0 small">@review.ReviewText</p>
+
+                                        <!-- Display the reviewer's name if available -->
+                                        @if (review.Customer != null)
+                                        {
+                                            <p class="mb-1 fw-bold">@review.Customer.FirstName @review.Customer.LastName</p>
+                                        }
+
+                                        <!-- Display the review text -->
+                                        @if (!string.IsNullOrEmpty(review.ReviewText))
+                                        {
+                                            <p class="mb-0">@review.ReviewText</p>
+                                        }
                                     </div>
                                 }
+
+
                             </div>
                         }
                         else
@@ -196,3 +217,32 @@
     </div>
 </div>
 
+<!-- Delete confirmation modal -->
+<div class="modal fade" id="deleteReviewModal" tabindex="-1" aria-labelledby="deleteReviewModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="deleteReviewForm" method="post" asp-controller="MealManagement" asp-action="DeleteReview">
+                <input type="hidden" id="deleteReviewId" name="reviewId" value="" />
+                <input type="hidden" id="deleteReturnToMealId" name="returnToMealId" value="@Model.MealID" />
+                @Html.AntiForgeryToken()
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteReviewModalLabel">تأكيد الحذف</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>هل أنت متأكد من رغبتك في حذف هذا التقييم؟</p>
+                    <p class="text-danger">لا يمكن التراجع عن هذا الإجراء.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="submit" class="btn btn-danger">نعم، قم بالحذف</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="~/js/meal.js" asp-append-version="true"></script>
+}

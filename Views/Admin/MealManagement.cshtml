@@ -138,7 +138,40 @@
                                 </p>
                                 <div class="d-flex justify-content-between align-items-center mb-2">
                                     <span class="badge bg-light text-dark">@meal.Calories سعرة حرارية</span>
+                                    @if (meal.Reviews != null && meal.Reviews.Any())
+                                    {
+                                        <a href="/User/Meal/@meal.MealID" class="text-decoration-none text-muted small" title="عرض التقييمات">
+                                            @{
+                                                var avgRating = meal.Reviews.Average(r => r.Rating);
+                                                var fullStars = (int)Math.Floor(avgRating);
+                                                var hasHalfStar = avgRating - fullStars >= 0.5;
+                                                var emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+                                            }
+
+                                            @for (int i = 0; i < fullStars; i++)
+                                            {
+                                                <i class="bi bi-star-fill text-warning"></i>
+                                            }
+
+                                            @if (hasHalfStar)
+                                            {
+                                                <i class="bi bi-star-half text-warning"></i>
+                                            }
+
+                                            @for (int i = 0; i < emptyStars; i++)
+                                            {
+                                                <i class="bi bi-star text-warning"></i>
+                                            }
+
+                                            <span class="ms-1">@avgRating.ToString("F1")</span>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted small">لا توجد تقييمات</span>
+                                    }
                                 </div>
+
                                 <div class="row g-1 small text-muted mb-3">
                                     <div class="col-4 text-center">
                                         <div>بروتين</div>
@@ -248,22 +281,22 @@
                         </div>
                         <div class="col-md-3">
                             <label asp-for="@newMeal.Calories" class="form-label">السعرات الحرارية</label>
-                            <input asp-for="@newMeal.Calories" type="number" class="form-control" id="mealCalories" min="0" max="2000">
+                            <input asp-for="@newMeal.Calories" type="number" class="form-control" id="mealCalories">
                             <span asp-validation-for="@newMeal.Calories" class="text-danger d-block mt-1"></span>
                         </div>
                         <div class="col-md-3">
                             <label asp-for="@newMeal.Protein" class="form-label">البروتين (جرام)</label>
-                            <input asp-for="@newMeal.Protein" type="number" class="form-control" id="mealProtein" min="0" max="200">
+                            <input asp-for="@newMeal.Protein" type="number" class="form-control" id="mealProtein">
                             <span asp-validation-for="@newMeal.Protein" class="text-danger d-block mt-1"></span>
                         </div>
                         <div class="col-md-3">
                             <label asp-for="@newMeal.Carbs" class="form-label">الكربوهيدرات (جرام)</label>
-                            <input asp-for="@newMeal.Carbs" type="number" class="form-control" id="mealCarbs" min="0" max="200">
+                            <input asp-for="@newMeal.Carbs" type="number" class="form-control" id="mealCarbs">
                             <span asp-validation-for="@newMeal.Carbs" class="text-danger d-block mt-1"></span>
                         </div>
                         <div class="col-md-3">
                             <label asp-for="@newMeal.Fat" class="form-label">الدهون (جرام)</label>
-                            <input asp-for="@newMeal.Fat" type="number" class="form-control" id="mealFat" min="0" max="200">
+                            <input asp-for="@newMeal.Fat" type="number" class="form-control" id="mealFat">
                             <span asp-validation-for="@newMeal.Fat" class="text-danger d-block mt-1"></span>
                         </div>
                     </div>

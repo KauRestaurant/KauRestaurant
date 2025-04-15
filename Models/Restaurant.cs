@@ -34,6 +34,7 @@ namespace KauRestaurant.Models
         // Contact information
         [Required(ErrorMessage = "رقم الهاتف مطلوب")]
         [StringLength(20, ErrorMessage = "يجب ألا يتجاوز رقم الهاتف 20 رقماً")]
+        [RegularExpression(@"^[0-9]+$", ErrorMessage = "يجب أن يتكون رقم الهاتف من أرقام فقط")]
         public string PhoneNumber { get; set; }
 
         [Required(ErrorMessage = "البريد الإلكتروني مطلوب")]

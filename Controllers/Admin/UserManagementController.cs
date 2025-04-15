@@ -322,18 +322,21 @@ namespace KauRestaurant.Controllers.Admin
 
         [Required(ErrorMessage = "الاسم الأول مطلوب")]
         [StringLength(50, ErrorMessage = "الاسم الأول يجب أن يكون أقل من {1} حرف")]
+        [RegularExpression(@"^[a-zA-Zأ-يءئؤلإآ\s]*$", ErrorMessage = "الاسم الأول يجب أن يحتوي على أحرف فقط")]
         public string FirstName { get; set; }
 
         [Required(ErrorMessage = "الاسم الأخير مطلوب")]
         [StringLength(50, ErrorMessage = "الاسم الأخير يجب أن يكون أقل من {1} حرف")]
+        [RegularExpression(@"^[a-zA-Zأ-يءئؤلإآ\s]*$", ErrorMessage = "الاسم الأخير يجب أن يحتوي على أحرف فقط")]
         public string LastName { get; set; }
 
         [Required(ErrorMessage = "كلمة المرور مطلوبة")]
-        [StringLength(100, MinimumLength = 6, ErrorMessage = "كلمة المرور يجب أن تحتوي على {2} أحرف على الأقل")]
+        [StringLength(100, MinimumLength = 6, ErrorMessage = "كلمة المرور يجب أن تكون {2} أحرف على الأقل")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
         [Required(ErrorMessage = "مستوى الصلاحية مطلوب")]
         public string Role { get; set; }
     }
+
 }
