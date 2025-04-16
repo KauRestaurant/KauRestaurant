@@ -34,10 +34,7 @@ namespace KauRestaurant.Controllers.Admin
             foreach (var user in users)
             {
                 var userRoles = await _userManager.GetRolesAsync(user);
-
-                // Filter only users with admin roles (A1, A2, A3)
                 var adminRole = userRoles.FirstOrDefault(r => adminRoles.Contains(r));
-
                 if (adminRole != null)
                 {
                     userViewModels.Add(new UserViewModel
@@ -51,8 +48,14 @@ namespace KauRestaurant.Controllers.Admin
                 }
             }
 
-            return View("~/Views/Admin/UserManagement.cshtml", userViewModels);
+            // Build tuple model (user list, new create user model)
+            var model = Tuple.Create(userViewModels, new CreateUserViewModel());
+
+            // Explicitly return the view located at ~/Views/Admin/UserManagement.cshtml 
+            return View("~/Views/Admin/UserManagement.cshtml", model);
         }
+
+
 
         [HttpPost]
         public async Task<IActionResult> UpdateUser(string userId, string firstName, string lastName, string newEmail, string newRole)
@@ -226,7 +229,7 @@ namespace KauRestaurant.Controllers.Admin
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateUser(CreateUserViewModel model)
+        public async Task<IActionResult> CreateUser([Bind(Prefix = "Item2")] CreateUserViewModel model)
         {
             // Validate that the role is an admin role
             var adminRoles = new[] { "A1", "A2", "A3" };

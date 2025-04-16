@@ -1,9 +1,12 @@
-﻿@model List<KauRestaurant.Controllers.Admin.UserViewModel>
+﻿@model Tuple<List<KauRestaurant.Controllers.Admin.UserViewModel>, KauRestaurant.Controllers.Admin.CreateUserViewModel>
 @{
+    // Extract the two parts of the tuple
+    var userList = Model.Item1;
+    var createViewModel = Model.Item2;
     ViewData["Title"] = "إدارة المشرفين";
 
     // Order users by role priority (A1, A2, A3)
-    var orderedUsers = Model.OrderBy(u =>
+    var orderedUsers = userList.OrderBy(u =>
     {
         switch (u.CurrentRole)
         {
@@ -13,10 +16,8 @@
             default: return 4;
         }
     }).ToList();
-    
-    // Create a new instance for form validation
-    var createViewModel = new KauRestaurant.Controllers.Admin.CreateUserViewModel();
 }
+
 
 <!-- Main Content Section -->
 <div class="container-fluid py-4 py-lg-5 bg-white">
@@ -47,56 +48,56 @@
                 </div>
             </div>
             <div class="card-body">
-                
                 <form method="post" asp-action="CreateUser">
+                    @Html.AntiForgeryToken()
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label asp-for="@createViewModel.Email" class="form-label">البريد الإلكتروني</label>
+                            <label asp-for="Item2.Email" class="form-label">البريد الإلكتروني</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-envelope"></i></span>
-                                <input asp-for="@createViewModel.Email" class="form-control" />
+                                <input asp-for="Item2.Email" class="form-control" />
                             </div>
-                            <span asp-validation-for="@createViewModel.Email" class="text-danger d-block mt-1"></span>
+                            <span asp-validation-for="Item2.Email" class="text-danger d-block mt-1"></span>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label asp-for="@createViewModel.Password" class="form-label">كلمة المرور</label>
+                            <label asp-for="Item2.Password" class="form-label">كلمة المرور</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-key"></i></span>
-                                <input asp-for="@createViewModel.Password" class="form-control password-input"
+                                <input asp-for="Item2.Password" class="form-control password-input"
                                        placeholder="٦ أحرف على الأقل" />
                             </div>
-                            <span asp-validation-for="@createViewModel.Password" class="text-danger d-block mt-1"></span>
+                            <span asp-validation-for="Item2.Password" class="text-danger d-block mt-1"></span>
                             <div class="password-strength mt-2"></div>
                         </div>
                         <div class="col-md-4 mb-3">
-                            <label asp-for="@createViewModel.FirstName" class="form-label">الاسم الأول</label>
+                            <label asp-for="Item2.FirstName" class="form-label">الاسم الأول</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-person"></i></span>
-                                <input asp-for="@createViewModel.FirstName" class="form-control" />
+                                <input asp-for="Item2.FirstName" class="form-control" />
                             </div>
-                            <span asp-validation-for="@createViewModel.FirstName" class="text-danger d-block mt-1"></span>
+                            <span asp-validation-for="Item2.FirstName" class="text-danger d-block mt-1"></span>
                         </div>
                         <div class="col-md-4 mb-3">
-                            <label asp-for="@createViewModel.LastName" class="form-label">الاسم الأخير</label>
+                            <label asp-for="Item2.LastName" class="form-label">الاسم الأخير</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-person"></i></span>
-                                <input asp-for="@createViewModel.LastName" class="form-control" />
+                                <input asp-for="Item2.LastName" class="form-control" />
                             </div>
-                            <span asp-validation-for="@createViewModel.LastName" class="text-danger d-block mt-1"></span>
+                            <span asp-validation-for="Item2.LastName" class="text-danger d-block mt-1"></span>
                         </div>
                         <div class="col-md-4 mb-3">
-                            <label asp-for="@createViewModel.Role" class="form-label">مستوى الصلاحية</label>
+                            <label asp-for="Item2.Role" class="form-label">مستوى الصلاحية</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-shield-lock"></i></span>
-                                <select asp-for="@createViewModel.Role" class="form-select">
+                                <select asp-for="Item2.Role" class="form-select">
                                     <option value="" disabled selected>اختر مستوى الصلاحية</option>
                                     <option value="A1">A1 - مشرف رئيسي</option>
                                     <option value="A2">A2 - مشرف إداري</option>
                                     <option value="A3">A3 - مشرف مساعد</option>
                                 </select>
                             </div>
-                            <span asp-validation-for="@createViewModel.Role" class="text-danger d-block mt-1"></span>
+                            <span asp-validation-for="Item2.Role" class="text-danger d-block mt-1"></span>
                         </div>
                     </div>
                     <div class="alert alert-info mb-4">
@@ -119,6 +120,7 @@
                         </button>
                     </div>
                 </form>
+
             </div>
         </div>
 
@@ -144,7 +146,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @if (!Model.Any())
+                            @if (!Model.Item1.Any())
                             {
                                 <tr>
                                     <td colspan="4" class="text-center py-4 text-muted">
