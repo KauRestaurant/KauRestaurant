@@ -1,4 +1,4 @@
-using KauRestaurant.Data;
+﻿using KauRestaurant.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using KauRestaurant.Areas.Identity.Data;
@@ -13,6 +13,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
 builder.Services.AddDefaultIdentity<KauRestaurantUser>(options => options.SignIn.RequireConfirmedAccount = false)
+    .AddErrorDescriber<ArabicIdentityErrorDescriber>()    // ← Arabic messages
     .AddRoles<IdentityRole>() // line to enable roles
     .AddEntityFrameworkStores<ApplicationDbContext>();
 

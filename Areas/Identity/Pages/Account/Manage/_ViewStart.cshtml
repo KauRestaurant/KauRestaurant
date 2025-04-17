@@ -1,0 +1,10 @@
+﻿@{
+    if (User.IsInRole("A1") || User.IsInRole("A2") || User.IsInRole("A3"))
+    {
+        Layout = "/Areas/Identity/Pages/Account/Manage/_ManageAdminLayout.cshtml";
+    }
+    else
+    {
+        Layout = "/Areas/Identity/Pages/Account/Manage/_Layout.cshtml";
+    }
+}

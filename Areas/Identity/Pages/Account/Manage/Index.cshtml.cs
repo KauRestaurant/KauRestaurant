@@ -1,10 +1,7 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
+﻿// Areas/Identity/Pages/Account/Manage/Index.cshtml.cs
 #nullable disable
 
-using System;
 using System.ComponentModel.DataAnnotations;
-using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using KauRestaurant.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity;
@@ -26,65 +23,41 @@ namespace KauRestaurant.Areas.Identity.Pages.Account.Manage
             _signInManager = signInManager;
         }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         public string Username { get; set; }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         [TempData]
         public string StatusMessage { get; set; }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         [BindProperty]
         public InputModel Input { get; set; }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         public class InputModel
         {
             [Required(ErrorMessage = "الاسم الأول مطلوب")]
-            [StringLength(50, ErrorMessage = "الاسم الأول يجب أن يكون بين {2} و {1} حرفاً", MinimumLength = 2)]
+            [StringLength(50, MinimumLength = 2, ErrorMessage = "الاسم الأول يجب أن يكون بين {2} و {1} حرفاً")]
             [RegularExpression(@"^[\u0600-\u06FF\s]{2,50}$", ErrorMessage = "الاسم الأول يجب أن يحتوي على حروف عربية فقط")]
             [Display(Name = "الاسم الأول")]
             public string FirstName { get; set; }
 
             [Required(ErrorMessage = "اسم العائلة مطلوب")]
-            [StringLength(50, ErrorMessage = "اسم العائلة يجب أن يكون بين {2} و {1} حرفاً", MinimumLength = 2)]
+            [StringLength(50, MinimumLength = 2, ErrorMessage = "اسم العائلة يجب أن يكون بين {2} و {1} حرفاً")]
             [RegularExpression(@"^[\u0600-\u06FF\s]{2,50}$", ErrorMessage = "اسم العائلة يجب أن يحتوي على حروف عربية فقط")]
             [Display(Name = "اسم العائلة")]
             public string LastName { get; set; }
 
-            /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
-            /// </summary>
             [Phone]
-            [Display(Name = "Phone number")]
+            [Display(Name = "رقم الجوال")]
             public string PhoneNumber { get; set; }
         }
 
         private async Task LoadAsync(KauRestaurantUser user)
         {
-            var userName = await _userManager.GetUserNameAsync(user);
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-
-            Username = userName;
-
+            Username = await _userManager.GetUserNameAsync(user);
             Input = new InputModel
             {
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                PhoneNumber = phoneNumber
+                PhoneNumber = await _userManager.GetPhoneNumberAsync(user)
             };
         }
 
@@ -92,9 +65,7 @@ namespace KauRestaurant.Areas.Identity.Pages.Account.Manage
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
-            {
-                return NotFound($"تعذر تحميل المستخدم.");
-            }
+                return NotFound("تعذر تحميل المستخدم.");
 
             await LoadAsync(user);
             return Page();
@@ -104,9 +75,7 @@ namespace KauRestaurant.Areas.Identity.Pages.Account.Manage
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
-            {
-                return NotFound($"تعذر تحميل المستخدم.");
-            }
+                return NotFound("تعذر تحميل المستخدم.");
 
             if (!ModelState.IsValid)
             {
@@ -114,27 +83,29 @@ namespace KauRestaurant.Areas.Identity.Pages.Account.Manage
                 return Page();
             }
 
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-            if (Input.PhoneNumber != phoneNumber)
+            // Only admins can update phone
+            if (User.IsInRole("A1") || User.IsInRole("A2") || User.IsInRole("A3"))
             {
-                var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
-                if (!setPhoneResult.Succeeded)
+                var currentPhone = await _userManager.GetPhoneNumberAsync(user);
+                if (Input.PhoneNumber != currentPhone)
                 {
-                    StatusMessage = "Unexpected error when trying to set phone number.";
-                    return RedirectToPage();
+                    var setPhone = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
+                    if (!setPhone.Succeeded)
+                    {
+                        StatusMessage = "Unexpected error when trying to set phone number.";
+                        return RedirectToPage();
+                    }
                 }
             }
 
-            if (ModelState.IsValid)
+            // Always update names
+            user.FirstName = Input.FirstName;
+            user.LastName = Input.LastName;
+            var updateResult = await _userManager.UpdateAsync(user);
+            if (!updateResult.Succeeded)
             {
-                user.FirstName = Input.FirstName;
-                user.LastName = Input.LastName;
-                var result = await _userManager.UpdateAsync(user);
-                if (!result.Succeeded)
-                {
-                    StatusMessage = "حدث خطأ غير متوقع عند محاولة تحديث الملف الشخصي.";
-                    return RedirectToPage();
-                }
+                StatusMessage = "حدث خطأ غير متوقع عند محاولة تحديث الملف الشخصي.";
+                return RedirectToPage();
             }
 
             await _signInManager.RefreshSignInAsync(user);
