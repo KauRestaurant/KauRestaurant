@@ -1,146 +1,214 @@
-﻿// Enable/disable time inputs based on checkbox status
+﻿// Restaurant management with day-specific meal times
 document.addEventListener('DOMContentLoaded', function () {
-    function toggleTimeFields(checkboxId, timeFieldClass) {
-        const checkbox = document.getElementById(checkboxId);
-        if (!checkbox) return; // Guard against null references
+    const days = ['Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+    const meals = ['Breakfast', 'Lunch', 'Dinner'];
 
-        const timeFields = document.querySelectorAll(`.${timeFieldClass}`);
+    // Handle day dropdown changes
+    const daySelector = document.getElementById('daySelector');
+    const toggleContainer = document.getElementById('toggleContainer');
 
-        checkbox.addEventListener('change', function () {
-            for (let field of timeFields) {
-                field.disabled = !this.checked;
-                // Clear the value when unchecked to ensure proper null handling
-                if (!this.checked) {
-                    field.value = '';
+    if (daySelector) {
+        // Function to update the toggle button based on selected day
+        function updateToggleButton() {
+            const selectedDayId = daySelector.value;
+            const selectedPanel = document.getElementById(selectedDayId + '-panel');
+
+            // Clear current toggle
+            if (toggleContainer) {
+                toggleContainer.innerHTML = '';
+
+                if (selectedPanel) {
+                    // Get the toggle from the selected day panel and clone it
+                    const toggleSource = selectedPanel.querySelector('.toggle-source .form-check');
+                    if (toggleSource) {
+                        const toggleClone = toggleSource.cloneNode(true);
+                        toggleContainer.appendChild(toggleClone);
+
+                        // Ensure the cloned toggle works with the original input
+                        const originalToggle = selectedPanel.querySelector('.day-toggle');
+                        const clonedToggle = toggleContainer.querySelector('.day-toggle');
+
+                        clonedToggle.addEventListener('change', function () {
+                            originalToggle.checked = this.checked;
+                            // Trigger the original toggle's change event
+                            originalToggle.dispatchEvent(new Event('change'));
+                        });
+                    }
                 }
-
-                // Hide validation error messages when checkbox is unchecked
-                const errorElement = field.parentElement.querySelector('.meal-time-error');
-                if (errorElement) {
-                    errorElement.style.display = 'none';
-                }
-            }
-
-            // Update required indicators when checkboxes change
-            updateRequiredIndicators();
-        });
-
-        // Initialize on page load
-        for (let field of timeFields) {
-            field.disabled = !checkbox.checked;
-            // Ensure disabled fields have empty values
-            if (!checkbox.checked) {
-                field.value = '';
             }
         }
-    }
 
-    // Setup for each meal type
-    toggleTimeFields('servesBreakfastTop', 'breakfast-time-top');
-    toggleTimeFields('servesLunchTop', 'lunch-time-top');
-    toggleTimeFields('servesDinnerTop', 'dinner-time-top');
+        // Update toggle and show panel when dropdown changes
+        daySelector.addEventListener('change', function () {
+            // Hide all day panels first
+            document.querySelectorAll('.day-panel').forEach(panel => {
+                panel.style.display = 'none';
+            });
 
-    // Add required indicators to meal time labels
-    function updateRequiredIndicators() {
-        // Update breakfast time required indicators
-        updateMealTypeIndicators('servesBreakfastTop', '.card-body:has(.breakfast-time-top) .form-label');
-
-        // Update lunch time required indicators
-        updateMealTypeIndicators('servesLunchTop', '.card-body:has(.lunch-time-top) .form-label');
-
-        // Update dinner time required indicators
-        updateMealTypeIndicators('servesDinnerTop', '.card-body:has(.dinner-time-top) .form-label');
-    }
-
-    function updateMealTypeIndicators(checkboxId, labelsSelector) {
-        const checkbox = document.getElementById(checkboxId);
-        if (!checkbox) return;
-
-        const labels = document.querySelectorAll(labelsSelector);
-        labels.forEach(label => {
-            let requiredSpan = label.querySelector('.required-indicator');
-            if (!requiredSpan) {
-                requiredSpan = document.createElement('span');
-                requiredSpan.className = 'text-danger ms-1 required-indicator';
-                requiredSpan.textContent = '*';
-                label.appendChild(requiredSpan);
+            // Show the selected day panel
+            const selectedDayId = this.value;
+            const selectedPanel = document.getElementById(selectedDayId + '-panel');
+            if (selectedPanel) {
+                selectedPanel.style.display = 'block';
             }
-            requiredSpan.style.display = checkbox.checked ? 'inline' : 'none';
+
+            // Update toggle button
+            updateToggleButton();
+        });
+
+        // Initial update of toggle button
+        updateToggleButton();
+    }
+
+    // Function to initialize day toggles
+    function initializeDayToggles() {
+        // For each day, set up event handlers
+        days.forEach(day => {
+            const dayToggle = document.getElementById(`is${day}Open`);
+            if (!dayToggle) return;
+
+            // Find all meal toggles for this day
+            const dayContent = document.querySelector(`.day-content[data-day="${day}"]`);
+            if (!dayContent) return;
+
+            // Get all meal toggles and time inputs for this day
+            const mealToggles = dayContent.querySelectorAll('.meal-toggle');
+            const allTimeInputs = dayContent.querySelectorAll('input[type="time"]');
+            const allRequiredIndicators = dayContent.querySelectorAll('.required-indicator');
+
+            // When day toggle changes
+            dayToggle.addEventListener('change', function () {
+                const isOpen = this.checked;
+
+                // Enable/disable all meal toggles based on day status
+                mealToggles.forEach(toggle => {
+                    toggle.disabled = !isOpen;
+                });
+
+                // Enable/disable all time inputs based on day status
+                if (!isOpen) {
+                    allTimeInputs.forEach(input => {
+                        input.disabled = true;
+                    });
+
+                    // Hide all required indicators when day is closed
+                    allRequiredIndicators.forEach(indicator => {
+                        indicator.classList.add('d-none');
+                    });
+                } else {
+                    // When day is open, handle each meal individually
+                    meals.forEach(meal => {
+                        updateMealFieldsState(day, meal);
+                    });
+                }
+            });
+
+            // Initialize day toggle
+            dayToggle.dispatchEvent(new Event('change'));
+
+            // Set up meal toggles for this day
+            meals.forEach(meal => {
+                initializeMealToggle(day, meal);
+            });
         });
     }
 
-    // Run initially to set up required indicators
-    updateRequiredIndicators();
+    // Function to initialize meal toggles
+    function initializeMealToggle(day, meal) {
+        const mealToggle = document.getElementById(`${day}Serves${meal}`);
+        if (!mealToggle) return;
 
-    // Handle form submission - validate and enable disabled fields before submitting
-    const restaurantForm = document.getElementById('restaurantForm');
-    if (restaurantForm) {
-        restaurantForm.addEventListener('submit', function (e) {
+        mealToggle.addEventListener('change', function () {
+            updateMealFieldsState(day, meal);
+        });
+    }
+
+    // Function to update meal fields state based on toggles
+    function updateMealFieldsState(day, meal) {
+        const dayToggle = document.getElementById(`is${day}Open`);
+        const mealToggle = document.getElementById(`${day}Serves${meal}`);
+
+        if (!dayToggle || !mealToggle) return;
+
+        // Day must be open AND meal must be served for fields to be enabled
+        const isEnabled = dayToggle.checked && mealToggle.checked;
+
+        // Get time fields and required indicators for this specific meal
+        const timeFields = document.querySelectorAll(`.${day.toLowerCase()}-${meal.toLowerCase()}-time`);
+        const requiredIndicators = document.querySelectorAll(`.day-panel .card-body:has(.${day.toLowerCase()}-${meal.toLowerCase()}-time) .required-indicator`);
+
+        // Update time field states
+        timeFields.forEach(field => {
+            field.disabled = !isEnabled;
+
+            // Hide validation errors when disabled
+            const errorMsg = field.nextElementSibling;
+            if (errorMsg && errorMsg.classList.contains('meal-time-error')) {
+                errorMsg.style.display = 'none';
+            }
+        });
+
+        // Update required indicators
+        requiredIndicators.forEach(indicator => {
+            indicator.classList.toggle('d-none', !isEnabled);
+        });
+    }
+
+    // Initialize the UI
+    initializeDayToggles();
+
+    // Form validation and submission
+    const form = document.getElementById('restaurantForm');
+    if (form) {
+        form.addEventListener('submit', function (event) {
             let isValid = true;
 
-            // Hide all error messages first
-            document.querySelectorAll('.meal-time-error').forEach(el => {
-                el.style.display = 'none';
+            // Clear all previous errors
+            document.querySelectorAll('.meal-time-error').forEach(error => {
+                error.style.display = 'none';
             });
 
-            // Validate breakfast fields if breakfast is enabled
-            if (document.getElementById('servesBreakfastTop').checked) {
-                const breakfastOpenTime = document.querySelector('input[name="BreakfastOpenTime"]').value;
-                const breakfastCloseTime = document.querySelector('input[name="BreakfastCloseTime"]').value;
+            // For each day, validate its meals
+            days.forEach(day => {
+                const dayToggle = document.getElementById(`is${day}Open`);
+                if (!dayToggle || !dayToggle.checked) return; // Skip if day is not open
 
-                if (!breakfastOpenTime || breakfastOpenTime === '') {
-                    document.querySelectorAll('.breakfast-error')[0].style.display = 'block';
-                    isValid = false;
-                }
+                // For each meal type, validate if it's enabled
+                meals.forEach(meal => {
+                    const mealToggle = document.getElementById(`${day}Serves${meal}`);
+                    if (!mealToggle || !mealToggle.checked) return; // Skip if meal is not served
 
-                if (!breakfastCloseTime || breakfastCloseTime === '') {
-                    document.querySelectorAll('.breakfast-error')[1].style.display = 'block';
-                    isValid = false;
-                }
-            }
+                    // Validate open time
+                    const openTimeField = document.querySelector(`[name="${day}${meal}OpenTime"]`);
+                    if (!openTimeField || !openTimeField.value) {
+                        isValid = false;
+                        const errorMsg = openTimeField ? openTimeField.nextElementSibling : null;
+                        if (errorMsg && errorMsg.classList.contains('meal-time-error')) {
+                            errorMsg.style.display = 'block';
+                        }
+                    }
 
-            // Validate lunch fields if lunch is enabled
-            if (document.getElementById('servesLunchTop').checked) {
-                const lunchOpenTime = document.querySelector('input[name="LunchOpenTime"]').value;
-                const lunchCloseTime = document.querySelector('input[name="LunchCloseTime"]').value;
+                    // Validate close time
+                    const closeTimeField = document.querySelector(`[name="${day}${meal}CloseTime"]`);
+                    if (!closeTimeField || !closeTimeField.value) {
+                        isValid = false;
+                        const errorMsg = closeTimeField ? closeTimeField.nextElementSibling : null;
+                        if (errorMsg && errorMsg.classList.contains('meal-time-error')) {
+                            errorMsg.style.display = 'block';
+                        }
+                    }
+                });
+            });
 
-                if (!lunchOpenTime || lunchOpenTime === '') {
-                    document.querySelectorAll('.lunch-error')[0].style.display = 'block';
-                    isValid = false;
-                }
-
-                if (!lunchCloseTime || lunchCloseTime === '') {
-                    document.querySelectorAll('.lunch-error')[1].style.display = 'block';
-                    isValid = false;
-                }
-            }
-
-            // Validate dinner fields if dinner is enabled
-            if (document.getElementById('servesDinnerTop').checked) {
-                const dinnerOpenTime = document.querySelector('input[name="DinnerOpenTime"]').value;
-                const dinnerCloseTime = document.querySelector('input[name="DinnerCloseTime"]').value;
-
-                if (!dinnerOpenTime || dinnerOpenTime === '') {
-                    document.querySelectorAll('.dinner-error')[0].style.display = 'block';
-                    isValid = false;
-                }
-
-                if (!dinnerCloseTime || dinnerCloseTime === '') {
-                    document.querySelectorAll('.dinner-error')[1].style.display = 'block';
-                    isValid = false;
-                }
-            }
-
-            // If validation fails, prevent form submission
+            // If validation failed, prevent submission
             if (!isValid) {
-                e.preventDefault();
+                event.preventDefault();
                 return;
             }
 
-            // Enable all disabled fields before submitting if validation passes
-            const disabledFields = document.querySelectorAll('input[disabled]');
-            disabledFields.forEach(field => {
-                field.disabled = false;
+            // Enable all disabled fields before submitting
+            document.querySelectorAll('input[disabled]').forEach(input => {
+                input.disabled = false;
             });
         });
     }

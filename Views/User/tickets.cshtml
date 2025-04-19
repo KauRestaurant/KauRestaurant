@@ -82,13 +82,13 @@
                                     <p class="card-text small mb-3">
                                         @if (restaurant != null && restaurant.ServesBreakfast && restaurant.BreakfastOpenTime.HasValue && restaurant.BreakfastCloseTime.HasValue)
                                         {
-                                            <div class="small mb-3 py-1">
+                                            <div class="alert alert-white small text-center mb-3 py-1">
                                                 صالحة خلال ساعات الإفطار (@FormatTimeSpanToAmPm(restaurant.BreakfastOpenTime.Value) - @FormatTimeSpanToAmPm(restaurant.BreakfastCloseTime.Value))
                                             </div>
                                         }
                                         else
                                         {
-                                            <div class="alert alert-warning small mb-3 py-1">
+                                            <div class="alert alert-warning small text-center mb-3 py-1">
                                                 <i class="bi bi-exclamation-triangle me-2"></i>
                                                 تم إيقاف خدمة الإفطار مؤقتاً من قبل الإدارة
                                             </div>
@@ -132,13 +132,13 @@
                                     <p class="card-text small mb-3">
                                         @if (restaurant != null && restaurant.ServesLunch && restaurant.LunchOpenTime.HasValue && restaurant.LunchCloseTime.HasValue)
                                         {
-                                            <div class="small mb-3 py-1">
+                                            <div class="alert alert-white small text-center mb-3 py-1">
                                                 صالحة خلال ساعات الغداء (@FormatTimeSpanToAmPm(restaurant.LunchOpenTime.Value) - @FormatTimeSpanToAmPm(restaurant.LunchCloseTime.Value))
                                             </div>
                                         }
                                         else
                                         {
-                                            <div class="alert alert-warning small mb-3 py-1">
+                                            <div class="alert alert-warning small text-center mb-3 py-1">
                                                 <i class="bi bi-exclamation-triangle me-2"></i>
                                                 تم إيقاف خدمة الغداء مؤقتاً من قبل الإدارة
                                             </div>
@@ -182,13 +182,13 @@
                                     <p class="card-text small mb-3">
                                         @if (restaurant != null && restaurant.ServesDinner && restaurant.DinnerOpenTime.HasValue && restaurant.DinnerCloseTime.HasValue)
                                         {
-                                            <div class="small mb-3 py-1">
+                                            <div class="alert alert-white small text-center mb-3 py-1">
                                                 صالحة خلال ساعات العشاء (@FormatTimeSpanToAmPm(restaurant.DinnerOpenTime.Value) - @FormatTimeSpanToAmPm(restaurant.DinnerCloseTime.Value))
                                             </div>
                                         }
                                         else
                                         {
-                                            <div class="alert alert-warning small mb-3 py-1">
+                                            <div class="alert alert-warning small text-center mb-3 py-1">
                                                 <i class="bi bi-exclamation-triangle me-2"></i>
                                                 تم إيقاف خدمة العشاء مؤقتاً من قبل الإدارة
                                             </div>

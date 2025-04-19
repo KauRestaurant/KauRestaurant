@@ -82,4 +82,13 @@
         $('#passwordUserId').val(userId);
         $('#passwordUserName').text('تغيير كلمة المرور للمستخدم: ' + userName);
     });
+
+    // Setup the delete user modal
+    $(document).on('click', '.btn-delete-user', function () {
+        var userId = $(this).data('user-id');
+        var userName = $(this).data('user-name');
+
+        $('#deleteUserId').val(userId);
+        $('#deleteUserName').text(userName);
+    });
 });

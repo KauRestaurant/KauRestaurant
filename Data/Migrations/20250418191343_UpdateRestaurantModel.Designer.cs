@@ -4,6 +4,7 @@ using KauRestaurant.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KauRestaurant.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250418191343_UpdateRestaurantModel")]
+    partial class UpdateRestaurantModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1099,18 +1102,12 @@ namespace KauRestaurant.Data.Migrations
                             Address = "جامعة الملك عبد العزيز، جدة، المملكة العربية السعودية",
                             Description = "في المطعم الجامعي الرسمي لجامعة الملك عبد العزيز، نقدم وجبات طازجة وعالية الجودة للطلاب وأعضاء هيئة التدريس. نحرص على تقديم أطباق متنوعة ومغذية في بيئة نظيفة ومرحبة.",
                             Email = "restaurant@kau.edu.sa",
-                            FridayBreakfastCloseTime = new TimeSpan(0, 10, 30, 0, 0),
-                            FridayBreakfastOpenTime = new TimeSpan(0, 7, 0, 0, 0),
-                            FridayDinnerCloseTime = new TimeSpan(0, 10, 30, 0, 0),
-                            FridayDinnerOpenTime = new TimeSpan(0, 7, 0, 0, 0),
-                            FridayLunchCloseTime = new TimeSpan(0, 10, 30, 0, 0),
-                            FridayLunchOpenTime = new TimeSpan(0, 7, 0, 0, 0),
-                            FridayServesBreakfast = true,
-                            FridayServesDinner = true,
-                            FridayServesLunch = true,
-                            IsFridayOpen = true,
+                            FridayServesBreakfast = false,
+                            FridayServesDinner = false,
+                            FridayServesLunch = false,
+                            IsFridayOpen = false,
                             IsMondayOpen = true,
-                            IsSaturdayOpen = true,
+                            IsSaturdayOpen = false,
                             IsSundayOpen = true,
                             IsThursdayOpen = true,
                             IsTuesdayOpen = true,
@@ -1128,15 +1125,9 @@ namespace KauRestaurant.Data.Migrations
                             Name = "مطعم جامعة الملك عبدالعزيز",
                             PhoneNumber = "+9665********",
                             PhotoPath = "/images/restaurant.png",
-                            SaturdayBreakfastCloseTime = new TimeSpan(0, 10, 30, 0, 0),
-                            SaturdayBreakfastOpenTime = new TimeSpan(0, 7, 0, 0, 0),
-                            SaturdayDinnerCloseTime = new TimeSpan(0, 10, 30, 0, 0),
-                            SaturdayDinnerOpenTime = new TimeSpan(0, 7, 0, 0, 0),
-                            SaturdayLunchCloseTime = new TimeSpan(0, 10, 30, 0, 0),
-                            SaturdayLunchOpenTime = new TimeSpan(0, 7, 0, 0, 0),
-                            SaturdayServesBreakfast = true,
-                            SaturdayServesDinner = true,
-                            SaturdayServesLunch = true,
+                            SaturdayServesBreakfast = false,
+                            SaturdayServesDinner = false,
+                            SaturdayServesLunch = false,
                             SundayBreakfastCloseTime = new TimeSpan(0, 10, 30, 0, 0),
                             SundayBreakfastOpenTime = new TimeSpan(0, 7, 0, 0, 0),
                             SundayDinnerCloseTime = new TimeSpan(0, 22, 0, 0, 0),

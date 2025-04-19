@@ -4,6 +4,21 @@
 @{
     ViewData["Title"] = "قائمة الأسبوع";
     var restaurant = ViewBag.Restaurant as KauRestaurant.Models.Restaurant;
+
+    // Get current day of week
+    var currentDayOfWeek = DateTime.Now.DayOfWeek;
+
+    // Create map for Arabic day names
+    var dayNameMap = new Dictionary<string, DayOfWeek>
+    {
+        { "السبت", DayOfWeek.Saturday },
+        { "الأحد", DayOfWeek.Sunday },
+        { "الاثنين", DayOfWeek.Monday },
+        { "الثلاثاء", DayOfWeek.Tuesday },
+        { "الأربعاء", DayOfWeek.Wednesday },
+        { "الخميس", DayOfWeek.Thursday },
+        { "الجمعة", DayOfWeek.Friday }
+    };
 }
 
 <!-- Main Content Section -->
@@ -22,23 +37,20 @@
                 </div>
             </div>
 
-            <!-- Week Days -->
+            <!-- Week Days - Include ALL days from database -->
             <div class="card-body p-0">
                 <nav>
                     <div class="nav nav-tabs nav-fill border-0" role="tablist">
                         @foreach (var menu in Model)
                         {
-                            if (menu.Day != "الجمعة" && menu.Day != "السبت")
-                            {
-                                var isActive = menu == Model.FirstOrDefault(m => m.Day != "الجمعة" && m.Day != "السبت") ? "active" : "";
-                                <button class="nav-link @isActive py-3 px-2 px-md-3"
-                                data-bs-toggle="tab"
-                                data-bs-target="#@menu.Day.ToLower()"
-                                type="button"
-                                role="tab">
-                                    @menu.Day
-                                </button>
-                            }
+                            bool isActive = menu == Model.FirstOrDefault();
+                            <button class="nav-link @(isActive ? "active" : "") py-3 px-2 px-md-3"
+                                    data-bs-toggle="tab"
+                                    data-bs-target="#@menu.Day.ToLower()"
+                                    type="button"
+                                    role="tab">
+                                @menu.Day
+                            </button>
                         }
                     </div>
                 </nav>
@@ -47,59 +59,48 @@
             <!-- Meal Times -->
             <div class="card-body border-top text-center">
                 <div class="row g-2 justify-content-center">
-                    @if (restaurant != null && restaurant.ServesBreakfast && restaurant.BreakfastOpenTime.HasValue && restaurant.BreakfastCloseTime.HasValue)
-                    {
-                        <div class="col-auto">
-                            <i class="bi bi-sun text-dark me-1"></i>الإفطار:
-                            @{
-                                string breakfastOpen = FormatTimeSpanToAmPm(restaurant.BreakfastOpenTime.Value);
-                                string breakfastClose = FormatTimeSpanToAmPm(restaurant.BreakfastCloseTime.Value);
-                            }
-                            @breakfastOpen - @breakfastClose
-                        </div>
-                        if (restaurant.ServesLunch || restaurant.ServesDinner)
+                    @{
+                        bool displayDivider = false;
+                        var meals = new[] {
+                    ("breakfast", "الإفطار", "bi-sun"),
+                    ("lunch", "الغداء", "bi-brightness-high"),
+                    ("dinner", "العشاء", "bi-moon")
+                    };
+
+                        foreach (var (mealCode, mealName, mealIcon) in meals)
                         {
-                            <div class="col-auto d-none d-md-block">|</div>
-                        }
-                    }
+                            if (DayServesMeal(currentDayOfWeek, mealCode))
+                            {
+                                var openTime = GetMealOpenTime(currentDayOfWeek, mealCode);
+                                var closeTime = GetMealCloseTime(currentDayOfWeek, mealCode);
 
-                    @if (restaurant != null && restaurant.ServesLunch && restaurant.LunchOpenTime.HasValue && restaurant.LunchCloseTime.HasValue)
-                    {
-                        <div class="col-auto">
-                            <i class="bi bi-brightness-high text-dark me-1"></i>الغداء:
-                            @{
-                                string lunchOpen = FormatTimeSpanToAmPm(restaurant.LunchOpenTime.Value);
-                                string lunchClose = FormatTimeSpanToAmPm(restaurant.LunchCloseTime.Value);
+                                if (openTime.HasValue && closeTime.HasValue)
+                                {
+                                    if (displayDivider)
+                                    {
+                                        <div class="col-auto d-none d-md-block">|</div>
+                                    }
+
+                                    <div class="col-auto">
+                                        <i class="bi @mealIcon text-dark me-1"></i>@mealName:
+                                        @{
+                                            string openTimeFormatted = FormatTimeSpanToAmPm(openTime.Value);
+                                            string closeTimeFormatted = FormatTimeSpanToAmPm(closeTime.Value);
+                                        }
+                                        @openTimeFormatted - @closeTimeFormatted
+                                    </div>
+
+                                    displayDivider = true;
+                                }
                             }
-                            @lunchOpen - @lunchClose
-                        </div>
-                        if (restaurant.ServesDinner)
+                        }
+
+                        if (!displayDivider) // No meal times displayed
                         {
-                            <div class="col-auto d-none d-md-block">|</div>
+                            <div class="col-auto">
+                                <i class="bi bi-info-circle text-dark me-1"></i>معلومات أوقات الوجبات غير متوفرة
+                            </div>
                         }
-                    }
-
-                    @if (restaurant != null && restaurant.ServesDinner && restaurant.DinnerOpenTime.HasValue && restaurant.DinnerCloseTime.HasValue)
-                    {
-                        <div class="col-auto">
-                            <i class="bi bi-moon text-dark me-1"></i>العشاء:
-                            @{
-                                string dinnerOpen = FormatTimeSpanToAmPm(restaurant.DinnerOpenTime.Value);
-                                string dinnerClose = FormatTimeSpanToAmPm(restaurant.DinnerCloseTime.Value);
-                            }
-                            @dinnerOpen - @dinnerClose
-                        </div>
-                    }
-
-                    @if (restaurant == null ||
-                    (!restaurant.ServesBreakfast && !restaurant.ServesLunch && !restaurant.ServesDinner) ||
-                    (restaurant.ServesBreakfast && (!restaurant.BreakfastOpenTime.HasValue || !restaurant.BreakfastCloseTime.HasValue)) &&
-                    (restaurant.ServesLunch && (!restaurant.LunchOpenTime.HasValue || !restaurant.LunchCloseTime.HasValue)) &&
-                    (restaurant.ServesDinner && (!restaurant.DinnerOpenTime.HasValue || !restaurant.DinnerCloseTime.HasValue)))
-                    {
-                        <div class="col-auto">
-                            <i class="bi bi-info-circle text-dark me-1"></i>معلومات أوقات الوجبات غير متوفرة
-                        </div>
                     }
                 </div>
             </div>
@@ -109,8 +110,8 @@
         <div class="tab-content" id="menuContent">
             @foreach (var menu in Model)
             {
-                var isActive = menu == Model.FirstOrDefault(m => m.Day != "الجمعة" && m.Day != "السبت") ? "show active" : "";
-                <div class="tab-pane fade @isActive" id="@menu.Day.ToLower()">
+                bool isActive = menu == Model.FirstOrDefault();
+                <div class="tab-pane fade @(isActive ? "show active" : "")" id="@menu.Day.ToLower()">
                     <div class="row" id="@(menu.Day.ToLower())Menu">
                         @{
                             var mealsByCategory = menu.MenuMeals
@@ -122,9 +123,16 @@
 
                             var categories = new[] { "الإفطار", "الغداء", "العشاء" };
 
+                            // Get the corresponding DayOfWeek for this menu day
+                            DayOfWeek? menuDayOfWeek = null;
+                            if (dayNameMap.ContainsKey(menu.Day))
+                            {
+                                menuDayOfWeek = dayNameMap[menu.Day];
+                            }
+
                             foreach (var category in categories)
                             {
-                                var meals = mealsByCategory.ContainsKey(category)
+                                var categoryMeals = mealsByCategory.ContainsKey(category)
                                 ? mealsByCategory[category]
                                 : new List<KauRestaurant.Models.Meal>();
 
@@ -136,24 +144,31 @@
                                     _ => ("bi-question", "#6c757d")
                                 };
 
+                                string mealType = category switch
+                                {
+                                    "الإفطار" => "breakfast",
+                                    "الغداء" => "lunch",
+                                    "العشاء" => "dinner",
+                                    _ => ""
+                                };
+
                                 var categoryId = $"{menu.Day.ToLower()}{category}";
 
+                                // Check if this meal is served on this day
                                 bool mealDisabled = false;
-                                if (category == "الإفطار" && restaurant != null && !restaurant.ServesBreakfast)
-                                    mealDisabled = true;
-                                else if (category == "الغداء" && restaurant != null && !restaurant.ServesLunch)
-                                    mealDisabled = true;
-                                else if (category == "العشاء" && restaurant != null && !restaurant.ServesDinner)
-                                    mealDisabled = true;
+                                if (menuDayOfWeek.HasValue)
+                                {
+                                    mealDisabled = !DayServesMeal(menuDayOfWeek.Value, mealType);
+                                }
 
                                 <div class="col-12 col-lg-4 mb-3">
                                     <div class="accordion accordion-desktop">
                                         <div class="accordion-item border-0 rounded shadow h-100">
                                             <h2 class="accordion-header">
                                                 <button class="accordion-button collapsed text-white rounded-top @bgColor"
-                                                type="button"
-                                                data-bs-toggle="collapse"
-                                                data-bs-target="#@categoryId">
+                                                        type="button"
+                                                        data-bs-toggle="collapse"
+                                                        data-bs-target="#@categoryId">
                                                     <i class="bi @icon me-2"></i>@category
                                                     @if (mealDisabled)
                                                     {
@@ -172,12 +187,11 @@
                                                             تم إيقاف خدمة @category مؤقتاً من قبل الإدارة
                                                         </div>
                                                     }
-
                                                     else
                                                     {
-                                                        @if (meals.Any())
+                                                        @if (categoryMeals.Any())
                                                         {
-                                                            var mealsByType = meals
+                                                            var mealsByType = categoryMeals
                                                             .GroupBy(m => m.MealType)
                                                             .OrderBy(g => g.Key != "الطبق الرئيسي")
                                                             .ThenBy(g => g.Key != "طبق جانبي")
@@ -288,5 +302,90 @@
 
         // Format with leading zeros for minutes
         return $"{hour}:{time.Minutes:D2} {amPm}";
+    }
+
+    // Helper function to get day-specific meal status
+    private bool DayServesMeal(DayOfWeek day, string mealType)
+    {
+        var restaurantInstance = ViewBag.Restaurant as KauRestaurant.Models.Restaurant;
+        return restaurantInstance?.DoesDayServeMeal(day, mealType) ?? false;
+    }
+
+    private TimeSpan? GetMealOpenTime(DayOfWeek day, string mealType)
+    {
+        var restaurantInstance = ViewBag.Restaurant as KauRestaurant.Models.Restaurant;
+        if (restaurantInstance == null) return null;
+
+        return (day, mealType.ToLower()) switch
+        {
+            (DayOfWeek.Saturday, "breakfast") => restaurantInstance.SaturdayBreakfastOpenTime,
+            (DayOfWeek.Saturday, "lunch") => restaurantInstance.SaturdayLunchOpenTime,
+            (DayOfWeek.Saturday, "dinner") => restaurantInstance.SaturdayDinnerOpenTime,
+
+            (DayOfWeek.Sunday, "breakfast") => restaurantInstance.SundayBreakfastOpenTime,
+            (DayOfWeek.Sunday, "lunch") => restaurantInstance.SundayLunchOpenTime,
+            (DayOfWeek.Sunday, "dinner") => restaurantInstance.SundayDinnerOpenTime,
+
+            (DayOfWeek.Monday, "breakfast") => restaurantInstance.MondayBreakfastOpenTime,
+            (DayOfWeek.Monday, "lunch") => restaurantInstance.MondayLunchOpenTime,
+            (DayOfWeek.Monday, "dinner") => restaurantInstance.MondayDinnerOpenTime,
+
+            (DayOfWeek.Tuesday, "breakfast") => restaurantInstance.TuesdayBreakfastOpenTime,
+            (DayOfWeek.Tuesday, "lunch") => restaurantInstance.TuesdayLunchOpenTime,
+            (DayOfWeek.Tuesday, "dinner") => restaurantInstance.TuesdayDinnerOpenTime,
+
+            (DayOfWeek.Wednesday, "breakfast") => restaurantInstance.WednesdayBreakfastOpenTime,
+            (DayOfWeek.Wednesday, "lunch") => restaurantInstance.WednesdayLunchOpenTime,
+            (DayOfWeek.Wednesday, "dinner") => restaurantInstance.WednesdayDinnerOpenTime,
+
+            (DayOfWeek.Thursday, "breakfast") => restaurantInstance.ThursdayBreakfastOpenTime,
+            (DayOfWeek.Thursday, "lunch") => restaurantInstance.ThursdayLunchOpenTime,
+            (DayOfWeek.Thursday, "dinner") => restaurantInstance.ThursdayDinnerOpenTime,
+
+            (DayOfWeek.Friday, "breakfast") => restaurantInstance.FridayBreakfastOpenTime,
+            (DayOfWeek.Friday, "lunch") => restaurantInstance.FridayLunchOpenTime,
+            (DayOfWeek.Friday, "dinner") => restaurantInstance.FridayDinnerOpenTime,
+
+            _ => null
+        };
+    }
+
+    private TimeSpan? GetMealCloseTime(DayOfWeek day, string mealType)
+    {
+        var restaurantInstance = ViewBag.Restaurant as KauRestaurant.Models.Restaurant;
+        if (restaurantInstance == null) return null;
+
+        return (day, mealType.ToLower()) switch
+        {
+            (DayOfWeek.Saturday, "breakfast") => restaurantInstance.SaturdayBreakfastCloseTime,
+            (DayOfWeek.Saturday, "lunch") => restaurantInstance.SaturdayLunchCloseTime,
+            (DayOfWeek.Saturday, "dinner") => restaurantInstance.SaturdayDinnerCloseTime,
+
+            (DayOfWeek.Sunday, "breakfast") => restaurantInstance.SundayBreakfastCloseTime,
+            (DayOfWeek.Sunday, "lunch") => restaurantInstance.SundayLunchCloseTime,
+            (DayOfWeek.Sunday, "dinner") => restaurantInstance.SundayDinnerCloseTime,
+
+            (DayOfWeek.Monday, "breakfast") => restaurantInstance.MondayBreakfastCloseTime,
+            (DayOfWeek.Monday, "lunch") => restaurantInstance.MondayLunchCloseTime,
+            (DayOfWeek.Monday, "dinner") => restaurantInstance.MondayDinnerCloseTime,
+
+            (DayOfWeek.Tuesday, "breakfast") => restaurantInstance.TuesdayBreakfastCloseTime,
+            (DayOfWeek.Tuesday, "lunch") => restaurantInstance.TuesdayLunchCloseTime,
+            (DayOfWeek.Tuesday, "dinner") => restaurantInstance.TuesdayDinnerCloseTime,
+
+            (DayOfWeek.Wednesday, "breakfast") => restaurantInstance.WednesdayBreakfastCloseTime,
+            (DayOfWeek.Wednesday, "lunch") => restaurantInstance.WednesdayLunchCloseTime,
+            (DayOfWeek.Wednesday, "dinner") => restaurantInstance.WednesdayDinnerCloseTime,
+
+            (DayOfWeek.Thursday, "breakfast") => restaurantInstance.ThursdayBreakfastCloseTime,
+            (DayOfWeek.Thursday, "lunch") => restaurantInstance.ThursdayLunchCloseTime,
+            (DayOfWeek.Thursday, "dinner") => restaurantInstance.ThursdayDinnerCloseTime,
+
+            (DayOfWeek.Friday, "breakfast") => restaurantInstance.FridayBreakfastCloseTime,
+            (DayOfWeek.Friday, "lunch") => restaurantInstance.FridayLunchCloseTime,
+            (DayOfWeek.Friday, "dinner") => restaurantInstance.FridayDinnerCloseTime,
+
+            _ => null
+        };
     }
 }

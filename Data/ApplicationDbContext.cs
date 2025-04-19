@@ -379,7 +379,7 @@ namespace KauRestaurant.Data
                 new MenuMeal { MenuMealID = 34, MenuID = 5, MealID = 20 }
             );
 
-            // Seed Restaurant data
+            // Seed Restaurant data with day-specific meal times
             modelBuilder.Entity<Restaurant>().HasData(
                 new Restaurant
                 {
@@ -391,16 +391,90 @@ namespace KauRestaurant.Data
                     Address = "جامعة الملك عبد العزيز، جدة، المملكة العربية السعودية",
                     PhoneNumber = "+9665********",
                     Email = "restaurant@kau.edu.sa",
-                    BreakfastOpenTime = new TimeSpan(7, 0, 0), // 7:00 AM
-                    BreakfastCloseTime = new TimeSpan(10, 30, 0), // 10:30 AM
-                    ServesBreakfast = true,
-                    LunchOpenTime = new TimeSpan(12, 0, 0), // 12:00 PM
-                    LunchCloseTime = new TimeSpan(15, 0, 0), // 3:00 PM
-                    ServesLunch = true,
-                    DinnerOpenTime = new TimeSpan(18, 0, 0), // 6:00 PM
-                    DinnerCloseTime = new TimeSpan(22, 0, 0), // 10:00 PM
-                    ServesDinner = true,
-                    DaysOpen = "من الأحد إلى الخميس"
+
+                    // Sunday settings
+                    IsSundayOpen = true,
+                    SundayServesBreakfast = true,
+                    SundayBreakfastOpenTime = new TimeSpan(7, 0, 0), // 7:00 AM
+                    SundayBreakfastCloseTime = new TimeSpan(10, 30, 0), // 10:30 AM
+                    SundayServesLunch = true,
+                    SundayLunchOpenTime = new TimeSpan(12, 0, 0), // 12:00 PM
+                    SundayLunchCloseTime = new TimeSpan(15, 0, 0), // 3:00 PM
+                    SundayServesDinner = true,
+                    SundayDinnerOpenTime = new TimeSpan(18, 0, 0), // 6:00 PM
+                    SundayDinnerCloseTime = new TimeSpan(22, 0, 0), // 10:00 PM
+
+                    // Monday settings
+                    IsMondayOpen = true,
+                    MondayServesBreakfast = true,
+                    MondayBreakfastOpenTime = new TimeSpan(7, 0, 0),
+                    MondayBreakfastCloseTime = new TimeSpan(10, 30, 0),
+                    MondayServesLunch = true,
+                    MondayLunchOpenTime = new TimeSpan(12, 0, 0),
+                    MondayLunchCloseTime = new TimeSpan(15, 0, 0),
+                    MondayServesDinner = true,
+                    MondayDinnerOpenTime = new TimeSpan(18, 0, 0),
+                    MondayDinnerCloseTime = new TimeSpan(22, 0, 0),
+
+                    // Tuesday settings
+                    IsTuesdayOpen = true,
+                    TuesdayServesBreakfast = true,
+                    TuesdayBreakfastOpenTime = new TimeSpan(7, 0, 0),
+                    TuesdayBreakfastCloseTime = new TimeSpan(10, 30, 0),
+                    TuesdayServesLunch = true,
+                    TuesdayLunchOpenTime = new TimeSpan(12, 0, 0),
+                    TuesdayLunchCloseTime = new TimeSpan(15, 0, 0),
+                    TuesdayServesDinner = true,
+                    TuesdayDinnerOpenTime = new TimeSpan(18, 0, 0),
+                    TuesdayDinnerCloseTime = new TimeSpan(22, 0, 0),
+
+                    // Wednesday settings
+                    IsWednesdayOpen = true,
+                    WednesdayServesBreakfast = true,
+                    WednesdayBreakfastOpenTime = new TimeSpan(7, 0, 0),
+                    WednesdayBreakfastCloseTime = new TimeSpan(10, 30, 0),
+                    WednesdayServesLunch = true,
+                    WednesdayLunchOpenTime = new TimeSpan(12, 0, 0),
+                    WednesdayLunchCloseTime = new TimeSpan(15, 0, 0),
+                    WednesdayServesDinner = true,
+                    WednesdayDinnerOpenTime = new TimeSpan(18, 0, 0),
+                    WednesdayDinnerCloseTime = new TimeSpan(22, 0, 0),
+
+                    // Thursday settings
+                    IsThursdayOpen = true,
+                    ThursdayServesBreakfast = true,
+                    ThursdayBreakfastOpenTime = new TimeSpan(7, 0, 0),
+                    ThursdayBreakfastCloseTime = new TimeSpan(10, 30, 0),
+                    ThursdayServesLunch = true,
+                    ThursdayLunchOpenTime = new TimeSpan(12, 0, 0),
+                    ThursdayLunchCloseTime = new TimeSpan(15, 0, 0),
+                    ThursdayServesDinner = true,
+                    ThursdayDinnerOpenTime = new TimeSpan(18, 0, 0),
+                    ThursdayDinnerCloseTime = new TimeSpan(22, 0, 0),
+
+                    // Friday settings
+                    IsFridayOpen = true,
+                    FridayServesBreakfast = true,
+                    FridayBreakfastOpenTime = new TimeSpan(7, 0, 0),
+                    FridayBreakfastCloseTime = new TimeSpan(10, 30, 0),
+                    FridayServesLunch = true,
+                    FridayLunchOpenTime = new TimeSpan(7, 0, 0),
+                    FridayLunchCloseTime = new TimeSpan(10, 30, 0),
+                    FridayServesDinner = true,
+                    FridayDinnerOpenTime = new TimeSpan(7, 0, 0),
+                    FridayDinnerCloseTime = new TimeSpan(10, 30, 0),
+
+                    // Saturday settings
+                    IsSaturdayOpen = true,
+                    SaturdayServesBreakfast = true,
+                    SaturdayBreakfastOpenTime = new TimeSpan(7, 0, 0),
+                    SaturdayBreakfastCloseTime = new TimeSpan(10, 30, 0),
+                    SaturdayServesLunch = true,
+                    SaturdayLunchOpenTime = new TimeSpan(7, 0, 0),
+                    SaturdayLunchCloseTime = new TimeSpan(10, 30, 0),
+                    SaturdayServesDinner = true,
+                    SaturdayDinnerOpenTime = new TimeSpan(7, 0, 0),
+                    SaturdayDinnerCloseTime = new TimeSpan(10, 30, 0)
                 }
             );
 

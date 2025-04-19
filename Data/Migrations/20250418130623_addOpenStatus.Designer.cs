@@ -4,6 +4,7 @@ using KauRestaurant.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KauRestaurant.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250418130623_addOpenStatus")]
+    partial class addOpenStatus
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -848,62 +851,34 @@ namespace KauRestaurant.Data.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
+                    b.Property<TimeSpan?>("BreakfastCloseTime")
+                        .HasColumnType("time");
+
+                    b.Property<TimeSpan?>("BreakfastOpenTime")
+                        .HasColumnType("time");
+
+                    b.Property<string>("DaysOpen")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
+
+                    b.Property<TimeSpan?>("DinnerCloseTime")
+                        .HasColumnType("time");
+
+                    b.Property<TimeSpan?>("DinnerOpenTime")
+                        .HasColumnType("time");
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<TimeSpan?>("FridayBreakfastCloseTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("FridayBreakfastOpenTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("FridayDinnerCloseTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("FridayDinnerOpenTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("FridayLunchCloseTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("FridayLunchOpenTime")
-                        .HasColumnType("time");
-
-                    b.Property<bool>("FridayServesBreakfast")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("FridayServesDinner")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("FridayServesLunch")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsFridayOpen")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsMondayOpen")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsSaturdayOpen")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsSundayOpen")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsThursdayOpen")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsTuesdayOpen")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsWednesdayOpen")
+                    b.Property<bool>("IsOpen")
                         .HasColumnType("bit");
 
                     b.Property<string>("LocationUrl")
@@ -911,32 +886,11 @@ namespace KauRestaurant.Data.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<TimeSpan?>("MondayBreakfastCloseTime")
+                    b.Property<TimeSpan?>("LunchCloseTime")
                         .HasColumnType("time");
 
-                    b.Property<TimeSpan?>("MondayBreakfastOpenTime")
+                    b.Property<TimeSpan?>("LunchOpenTime")
                         .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("MondayDinnerCloseTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("MondayDinnerOpenTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("MondayLunchCloseTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("MondayLunchOpenTime")
-                        .HasColumnType("time");
-
-                    b.Property<bool>("MondayServesBreakfast")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("MondayServesDinner")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("MondayServesLunch")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -953,139 +907,13 @@ namespace KauRestaurant.Data.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<TimeSpan?>("SaturdayBreakfastCloseTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("SaturdayBreakfastOpenTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("SaturdayDinnerCloseTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("SaturdayDinnerOpenTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("SaturdayLunchCloseTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("SaturdayLunchOpenTime")
-                        .HasColumnType("time");
-
-                    b.Property<bool>("SaturdayServesBreakfast")
+                    b.Property<bool>("ServesBreakfast")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("SaturdayServesDinner")
+                    b.Property<bool>("ServesDinner")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("SaturdayServesLunch")
-                        .HasColumnType("bit");
-
-                    b.Property<TimeSpan?>("SundayBreakfastCloseTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("SundayBreakfastOpenTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("SundayDinnerCloseTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("SundayDinnerOpenTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("SundayLunchCloseTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("SundayLunchOpenTime")
-                        .HasColumnType("time");
-
-                    b.Property<bool>("SundayServesBreakfast")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("SundayServesDinner")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("SundayServesLunch")
-                        .HasColumnType("bit");
-
-                    b.Property<TimeSpan?>("ThursdayBreakfastCloseTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("ThursdayBreakfastOpenTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("ThursdayDinnerCloseTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("ThursdayDinnerOpenTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("ThursdayLunchCloseTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("ThursdayLunchOpenTime")
-                        .HasColumnType("time");
-
-                    b.Property<bool>("ThursdayServesBreakfast")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("ThursdayServesDinner")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("ThursdayServesLunch")
-                        .HasColumnType("bit");
-
-                    b.Property<TimeSpan?>("TuesdayBreakfastCloseTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("TuesdayBreakfastOpenTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("TuesdayDinnerCloseTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("TuesdayDinnerOpenTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("TuesdayLunchCloseTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("TuesdayLunchOpenTime")
-                        .HasColumnType("time");
-
-                    b.Property<bool>("TuesdayServesBreakfast")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("TuesdayServesDinner")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("TuesdayServesLunch")
-                        .HasColumnType("bit");
-
-                    b.Property<TimeSpan?>("WednesdayBreakfastCloseTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("WednesdayBreakfastOpenTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("WednesdayDinnerCloseTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("WednesdayDinnerOpenTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("WednesdayLunchCloseTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("WednesdayLunchOpenTime")
-                        .HasColumnType("time");
-
-                    b.Property<bool>("WednesdayServesBreakfast")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("WednesdayServesDinner")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("WednesdayServesLunch")
+                    b.Property<bool>("ServesLunch")
                         .HasColumnType("bit");
 
                     b.HasKey("RestaurantID");
@@ -1097,82 +925,23 @@ namespace KauRestaurant.Data.Migrations
                         {
                             RestaurantID = 1,
                             Address = "جامعة الملك عبد العزيز، جدة، المملكة العربية السعودية",
+                            BreakfastCloseTime = new TimeSpan(0, 10, 30, 0, 0),
+                            BreakfastOpenTime = new TimeSpan(0, 7, 0, 0, 0),
+                            DaysOpen = "من الأحد إلى الخميس",
                             Description = "في المطعم الجامعي الرسمي لجامعة الملك عبد العزيز، نقدم وجبات طازجة وعالية الجودة للطلاب وأعضاء هيئة التدريس. نحرص على تقديم أطباق متنوعة ومغذية في بيئة نظيفة ومرحبة.",
+                            DinnerCloseTime = new TimeSpan(0, 22, 0, 0, 0),
+                            DinnerOpenTime = new TimeSpan(0, 18, 0, 0, 0),
                             Email = "restaurant@kau.edu.sa",
-                            FridayBreakfastCloseTime = new TimeSpan(0, 10, 30, 0, 0),
-                            FridayBreakfastOpenTime = new TimeSpan(0, 7, 0, 0, 0),
-                            FridayDinnerCloseTime = new TimeSpan(0, 10, 30, 0, 0),
-                            FridayDinnerOpenTime = new TimeSpan(0, 7, 0, 0, 0),
-                            FridayLunchCloseTime = new TimeSpan(0, 10, 30, 0, 0),
-                            FridayLunchOpenTime = new TimeSpan(0, 7, 0, 0, 0),
-                            FridayServesBreakfast = true,
-                            FridayServesDinner = true,
-                            FridayServesLunch = true,
-                            IsFridayOpen = true,
-                            IsMondayOpen = true,
-                            IsSaturdayOpen = true,
-                            IsSundayOpen = true,
-                            IsThursdayOpen = true,
-                            IsTuesdayOpen = true,
-                            IsWednesdayOpen = true,
+                            IsOpen = true,
                             LocationUrl = "https://maps.app.goo.gl/KFBdpmH7E88Lzvy49",
-                            MondayBreakfastCloseTime = new TimeSpan(0, 10, 30, 0, 0),
-                            MondayBreakfastOpenTime = new TimeSpan(0, 7, 0, 0, 0),
-                            MondayDinnerCloseTime = new TimeSpan(0, 22, 0, 0, 0),
-                            MondayDinnerOpenTime = new TimeSpan(0, 18, 0, 0, 0),
-                            MondayLunchCloseTime = new TimeSpan(0, 15, 0, 0, 0),
-                            MondayLunchOpenTime = new TimeSpan(0, 12, 0, 0, 0),
-                            MondayServesBreakfast = true,
-                            MondayServesDinner = true,
-                            MondayServesLunch = true,
+                            LunchCloseTime = new TimeSpan(0, 15, 0, 0, 0),
+                            LunchOpenTime = new TimeSpan(0, 12, 0, 0, 0),
                             Name = "مطعم جامعة الملك عبدالعزيز",
                             PhoneNumber = "+9665********",
                             PhotoPath = "/images/restaurant.png",
-                            SaturdayBreakfastCloseTime = new TimeSpan(0, 10, 30, 0, 0),
-                            SaturdayBreakfastOpenTime = new TimeSpan(0, 7, 0, 0, 0),
-                            SaturdayDinnerCloseTime = new TimeSpan(0, 10, 30, 0, 0),
-                            SaturdayDinnerOpenTime = new TimeSpan(0, 7, 0, 0, 0),
-                            SaturdayLunchCloseTime = new TimeSpan(0, 10, 30, 0, 0),
-                            SaturdayLunchOpenTime = new TimeSpan(0, 7, 0, 0, 0),
-                            SaturdayServesBreakfast = true,
-                            SaturdayServesDinner = true,
-                            SaturdayServesLunch = true,
-                            SundayBreakfastCloseTime = new TimeSpan(0, 10, 30, 0, 0),
-                            SundayBreakfastOpenTime = new TimeSpan(0, 7, 0, 0, 0),
-                            SundayDinnerCloseTime = new TimeSpan(0, 22, 0, 0, 0),
-                            SundayDinnerOpenTime = new TimeSpan(0, 18, 0, 0, 0),
-                            SundayLunchCloseTime = new TimeSpan(0, 15, 0, 0, 0),
-                            SundayLunchOpenTime = new TimeSpan(0, 12, 0, 0, 0),
-                            SundayServesBreakfast = true,
-                            SundayServesDinner = true,
-                            SundayServesLunch = true,
-                            ThursdayBreakfastCloseTime = new TimeSpan(0, 10, 30, 0, 0),
-                            ThursdayBreakfastOpenTime = new TimeSpan(0, 7, 0, 0, 0),
-                            ThursdayDinnerCloseTime = new TimeSpan(0, 22, 0, 0, 0),
-                            ThursdayDinnerOpenTime = new TimeSpan(0, 18, 0, 0, 0),
-                            ThursdayLunchCloseTime = new TimeSpan(0, 15, 0, 0, 0),
-                            ThursdayLunchOpenTime = new TimeSpan(0, 12, 0, 0, 0),
-                            ThursdayServesBreakfast = true,
-                            ThursdayServesDinner = true,
-                            ThursdayServesLunch = true,
-                            TuesdayBreakfastCloseTime = new TimeSpan(0, 10, 30, 0, 0),
-                            TuesdayBreakfastOpenTime = new TimeSpan(0, 7, 0, 0, 0),
-                            TuesdayDinnerCloseTime = new TimeSpan(0, 22, 0, 0, 0),
-                            TuesdayDinnerOpenTime = new TimeSpan(0, 18, 0, 0, 0),
-                            TuesdayLunchCloseTime = new TimeSpan(0, 15, 0, 0, 0),
-                            TuesdayLunchOpenTime = new TimeSpan(0, 12, 0, 0, 0),
-                            TuesdayServesBreakfast = true,
-                            TuesdayServesDinner = true,
-                            TuesdayServesLunch = true,
-                            WednesdayBreakfastCloseTime = new TimeSpan(0, 10, 30, 0, 0),
-                            WednesdayBreakfastOpenTime = new TimeSpan(0, 7, 0, 0, 0),
-                            WednesdayDinnerCloseTime = new TimeSpan(0, 22, 0, 0, 0),
-                            WednesdayDinnerOpenTime = new TimeSpan(0, 18, 0, 0, 0),
-                            WednesdayLunchCloseTime = new TimeSpan(0, 15, 0, 0, 0),
-                            WednesdayLunchOpenTime = new TimeSpan(0, 12, 0, 0, 0),
-                            WednesdayServesBreakfast = true,
-                            WednesdayServesDinner = true,
-                            WednesdayServesLunch = true
+                            ServesBreakfast = true,
+                            ServesDinner = true,
+                            ServesLunch = true
                         });
                 });
 

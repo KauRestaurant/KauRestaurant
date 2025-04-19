@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
 using System.Threading.Tasks;
@@ -16,11 +17,16 @@ namespace KauRestaurant.Controllers.Admin
     {
         private readonly ApplicationDbContext _context;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly ILogger<RestaurantInfoManagementController> _logger;
 
-        public RestaurantInfoManagementController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
+        public RestaurantInfoManagementController(
+            ApplicationDbContext context,
+            IWebHostEnvironment webHostEnvironment,
+            ILogger<RestaurantInfoManagementController> logger)
         {
             _context = context;
             _webHostEnvironment = webHostEnvironment;
+            _logger = logger;
         }
 
         public async Task<IActionResult> Index()
@@ -39,57 +45,97 @@ namespace KauRestaurant.Controllers.Admin
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Update(Restaurant model, IFormFile photo)
+        public async Task<IActionResult> Update(IFormCollection form, IFormFile photo)
         {
-            var restaurant = await _context.Restaurants.FirstOrDefaultAsync();
-
-            if (restaurant == null)
+            try
             {
-                restaurant = new Restaurant();
-                _context.Add(restaurant);
-            }
-
-            // Copy all properties
-            restaurant.Name = model.Name;
-            restaurant.Description = model.Description;
-            restaurant.Address = model.Address;
-            restaurant.PhoneNumber = model.PhoneNumber;
-            restaurant.Email = model.Email;
-            restaurant.LocationUrl = model.LocationUrl;
-            restaurant.DaysOpen = model.DaysOpen;
-
-            // Copy meal times
-            restaurant.ServesBreakfast = model.ServesBreakfast;
-            restaurant.BreakfastOpenTime = model.ServesBreakfast ? model.BreakfastOpenTime : null;
-            restaurant.BreakfastCloseTime = model.ServesBreakfast ? model.BreakfastCloseTime : null;
-
-            restaurant.ServesLunch = model.ServesLunch;
-            restaurant.LunchOpenTime = model.ServesLunch ? model.LunchOpenTime : null;
-            restaurant.LunchCloseTime = model.ServesLunch ? model.LunchCloseTime : null;
-
-            restaurant.ServesDinner = model.ServesDinner;
-            restaurant.DinnerOpenTime = model.ServesDinner ? model.DinnerOpenTime : null;
-            restaurant.DinnerCloseTime = model.ServesDinner ? model.DinnerCloseTime : null;
-
-            // Handle photo
-            if (photo != null && photo.Length > 0)
-            {
-                string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images", "restaurant");
-                Directory.CreateDirectory(uploadsFolder);
-
-                string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(photo.FileName);
-                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                // Get the restaurant or create one if it doesn't exist
+                var restaurant = await _context.Restaurants.FirstOrDefaultAsync();
+                if (restaurant == null)
                 {
-                    await photo.CopyToAsync(fileStream);
+                    restaurant = new Restaurant();
+                    _context.Add(restaurant);
                 }
 
-                restaurant.PhotoPath = $"/images/restaurant/{uniqueFileName}";
-            }
+                // Copy basic information from form
+                restaurant.Name = form["Name"];
+                restaurant.Description = form["Description"];
+                restaurant.Address = form["Address"];
+                restaurant.PhoneNumber = form["PhoneNumber"];
+                restaurant.Email = form["Email"];
+                restaurant.LocationUrl = form["LocationUrl"];
 
-            await _context.SaveChangesAsync();
-            TempData["SuccessMessage"] = "تم حفظ معلومات المطعم بنجاح";
+                // Process each day's settings
+                string[] days = { "Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday" };
+                string[] meals = { "Breakfast", "Lunch", "Dinner" };
+
+                foreach (var day in days)
+                {
+                    // Set the day's open status
+                    bool isDayOpen = form.Keys.Contains($"Is{day}Open");
+                    typeof(Restaurant).GetProperty($"Is{day}Open").SetValue(restaurant, isDayOpen);
+
+                    foreach (var meal in meals)
+                    {
+                        // Set meal served status
+                        bool servesMeal = form.Keys.Contains($"{day}Serves{meal}");
+                        var servesMealProp = typeof(Restaurant).GetProperty($"{day}Serves{meal}");
+                        if (servesMealProp != null)
+                        {
+                            servesMealProp.SetValue(restaurant, servesMeal);
+                        }
+
+                        // Handle open time
+                        var openTimePropName = $"{day}{meal}OpenTime";
+                        var openTimeProp = typeof(Restaurant).GetProperty(openTimePropName);
+
+                        if (form.Keys.Contains(openTimePropName) && !string.IsNullOrEmpty(form[openTimePropName]))
+                        {
+                            if (TimeSpan.TryParse(form[openTimePropName], out TimeSpan openTime))
+                            {
+                                openTimeProp?.SetValue(restaurant, openTime);
+                            }
+                        }
+
+                        // Handle close time
+                        var closeTimePropName = $"{day}{meal}CloseTime";
+                        var closeTimeProp = typeof(Restaurant).GetProperty(closeTimePropName);
+
+                        if (form.Keys.Contains(closeTimePropName) && !string.IsNullOrEmpty(form[closeTimePropName]))
+                        {
+                            if (TimeSpan.TryParse(form[closeTimePropName], out TimeSpan closeTime))
+                            {
+                                closeTimeProp?.SetValue(restaurant, closeTime);
+                            }
+                        }
+                    }
+                }
+
+                // Handle photo
+                if (photo != null && photo.Length > 0)
+                {
+                    string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images", "restaurant");
+                    Directory.CreateDirectory(uploadsFolder);
+
+                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(photo.FileName);
+                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await photo.CopyToAsync(fileStream);
+                    }
+
+                    restaurant.PhotoPath = $"/images/restaurant/{uniqueFileName}";
+                }
+
+                await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "تم حفظ معلومات المطعم بنجاح";
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error updating restaurant information");
+                TempData["InfoMessage"] = "حدث خطأ أثناء حفظ المعلومات. يرجى المحاولة مرة أخرى.";
+            }
 
             return RedirectToAction("Index");
         }

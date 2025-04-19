@@ -239,6 +239,14 @@ namespace KauRestaurant.Controllers.Admin
                 return RedirectToAction(nameof(Index));
             }
 
+            // Check if email is already in use
+            var existingUser = await _userManager.FindByEmailAsync(model.Email);
+            if (existingUser != null)
+            {
+                TempData["ErrorMessage"] = "البريد الإلكتروني مستخدم بالفعل";
+                return RedirectToAction(nameof(Index));
+            }
+
             if (ModelState.IsValid)
             {
                 var user = new KauRestaurantUser

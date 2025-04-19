@@ -2,6 +2,34 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     ViewData["Title"] = "إدارة معلومات المطعم";
+    var currentDay = DateTime.Now.DayOfWeek;
+
+    // Helper function to get day name in Arabic - matching RestaurantInfo.cshtml
+    string GetArabicDayName(DayOfWeek day) => day switch
+    {
+        DayOfWeek.Saturday => "السبت",
+        DayOfWeek.Sunday => "الأحد",
+        DayOfWeek.Monday => "الاثنين",
+        DayOfWeek.Tuesday => "الثلاثاء",
+        DayOfWeek.Wednesday => "الأربعاء",
+        DayOfWeek.Thursday => "الخميس",
+        DayOfWeek.Friday => "الجمعة",
+        _ => ""
+    };
+
+    // Array of all days for easier iteration - matching RestaurantInfo.cshtml
+    var daysOfWeek = new[]
+    {
+        DayOfWeek.Saturday, DayOfWeek.Sunday, DayOfWeek.Monday,
+        DayOfWeek.Tuesday, DayOfWeek.Wednesday, DayOfWeek.Thursday, DayOfWeek.Friday
+    };
+
+    // Define meals array outside the loop for consistency
+    var meals = new[] {
+        ("الفطور", "Breakfast", "bg-breakfast"),
+        ("الغداء", "Lunch", "bg-lunch"),
+        ("العشاء", "Dinner", "bg-dinner")
+    };
 }
 
 <!-- Main Content Section -->
@@ -36,7 +64,7 @@
                             <h5 class="border-bottom pb-2 mb-3">المعلومات الأساسية</h5>
 
                             <div class="mb-3">
-                                <label asp-for="Name" class="form-label fw-bold">اسم المطعم <span class="text-danger">*</span></label>
+                                <label asp-for="Name" class="form-label fw-bold">اسم المطعم</label>
                                 <input asp-for="Name" class="form-control" />
                                 <span asp-validation-for="Name" class="text-danger"></span>
                             </div>
@@ -92,93 +120,99 @@
                         <div class="col-lg-6 mb-3">
                             <h5 class="border-bottom pb-2 mb-3">أوقات العمل والوجبات</h5>
 
+                            <!-- Day Dropdown Menu and Toggle Button in the same line -->
                             <div class="mb-3">
-                                <label asp-for="DaysOpen" class="form-label fw-bold">أيام العمل</label>
-                                <input asp-for="DaysOpen" class="form-control" placeholder="مثال: السبت,الأحد,الاثنين,الثلاثاء,الأربعاء" />
-                                <span asp-validation-for="DaysOpen" class="text-danger"></span>
+                                <label class="form-label fw-bold mb-1">اختر اليوم</label>
+                                <div class="row align-items-center">
+                                    <div class="col-6">
+                                        <select id="daySelector" class="form-select">
+                                            @foreach (var day in daysOfWeek)
+                                            {
+                                                string dayId = day.ToString().ToLower();
+                                                string dayName = GetArabicDayName(day);
+                                                bool isActive = day == currentDay;
+
+                                                <option value="@dayId">@dayName</option>
+                                            }
+                                        </select>
+                                    </div>
+                                    <div id="toggleContainer" class="col-6 d-flex justify-content-end">
+                                        <!-- Toggle will be inserted here by JS -->
+                                    </div>
+                                </div>
                             </div>
 
-                            <div class="mx-2">
-                                <div class="mb-3">
-                                    <div class="card h-100">
-                                        <div class="card-header text-white bg-breakfast">
-                                            <div class="form-check">
-                                                <input asp-for="ServesBreakfast" class="form-check-input" type="checkbox" id="servesBreakfastTop" />
-                                                <label class="form-check-label fw-bold text-white" for="servesBreakfastTop">
-                                                    الفطور
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="mb-3">
-                                                <label asp-for="BreakfastOpenTime" class="form-label">وقت بدء الفطور</label>
-                                                <input asp-for="BreakfastOpenTime" class="form-control breakfast-time-top" type="time" />
-                                                <span asp-validation-for="BreakfastOpenTime" class="text-danger"></span>
-                                                <div class="text-danger meal-time-error breakfast-error" style="display:none">وقت بدء الفطور مطلوب</div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label asp-for="BreakfastCloseTime" class="form-label">وقت انتهاء الفطور</label>
-                                                <input asp-for="BreakfastCloseTime" class="form-control breakfast-time-top" type="time" />
-                                                <span asp-validation-for="BreakfastCloseTime" class="text-danger"></span>
-                                                <div class="text-danger meal-time-error breakfast-error" style="display:none">وقت انتهاء الفطور مطلوب</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                            <!-- Day Content Panels -->
+                            <div id="dayContentPanels">
+                                @foreach (var day in daysOfWeek)
+                                {
+                                    bool isOpen = Model.IsDayOpen(day);
+                                    bool isActive = day == currentDay;
+                                    string dayId = day.ToString().ToLower();
+                                    string dayName = GetArabicDayName(day);
+                                    string dayCode = day.ToString(); // For form field names
 
-                                <div class="mb-3">
-                                    <div class="card h-100">
-                                        <div class="card-header text-white bg-lunch">
-                                            <div class="form-check">
-                                                <input asp-for="ServesLunch" class="form-check-input" type="checkbox" id="servesLunchTop" />
-                                                <label class="form-check-label fw-bold text-white" for="servesLunchTop">
-                                                    الغداء
+                                    <div class="day-panel" id="@dayId-panel" style="display: @(isActive ? "block" : "none")">
+                                        <!-- Hidden toggle button that will be moved via JS -->
+                                        <div class="toggle-source d-none">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input day-toggle" type="checkbox" role="switch"
+                                                       name="Is@(dayCode)Open"
+                                                       id="is@(dayCode)Open"
+                                                       data-day="@dayCode"
+                                                       @(isOpen ? "checked" : "") />
+                                                <label class="form-check-label fw-bold" for="is@(dayCode)Open">
+                                                    <span class="text-muted">(فتح/إغلاق)</span>
                                                 </label>
                                             </div>
                                         </div>
-                                        <div class="card-body">
-                                            <div class="mb-3">
-                                                <label asp-for="LunchOpenTime" class="form-label">وقت بدء الغداء</label>
-                                                <input asp-for="LunchOpenTime" class="form-control lunch-time-top" type="time" />
-                                                <span asp-validation-for="LunchOpenTime" class="text-danger"></span>
-                                                <div class="text-danger meal-time-error lunch-error" style="display:none">وقت بدء الغداء مطلوب</div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label asp-for="LunchCloseTime" class="form-label">وقت انتهاء الغداء</label>
-                                                <input asp-for="LunchCloseTime" class="form-control lunch-time-top" type="time" />
-                                                <span asp-validation-for="LunchCloseTime" class="text-danger"></span>
-                                                <div class="text-danger meal-time-error lunch-error" style="display:none">وقت انتهاء الغداء مطلوب</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
 
-                                <div class="mb-3">
-                                    <div class="card h-100">
-                                        <div class="card-header text-white bg-dinner">
-                                            <div class="form-check">
-                                                <input asp-for="ServesDinner" class="form-check-input" type="checkbox" id="servesDinnerTop" />
-                                                <label class="form-check-label fw-bold text-white" for="servesDinnerTop">
-                                                    العشاء
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="mb-3">
-                                                <label asp-for="DinnerOpenTime" class="form-label">وقت بدء العشاء</label>
-                                                <input asp-for="DinnerOpenTime" class="form-control dinner-time-top" type="time" />
-                                                <span asp-validation-for="DinnerOpenTime" class="text-danger"></span>
-                                                <div class="text-danger meal-time-error dinner-error" style="display:none">وقت بدء العشاء مطلوب</div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label asp-for="DinnerCloseTime" class="form-label">وقت انتهاء العشاء</label>
-                                                <input asp-for="DinnerCloseTime" class="form-control dinner-time-top" type="time" />
-                                                <span asp-validation-for="DinnerCloseTime" class="text-danger"></span>
-                                                <div class="text-danger meal-time-error dinner-error" style="display:none">وقت انتهاء العشاء مطلوب</div>
-                                            </div>
+                                        <!-- Meal Time Cards -->
+                                        <div class="day-content" data-day="@dayCode">
+                                            @foreach (var (mealName, mealCode, bgColor) in meals)
+                                            {
+                                                bool servesThisMeal = Model.DoesDayServeMeal(day, mealCode);
+
+                                                <div class="card mb-3">
+                                                    <div class="card-header text-white @bgColor">
+                                                        <div class="form-check">
+                                                            <!-- Meal toggle -->
+                                                            <input class="form-check-input meal-toggle" type="checkbox"
+                                                                   name="@(dayCode)Serves@(mealCode)"
+                                                                   id="@(dayCode)Serves@(mealCode)"
+                                                                   data-day="@dayCode"
+                                                                   data-meal="@mealCode"
+                                                                   @(servesThisMeal ? "checked" : "") />
+                                                            <label class="form-check-label fw-bold text-white" for="@(dayCode)Serves@(mealCode)">
+                                                                @mealName
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <div class="mb-3">
+                                                            <label class="form-label">وقت البدء <span class="required-indicator text-danger d-none">*</span></label>
+                                                            <!-- Open time -->
+                                                            <input name="@(dayCode)@(mealCode)OpenTime"
+                                                                   class="form-control @(dayCode.ToLower())-@(mealCode.ToLower())-time"
+                                                                   type="time"
+                                                                   value="@(Model.GetMealOpenTime(dayCode, mealCode)?.ToString(@"hh\:mm") ?? "")" />
+                                                            <div class="text-danger meal-time-error" style="display:none">وقت البدء مطلوب</div>
+                                                        </div>
+                                                        <div class="mb-0">
+                                                            <label class="form-label">وقت الإنتهاء <span class="required-indicator text-danger d-none">*</span></label>
+                                                            <!-- Close time -->
+                                                            <input name="@(dayCode)@(mealCode)CloseTime"
+                                                                   class="form-control @(dayCode.ToLower())-@(mealCode.ToLower())-time"
+                                                                   type="time"
+                                                                   value="@(Model.GetMealCloseTime(dayCode, mealCode)?.ToString(@"hh\:mm") ?? "")" />
+                                                            <div class="text-danger meal-time-error" style="display:none">وقت الإنتهاء مطلوب</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
                                         </div>
                                     </div>
-                                </div>
+                                }
                             </div>
                         </div>
                     </div>

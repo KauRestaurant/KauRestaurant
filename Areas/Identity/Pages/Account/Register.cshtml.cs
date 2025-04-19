@@ -73,14 +73,14 @@ namespace KauRestaurant.Areas.Identity.Pages.Account
         {
             [Required(ErrorMessage = "الاسم الأول مطلوب")]
             [StringLength(50, ErrorMessage = "الاسم الأول يجب أن يكون بين {2} و {1} حرفاً", MinimumLength = 2)]
-            [RegularExpression(@"^[\u0600-\u06FF\s]{2,50}$", ErrorMessage = "الاسم الأول يجب أن يحتوي على حروف عربية فقط")]
+            [RegularExpression(@"^[a-zA-Zأ-يءئؤلإآ\s]*$", ErrorMessage = "الاسم الأول يجب أن يحتوي على أحرف فقط")]
             [Display(Name = "الاسم الأول")]
             public string FirstName { get; set; }
 
             [Required(ErrorMessage = "اسم العائلة مطلوب")]
             [StringLength(50, ErrorMessage = "اسم العائلة يجب أن يكون بين {2} و {1} حرفاً", MinimumLength = 2)]
-            [RegularExpression(@"^[\u0600-\u06FF\s]{2,50}$", ErrorMessage = "اسم العائلة يجب أن يحتوي على حروف عربية فقط")]
-            [Display(Name = "اسم العائلة")]
+            [RegularExpression(@"^[a-zA-Zأ-يءئؤلإآ\s]*$", ErrorMessage = "الاسم الأخير يجب أن يحتوي على أحرف فقط")]
+            [Display(Name = "الاسم الأخير")]
             public string LastName { get; set; }
 
             [Required(ErrorMessage = "البريد الإلكتروني مطلوب")]

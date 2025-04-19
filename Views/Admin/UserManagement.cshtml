@@ -203,16 +203,15 @@
                                             </button>
 
                                             <!-- Delete User Button -->
-                                            <form method="post" asp-action="DeleteUser" class="d-inline"
-                                                  onsubmit="return confirm('هل أنت متأكد من حذف هذا المشرف؟ لا يمكن التراجع عن هذا الإجراء.');">
-                                                <input type="hidden" name="userId" value="@user.Id" />
-                                                <button type="submit" class="btn btn-sm btn-danger"
-                                                @(User.Identity.Name == user.Email ? "disabled" : "")
-                                                        data-bs-toggle="tooltip"
-                                                        title="@(User.Identity.Name == user.Email ? "لا يمكنك حذف حسابك الحالي" : "حذف المشرف")">
-                                                    <i class="bi bi-trash"></i>
-                                                </button>
-                                            </form>
+                                            <button type="button" class="btn btn-sm btn-danger btn-delete-user"
+                                                    data-user-id="@user.Id"
+                                                    data-user-name="@user.FirstName @user.LastName"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#deleteUserModal"
+                                            @(User.Identity.Name == user.Email ? "disabled" : "")
+                                                    title="@(User.Identity.Name == user.Email ? "لا يمكنك حذف حسابك الحالي" : "حذف المشرف")">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
                                         </div>
                                     </td>
                                     <td>
@@ -241,16 +240,16 @@
                                             </button>
 
                                             <!-- Delete User Button -->
-                                            <form method="post" asp-action="DeleteUser" class="d-inline"
-                                                  onsubmit="return confirm('هل أنت متأكد من حذف هذا المشرف؟ لا يمكن التراجع عن هذا الإجراء.');">
-                                                <input type="hidden" name="userId" value="@user.Id" />
-                                                <button type="submit" class="btn btn-sm btn-danger"
-                                                @(User.Identity.Name == user.Email ? "disabled" : "")
-                                                        data-bs-toggle="tooltip"
-                                                        title="@(User.Identity.Name == user.Email ? "لا يمكنك حذف حسابك الحالي" : "حذف المشرف")">
-                                                    <i class="bi bi-trash"></i>
-                                                </button>
-                                            </form>
+                                            <button type="button" class="btn btn-sm btn-danger btn-delete-user"
+                                                    data-user-id="@user.Id"
+                                                    data-user-name="@user.FirstName @user.LastName"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#deleteUserModal"
+                                            @(User.Identity.Name == user.Email ? "disabled" : "")
+                                                    title="@(User.Identity.Name == user.Email ? "لا يمكنك حذف حسابك الحالي" : "حذف المشرف")">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+
                                         </div>
                                     </td>
                                 </tr>
@@ -271,8 +270,8 @@
                 <h5 class="modal-title" id="editUserModalLabel">تعديل بيانات المشرف</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <form id="editUserForm" method="post" asp-action="UpdateUser">
+            <form id="editUserForm" method="post" asp-action="UpdateUser">
+                <div class="modal-body">
                     <input type="hidden" id="editUserId" name="userId">
 
                     <!-- Personal Information Tab -->
@@ -339,17 +338,12 @@
                             <span class="text-danger field-validation-valid" data-valmsg-for="newRole" data-valmsg-replace="true"></span>
                         </div>
                     </div>
-
-                    <div class="d-grid gap-2">
-                        <button type="submit" class="btn btn-success">
-                            <i class="bi bi-check-lg me-2"></i>حفظ التغييرات
-                        </button>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">إلغاء</button>
-            </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="submit" class="btn btn-success">حفظ التغييرات</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -398,6 +392,31 @@
         </div>
     </div>
 </div>
+
+<!-- Delete User Modal -->
+<div class="modal fade" id="deleteUserModal" tabindex="-1" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" asp-action="DeleteUser">
+                <input type="hidden" id="deleteUserId" name="userId" value="">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteUserModalLabel">تأكيد الحذف</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>هل أنت متأكد من رغبتك في حذف هذا المشرف؟</p>
+                    <p class="fw-bold" id="deleteUserName"></p>
+                    <p class="text-danger">لا يمكن التراجع عن هذا الإجراء.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="submit" class="btn btn-danger">نعم، قم بالحذف</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 
 @section Scripts {
     <script src="~/js/userManagement.js" asp-append-version="true"></script>

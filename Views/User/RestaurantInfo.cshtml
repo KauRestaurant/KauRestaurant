@@ -1,6 +1,30 @@
 ﻿@model KauRestaurant.Models.Restaurant
 @{
     ViewData["Title"] = "معلومات المطعم";
+    var currentDay = DateTime.Now.DayOfWeek;
+
+    // Helper function to get day name in Arabic
+    string GetArabicDayName(DayOfWeek day) => day switch
+    {
+        DayOfWeek.Sunday => "الأحد",
+        DayOfWeek.Monday => "الاثنين",
+        DayOfWeek.Tuesday => "الثلاثاء",
+        DayOfWeek.Wednesday => "الأربعاء",
+        DayOfWeek.Thursday => "الخميس",
+        DayOfWeek.Friday => "الجمعة",
+        DayOfWeek.Saturday => "السبت",
+        _ => ""
+    };
+
+    // Array of all days for easier iteration
+    var daysOfWeek = new[]
+    {
+        DayOfWeek.Saturday, DayOfWeek.Sunday, DayOfWeek.Monday,
+        DayOfWeek.Tuesday, DayOfWeek.Wednesday, DayOfWeek.Thursday, DayOfWeek.Friday
+    };
+
+    // Get meal properties for a specific day
+    bool DayServesMeal(DayOfWeek day, string mealType) => Model?.DoesDayServeMeal(day, mealType) ?? false;
 }
 
 <div class="container-fluid py-4 py-lg-5 bg-white">
@@ -12,13 +36,12 @@
             </div>
 
             <div class="card-body p-0">
-                <!-- Restaurant Photo -->
                 <!-- Restaurant Details -->
                 <div class="p-4">
                     <div class="row">
-
-                        <!-- Left Column -->
+                        <!-- Right Column - Restaurant Info (Now First) -->
                         <div class="col-md-6 mb-4">
+                            <h4 class="fw-bold mb-3">صورة المطعم</h4>
                             <div class="col-12 mb-4">
                                 @if (!string.IsNullOrEmpty(Model.PhotoPath))
                                 {
@@ -36,83 +59,95 @@
                                 <p class="mb-0">@Model.Description</p>
                             </div>
 
-                            <!-- Working Days - Moved inside working hours section -->
-                            <div class="mb-3">
-                                <h6 class="mb-2"><i class="bi bi-calendar-week text-success me-2"></i>أيام العمل:</h6>
-                                <p class="ms-4 mb-0">@(string.IsNullOrEmpty(Model.DaysOpen) ? "غير محدد" : Model.DaysOpen.Replace(",", " - "))</p>
-                            </div>
-
-                            <!-- Meal Times -->
-                            <div class="mb-3">
-                                <h6 class="mb-2"><i class="bi bi-clock text-success me-2"></i>أوقات الوجبات:</h6>
-                                <ul class="list-group">
-                                    @if (Model.ServesBreakfast)
-                                    {
-                                        <li class="list-group-item d-flex align-items-center border-0">
-                                            <div class="me-3">
-                                                <span class="badge rounded-pill text-white bg-breakfast">الفطور</span>
-                                            </div>
-                                            <div>
-                                                @if (Model.BreakfastOpenTime.HasValue && Model.BreakfastCloseTime.HasValue)
-                                                {
-                                                    <span>@FormatTimeSpanToAmPm(Model.BreakfastOpenTime.Value) - @FormatTimeSpanToAmPm(Model.BreakfastCloseTime.Value)</span>
-                                                }
-                                                else
-                                                {
-                                                    <span class="text-muted">لم يتم تحديد الوقت</span>
-                                                }
-                                            </div>
-                                        </li>
-                                    }
-
-                                    @if (Model.ServesLunch)
-                                    {
-                                        <li class="list-group-item d-flex align-items-center border-0">
-                                            <div class="me-3">
-                                                <span class="badge rounded-pill text-white bg-lunch">الغداء</span>
-                                            </div>
-                                            <div>
-                                                @if (Model.LunchOpenTime.HasValue && Model.LunchCloseTime.HasValue)
-                                                {
-                                                    <span>@FormatTimeSpanToAmPm(Model.LunchOpenTime.Value) - @FormatTimeSpanToAmPm(Model.LunchCloseTime.Value)</span>
-                                                }
-                                                else
-                                                {
-                                                    <span class="text-muted">لم يتم تحديد الوقت</span>
-                                                }
-                                            </div>
-                                        </li>
-                                    }
-
-                                    @if (Model.ServesDinner)
-                                    {
-                                        <li class="list-group-item d-flex align-items-center border-0">
-                                            <div class="me-3">
-                                                <span class="badge rounded-pill text-white bg-dinner">العشاء</span>
-                                            </div>
-                                            <div>
-                                                @if (Model.DinnerOpenTime.HasValue && Model.DinnerCloseTime.HasValue)
-                                                {
-                                                    <span>@FormatTimeSpanToAmPm(Model.DinnerOpenTime.Value) - @FormatTimeSpanToAmPm(Model.DinnerCloseTime.Value)</span>
-                                                }
-                                                else
-                                                {
-                                                    <span class="text-muted">لم يتم تحديد الوقت</span>
-                                                }
-                                            </div>
-                                        </li>
-                                    }
-
-                                    @if (!Model.ServesBreakfast && !Model.ServesLunch && !Model.ServesDinner)
-                                    {
-                                        <li class="list-group-item text-muted">لا توجد أوقات وجبات محددة</li>
-                                    }
-                                </ul>
-                            </div>
+                            <h4 class="fw-bold mb-3">الموقع</h4>
+                            @if (!string.IsNullOrEmpty(Model.LocationUrl))
+                            {
+                                <div class="ratio ratio-16x9 rounded overflow-hidden">
+                                    <iframe src="@Model.LocationUrl.Replace("?q=", "?q=").Replace("maps.google.com", "maps.google.com/embed")"
+                                    allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                                </div>
+                                <a href="@Model.LocationUrl" class="btn btn-sm btn-outline-success mt-2" target="_blank"><i class="bi bi-geo-alt me-1"></i>رابط الموقع</a>
+                            }
+                            else
+                            {
+                                <div class="alert alert-info">
+                                    لم يتم تحديد موقع للمطعم
+                                </div>
+                            }
                         </div>
 
-                        <!-- Right Column -->
+                        <!-- Left Column - Working Hours (Now Second) -->
                         <div class="col-md-6 mb-4">
+                            <!-- Working Days & Meal Times (All Days View) -->
+                            <div class="mb-4">
+                                <h4 class="fw-bold mb-3">أوقات العمل والوجبات</h4>
+
+                                <div class="card">
+                                    <div class="card-body p-0">
+                                        <ul class="list-group list-group-flush">
+                                            @foreach (var day in daysOfWeek)
+                                            {
+                                                bool isOpen = Model.IsDayOpen(day);
+                                                string dayName = GetArabicDayName(day);
+                                                bool isCurrentDay = day == currentDay;
+
+                                                <li class="list-group-item">
+                                                    <div class="d-flex justify-content-between align-items-start">
+                                                        <div class="fw-bold text-start">@dayName</div>
+
+                                                        @if (!isOpen)
+                                                        {
+                                                            <div class="text-muted">مغلق</div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="text-start">
+                                                                @{
+                                                                    var mealsToShow = new List<(string mealName, string mealType, TimeSpan? openTime, TimeSpan? closeTime)>();
+
+                                                                    if (DayServesMeal(day, "breakfast"))
+                                                                    {
+                                                                        mealsToShow.Add(("الفطور", "breakfast", GetMealOpenTime(day, "breakfast"), GetMealCloseTime(day, "breakfast")));
+                                                                    }
+
+                                                                    if (DayServesMeal(day, "lunch"))
+                                                                    {
+                                                                        mealsToShow.Add(("الغداء", "lunch", GetMealOpenTime(day, "lunch"), GetMealCloseTime(day, "lunch")));
+                                                                    }
+
+                                                                    if (DayServesMeal(day, "dinner"))
+                                                                    {
+                                                                        mealsToShow.Add(("العشاء", "dinner", GetMealOpenTime(day, "dinner"), GetMealCloseTime(day, "dinner")));
+                                                                    }
+
+                                                                    if (mealsToShow.Count == 0)
+                                                                    {
+                                                                        <div class="text-muted">مغلق</div>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        @foreach (var meal in mealsToShow)
+                                                                        {
+                                                                            if (meal.openTime.HasValue && meal.closeTime.HasValue)
+                                                                            {
+                                                                                <div class="text-dark mb-1">
+                                                                                    <span class="badge rounded-pill me-1 @(meal.mealType switch {"breakfast" => "bg-breakfast","lunch" => "bg-lunch","dinner" => "bg-dinner",_ => "bg-secondary"})">@meal.mealName</span>
+                                                                                    @FormatTimeSpanToAmPm(meal.openTime.Value)—@FormatTimeSpanToAmPm(meal.closeTime.Value)
+                                                                                </div>
+                                                                            }
+                                                                        }
+
+                                                                    }
+                                                                }
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
 
                             <h4 class="fw-bold mb-3">معلومات الاتصال</h4>
 
@@ -121,35 +156,23 @@
                                 <p class="ms-4 mb-0">@Model.Address</p>
                             </div>
 
-                            @if (!string.IsNullOrEmpty(Model.PhoneNumber))
+                            @if (!string.IsNullOrEmpty(Model.Email) || !string.IsNullOrEmpty(Model.PhoneNumber))
                             {
-                                <div class="mb-3">
-                                    <h6 class="mb-2"><i class="bi bi-telephone-fill text-success me-2"></i>رقم الهاتف:</h6>
-                                    <p class="ms-4 mb-0">@Model.PhoneNumber</p>
-                                </div>
-                            }
-
-                            @if (!string.IsNullOrEmpty(Model.Email))
-                            {
-                                <div class="mb-3">
-                                    <h6 class="mb-2"><i class="bi bi-envelope-fill text-success me-2"></i>البريد الإلكتروني:</h6>
-                                    <p class="ms-4 mb-0">@Model.Email</p>
-                                </div>
-                            }
-
-                            <h4 class="fw-bold mb-3">الموقع</h4>
-                            @if (!string.IsNullOrEmpty(Model.LocationUrl))
-                            {
-                                <div class="ratio ratio-16x9 rounded overflow-hidden">
-                                    <iframe src="@Model.LocationUrl.Replace("?q=", "?q=").Replace("maps.google.com", "maps.google.com/embed")"
-                                            allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                                </div>
-                                <a href="@Model.LocationUrl" class="btn btn-sm btn-outline-success mt-2" target="_blank"><i class="bi bi-geo-alt me-1"></i>رابط الموقع</a>
-                            }
-                            else
-                            {
-                                <div class="alert alert-info">
-                                    لم يتم تحديد موقع للمطعم
+                                <div class="row">
+                                    @if (!string.IsNullOrEmpty(Model.Email))
+                                    {
+                                        <div class="col-6 mb-3">
+                                            <h6 class="mb-2"><i class="bi bi-envelope-fill text-success me-2"></i>البريد الإلكتروني:</h6>
+                                            <p class="ms-4 mb-0">@Model.Email</p>
+                                        </div>
+                                    }
+                                    @if (!string.IsNullOrEmpty(Model.PhoneNumber))
+                                    {
+                                        <div class="col-6 mb-3">
+                                            <h6 class="mb-2"><i class="bi bi-telephone-fill text-success me-2"></i>رقم الهاتف:</h6>
+                                            <p class="ms-4 mb-0">@Model.PhoneNumber</p>
+                                        </div>
+                                    }
                                 </div>
                             }
                         </div>
@@ -172,5 +195,81 @@
 
         // Format with leading zeros for minutes
         return $"{hour}:{time.Minutes:D2} {amPm}";
+    }
+
+    private TimeSpan? GetMealOpenTime(DayOfWeek day, string mealType)
+    {
+        if (Model == null) return null;
+
+        return (day, mealType.ToLower()) switch
+        {
+            (DayOfWeek.Sunday, "breakfast") => Model.SundayBreakfastOpenTime,
+            (DayOfWeek.Sunday, "lunch") => Model.SundayLunchOpenTime,
+            (DayOfWeek.Sunday, "dinner") => Model.SundayDinnerOpenTime,
+
+            (DayOfWeek.Monday, "breakfast") => Model.MondayBreakfastOpenTime,
+            (DayOfWeek.Monday, "lunch") => Model.MondayLunchOpenTime,
+            (DayOfWeek.Monday, "dinner") => Model.MondayDinnerOpenTime,
+
+            (DayOfWeek.Tuesday, "breakfast") => Model.TuesdayBreakfastOpenTime,
+            (DayOfWeek.Tuesday, "lunch") => Model.TuesdayLunchOpenTime,
+            (DayOfWeek.Tuesday, "dinner") => Model.TuesdayDinnerOpenTime,
+
+            (DayOfWeek.Wednesday, "breakfast") => Model.WednesdayBreakfastOpenTime,
+            (DayOfWeek.Wednesday, "lunch") => Model.WednesdayLunchOpenTime,
+            (DayOfWeek.Wednesday, "dinner") => Model.WednesdayDinnerOpenTime,
+
+            (DayOfWeek.Thursday, "breakfast") => Model.ThursdayBreakfastOpenTime,
+            (DayOfWeek.Thursday, "lunch") => Model.ThursdayLunchOpenTime,
+            (DayOfWeek.Thursday, "dinner") => Model.ThursdayDinnerOpenTime,
+
+            (DayOfWeek.Friday, "breakfast") => Model.FridayBreakfastOpenTime,
+            (DayOfWeek.Friday, "lunch") => Model.FridayLunchOpenTime,
+            (DayOfWeek.Friday, "dinner") => Model.FridayDinnerOpenTime,
+
+            (DayOfWeek.Saturday, "breakfast") => Model.SaturdayBreakfastOpenTime,
+            (DayOfWeek.Saturday, "lunch") => Model.SaturdayLunchOpenTime,
+            (DayOfWeek.Saturday, "dinner") => Model.SaturdayDinnerOpenTime,
+
+            _ => null
+        };
+    }
+
+    private TimeSpan? GetMealCloseTime(DayOfWeek day, string mealType)
+    {
+        if (Model == null) return null;
+
+        return (day, mealType.ToLower()) switch
+        {
+            (DayOfWeek.Sunday, "breakfast") => Model.SundayBreakfastCloseTime,
+            (DayOfWeek.Sunday, "lunch") => Model.SundayLunchCloseTime,
+            (DayOfWeek.Sunday, "dinner") => Model.SundayDinnerCloseTime,
+
+            (DayOfWeek.Monday, "breakfast") => Model.MondayBreakfastCloseTime,
+            (DayOfWeek.Monday, "lunch") => Model.MondayLunchCloseTime,
+            (DayOfWeek.Monday, "dinner") => Model.MondayDinnerCloseTime,
+
+            (DayOfWeek.Tuesday, "breakfast") => Model.TuesdayBreakfastCloseTime,
+            (DayOfWeek.Tuesday, "lunch") => Model.TuesdayLunchCloseTime,
+            (DayOfWeek.Tuesday, "dinner") => Model.TuesdayDinnerCloseTime,
+
+            (DayOfWeek.Wednesday, "breakfast") => Model.WednesdayBreakfastCloseTime,
+            (DayOfWeek.Wednesday, "lunch") => Model.WednesdayLunchCloseTime,
+            (DayOfWeek.Wednesday, "dinner") => Model.WednesdayDinnerCloseTime,
+
+            (DayOfWeek.Thursday, "breakfast") => Model.ThursdayBreakfastCloseTime,
+            (DayOfWeek.Thursday, "lunch") => Model.ThursdayLunchCloseTime,
+            (DayOfWeek.Thursday, "dinner") => Model.ThursdayDinnerCloseTime,
+
+            (DayOfWeek.Friday, "breakfast") => Model.FridayBreakfastCloseTime,
+            (DayOfWeek.Friday, "lunch") => Model.FridayLunchCloseTime,
+            (DayOfWeek.Friday, "dinner") => Model.FridayDinnerCloseTime,
+
+            (DayOfWeek.Saturday, "breakfast") => Model.SaturdayBreakfastCloseTime,
+            (DayOfWeek.Saturday, "lunch") => Model.SaturdayLunchCloseTime,
+            (DayOfWeek.Saturday, "dinner") => Model.SaturdayDinnerCloseTime,
+
+            _ => null
+        };
     }
 }
