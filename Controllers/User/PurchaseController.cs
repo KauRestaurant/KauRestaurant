@@ -5,7 +5,6 @@ using KauRestaurant.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace KauRestaurant.Controllers.User
@@ -27,7 +26,7 @@ namespace KauRestaurant.Controllers.User
             _context = context;
             _userManager = userManager;
             _logger = logger;
-            _ticketPriceService = ticketPriceService; // Fixed: Added the assignment
+            _ticketPriceService = ticketPriceService;
         }
 
         public async Task<IActionResult> Index()
@@ -35,10 +34,6 @@ namespace KauRestaurant.Controllers.User
             // Get the current prices and pass them to the view
             var ticketPrices = await _ticketPriceService.GetAllTicketPrices();
             ViewBag.TicketPrices = ticketPrices;
-
-            // Get restaurant information
-            var restaurant = await _context.Restaurants.FirstOrDefaultAsync();
-            ViewBag.Restaurant = restaurant;
 
             return View("~/Views/User/Purchase.cshtml");
         }
@@ -50,7 +45,7 @@ namespace KauRestaurant.Controllers.User
             try
             {
                 // Log received data
-                _logger.LogInformation($"Received order data - Breakfast: {model.breakfastQty}, Lunch: {model.lunchQty}, Dinner: {model.dinnerQty}");
+                _logger.LogInformation($"Received order data - Breakfast: {model.breakfastQty}, Lunch: {model.lunchQty}");
 
                 // Get current user ID
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -65,9 +60,8 @@ namespace KauRestaurant.Controllers.User
                 var ticketPrices = await _ticketPriceService.GetAllTicketPrices();
                 var breakfastPrice = ticketPrices["الإفطار"];
                 var lunchPrice = ticketPrices["الغداء"];
-                var dinnerPrice = ticketPrices["العشاء"];
 
-                var totalAmount = model.breakfastQty * breakfastPrice + model.lunchQty * lunchPrice + model.dinnerQty * dinnerPrice;
+                var totalAmount = model.breakfastQty * breakfastPrice + model.lunchQty * lunchPrice;
 
                 // Create new order
                 var order = new Order
@@ -78,14 +72,13 @@ namespace KauRestaurant.Controllers.User
                     TotalPaid = (float)totalAmount,
                     BreakfastTicketsCount = model.breakfastQty,
                     LunchTicketsCount = model.lunchQty,
-                    DinnerTicketsCount = model.dinnerQty
                 };
 
                 // Save order to get OrderID
                 _context.Orders.Add(order);
                 await _context.SaveChangesAsync();
 
-                _logger.LogInformation($"Created order {order.OrderID} with B:{order.BreakfastTicketsCount}, L:{order.LunchTicketsCount}, D:{order.DinnerTicketsCount}");
+                _logger.LogInformation($"Created order {order.OrderID} with B:{order.BreakfastTicketsCount}, L:{order.LunchTicketsCount}");
 
                 // Generate tickets for this order
                 var tickets = new List<Ticket>();
@@ -116,19 +109,6 @@ namespace KauRestaurant.Controllers.User
                     });
                 }
 
-                // Create dinner tickets
-                for (int i = 0; i < model.dinnerQty; i++)
-                {
-                    tickets.Add(new Ticket
-                    {
-                        OrderID = order.OrderID,
-                        MealType = "العشاء", // Dinner
-                        QRCode = Guid.NewGuid().ToString(),
-                        IsRedeemed = false,
-                        Price = dinnerPrice // Set the current price
-                    });
-                }
-
                 // Save all tickets
                 _context.Tickets.AddRange(tickets);
                 await _context.SaveChangesAsync();
@@ -141,7 +121,7 @@ namespace KauRestaurant.Controllers.User
                     success = true,
                     orderId = order.OrderID,
                     totalAmount,
-                    ticketCount = model.breakfastQty + model.lunchQty + model.dinnerQty
+                    ticketCount = model.breakfastQty + model.lunchQty
                 });
             }
             catch (Exception ex)
@@ -156,6 +136,5 @@ namespace KauRestaurant.Controllers.User
     {
         public int breakfastQty { get; set; }
         public int lunchQty { get; set; }
-        public int dinnerQty { get; set; }
     }
 }

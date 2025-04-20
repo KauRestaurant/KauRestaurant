@@ -28,7 +28,7 @@ namespace KauRestaurant.Controllers.Admin
                 .Distinct()
                 .ToList();
 
-            ViewBag.TicketTypes = new List<string> { "الإفطار", "الغداء", "العشاء" };
+            ViewBag.TicketTypes = new List<string> { "الإفطار", "الغداء"};
 
             return View("~/Views/Admin/Reports.cshtml");
         }

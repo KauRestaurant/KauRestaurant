@@ -97,69 +97,6 @@ namespace KauRestaurant.Data.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("KauRestaurant.Models.FAQ", b =>
-                {
-                    b.Property<int>("FAQID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FAQID"));
-
-                    b.Property<string>("Answer")
-                        .IsRequired()
-                        .HasMaxLength(2000)
-                        .HasColumnType("nvarchar(2000)");
-
-                    b.Property<int>("DisplayOrder")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Question")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.HasKey("FAQID");
-
-                    b.ToTable("FAQs");
-
-                    b.HasData(
-                        new
-                        {
-                            FAQID = 1,
-                            Answer = "يمكنك شراء تذاكر الوجبات من خلال تسجيل الدخول إلى حسابك، ثم الانتقال إلى صفحة شراء التذاكر واختيار عدد الوجبات التي ترغب بها لكل فترة (الإفطار، الغداء، العشاء).",
-                            DisplayOrder = 1,
-                            Question = "كيف يمكنني شراء تذاكر وجبات؟"
-                        },
-                        new
-                        {
-                            FAQID = 2,
-                            Answer = "يعمل المطعم من الأحد إلى الخميس، وساعات العمل هي: الإفطار من 7:00 صباحًا إلى 10:30 صباحًا، الغداء من 12:00 ظهرًا إلى 3:00 عصرًا، والعشاء من 6:00 مساءً إلى 10:00 مساءً.",
-                            DisplayOrder = 2,
-                            Question = "ما هي أوقات عمل المطعم؟"
-                        },
-                        new
-                        {
-                            FAQID = 3,
-                            Answer = "بعد شراء التذاكر، يمكنك عرض جميع تذاكرك في صفحة 'تذاكري'. عند زيارة المطعم، ما عليك سوى إظهار رمز QR الخاص بالتذكرة للموظف ليتم مسحه وتأكيد استخدام الوجبة.",
-                            DisplayOrder = 3,
-                            Question = "كيف يمكنني استخدام التذاكر التي اشتريتها؟"
-                        },
-                        new
-                        {
-                            FAQID = 4,
-                            Answer = "لا يمكن إلغاء التذاكر بعد الشراء. لذا يرجى التأكد من اختيارك قبل إتمام عملية الشراء.",
-                            DisplayOrder = 4,
-                            Question = "هل يمكنني إلغاء التذاكر التي اشتريتها؟"
-                        },
-                        new
-                        {
-                            FAQID = 5,
-                            Answer = "نعم، يمكنك الاطلاع على قائمة الطعام الأسبوعية في صفحة 'القائمة' على موقعنا. يتم تحديث القائمة أسبوعياً.",
-                            DisplayOrder = 5,
-                            Question = "هل يمكنني معرفة قائمة الطعام مسبقاً؟"
-                        });
-                });
-
             modelBuilder.Entity("KauRestaurant.Models.Feedback", b =>
                 {
                     b.Property<int>("FeedbackID")
@@ -198,7 +135,7 @@ namespace KauRestaurant.Data.Migrations
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("Feedbacks");
+                    b.ToTable("Feedbacks", (string)null);
                 });
 
             modelBuilder.Entity("KauRestaurant.Models.Meal", b =>
@@ -248,26 +185,26 @@ namespace KauRestaurant.Data.Migrations
 
                     b.HasKey("MealID");
 
-                    b.ToTable("Meals");
+                    b.ToTable("Meals", (string)null);
 
                     b.HasData(
                         new
                         {
                             MealID = 1,
-                            Calories = 250,
-                            Carbs = 45,
+                            Calories = 268,
+                            Carbs = 30,
                             Description = "فطائر طازجة محشوة بالجبنة المشكلة المذابة، تقدم ساخنة مع زيت الزيتون والزعتر.",
-                            Fat = 10,
+                            Fat = 12,
                             MealCategory = "الإفطار",
                             MealName = "فطائر بالجبن",
                             MealType = "الطبق الرئيسي",
                             PicturePath = "/images/meal.png",
-                            Protein = 8
+                            Protein = 10
                         },
                         new
                         {
                             MealID = 2,
-                            Calories = 185,
+                            Calories = 182,
                             Carbs = 2,
                             Description = "بيض مقلي على الطريقة العربية، يقدم مع الخبز العربي والخضروات الطازجة.",
                             Fat = 14,
@@ -280,7 +217,7 @@ namespace KauRestaurant.Data.Migrations
                         new
                         {
                             MealID = 3,
-                            Calories = 220,
+                            Calories = 245,
                             Carbs = 35,
                             Description = "فول مدمس مطبوخ بالطريقة التقليدية مع زيت الزيتون والثوم والليمون، غني بالبروتين النباتي.",
                             Fat = 5,
@@ -293,7 +230,7 @@ namespace KauRestaurant.Data.Migrations
                         new
                         {
                             MealID = 4,
-                            Calories = 180,
+                            Calories = 213,
                             Carbs = 25,
                             Description = "حمص بالطحينة متبل بزيت الزيتون والليمون، مزين بحبات الحمص الكاملة والبقدونس.",
                             Fat = 9,
@@ -306,7 +243,7 @@ namespace KauRestaurant.Data.Migrations
                         new
                         {
                             MealID = 5,
-                            Calories = 5,
+                            Calories = 4,
                             Carbs = 1,
                             Description = "شاي عربي معطر بالهيل والزعفران، يقدم ساخناً في أكواب تقليدية.",
                             Fat = 0,
@@ -319,7 +256,7 @@ namespace KauRestaurant.Data.Migrations
                         new
                         {
                             MealID = 6,
-                            Calories = 120,
+                            Calories = 116,
                             Carbs = 28,
                             Description = "عصير برتقال طازج معصور في المطعم، غني بفيتامين سي والمذاق المنعش.",
                             Fat = 0,
@@ -332,7 +269,124 @@ namespace KauRestaurant.Data.Migrations
                         new
                         {
                             MealID = 7,
-                            Calories = 450,
+                            Calories = 256,
+                            Carbs = 40,
+                            Description = "مناقيش زعتر تقليدية مخبوزة في فرن طيني، مع مزيج الزعتر والسماق وزيت الزيتون.",
+                            Fat = 8,
+                            MealCategory = "الإفطار",
+                            MealName = "مناقيش زعتر",
+                            MealType = "الطبق الرئيسي",
+                            PicturePath = "/images/meal.png",
+                            Protein = 6
+                        },
+                        new
+                        {
+                            MealID = 8,
+                            Calories = 235,
+                            Carbs = 15,
+                            Description = "لبنة طازجة تقدم مع زيت الزيتون والزعتر والخبز العربي الطازج.",
+                            Fat = 15,
+                            MealCategory = "الإفطار",
+                            MealName = "لبنة بالزيت",
+                            MealType = "طبق جانبي",
+                            PicturePath = "/images/meal.png",
+                            Protein = 10
+                        },
+                        new
+                        {
+                            MealID = 9,
+                            Calories = 204,
+                            Carbs = 10,
+                            Description = "بيض مطبوخ في صلصة طماطم غنية بالتوابل والخضروات، طبق عربي شهير.",
+                            Fat = 12,
+                            MealCategory = "الإفطار",
+                            MealName = "شكشوكة",
+                            MealType = "الطبق الرئيسي",
+                            PicturePath = "/images/meal.png",
+                            Protein = 14
+                        },
+                        new
+                        {
+                            MealID = 10,
+                            Calories = 286,
+                            Carbs = 45,
+                            Description = "فطيرة تفاح محلية الصنع مع القرفة والعسل، مخبوزة حتى ذهبية اللون.",
+                            Fat = 10,
+                            MealCategory = "الإفطار",
+                            MealName = "فطيرة التفاح",
+                            MealType = "حلوى",
+                            PicturePath = "/images/meal.png",
+                            Protein = 4
+                        },
+                        new
+                        {
+                            MealID = 11,
+                            Calories = 100,
+                            Carbs = 25,
+                            Description = "عصير تفاح طازج مصنوع من تفاح موسمي، غني بالفيتامينات ومنعش المذاق.",
+                            Fat = 0,
+                            MealCategory = "الإفطار",
+                            MealName = "عصير تفاح",
+                            MealType = "مشروب",
+                            PicturePath = "/images/meal.png",
+                            Protein = 0
+                        },
+                        new
+                        {
+                            MealID = 12,
+                            Calories = 323,
+                            Carbs = 60,
+                            Description = "عصيدة تقليدية محلاة بالتمر والعسل، مزينة بالمكسرات المحمصة.",
+                            Fat = 7,
+                            MealCategory = "الإفطار",
+                            MealName = "عصيدة بالتمر",
+                            MealType = "حلوى",
+                            PicturePath = "/images/meal.png",
+                            Protein = 5
+                        },
+                        new
+                        {
+                            MealID = 13,
+                            Calories = 343,
+                            Carbs = 30,
+                            Description = "خبز طابون مغطى بالبصل المكرمل والسماق مع قطع الدجاج المشوي.",
+                            Fat = 15,
+                            MealCategory = "الإفطار",
+                            MealName = "مسخن دجاج",
+                            MealType = "الطبق الرئيسي",
+                            PicturePath = "/images/meal.png",
+                            Protein = 22
+                        },
+                        new
+                        {
+                            MealID = 14,
+                            Calories = 177,
+                            Carbs = 25,
+                            Description = "زبادي طبيعي محلى بالعسل ومزين بالمكسرات والفواكه الطازجة.",
+                            Fat = 5,
+                            MealCategory = "الإفطار",
+                            MealName = "زبادي بالعسل",
+                            MealType = "طبق جانبي",
+                            PicturePath = "/images/meal.png",
+                            Protein = 8
+                        },
+                        new
+                        {
+                            MealID = 15,
+                            Calories = 326,
+                            Carbs = 35,
+                            Description = "كرواسون طازج محشو بالشوكولاتة الغنية، يقدم دافئاً.",
+                            Fat = 18,
+                            MealCategory = "الإفطار",
+                            MealName = "كرواسون بالشوكولاتة",
+                            MealType = "حلوى",
+                            PicturePath = "/images/meal.png",
+                            Protein = 6
+                        },
+                        new
+                        {
+                            MealID = 16,
+                            Calories = 467,
                             Carbs = 55,
                             Description = "كبسة لحم سعودية تقليدية، مطبوخة ببهارات الكبسة المميزة مع قطع اللحم الطرية والأرز البسمتي.",
                             Fat = 15,
@@ -344,11 +398,11 @@ namespace KauRestaurant.Data.Migrations
                         },
                         new
                         {
-                            MealID = 8,
-                            Calories = 350,
+                            MealID = 17,
+                            Calories = 210,
                             Carbs = 0,
                             Description = "دجاج مشوي متبل بالأعشاب والبهارات العربية، مشوي على الفحم ليكتسب نكهة مميزة.",
-                            Fat = 20,
+                            Fat = 10,
                             MealCategory = "الغداء",
                             MealName = "دجاج مشوي",
                             MealType = "الطبق الرئيسي",
@@ -357,11 +411,11 @@ namespace KauRestaurant.Data.Migrations
                         },
                         new
                         {
-                            MealID = 9,
-                            Calories = 65,
+                            MealID = 18,
+                            Calories = 105,
                             Carbs = 12,
                             Description = "سلطة خضراء منعشة مع خضروات موسمية طازجة وتتبيلة خاصة بالمطعم.",
-                            Fat = 2,
+                            Fat = 5,
                             MealCategory = "الغداء",
                             MealName = "سلطة خضراء",
                             MealType = "طبق جانبي",
@@ -370,8 +424,8 @@ namespace KauRestaurant.Data.Migrations
                         },
                         new
                         {
-                            MealID = 10,
-                            Calories = 180,
+                            MealID = 19,
+                            Calories = 205,
                             Carbs = 30,
                             Description = "شوربة عدس تقليدية، مطبوخة بالطريقة العربية مع البهارات والليمون وزيت الزيتون.",
                             Fat = 5,
@@ -383,8 +437,8 @@ namespace KauRestaurant.Data.Migrations
                         },
                         new
                         {
-                            MealID = 11,
-                            Calories = 350,
+                            MealID = 20,
+                            Calories = 375,
                             Carbs = 52,
                             Description = "أم علي، حلوى مصرية شهيرة مصنوعة من العجينة الهشة والمكسرات والحليب والقشطة.",
                             Fat = 15,
@@ -396,11 +450,11 @@ namespace KauRestaurant.Data.Migrations
                         },
                         new
                         {
-                            MealID = 12,
-                            Calories = 90,
+                            MealID = 21,
+                            Calories = 98,
                             Carbs = 12,
                             Description = "لبن عيران منعش، مشروب تقليدي من اللبن المخفوق مع الماء والنعناع والملح.",
-                            Fat = 5,
+                            Fat = 2,
                             MealCategory = "الغداء",
                             MealName = "لبن عيران",
                             MealType = "مشروب",
@@ -409,77 +463,90 @@ namespace KauRestaurant.Data.Migrations
                         },
                         new
                         {
-                            MealID = 13,
-                            Calories = 380,
-                            Carbs = 40,
-                            Description = "شاورما دجاج عربية تقليدية، مشوية على السيخ ومقدمة مع الخبز العربي والطحينة والخضروات.",
-                            Fat = 20,
-                            MealCategory = "العشاء",
-                            MealName = "شاورما دجاج",
+                            MealID = 22,
+                            Calories = 448,
+                            Carbs = 60,
+                            Description = "برياني دجاج هندي تقليدي مع الأرز البسمتي والبهارات الهندية والخضروات.",
+                            Fat = 12,
+                            MealCategory = "الغداء",
+                            MealName = "برياني دجاج",
                             MealType = "الطبق الرئيسي",
                             PicturePath = "/images/meal.png",
                             Protein = 25
                         },
                         new
                         {
-                            MealID = 14,
-                            Calories = 420,
-                            Carbs = 35,
-                            Description = "برجر لحم محضر من اللحم البقري الطازج 100% مع الخضروات والصلصة الخاصة، يقدم مع خبز البرجر المحمص.",
-                            Fat = 25,
-                            MealCategory = "العشاء",
-                            MealName = "برجر لحم",
+                            MealID = 23,
+                            Calories = 482,
+                            Carbs = 50,
+                            Description = "مندي لحم يمني تقليدي مع الأرز المطبوخ على الفحم وبهارات المندي الخاصة.",
+                            Fat = 18,
+                            MealCategory = "الغداء",
+                            MealName = "مندي لحم",
+                            MealType = "الطبق الرئيسي",
+                            PicturePath = "/images/meal.png",
+                            Protein = 30
+                        },
+                        new
+                        {
+                            MealID = 24,
+                            Calories = 382,
+                            Carbs = 45,
+                            Description = "مجبوس سمك خليجي تقليدي مع الأرز والبهارات المميزة وقطع السمك الطازج.",
+                            Fat = 10,
+                            MealCategory = "الغداء",
+                            MealName = "مجبوس سمك",
                             MealType = "الطبق الرئيسي",
                             PicturePath = "/images/meal.png",
                             Protein = 28
                         },
                         new
                         {
-                            MealID = 15,
-                            Calories = 365,
-                            Carbs = 48,
-                            Description = "بطاطس مقلية مقرمشة من الخارج وطرية من الداخل، تقدم مع الكاتشب والمايونيز.",
-                            Fat = 18,
-                            MealCategory = "العشاء",
-                            MealName = "بطاطس مقلية",
-                            MealType = "طبق جانبي",
-                            PicturePath = "/images/meal.png",
-                            Protein = 4
-                        },
-                        new
-                        {
-                            MealID = 16,
-                            Calories = 150,
-                            Carbs = 15,
-                            Description = "سلطة سيزر كلاسيكية مع خس رومين، جبن البارميزان، قطع خبز محمصة، وصلصة سيزر المميزة.",
-                            Fat = 10,
-                            MealCategory = "العشاء",
-                            MealName = "سلطة سيزر",
+                            MealID = 25,
+                            Calories = 235,
+                            Carbs = 35,
+                            Description = "طاجين خضار مغربي تقليدي مع البهارات المغربية والخضروات الموسمية.",
+                            Fat = 7,
+                            MealCategory = "الغداء",
+                            MealName = "طاجين خضار",
                             MealType = "طبق جانبي",
                             PicturePath = "/images/meal.png",
                             Protein = 8
                         },
                         new
                         {
-                            MealID = 17,
-                            Calories = 400,
-                            Carbs = 58,
-                            Description = "كنافة عربية تقليدية محشوة بالجبنة الحلوة ومغطاة بالقطر ومزينة بالفستق الحلبي.",
-                            Fat = 20,
-                            MealCategory = "العشاء",
-                            MealName = "كنافة",
-                            MealType = "حلوى",
+                            MealID = 26,
+                            Calories = 172,
+                            Carbs = 20,
+                            Description = "سلطة فتوش لبنانية مع الخضروات الطازجة وقطع الخبز المحمص والسماق.",
+                            Fat = 8,
+                            MealCategory = "الغداء",
+                            MealName = "سلطة فتوش",
+                            MealType = "طبق جانبي",
                             PicturePath = "/images/meal.png",
-                            Protein = 6
+                            Protein = 5
                         },
                         new
                         {
-                            MealID = 18,
-                            Calories = 80,
+                            MealID = 27,
+                            Calories = 505,
+                            Carbs = 60,
+                            Description = "كنافة عربية تقليدية محشوة بالجبنة الحلوة ومغطاة بالقطر ومزينة بالفستق الحلبي.",
+                            Fat = 25,
+                            MealCategory = "الغداء",
+                            MealName = "كنافة",
+                            MealType = "حلوى",
+                            PicturePath = "/images/meal.png",
+                            Protein = 10
+                        },
+                        new
+                        {
+                            MealID = 28,
+                            Calories = 84,
                             Carbs = 20,
                             Description = "عصير ليمون طازج ومنعش مع النعناع، مثالي لتنشيط الجسم وتعزيز المناعة.",
                             Fat = 0,
-                            MealCategory = "العشاء",
+                            MealCategory = "الغداء",
                             MealName = "عصير ليمون بالنعناع",
                             MealType = "مشروب",
                             PicturePath = "/images/meal.png",
@@ -487,29 +554,29 @@ namespace KauRestaurant.Data.Migrations
                         },
                         new
                         {
-                            MealID = 19,
-                            Calories = 120,
-                            Carbs = 28,
-                            Description = "عصير برتقال طازج معصور من أجود أنواع البرتقال، غني بالفيتامينات والمعادن.",
-                            Fat = 0,
-                            MealCategory = "الإفطار",
-                            MealName = "عصير برتقال طازج",
-                            MealType = "مشروب",
-                            PicturePath = "/images/meal.png",
-                            Protein = 1
-                        },
-                        new
-                        {
-                            MealID = 20,
-                            Calories = 420,
-                            Carbs = 63,
-                            Description = "كعكة الشوكولاتة الغنية بطبقات الشوكولاتة الداكنة والكريمة، مثالية لمحبي الحلويات.",
-                            Fat = 22,
-                            MealCategory = "العشاء",
-                            MealName = "كعكة الشوكولاتة",
+                            MealID = 29,
+                            Calories = 415,
+                            Carbs = 65,
+                            Description = "بسبوسة تقليدية مصنوعة من السميد والمغطاة بشراب السكر، مزينة بالمكسرات.",
+                            Fat = 15,
+                            MealCategory = "الغداء",
+                            MealName = "بسبوسة",
                             MealType = "حلوى",
                             PicturePath = "/images/meal.png",
                             Protein = 5
+                        },
+                        new
+                        {
+                            MealID = 30,
+                            Calories = 8,
+                            Carbs = 2,
+                            Description = "شاي أخضر محضَّر طازجًا ومليء بمضادات الأكسدة، يُقدَّم ساخنًا أو باردًا مع لمسة نعناع.",
+                            Fat = 0,
+                            MealCategory = "الغداء",
+                            MealName = "شاي أخضر",
+                            MealType = "مشروب",
+                            PicturePath = "/images/meal.png",
+                            Protein = 0
                         });
                 });
 
@@ -528,7 +595,7 @@ namespace KauRestaurant.Data.Migrations
 
                     b.HasKey("MenuID");
 
-                    b.ToTable("Menus");
+                    b.ToTable("Menus", (string)null);
 
                     b.HasData(
                         new
@@ -618,182 +685,644 @@ namespace KauRestaurant.Data.Migrations
                         new
                         {
                             MenuMealID = 5,
-                            MealID = 5,
+                            MealID = 10,
                             MenuID = 1
                         },
                         new
                         {
                             MenuMealID = 6,
-                            MealID = 6,
+                            MealID = 15,
                             MenuID = 1
                         },
                         new
                         {
                             MenuMealID = 7,
-                            MealID = 7,
+                            MealID = 5,
                             MenuID = 1
                         },
                         new
                         {
                             MenuMealID = 8,
-                            MealID = 8,
+                            MealID = 6,
                             MenuID = 1
                         },
                         new
                         {
                             MenuMealID = 9,
-                            MealID = 9,
+                            MealID = 16,
                             MenuID = 1
                         },
                         new
                         {
                             MenuMealID = 10,
-                            MealID = 10,
-                            MenuID = 1
-                        },
-                        new
-                        {
-                            MenuMealID = 11,
-                            MealID = 11,
-                            MenuID = 1
-                        },
-                        new
-                        {
-                            MenuMealID = 12,
-                            MealID = 12,
-                            MenuID = 1
-                        },
-                        new
-                        {
-                            MenuMealID = 13,
-                            MealID = 13,
-                            MenuID = 1
-                        },
-                        new
-                        {
-                            MenuMealID = 14,
-                            MealID = 14,
-                            MenuID = 1
-                        },
-                        new
-                        {
-                            MenuMealID = 15,
-                            MealID = 15,
-                            MenuID = 1
-                        },
-                        new
-                        {
-                            MenuMealID = 16,
-                            MealID = 16,
-                            MenuID = 1
-                        },
-                        new
-                        {
-                            MenuMealID = 17,
                             MealID = 17,
                             MenuID = 1
                         },
                         new
                         {
-                            MenuMealID = 18,
+                            MenuMealID = 11,
                             MealID = 18,
                             MenuID = 1
                         },
                         new
                         {
-                            MenuMealID = 19,
+                            MenuMealID = 12,
                             MealID = 19,
-                            MenuID = 2
+                            MenuID = 1
                         },
                         new
                         {
-                            MenuMealID = 20,
-                            MealID = 1,
-                            MenuID = 2
+                            MenuMealID = 13,
+                            MealID = 20,
+                            MenuID = 1
                         },
                         new
                         {
-                            MenuMealID = 21,
+                            MenuMealID = 14,
+                            MealID = 27,
+                            MenuID = 1
+                        },
+                        new
+                        {
+                            MenuMealID = 15,
+                            MealID = 21,
+                            MenuID = 1
+                        },
+                        new
+                        {
+                            MenuMealID = 16,
+                            MealID = 28,
+                            MenuID = 1
+                        },
+                        new
+                        {
+                            MenuMealID = 17,
                             MealID = 7,
                             MenuID = 2
                         },
                         new
                         {
+                            MenuMealID = 18,
+                            MealID = 9,
+                            MenuID = 2
+                        },
+                        new
+                        {
+                            MenuMealID = 19,
+                            MealID = 8,
+                            MenuID = 2
+                        },
+                        new
+                        {
+                            MenuMealID = 20,
+                            MealID = 14,
+                            MenuID = 2
+                        },
+                        new
+                        {
+                            MenuMealID = 21,
+                            MealID = 12,
+                            MenuID = 2
+                        },
+                        new
+                        {
                             MenuMealID = 22,
-                            MealID = 13,
+                            MealID = 15,
                             MenuID = 2
                         },
                         new
                         {
                             MenuMealID = 23,
-                            MealID = 20,
-                            MenuID = 3
+                            MealID = 5,
+                            MenuID = 2
                         },
                         new
                         {
                             MenuMealID = 24,
-                            MealID = 2,
-                            MenuID = 3
+                            MealID = 11,
+                            MenuID = 2
                         },
                         new
                         {
                             MenuMealID = 25,
+                            MealID = 22,
+                            MenuID = 2
+                        },
+                        new
+                        {
+                            MenuMealID = 26,
+                            MealID = 24,
+                            MenuID = 2
+                        },
+                        new
+                        {
+                            MenuMealID = 27,
+                            MealID = 25,
+                            MenuID = 2
+                        },
+                        new
+                        {
+                            MenuMealID = 28,
+                            MealID = 26,
+                            MenuID = 2
+                        },
+                        new
+                        {
+                            MenuMealID = 29,
+                            MealID = 29,
+                            MenuID = 2
+                        },
+                        new
+                        {
+                            MenuMealID = 30,
+                            MealID = 20,
+                            MenuID = 2
+                        },
+                        new
+                        {
+                            MenuMealID = 31,
+                            MealID = 21,
+                            MenuID = 2
+                        },
+                        new
+                        {
+                            MenuMealID = 32,
+                            MealID = 30,
+                            MenuID = 2
+                        },
+                        new
+                        {
+                            MenuMealID = 33,
+                            MealID = 1,
+                            MenuID = 3
+                        },
+                        new
+                        {
+                            MenuMealID = 34,
+                            MealID = 7,
+                            MenuID = 3
+                        },
+                        new
+                        {
+                            MenuMealID = 35,
+                            MealID = 3,
+                            MenuID = 3
+                        },
+                        new
+                        {
+                            MenuMealID = 36,
                             MealID = 8,
                             MenuID = 3
                         },
                         new
                         {
-                            MenuMealID = 26,
-                            MealID = 14,
+                            MenuMealID = 37,
+                            MealID = 10,
                             MenuID = 3
                         },
                         new
                         {
-                            MenuMealID = 27,
-                            MealID = 3,
+                            MenuMealID = 38,
+                            MealID = 12,
+                            MenuID = 3
+                        },
+                        new
+                        {
+                            MenuMealID = 39,
+                            MealID = 6,
+                            MenuID = 3
+                        },
+                        new
+                        {
+                            MenuMealID = 40,
+                            MealID = 11,
+                            MenuID = 3
+                        },
+                        new
+                        {
+                            MenuMealID = 41,
+                            MealID = 23,
+                            MenuID = 3
+                        },
+                        new
+                        {
+                            MenuMealID = 42,
+                            MealID = 17,
+                            MenuID = 3
+                        },
+                        new
+                        {
+                            MenuMealID = 43,
+                            MealID = 18,
+                            MenuID = 3
+                        },
+                        new
+                        {
+                            MenuMealID = 44,
+                            MealID = 25,
+                            MenuID = 3
+                        },
+                        new
+                        {
+                            MenuMealID = 45,
+                            MealID = 27,
+                            MenuID = 3
+                        },
+                        new
+                        {
+                            MenuMealID = 46,
+                            MealID = 29,
+                            MenuID = 3
+                        },
+                        new
+                        {
+                            MenuMealID = 47,
+                            MealID = 28,
+                            MenuID = 3
+                        },
+                        new
+                        {
+                            MenuMealID = 48,
+                            MealID = 30,
+                            MenuID = 3
+                        },
+                        new
+                        {
+                            MenuMealID = 49,
+                            MealID = 2,
                             MenuID = 4
                         },
                         new
                         {
-                            MenuMealID = 28,
+                            MenuMealID = 50,
                             MealID = 9,
                             MenuID = 4
                         },
                         new
                         {
-                            MenuMealID = 29,
+                            MenuMealID = 51,
+                            MealID = 4,
+                            MenuID = 4
+                        },
+                        new
+                        {
+                            MenuMealID = 52,
+                            MealID = 14,
+                            MenuID = 4
+                        },
+                        new
+                        {
+                            MenuMealID = 53,
                             MealID = 15,
                             MenuID = 4
                         },
                         new
                         {
-                            MenuMealID = 30,
+                            MenuMealID = 54,
+                            MealID = 10,
+                            MenuID = 4
+                        },
+                        new
+                        {
+                            MenuMealID = 55,
+                            MealID = 5,
+                            MenuID = 4
+                        },
+                        new
+                        {
+                            MenuMealID = 56,
+                            MealID = 6,
+                            MenuID = 4
+                        },
+                        new
+                        {
+                            MenuMealID = 57,
+                            MealID = 16,
+                            MenuID = 4
+                        },
+                        new
+                        {
+                            MenuMealID = 58,
+                            MealID = 22,
+                            MenuID = 4
+                        },
+                        new
+                        {
+                            MenuMealID = 59,
                             MealID = 19,
                             MenuID = 4
                         },
                         new
                         {
-                            MenuMealID = 31,
-                            MealID = 4,
+                            MenuMealID = 60,
+                            MealID = 26,
+                            MenuID = 4
+                        },
+                        new
+                        {
+                            MenuMealID = 61,
+                            MealID = 20,
+                            MenuID = 4
+                        },
+                        new
+                        {
+                            MenuMealID = 62,
+                            MealID = 27,
+                            MenuID = 4
+                        },
+                        new
+                        {
+                            MenuMealID = 63,
+                            MealID = 21,
+                            MenuID = 4
+                        },
+                        new
+                        {
+                            MenuMealID = 64,
+                            MealID = 28,
+                            MenuID = 4
+                        },
+                        new
+                        {
+                            MenuMealID = 65,
+                            MealID = 13,
                             MenuID = 5
                         },
                         new
                         {
-                            MenuMealID = 32,
-                            MealID = 10,
+                            MenuMealID = 66,
+                            MealID = 7,
                             MenuID = 5
                         },
                         new
                         {
-                            MenuMealID = 33,
-                            MealID = 16,
+                            MenuMealID = 67,
+                            MealID = 3,
                             MenuID = 5
                         },
                         new
                         {
-                            MenuMealID = 34,
+                            MenuMealID = 68,
+                            MealID = 8,
+                            MenuID = 5
+                        },
+                        new
+                        {
+                            MenuMealID = 69,
+                            MealID = 12,
+                            MenuID = 5
+                        },
+                        new
+                        {
+                            MenuMealID = 70,
+                            MealID = 15,
+                            MenuID = 5
+                        },
+                        new
+                        {
+                            MenuMealID = 71,
+                            MealID = 11,
+                            MenuID = 5
+                        },
+                        new
+                        {
+                            MenuMealID = 72,
+                            MealID = 5,
+                            MenuID = 5
+                        },
+                        new
+                        {
+                            MenuMealID = 73,
+                            MealID = 24,
+                            MenuID = 5
+                        },
+                        new
+                        {
+                            MenuMealID = 74,
+                            MealID = 23,
+                            MenuID = 5
+                        },
+                        new
+                        {
+                            MenuMealID = 75,
+                            MealID = 18,
+                            MenuID = 5
+                        },
+                        new
+                        {
+                            MenuMealID = 76,
+                            MealID = 25,
+                            MenuID = 5
+                        },
+                        new
+                        {
+                            MenuMealID = 77,
+                            MealID = 29,
+                            MenuID = 5
+                        },
+                        new
+                        {
+                            MenuMealID = 78,
                             MealID = 20,
                             MenuID = 5
+                        },
+                        new
+                        {
+                            MenuMealID = 79,
+                            MealID = 30,
+                            MenuID = 5
+                        },
+                        new
+                        {
+                            MenuMealID = 80,
+                            MealID = 21,
+                            MenuID = 5
+                        },
+                        new
+                        {
+                            MenuMealID = 81,
+                            MealID = 1,
+                            MenuID = 6
+                        },
+                        new
+                        {
+                            MenuMealID = 82,
+                            MealID = 2,
+                            MenuID = 6
+                        },
+                        new
+                        {
+                            MenuMealID = 83,
+                            MealID = 4,
+                            MenuID = 6
+                        },
+                        new
+                        {
+                            MenuMealID = 84,
+                            MealID = 14,
+                            MenuID = 6
+                        },
+                        new
+                        {
+                            MenuMealID = 85,
+                            MealID = 10,
+                            MenuID = 6
+                        },
+                        new
+                        {
+                            MenuMealID = 86,
+                            MealID = 12,
+                            MenuID = 6
+                        },
+                        new
+                        {
+                            MenuMealID = 87,
+                            MealID = 5,
+                            MenuID = 6
+                        },
+                        new
+                        {
+                            MenuMealID = 88,
+                            MealID = 6,
+                            MenuID = 6
+                        },
+                        new
+                        {
+                            MenuMealID = 89,
+                            MealID = 17,
+                            MenuID = 6
+                        },
+                        new
+                        {
+                            MenuMealID = 90,
+                            MealID = 22,
+                            MenuID = 6
+                        },
+                        new
+                        {
+                            MenuMealID = 91,
+                            MealID = 19,
+                            MenuID = 6
+                        },
+                        new
+                        {
+                            MenuMealID = 92,
+                            MealID = 26,
+                            MenuID = 6
+                        },
+                        new
+                        {
+                            MenuMealID = 93,
+                            MealID = 27,
+                            MenuID = 6
+                        },
+                        new
+                        {
+                            MenuMealID = 94,
+                            MealID = 29,
+                            MenuID = 6
+                        },
+                        new
+                        {
+                            MenuMealID = 95,
+                            MealID = 28,
+                            MenuID = 6
+                        },
+                        new
+                        {
+                            MenuMealID = 96,
+                            MealID = 30,
+                            MenuID = 6
+                        },
+                        new
+                        {
+                            MenuMealID = 97,
+                            MealID = 9,
+                            MenuID = 7
+                        },
+                        new
+                        {
+                            MenuMealID = 98,
+                            MealID = 13,
+                            MenuID = 7
+                        },
+                        new
+                        {
+                            MenuMealID = 99,
+                            MealID = 3,
+                            MenuID = 7
+                        },
+                        new
+                        {
+                            MenuMealID = 100,
+                            MealID = 8,
+                            MenuID = 7
+                        },
+                        new
+                        {
+                            MenuMealID = 101,
+                            MealID = 15,
+                            MenuID = 7
+                        },
+                        new
+                        {
+                            MenuMealID = 102,
+                            MealID = 10,
+                            MenuID = 7
+                        },
+                        new
+                        {
+                            MenuMealID = 103,
+                            MealID = 11,
+                            MenuID = 7
+                        },
+                        new
+                        {
+                            MenuMealID = 104,
+                            MealID = 5,
+                            MenuID = 7
+                        },
+                        new
+                        {
+                            MenuMealID = 105,
+                            MealID = 23,
+                            MenuID = 7
+                        },
+                        new
+                        {
+                            MenuMealID = 106,
+                            MealID = 24,
+                            MenuID = 7
+                        },
+                        new
+                        {
+                            MenuMealID = 108,
+                            MealID = 25,
+                            MenuID = 7
+                        },
+                        new
+                        {
+                            MenuMealID = 109,
+                            MealID = 20,
+                            MenuID = 7
+                        },
+                        new
+                        {
+                            MenuMealID = 110,
+                            MealID = 27,
+                            MenuID = 7
+                        },
+                        new
+                        {
+                            MenuMealID = 111,
+                            MealID = 21,
+                            MenuID = 7
+                        },
+                        new
+                        {
+                            MenuMealID = 112,
+                            MealID = 28,
+                            MenuID = 7
                         });
                 });
 
@@ -812,9 +1341,6 @@ namespace KauRestaurant.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("DinnerTicketsCount")
-                        .HasColumnType("int");
-
                     b.Property<int>("LunchTicketsCount")
                         .HasColumnType("int");
 
@@ -832,348 +1358,7 @@ namespace KauRestaurant.Data.Migrations
 
                     b.HasIndex("CustomerID");
 
-                    b.ToTable("Orders");
-                });
-
-            modelBuilder.Entity("KauRestaurant.Models.Restaurant", b =>
-                {
-                    b.Property<int>("RestaurantID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RestaurantID"));
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<TimeSpan?>("FridayBreakfastCloseTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("FridayBreakfastOpenTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("FridayDinnerCloseTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("FridayDinnerOpenTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("FridayLunchCloseTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("FridayLunchOpenTime")
-                        .HasColumnType("time");
-
-                    b.Property<bool>("FridayServesBreakfast")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("FridayServesDinner")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("FridayServesLunch")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsFridayOpen")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsMondayOpen")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsSaturdayOpen")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsSundayOpen")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsThursdayOpen")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsTuesdayOpen")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsWednesdayOpen")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("LocationUrl")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<TimeSpan?>("MondayBreakfastCloseTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("MondayBreakfastOpenTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("MondayDinnerCloseTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("MondayDinnerOpenTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("MondayLunchCloseTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("MondayLunchOpenTime")
-                        .HasColumnType("time");
-
-                    b.Property<bool>("MondayServesBreakfast")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("MondayServesDinner")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("MondayServesLunch")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<string>("PhotoPath")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<TimeSpan?>("SaturdayBreakfastCloseTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("SaturdayBreakfastOpenTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("SaturdayDinnerCloseTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("SaturdayDinnerOpenTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("SaturdayLunchCloseTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("SaturdayLunchOpenTime")
-                        .HasColumnType("time");
-
-                    b.Property<bool>("SaturdayServesBreakfast")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("SaturdayServesDinner")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("SaturdayServesLunch")
-                        .HasColumnType("bit");
-
-                    b.Property<TimeSpan?>("SundayBreakfastCloseTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("SundayBreakfastOpenTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("SundayDinnerCloseTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("SundayDinnerOpenTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("SundayLunchCloseTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("SundayLunchOpenTime")
-                        .HasColumnType("time");
-
-                    b.Property<bool>("SundayServesBreakfast")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("SundayServesDinner")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("SundayServesLunch")
-                        .HasColumnType("bit");
-
-                    b.Property<TimeSpan?>("ThursdayBreakfastCloseTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("ThursdayBreakfastOpenTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("ThursdayDinnerCloseTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("ThursdayDinnerOpenTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("ThursdayLunchCloseTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("ThursdayLunchOpenTime")
-                        .HasColumnType("time");
-
-                    b.Property<bool>("ThursdayServesBreakfast")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("ThursdayServesDinner")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("ThursdayServesLunch")
-                        .HasColumnType("bit");
-
-                    b.Property<TimeSpan?>("TuesdayBreakfastCloseTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("TuesdayBreakfastOpenTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("TuesdayDinnerCloseTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("TuesdayDinnerOpenTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("TuesdayLunchCloseTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("TuesdayLunchOpenTime")
-                        .HasColumnType("time");
-
-                    b.Property<bool>("TuesdayServesBreakfast")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("TuesdayServesDinner")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("TuesdayServesLunch")
-                        .HasColumnType("bit");
-
-                    b.Property<TimeSpan?>("WednesdayBreakfastCloseTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("WednesdayBreakfastOpenTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("WednesdayDinnerCloseTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("WednesdayDinnerOpenTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("WednesdayLunchCloseTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan?>("WednesdayLunchOpenTime")
-                        .HasColumnType("time");
-
-                    b.Property<bool>("WednesdayServesBreakfast")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("WednesdayServesDinner")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("WednesdayServesLunch")
-                        .HasColumnType("bit");
-
-                    b.HasKey("RestaurantID");
-
-                    b.ToTable("Restaurants");
-
-                    b.HasData(
-                        new
-                        {
-                            RestaurantID = 1,
-                            Address = "جامعة الملك عبد العزيز، جدة، المملكة العربية السعودية",
-                            Description = "في المطعم الجامعي الرسمي لجامعة الملك عبد العزيز، نقدم وجبات طازجة وعالية الجودة للطلاب وأعضاء هيئة التدريس. نحرص على تقديم أطباق متنوعة ومغذية في بيئة نظيفة ومرحبة.",
-                            Email = "restaurant@kau.edu.sa",
-                            FridayBreakfastCloseTime = new TimeSpan(0, 10, 30, 0, 0),
-                            FridayBreakfastOpenTime = new TimeSpan(0, 7, 0, 0, 0),
-                            FridayDinnerCloseTime = new TimeSpan(0, 10, 30, 0, 0),
-                            FridayDinnerOpenTime = new TimeSpan(0, 7, 0, 0, 0),
-                            FridayLunchCloseTime = new TimeSpan(0, 10, 30, 0, 0),
-                            FridayLunchOpenTime = new TimeSpan(0, 7, 0, 0, 0),
-                            FridayServesBreakfast = true,
-                            FridayServesDinner = true,
-                            FridayServesLunch = true,
-                            IsFridayOpen = true,
-                            IsMondayOpen = true,
-                            IsSaturdayOpen = true,
-                            IsSundayOpen = true,
-                            IsThursdayOpen = true,
-                            IsTuesdayOpen = true,
-                            IsWednesdayOpen = true,
-                            LocationUrl = "https://maps.app.goo.gl/KFBdpmH7E88Lzvy49",
-                            MondayBreakfastCloseTime = new TimeSpan(0, 10, 30, 0, 0),
-                            MondayBreakfastOpenTime = new TimeSpan(0, 7, 0, 0, 0),
-                            MondayDinnerCloseTime = new TimeSpan(0, 22, 0, 0, 0),
-                            MondayDinnerOpenTime = new TimeSpan(0, 18, 0, 0, 0),
-                            MondayLunchCloseTime = new TimeSpan(0, 15, 0, 0, 0),
-                            MondayLunchOpenTime = new TimeSpan(0, 12, 0, 0, 0),
-                            MondayServesBreakfast = true,
-                            MondayServesDinner = true,
-                            MondayServesLunch = true,
-                            Name = "مطعم جامعة الملك عبدالعزيز",
-                            PhoneNumber = "+9665********",
-                            PhotoPath = "/images/restaurant.png",
-                            SaturdayBreakfastCloseTime = new TimeSpan(0, 10, 30, 0, 0),
-                            SaturdayBreakfastOpenTime = new TimeSpan(0, 7, 0, 0, 0),
-                            SaturdayDinnerCloseTime = new TimeSpan(0, 10, 30, 0, 0),
-                            SaturdayDinnerOpenTime = new TimeSpan(0, 7, 0, 0, 0),
-                            SaturdayLunchCloseTime = new TimeSpan(0, 10, 30, 0, 0),
-                            SaturdayLunchOpenTime = new TimeSpan(0, 7, 0, 0, 0),
-                            SaturdayServesBreakfast = true,
-                            SaturdayServesDinner = true,
-                            SaturdayServesLunch = true,
-                            SundayBreakfastCloseTime = new TimeSpan(0, 10, 30, 0, 0),
-                            SundayBreakfastOpenTime = new TimeSpan(0, 7, 0, 0, 0),
-                            SundayDinnerCloseTime = new TimeSpan(0, 22, 0, 0, 0),
-                            SundayDinnerOpenTime = new TimeSpan(0, 18, 0, 0, 0),
-                            SundayLunchCloseTime = new TimeSpan(0, 15, 0, 0, 0),
-                            SundayLunchOpenTime = new TimeSpan(0, 12, 0, 0, 0),
-                            SundayServesBreakfast = true,
-                            SundayServesDinner = true,
-                            SundayServesLunch = true,
-                            ThursdayBreakfastCloseTime = new TimeSpan(0, 10, 30, 0, 0),
-                            ThursdayBreakfastOpenTime = new TimeSpan(0, 7, 0, 0, 0),
-                            ThursdayDinnerCloseTime = new TimeSpan(0, 22, 0, 0, 0),
-                            ThursdayDinnerOpenTime = new TimeSpan(0, 18, 0, 0, 0),
-                            ThursdayLunchCloseTime = new TimeSpan(0, 15, 0, 0, 0),
-                            ThursdayLunchOpenTime = new TimeSpan(0, 12, 0, 0, 0),
-                            ThursdayServesBreakfast = true,
-                            ThursdayServesDinner = true,
-                            ThursdayServesLunch = true,
-                            TuesdayBreakfastCloseTime = new TimeSpan(0, 10, 30, 0, 0),
-                            TuesdayBreakfastOpenTime = new TimeSpan(0, 7, 0, 0, 0),
-                            TuesdayDinnerCloseTime = new TimeSpan(0, 22, 0, 0, 0),
-                            TuesdayDinnerOpenTime = new TimeSpan(0, 18, 0, 0, 0),
-                            TuesdayLunchCloseTime = new TimeSpan(0, 15, 0, 0, 0),
-                            TuesdayLunchOpenTime = new TimeSpan(0, 12, 0, 0, 0),
-                            TuesdayServesBreakfast = true,
-                            TuesdayServesDinner = true,
-                            TuesdayServesLunch = true,
-                            WednesdayBreakfastCloseTime = new TimeSpan(0, 10, 30, 0, 0),
-                            WednesdayBreakfastOpenTime = new TimeSpan(0, 7, 0, 0, 0),
-                            WednesdayDinnerCloseTime = new TimeSpan(0, 22, 0, 0, 0),
-                            WednesdayDinnerOpenTime = new TimeSpan(0, 18, 0, 0, 0),
-                            WednesdayLunchCloseTime = new TimeSpan(0, 15, 0, 0, 0),
-                            WednesdayLunchOpenTime = new TimeSpan(0, 12, 0, 0, 0),
-                            WednesdayServesBreakfast = true,
-                            WednesdayServesDinner = true,
-                            WednesdayServesLunch = true
-                        });
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("KauRestaurant.Models.Review", b =>
@@ -1208,78 +1393,7 @@ namespace KauRestaurant.Data.Migrations
 
                     b.HasIndex("MealID");
 
-                    b.ToTable("Reviews");
-                });
-
-            modelBuilder.Entity("KauRestaurant.Models.Terms", b =>
-                {
-                    b.Property<int>("TermID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TermID"));
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasMaxLength(2000)
-                        .HasColumnType("nvarchar(2000)");
-
-                    b.Property<int>("DisplayOrder")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("LastUpdated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("TermID");
-
-                    b.ToTable("Terms");
-
-                    b.HasData(
-                        new
-                        {
-                            TermID = 1,
-                            Content = "تنطبق هذه الشروط والأحكام على جميع الخدمات المقدمة من مطعم جامعة الملك عبدالعزيز.",
-                            DisplayOrder = 1,
-                            LastUpdated = new DateTime(2025, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Title = "عام"
-                        },
-                        new
-                        {
-                            TermID = 2,
-                            Content = "جميع المبيعات نهائية ولا يمكن استرداد قيمة التذاكر بعد الشراء. يجب استخدام التذاكر خلال الفصل الدراسي الذي تم شراؤها فيه. التذاكر غير قابلة للتحويل ويجب استخدامها من قبل مالك الحساب فقط.",
-                            DisplayOrder = 2,
-                            LastUpdated = new DateTime(2025, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Title = "التذاكر والدفع"
-                        },
-                        new
-                        {
-                            TermID = 3,
-                            Content = "يتعهد المستخدم بعدم إساءة استخدام الخدمة أو محاولة التحايل على النظام. يحتفظ المطعم بالحق في رفض الخدمة لأي شخص ينتهك هذه الشروط.",
-                            DisplayOrder = 3,
-                            LastUpdated = new DateTime(2025, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Title = "الاستخدام"
-                        },
-                        new
-                        {
-                            TermID = 4,
-                            Content = "نحن نحترم خصوصيتك ونلتزم بحماية بياناتك الشخصية وفقاً لسياسة الخصوصية الخاصة بنا.",
-                            DisplayOrder = 4,
-                            LastUpdated = new DateTime(2025, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Title = "الخصوصية"
-                        },
-                        new
-                        {
-                            TermID = 5,
-                            Content = "يحتفظ المطعم بالحق في تعديل هذه الشروط في أي وقت. سيتم نشر التغييرات على موقعنا.",
-                            DisplayOrder = 5,
-                            LastUpdated = new DateTime(2025, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Title = "التغييرات على الشروط"
-                        });
+                    b.ToTable("Reviews", (string)null);
                 });
 
             modelBuilder.Entity("KauRestaurant.Models.Ticket", b =>
@@ -1312,7 +1426,7 @@ namespace KauRestaurant.Data.Migrations
 
                     b.HasIndex("OrderID");
 
-                    b.ToTable("Tickets");
+                    b.ToTable("Tickets", (string)null);
                 });
 
             modelBuilder.Entity("KauRestaurant.Models.TicketPrice", b =>
@@ -1336,7 +1450,7 @@ namespace KauRestaurant.Data.Migrations
 
                     b.HasKey("TicketPriceID");
 
-                    b.ToTable("TicketPrices");
+                    b.ToTable("TicketPrices", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

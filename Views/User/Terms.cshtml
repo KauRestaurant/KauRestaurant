@@ -1,5 +1,4 @@
-﻿@model IEnumerable<KauRestaurant.Models.Terms>
-@{
+﻿@{
     ViewData["Title"] = "سياسة الخصوصية والشروط";
 }
 
@@ -12,31 +11,33 @@
                     <div class="card-header bg-white py-3">
                         <h2 class="fw-bold mb-0 text-center">سياسة الخصوصية والشروط</h2>
                     </div>
-                    <!-- Terms and Conditions Content -->
+                    <!-- Terms and Conditions Content - Hardcoded -->
                     <div class="card-body p-4">
-                        @if (Model != null && Model.Any())
-                        {
-                            @foreach (var term in Model)
-                            {
-                                <div class="term-item mb-4">
-                                    <h4 class="term-title text-success fw-bold mb-3">@term.Title</h4>
-                                    @Html.Raw(term.Content)
-                                    <div class="term-meta text-muted mt-2">
-                                        <small>آخر تحديث: @term.LastUpdated.ToString("MMMM yyyy")</small>
-                                    </div>
-                                </div>
-                                <hr class="my-4" />
-                            }
-                            <div class="text-center mt-5 pt-3 border-top">
-                                <p class="text-muted">تمت مراجعة جميع الشروط والأحكام آخر مرة في @Model.Max(t => t.LastUpdated).ToString("MMMM yyyy")</p>
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="alert alert-info">
-                                <i class="bi bi-info-circle me-2"></i>لم يتم العثور على محتوى سياسة الخصوصية والشروط.
-                            </div>
-                        }
+                        <!-- Term 1 -->
+                        <div class="term-item mb-4">
+                            <h4 class="term-title text-success fw-bold mb-3">شروط الاستخدام</h4>
+                            <p>يرجى قراءة شروط الاستخدام التالية بعناية قبل استخدام موقع المطعم الجامعي. باستخدامك للموقع، فإنك توافق على الالتزام بهذه الشروط. إذا كنت لا توافق على هذه الشروط، يرجى عدم استخدام الموقع.</p>
+                            <p>الموقع مخصص للاستخدام الشخصي غير التجاري. لا يجوز استخدام الموقع لأي غرض غير قانوني أو محظور بموجب هذه الشروط.</p>
+                            <p>نحتفظ بالحق في تعديل محتوى الموقع في أي وقت دون إشعار مسبق. كما نحتفظ بالحق في تقييد الوصول إلى أجزاء معينة من الموقع أو الموقع بأكمله وفقاً لتقديرنا.</p>
+                        </div>
+                        <hr class="my-4" />
+
+                        <!-- Term 2 -->
+                        <div class="term-item mb-4">
+                            <h4 class="term-title text-success fw-bold mb-3">سياسة الخصوصية</h4>
+                            <p>نحن نحترم خصوصية المستخدمين ونلتزم بحماية المعلومات الشخصية التي يتم جمعها من خلال موقعنا.</p>
+                            <p>المعلومات التي نجمعها قد تشمل: الاسم، البريد الإلكتروني، رقم الهاتف، وتفاصيل الطلبات. نستخدم هذه المعلومات لتقديم خدماتنا وتحسينها، والتواصل مع المستخدمين، ومعالجة المدفوعات.</p>
+                            <p>نحن لا نبيع أو نؤجر أو نتاجر بمعلوماتك الشخصية مع أطراف ثالثة. قد نشارك معلوماتك مع مزودي الخدمات الذين يساعدوننا في تشغيل موقعنا وتقديم خدماتنا.</p>
+                        </div>
+                        <hr class="my-4" />
+
+                        <!-- Term 3 -->
+                        <div class="term-item mb-4">
+                            <h4 class="term-title text-success fw-bold mb-3">سياسة الدفع والاسترداد</h4>
+                            <p>يتم قبول الدفع عبر بطاقات الائتمان والدفع الإلكتروني. جميع المعاملات المالية على الموقع مؤمنة باستخدام تقنيات التشفير القياسية.</p>
+                            <p>يمكن استرداد قيمة التذاكر غير المستخدمة خلال 7 أيام من تاريخ الشراء. بعد ذلك، لا يمكن استرداد قيمة التذاكر إلا في حالات خاصة يتم تقييمها من قبل إدارة المطعم.</p>
+                            <p>في حالة وجود خطأ في الطلب أو عدم تقديم الخدمة، يرجى الاتصال بخدمة العملاء في أقرب وقت ممكن.</p>
+                        </div>
                     </div>
                 </div>
             </div>

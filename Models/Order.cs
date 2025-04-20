@@ -21,7 +21,6 @@ namespace KauRestaurant.Models
 
         public int BreakfastTicketsCount { get; set; } = 0;
         public int LunchTicketsCount { get; set; } = 0;
-        public int DinnerTicketsCount { get; set; } = 0;
 
         [ForeignKey("CustomerID")]
         public virtual KauRestaurantUser Customer { get; set; }

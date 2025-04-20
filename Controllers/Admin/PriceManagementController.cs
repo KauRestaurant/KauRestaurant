@@ -27,23 +27,12 @@ namespace KauRestaurant.Controllers.Admin
             // Get the current price settings
             var breakfastPrice = await _context.TicketPrices.FirstOrDefaultAsync(tp => tp.MealType == "الإفطار");
             var lunchPrice = await _context.TicketPrices.FirstOrDefaultAsync(tp => tp.MealType == "الغداء");
-            var dinnerPrice = await _context.TicketPrices.FirstOrDefaultAsync(tp => tp.MealType == "العشاء");
 
             var model = new TicketPriceViewModel
             {
                 BreakfastPrice = breakfastPrice?.Price ?? 7m,
-                BreakfastLastUpdated = breakfastPrice?.LastUpdated ?? DateTime.Now,
-
-                LunchPrice = lunchPrice?.Price ?? 10m,
-                LunchLastUpdated = lunchPrice?.LastUpdated ?? DateTime.Now,
-
-                DinnerPrice = dinnerPrice?.Price ?? 10m,
-                DinnerLastUpdated = dinnerPrice?.LastUpdated ?? DateTime.Now
+                LunchPrice = lunchPrice?.Price ?? 10m
             };
-
-            // Get restaurant information to check if meal times are disabled
-            var restaurant = await _context.Restaurants.FirstOrDefaultAsync();
-            ViewBag.Restaurant = restaurant;
 
             return View("~/Views/Admin/PriceManagement.cshtml", model);
         }
@@ -61,9 +50,6 @@ namespace KauRestaurant.Controllers.Admin
                     // Update lunch price
                     await UpdateTicketPrice("الغداء", model.LunchPrice);
 
-                    // Update dinner price
-                    await UpdateTicketPrice("العشاء", model.DinnerPrice);
-
                     TempData["SuccessMessage"] = "تم تحديث أسعار التذاكر بنجاح";
                     return RedirectToAction(nameof(Index));
                 }
@@ -72,10 +58,6 @@ namespace KauRestaurant.Controllers.Admin
                     TempData["ErrorMessage"] = "حدث خطأ أثناء تحديث الأسعار: " + ex.Message;
                 }
             }
-
-            // Get restaurant information again for the view
-            var restaurant = await _context.Restaurants.FirstOrDefaultAsync();
-            ViewBag.Restaurant = restaurant;
 
             // If we get here, there was a validation error
             // Return the view with the model to show validation errors
@@ -147,22 +129,10 @@ namespace KauRestaurant.Controllers.Admin
         [Display(Name = "سعر تذكرة الإفطار")]
         public decimal BreakfastPrice { get; set; }
 
-        public DateTime BreakfastLastUpdated { get; set; }
-
         [Required(ErrorMessage = "يرجى إدخال سعر تذكرة الغداء")]
         [Range(0.01, 1000.00, ErrorMessage = "يجب أن يكون السعر أكبر من صفر وأقل من 1000")]
         [DisplayFormat(DataFormatString = "{0:F2}", ApplyFormatInEditMode = true)]
         [Display(Name = "سعر تذكرة الغداء")]
         public decimal LunchPrice { get; set; }
-
-        public DateTime LunchLastUpdated { get; set; }
-
-        [Required(ErrorMessage = "يرجى إدخال سعر تذكرة العشاء")]
-        [Range(0.01, 1000.00, ErrorMessage = "يجب أن يكون السعر أكبر من صفر وأقل من 1000")]
-        [DisplayFormat(DataFormatString = "{0:F2}", ApplyFormatInEditMode = true)]
-        [Display(Name = "سعر تذكرة العشاء")]
-        public decimal DinnerPrice { get; set; }
-
-        public DateTime DinnerLastUpdated { get; set; }
     }
 }

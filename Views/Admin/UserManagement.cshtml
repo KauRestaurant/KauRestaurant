@@ -45,6 +45,11 @@
                     <h3 class="fw-bold mb-0">
                         <i class="bi bi-person-plus-fill me-2"></i>إضافة مشرف جديد
                     </h3>
+                    <a asp-controller="Dashboard" asp-action="Index" class="btn btn-outline-success">
+                        <i class="bi bi-arrow-right me-1"></i>
+                        <span class="d-none d-md-inline">عودة إلى لوحة التحكم</span>
+                        <span class="d-inline d-md-none">العودة</span>
+                    </a>
                 </div>
             </div>
             <div class="card-body">
@@ -109,287 +114,107 @@
                             <li>A3 - مشرف مساعد (مراجعة التقارير والتعليقات)</li>
                         </ul>
                     </div>
-                    <div class="d-flex justify-content-between pt-3 border-top">
-                        <a asp-controller="Dashboard" asp-action="Index" class="btn btn-outline-success">
-                            <i class="bi bi-arrow-right me-1"></i>
-                            <span class="d-none d-md-inline">عودة إلى لوحة التحكم</span>
-                            <span class="d-inline d-md-none">العودة</span>
-                        </a>
+                    <div class="d-flex justify-content-end pt-3 border-top">
                         <button type="submit" class="btn btn-success">
                             <i class="bi bi-plus-circle me-2"></i>إضافة مشرف
                         </button>
                     </div>
                 </form>
-
             </div>
         </div>
 
-        <!-- Rest of your file remains unchanged -->
-        <!-- Admins List Card -->
-        <div class="card border-0 shadow">
-            <div class="card-header bg-white py-3">
-                <div class="d-flex justify-content-between align-items-center">
-                    <h3 class="fw-bold mb-0">
-                        <i class="bi bi-people-fill me-2"></i>قائمة المشرفين
-                    </h3>
+        <!-- Admins List Card with Inline Dropdown Role Selection -->
+        <form method="post" asp-action="SaveRoles">
+            @Html.AntiForgeryToken()
+            <div class="card border-0 shadow">
+                <div class="card-header bg-white py-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h3 class="fw-bold mb-0">
+                            <i class="bi bi-people-fill me-2"></i>قائمة المشرفين
+                        </h3>
+                    </div>
                 </div>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>الاسم الكامل</th>
-                                <th>البريد الإلكتروني</th>
-                                <th>مستوى الصلاحية</th>
-                                <th>الإجراءات</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if (!Model.Item1.Any())
-                            {
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
                                 <tr>
-                                    <td colspan="4" class="text-center py-4 text-muted">
-                                        <i class="bi bi-info-circle me-2"></i>لا يوجد مشرفين حالياً
-                                    </td>
+                                    <th>الاسم الكامل</th>
+                                    <th>البريد الإلكتروني</th>
+                                    <th>مستوى الصلاحية</th>
+                                    <th>الإجراءات</th>
                                 </tr>
-                            }
-                            @foreach (var user in orderedUsers)
-                            {
-                                <tr>
-                                    <td>
-                                        <i class="bi bi-person-badge me-2"></i>
-                                        <span id="user-name-@user.Id">@user.FirstName @user.LastName</span>
-                                    </td>
-                                    <td>
-                                        <i class="bi bi-envelope me-2"></i>
-                                        <span id="user-email-@user.Id">@user.Email</span>
-                                    </td>
-                                    <td>
-                                        @{
-                                            var (badgeClass, roleText) = user.CurrentRole switch
-                                            {
-                                                "A1" => ("bg-A1", "مشرف رئيسي"),
-                                                "A2" => ("bg-A2", "مشرف إداري"),
-                                                "A3" => ("bg-A3", "مشرف مساعد"),
-                                                _ => ("bg-secondary", user.CurrentRole)
-                                            };
-                                        }
-                                        <span class="badge @badgeClass">
-                                            @user.CurrentRole - @roleText
-                                        </span>
-                                        <div class="d-flex align-items-center gap-2 mt-1 d-inline d-md-none">
-                                            <!-- Edit User Button -->
-                                            <button type="button" class="btn btn-sm btn-info btn-edit-user"
-                                                    data-user-id="@user.Id"
-                                                    data-user-firstname="@user.FirstName"
-                                                    data-user-lastname="@user.LastName"
-                                                    data-user-email="@user.Email"
-                                                    data-user-role="@user.CurrentRole"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#editUserModal"
-                                                    title="تعديل المستخدم">
-                                                <i class="bi bi-pencil"></i>
-                                            </button>
-
-                                            <!-- Change Password Button -->
-                                            <button type="button" class="btn btn-sm btn-warning"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#changePasswordModal"
-                                                    data-user-id="@user.Id"
-                                                    data-user-name="@user.FirstName @user.LastName"
-                                                    title="تغيير كلمة المرور">
-                                                <i class="bi bi-key"></i>
-                                            </button>
-
-                                            <!-- Delete User Button -->
+                            </thead>
+                            <tbody>
+                                @if (!Model.Item1.Any())
+                                {
+                                    <tr>
+                                        <td colspan="4" class="text-center py-4 text-muted">
+                                            <i class="bi bi-info-circle me-2"></i>لا يوجد مشرفين حالياً
+                                        </td>
+                                    </tr>
+                                }
+                                @foreach (var user in orderedUsers)
+                                {
+                                    <tr>
+                                        <td>
+                                            <i class="bi bi-person-badge me-2"></i>
+                                            <span id="user-name-@user.Id">@user.FirstName @user.LastName</span>
+                                            <input type="hidden" name="userIds" value="@user.Id" />
+                                        </td>
+                                        <td>
+                                            <i class="bi bi-envelope me-2"></i>
+                                            <span id="user-email-@user.Id">@user.Email</span>
+                                        </td>
+                                        <td>
+                                            <div class="dropdown-container" style="width: 100%; min-width: 150px;">
+                                                @{
+                                                    var isCurrentUser = User.Identity.Name == user.Email;
+                                                }
+                                                <select name="roles" class="form-select role-dropdown"
+                                                        aria-label="اختر صلاحية"
+                                                        data-user-id="@user.Id"
+                                                @(isCurrentUser ? "disabled" : "")>
+                                                    <option value="A1" selected="@(user.CurrentRole == "A1")">A1 - مشرف رئيسي</option>
+                                                    <option value="A2" selected="@(user.CurrentRole == "A2")">A2 - مشرف إداري</option>
+                                                    <option value="A3" selected="@(user.CurrentRole == "A3")">A3 - مشرف مساعد</option>
+                                                </select>
+                                                <!-- Add a hidden input that will always be submitted -->
+                                                @if (isCurrentUser)
+                                                {
+                                                    <input type="hidden" name="roles" value="@user.CurrentRole" />
+                                                }
+                                            </div>
+                                        </td>
+                                        <td>
                                             <button type="button" class="btn btn-sm btn-danger btn-delete-user"
                                                     data-user-id="@user.Id"
                                                     data-user-name="@user.FirstName @user.LastName"
                                                     data-bs-toggle="modal"
                                                     data-bs-target="#deleteUserModal"
                                             @(User.Identity.Name == user.Email ? "disabled" : "")
-                                                    title="@(User.Identity.Name == user.Email ? "لا يمكنك حذف حسابك الحالي" : "حذف المشرف")">
-                                                <i class="bi bi-trash"></i>
+                                                    title="حذف المشرف">
+                                                <i class="bi bi-trash me-1"></i>
+                                                <span class="d-none d-md-inline">حذف</span>
                                             </button>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="d-flex align-items-center gap-2 d-none d-md-inline">
-                                            <!-- Edit User Button -->
-                                            <button type="button" class="btn btn-sm btn-success btn-edit-user"
-                                                    data-user-id="@user.Id"
-                                                    data-user-firstname="@user.FirstName"
-                                                    data-user-lastname="@user.LastName"
-                                                    data-user-email="@user.Email"
-                                                    data-user-role="@user.CurrentRole"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#editUserModal"
-                                                    title="تعديل المستخدم">
-                                                <i class="bi bi-pencil"></i>
-                                            </button>
-
-                                            <!-- Change Password Button -->
-                                            <button type="button" class="btn btn-sm btn-warning"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#changePasswordModal"
-                                                    data-user-id="@user.Id"
-                                                    data-user-name="@user.FirstName @user.LastName"
-                                                    title="تغيير كلمة المرور">
-                                                <i class="bi bi-key"></i>
-                                            </button>
-
-                                            <!-- Delete User Button -->
-                                            <button type="button" class="btn btn-sm btn-danger btn-delete-user"
-                                                    data-user-id="@user.Id"
-                                                    data-user-name="@user.FirstName @user.LastName"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#deleteUserModal"
-                                            @(User.Identity.Name == user.Email ? "disabled" : "")
-                                                    title="@(User.Identity.Name == user.Email ? "لا يمكنك حذف حسابك الحالي" : "حذف المشرف")">
-                                                <i class="bi bi-trash"></i>
-                                            </button>
-
-                                        </div>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer bg-white py-3">
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" class="btn btn-success px-3">
+                            <i class="bi bi-save me-2"></i>
+                            <span class="d-none d-md-inline">حفظ التغييرات</span>
+                            <span class="d-inline d-md-none">حفظ</span>
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
-
-<!-- Edit User Modal -->
-<div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editUserModalLabel">تعديل بيانات المشرف</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form id="editUserForm" method="post" asp-action="UpdateUser">
-                <div class="modal-body">
-                    <input type="hidden" id="editUserId" name="userId">
-
-                    <!-- Personal Information Tab -->
-                    <div class="mb-4">
-                        <h6 class="fw-bold mb-3">
-                            <i class="bi bi-person-badge me-2"></i>المعلومات الشخصية
-                        </h6>
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label for="editUserFirstName" class="form-label">الاسم الأول</label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="bi bi-person"></i></span>
-                                    <input type="text" class="form-control" id="editUserFirstName" name="firstName" required>
-                                </div>
-                                <span class="text-danger field-validation-valid" data-valmsg-for="firstName" data-valmsg-replace="true"></span>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="editUserLastName" class="form-label">الاسم الأخير</label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="bi bi-person"></i></span>
-                                    <input type="text" class="form-control" id="editUserLastName" name="lastName" required>
-                                </div>
-                                <span class="text-danger field-validation-valid" data-valmsg-for="lastName" data-valmsg-replace="true"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <hr>
-
-                    <!-- Email Information Tab -->
-                    <div class="mb-4">
-                        <h6 class="fw-bold mb-3">
-                            <i class="bi bi-envelope me-2"></i>البريد الإلكتروني
-                        </h6>
-                        <div class="alert alert-warning small">
-                            <i class="bi bi-exclamation-triangle me-2"></i>
-                            ملاحظة: تغيير البريد الإلكتروني سيؤدي إلى تسجيل خروج المستخدم إذا كان متصلاً حالياً.
-                        </div>
-                        <div class="mb-3">
-                            <label for="editUserEmail" class="form-label">البريد الإلكتروني</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bi bi-envelope"></i></span>
-                                <input type="email" class="form-control" id="editUserEmail" name="newEmail" required>
-                            </div>
-                            <span class="text-danger field-validation-valid" data-valmsg-for="newEmail" data-valmsg-replace="true"></span>
-                        </div>
-                    </div>
-                    <hr>
-
-                    <!-- Role Information Tab -->
-                    <div class="mb-4">
-                        <h6 class="fw-bold mb-3">
-                            <i class="bi bi-shield-lock me-2"></i>مستوى الصلاحية
-                        </h6>
-                        <div class="mb-3">
-                            <label for="editUserRole" class="form-label">مستوى الصلاحية</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bi bi-shield-lock"></i></span>
-                                <select class="form-select" id="editUserRole" name="newRole" required>
-                                    <option value="A1">A1 - مشرف رئيسي</option>
-                                    <option value="A2">A2 - مشرف إداري</option>
-                                    <option value="A3">A3 - مشرف مساعد</option>
-                                </select>
-                            </div>
-                            <span class="text-danger field-validation-valid" data-valmsg-for="newRole" data-valmsg-replace="true"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">إلغاء</button>
-                    <button type="submit" class="btn btn-success">حفظ التغييرات</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<!-- Change Password Modal -->
-<div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="changePasswordModalLabel">تغيير كلمة المرور</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form method="post" asp-action="ChangePassword" id="changePasswordForm">
-                <div class="modal-body">
-                    <input type="hidden" name="userId" id="passwordUserId" value="">
-                    <div class="mb-3">
-                        <h6 class="mb-3" id="passwordUserName"></h6>
-                        <label class="form-label">كلمة المرور الجديدة</label>
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="bi bi-key"></i></span>
-                            <input type="password" name="newPassword" class="form-control password-input"
-                                   required minlength="6" placeholder="٦ أحرف على الأقل" />
-                        </div>
-                        <span class="text-danger field-validation-valid" data-valmsg-for="newPassword" data-valmsg-replace="true"></span>
-                        <div class="password-strength mt-2"></div>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">تأكيد كلمة المرور الجديدة</label>
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="bi bi-key-fill"></i></span>
-                            <input type="password" name="confirmPassword" class="form-control password-input"
-                                   required minlength="6" />
-                        </div>
-                        <span class="text-danger field-validation-valid" data-valmsg-for="confirmPassword" data-valmsg-replace="true"></span>
-                    </div>
-                    <div class="alert alert-warning">
-                        <i class="bi bi-exclamation-triangle me-2"></i>
-                        سيتم تسجيل خروج المستخدم بعد تغيير كلمة المرور.
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">إلغاء</button>
-                    <button type="submit" class="btn btn-success">حفظ كلمة المرور</button>
-                </div>
-            </form>
-        </div>
+        </form>
     </div>
 </div>
 
@@ -416,7 +241,6 @@
         </div>
     </div>
 </div>
-
 
 @section Scripts {
     <script src="~/js/userManagement.js" asp-append-version="true"></script>

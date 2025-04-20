@@ -18,15 +18,11 @@ namespace KauRestaurant.Controllers.User
 
         public async Task<IActionResult> Index()
         {
-            // Updated to use many-to-many relationship
             var menus = await _context.Menus
                 .Include(m => m.MenuMeals)
                 .ThenInclude(mm => mm.Meal)
                 .ThenInclude(m => m.Reviews)
                 .ToListAsync();
-
-            var restaurant = _context.Restaurants.FirstOrDefault();
-            ViewBag.Restaurant = restaurant;
 
             return View("~/Views/User/Menu.cshtml", menus);
         }

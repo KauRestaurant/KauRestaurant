@@ -17,10 +17,7 @@ namespace KauRestaurant.Data
         public DbSet<Order> Orders { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<MenuMeal> MenuMeals { get; set; }
-        public DbSet<Restaurant> Restaurants { get; set; }
         public DbSet<Feedback> Feedbacks { get; set; }
-        public DbSet<FAQ> FAQs { get; set; }
-        public DbSet<Terms> Terms { get; set; }
         public DbSet<TicketPrice> TicketPrices { get; set; }
 
 
@@ -60,19 +57,19 @@ namespace KauRestaurant.Data
                 new Menu { MenuID = 7, Day = "السبت" }
             );
 
-            // Seed Meal data
+            // Seed meals data
             modelBuilder.Entity<Meal>().HasData(
-                // Breakfast (الإفطار)
+                // Breakfast - 15 meals
                 new Meal
                 {
                     MealID = 1,
                     MealName = "فطائر بالجبن",
                     Description = "فطائر طازجة محشوة بالجبنة المشكلة المذابة، تقدم ساخنة مع زيت الزيتون والزعتر.",
                     PicturePath = "/images/meal.png",
-                    Calories = 250,
-                    Protein = 8,
-                    Carbs = 45,
-                    Fat = 10,
+                    Protein = 10,
+                    Carbs = 30,
+                    Fat = 12,
+                    Calories = 10 * 4 + 30 * 4 + 12 * 9, // 268 calories
                     MealType = "الطبق الرئيسي",
                     MealCategory = "الإفطار"
                 },
@@ -82,10 +79,10 @@ namespace KauRestaurant.Data
                     MealName = "بيض مقلي",
                     Description = "بيض مقلي على الطريقة العربية، يقدم مع الخبز العربي والخضروات الطازجة.",
                     PicturePath = "/images/meal.png",
-                    Calories = 185,
                     Protein = 12,
                     Carbs = 2,
                     Fat = 14,
+                    Calories = 12 * 4 + 2 * 4 + 14 * 9, // 182 calories
                     MealType = "الطبق الرئيسي",
                     MealCategory = "الإفطار"
                 },
@@ -95,10 +92,10 @@ namespace KauRestaurant.Data
                     MealName = "فول مدمس",
                     Description = "فول مدمس مطبوخ بالطريقة التقليدية مع زيت الزيتون والثوم والليمون، غني بالبروتين النباتي.",
                     PicturePath = "/images/meal.png",
-                    Calories = 220,
                     Protein = 15,
                     Carbs = 35,
                     Fat = 5,
+                    Calories = 15 * 4 + 35 * 4 + 5 * 9, // 245 calories
                     MealType = "طبق جانبي",
                     MealCategory = "الإفطار"
                 },
@@ -108,10 +105,10 @@ namespace KauRestaurant.Data
                     MealName = "حمص بالطحينة",
                     Description = "حمص بالطحينة متبل بزيت الزيتون والليمون، مزين بحبات الحمص الكاملة والبقدونس.",
                     PicturePath = "/images/meal.png",
-                    Calories = 180,
                     Protein = 8,
                     Carbs = 25,
                     Fat = 9,
+                    Calories = 8 * 4 + 25 * 4 + 9 * 9, // 213 calories
                     MealType = "طبق جانبي",
                     MealCategory = "الإفطار"
                 },
@@ -121,10 +118,10 @@ namespace KauRestaurant.Data
                     MealName = "شاي عربي",
                     Description = "شاي عربي معطر بالهيل والزعفران، يقدم ساخناً في أكواب تقليدية.",
                     PicturePath = "/images/meal.png",
-                    Calories = 5,
                     Protein = 0,
                     Carbs = 1,
                     Fat = 0,
+                    Calories = 0 * 4 + 1 * 4 + 0 * 9, // 4 calories
                     MealType = "مشروب",
                     MealCategory = "الإفطار"
                 },
@@ -134,431 +131,476 @@ namespace KauRestaurant.Data
                     MealName = "عصير برتقال طازج",
                     Description = "عصير برتقال طازج معصور في المطعم، غني بفيتامين سي والمذاق المنعش.",
                     PicturePath = "/images/meal.png",
-                    Calories = 120,
                     Protein = 1,
                     Carbs = 28,
                     Fat = 0,
+                    Calories = 1 * 4 + 28 * 4 + 0 * 9, // 116 calories
                     MealType = "مشروب",
                     MealCategory = "الإفطار"
                 },
-
-                // Lunch (الغداء)
                 new Meal
                 {
                     MealID = 7,
-                    MealName = "كبسة لحم",
-                    Description = "كبسة لحم سعودية تقليدية، مطبوخة ببهارات الكبسة المميزة مع قطع اللحم الطرية والأرز البسمتي.",
+                    MealName = "مناقيش زعتر",
+                    Description = "مناقيش زعتر تقليدية مخبوزة في فرن طيني، مع مزيج الزعتر والسماق وزيت الزيتون.",
                     PicturePath = "/images/meal.png",
-                    Calories = 450,
-                    Protein = 28,
-                    Carbs = 55,
-                    Fat = 15,
+                    Protein = 6,
+                    Carbs = 40,
+                    Fat = 8,
+                    Calories = 6 * 4 + 40 * 4 + 8 * 9, // 256 calories
                     MealType = "الطبق الرئيسي",
-                    MealCategory = "الغداء"
+                    MealCategory = "الإفطار"
                 },
                 new Meal
                 {
                     MealID = 8,
-                    MealName = "دجاج مشوي",
-                    Description = "دجاج مشوي متبل بالأعشاب والبهارات العربية، مشوي على الفحم ليكتسب نكهة مميزة.",
+                    MealName = "لبنة بالزيت",
+                    Description = "لبنة طازجة تقدم مع زيت الزيتون والزعتر والخبز العربي الطازج.",
                     PicturePath = "/images/meal.png",
-                    Calories = 350,
-                    Protein = 30,
-                    Carbs = 0,
-                    Fat = 20,
-                    MealType = "الطبق الرئيسي",
-                    MealCategory = "الغداء"
+                    Protein = 10,
+                    Carbs = 15,
+                    Fat = 15,
+                    Calories = 10 * 4 + 15 * 4 + 15 * 9, // 235 calories
+                    MealType = "طبق جانبي",
+                    MealCategory = "الإفطار"
                 },
                 new Meal
                 {
                     MealID = 9,
-                    MealName = "سلطة خضراء",
-                    Description = "سلطة خضراء منعشة مع خضروات موسمية طازجة وتتبيلة خاصة بالمطعم.",
+                    MealName = "شكشوكة",
+                    Description = "بيض مطبوخ في صلصة طماطم غنية بالتوابل والخضروات، طبق عربي شهير.",
                     PicturePath = "/images/meal.png",
-                    Calories = 65,
-                    Protein = 3,
-                    Carbs = 12,
-                    Fat = 2,
-                    MealType = "طبق جانبي",
-                    MealCategory = "الغداء"
+                    Protein = 14,
+                    Carbs = 10,
+                    Fat = 12,
+                    Calories = 14 * 4 + 10 * 4 + 12 * 9, // 204 calories
+                    MealType = "الطبق الرئيسي",
+                    MealCategory = "الإفطار"
                 },
                 new Meal
                 {
                     MealID = 10,
-                    MealName = "شوربة عدس",
-                    Description = "شوربة عدس تقليدية، مطبوخة بالطريقة العربية مع البهارات والليمون وزيت الزيتون.",
+                    MealName = "فطيرة التفاح",
+                    Description = "فطيرة تفاح محلية الصنع مع القرفة والعسل، مخبوزة حتى ذهبية اللون.",
                     PicturePath = "/images/meal.png",
-                    Calories = 180,
-                    Protein = 10,
-                    Carbs = 30,
-                    Fat = 5,
-                    MealType = "طبق جانبي",
-                    MealCategory = "الغداء"
+                    Protein = 4,
+                    Carbs = 45,
+                    Fat = 10,
+                    Calories = 4 * 4 + 45 * 4 + 10 * 9, // 286 calories
+                    MealType = "حلوى",
+                    MealCategory = "الإفطار"
                 },
                 new Meal
                 {
                     MealID = 11,
-                    MealName = "أم علي",
-                    Description = "أم علي، حلوى مصرية شهيرة مصنوعة من العجينة الهشة والمكسرات والحليب والقشطة.",
+                    MealName = "عصير تفاح",
+                    Description = "عصير تفاح طازج مصنوع من تفاح موسمي، غني بالفيتامينات ومنعش المذاق.",
                     PicturePath = "/images/meal.png",
-                    Calories = 350,
-                    Protein = 8,
-                    Carbs = 52,
-                    Fat = 15,
-                    MealType = "حلوى",
-                    MealCategory = "الغداء"
+                    Protein = 0,
+                    Carbs = 25,
+                    Fat = 0,
+                    Calories = 0 * 4 + 25 * 4 + 0 * 9, // ١٠٠ سعر حراري
+                    MealType = "مشروب",
+                    MealCategory = "الإفطار"
                 },
                 new Meal
                 {
                     MealID = 12,
-                    MealName = "لبن عيران",
-                    Description = "لبن عيران منعش، مشروب تقليدي من اللبن المخفوق مع الماء والنعناع والملح.",
+                    MealName = "عصيدة بالتمر",
+                    Description = "عصيدة تقليدية محلاة بالتمر والعسل، مزينة بالمكسرات المحمصة.",
                     PicturePath = "/images/meal.png",
-                    Calories = 90,
-                    Protein = 8,
-                    Carbs = 12,
-                    Fat = 5,
-                    MealType = "مشروب",
-                    MealCategory = "الغداء"
+                    Protein = 5,
+                    Carbs = 60,
+                    Fat = 7,
+                    Calories = 5 * 4 + 60 * 4 + 7 * 9, // 323 calories
+                    MealType = "حلوى",
+                    MealCategory = "الإفطار"
                 },
-
-                // Dinner (العشاء)
                 new Meal
                 {
                     MealID = 13,
-                    MealName = "شاورما دجاج",
-                    Description = "شاورما دجاج عربية تقليدية، مشوية على السيخ ومقدمة مع الخبز العربي والطحينة والخضروات.",
+                    MealName = "مسخن دجاج",
+                    Description = "خبز طابون مغطى بالبصل المكرمل والسماق مع قطع الدجاج المشوي.",
                     PicturePath = "/images/meal.png",
-                    Calories = 380,
-                    Protein = 25,
-                    Carbs = 40,
-                    Fat = 20,
+                    Protein = 22,
+                    Carbs = 30,
+                    Fat = 15,
+                    Calories = 22 * 4 + 30 * 4 + 15 * 9, // 343 calories
                     MealType = "الطبق الرئيسي",
-                    MealCategory = "العشاء"
+                    MealCategory = "الإفطار"
                 },
                 new Meal
                 {
                     MealID = 14,
-                    MealName = "برجر لحم",
-                    Description = "برجر لحم محضر من اللحم البقري الطازج 100% مع الخضروات والصلصة الخاصة، يقدم مع خبز البرجر المحمص.",
+                    MealName = "زبادي بالعسل",
+                    Description = "زبادي طبيعي محلى بالعسل ومزين بالمكسرات والفواكه الطازجة.",
                     PicturePath = "/images/meal.png",
-                    Calories = 420,
-                    Protein = 28,
-                    Carbs = 35,
-                    Fat = 25,
-                    MealType = "الطبق الرئيسي",
-                    MealCategory = "العشاء"
+                    Protein = 8,
+                    Carbs = 25,
+                    Fat = 5,
+                    Calories = 8 * 4 + 25 * 4 + 5 * 9, // 177 calories
+                    MealType = "طبق جانبي",
+                    MealCategory = "الإفطار"
                 },
                 new Meal
                 {
                     MealID = 15,
-                    MealName = "بطاطس مقلية",
-                    Description = "بطاطس مقلية مقرمشة من الخارج وطرية من الداخل، تقدم مع الكاتشب والمايونيز.",
+                    MealName = "كرواسون بالشوكولاتة",
+                    Description = "كرواسون طازج محشو بالشوكولاتة الغنية، يقدم دافئاً.",
                     PicturePath = "/images/meal.png",
-                    Calories = 365,
-                    Protein = 4,
-                    Carbs = 48,
+                    Protein = 6,
+                    Carbs = 35,
                     Fat = 18,
-                    MealType = "طبق جانبي",
-                    MealCategory = "العشاء"
+                    Calories = 6 * 4 + 35 * 4 + 18 * 9, // 326 calories
+                    MealType = "حلوى",
+                    MealCategory = "الإفطار"
                 },
+
+                // Lunch - 15 different meals
                 new Meal
                 {
                     MealID = 16,
-                    MealName = "سلطة سيزر",
-                    Description = "سلطة سيزر كلاسيكية مع خس رومين، جبن البارميزان، قطع خبز محمصة، وصلصة سيزر المميزة.",
+                    MealName = "كبسة لحم",
+                    Description = "كبسة لحم سعودية تقليدية، مطبوخة ببهارات الكبسة المميزة مع قطع اللحم الطرية والأرز البسمتي.",
                     PicturePath = "/images/meal.png",
-                    Calories = 150,
-                    Protein = 8,
-                    Carbs = 15,
-                    Fat = 10,
-                    MealType = "طبق جانبي",
-                    MealCategory = "العشاء"
+                    Protein = 28,
+                    Carbs = 55,
+                    Fat = 15,
+                    Calories = 28 * 4 + 55 * 4 + 15 * 9, // 467 calories
+                    MealType = "الطبق الرئيسي",
+                    MealCategory = "الغداء"
                 },
                 new Meal
                 {
                     MealID = 17,
-                    MealName = "كنافة",
-                    Description = "كنافة عربية تقليدية محشوة بالجبنة الحلوة ومغطاة بالقطر ومزينة بالفستق الحلبي.",
+                    MealName = "دجاج مشوي",
+                    Description = "دجاج مشوي متبل بالأعشاب والبهارات العربية، مشوي على الفحم ليكتسب نكهة مميزة.",
                     PicturePath = "/images/meal.png",
-                    Calories = 400,
-                    Protein = 6,
-                    Carbs = 58,
-                    Fat = 20,
-                    MealType = "حلوى",
-                    MealCategory = "العشاء"
+                    Protein = 30,
+                    Carbs = 0,
+                    Fat = 10,
+                    Calories = 30 * 4 + 0 * 4 + 10 * 9, // 210 calories
+                    MealType = "الطبق الرئيسي",
+                    MealCategory = "الغداء"
                 },
                 new Meal
                 {
                     MealID = 18,
-                    MealName = "عصير ليمون بالنعناع",
-                    Description = "عصير ليمون طازج ومنعش مع النعناع، مثالي لتنشيط الجسم وتعزيز المناعة.",
+                    MealName = "سلطة خضراء",
+                    Description = "سلطة خضراء منعشة مع خضروات موسمية طازجة وتتبيلة خاصة بالمطعم.",
                     PicturePath = "/images/meal.png",
-                    Calories = 80,
-                    Protein = 1,
-                    Carbs = 20,
-                    Fat = 0,
-                    MealType = "مشروب",
-                    MealCategory = "العشاء"
+                    Protein = 3,
+                    Carbs = 12,
+                    Fat = 5,
+                    Calories = 3 * 4 + 12 * 4 + 5 * 9, // 105 calories
+                    MealType = "طبق جانبي",
+                    MealCategory = "الغداء"
                 },
-
                 new Meal
                 {
                     MealID = 19,
-                    MealName = "عصير برتقال طازج",
-                    Description = "عصير برتقال طازج معصور من أجود أنواع البرتقال، غني بالفيتامينات والمعادن.",
+                    MealName = "شوربة عدس",
+                    Description = "شوربة عدس تقليدية، مطبوخة بالطريقة العربية مع البهارات والليمون وزيت الزيتون.",
                     PicturePath = "/images/meal.png",
-                    Calories = 120,
-                    Protein = 1,
-                    Carbs = 28,
-                    Fat = 0,
-                    MealType = "مشروب",
-                    MealCategory = "الإفطار"
+                    Protein = 10,
+                    Carbs = 30,
+                    Fat = 5,
+                    Calories = 10 * 4 + 30 * 4 + 5 * 9, // 205 calories
+                    MealType = "طبق جانبي",
+                    MealCategory = "الغداء"
                 },
-
                 new Meal
                 {
                     MealID = 20,
-                    MealName = "كعكة الشوكولاتة",
-                    Description = "كعكة الشوكولاتة الغنية بطبقات الشوكولاتة الداكنة والكريمة، مثالية لمحبي الحلويات.",
+                    MealName = "أم علي",
+                    Description = "أم علي، حلوى مصرية شهيرة مصنوعة من العجينة الهشة والمكسرات والحليب والقشطة.",
                     PicturePath = "/images/meal.png",
-                    Calories = 420,
-                    Protein = 5,
-                    Carbs = 63,
-                    Fat = 22,
+                    Protein = 8,
+                    Carbs = 52,
+                    Fat = 15,
+                    Calories = 8 * 4 + 52 * 4 + 15 * 9, // 375 calories
                     MealType = "حلوى",
-                    MealCategory = "العشاء"
+                    MealCategory = "الغداء"
+                },
+                new Meal
+                {
+                    MealID = 21,
+                    MealName = "لبن عيران",
+                    Description = "لبن عيران منعش، مشروب تقليدي من اللبن المخفوق مع الماء والنعناع والملح.",
+                    PicturePath = "/images/meal.png",
+                    Protein = 8,
+                    Carbs = 12,
+                    Fat = 2,
+                    Calories = 8 * 4 + 12 * 4 + 2 * 9, // 98 calories
+                    MealType = "مشروب",
+                    MealCategory = "الغداء"
+                },
+                new Meal
+                {
+                    MealID = 22,
+                    MealName = "برياني دجاج",
+                    Description = "برياني دجاج هندي تقليدي مع الأرز البسمتي والبهارات الهندية والخضروات.",
+                    PicturePath = "/images/meal.png",
+                    Protein = 25,
+                    Carbs = 60,
+                    Fat = 12,
+                    Calories = 25 * 4 + 60 * 4 + 12 * 9, // 448 calories
+                    MealType = "الطبق الرئيسي",
+                    MealCategory = "الغداء"
+                },
+                new Meal
+                {
+                    MealID = 23,
+                    MealName = "مندي لحم",
+                    Description = "مندي لحم يمني تقليدي مع الأرز المطبوخ على الفحم وبهارات المندي الخاصة.",
+                    PicturePath = "/images/meal.png",
+                    Protein = 30,
+                    Carbs = 50,
+                    Fat = 18,
+                    Calories = 30 * 4 + 50 * 4 + 18 * 9, // 482 calories
+                    MealType = "الطبق الرئيسي",
+                    MealCategory = "الغداء"
+                },
+                new Meal
+                {
+                    MealID = 24,
+                    MealName = "مجبوس سمك",
+                    Description = "مجبوس سمك خليجي تقليدي مع الأرز والبهارات المميزة وقطع السمك الطازج.",
+                    PicturePath = "/images/meal.png",
+                    Protein = 28,
+                    Carbs = 45,
+                    Fat = 10,
+                    Calories = 28 * 4 + 45 * 4 + 10 * 9, // 382 calories
+                    MealType = "الطبق الرئيسي",
+                    MealCategory = "الغداء"
+                },
+                new Meal
+                {
+                    MealID = 25,
+                    MealName = "طاجين خضار",
+                    Description = "طاجين خضار مغربي تقليدي مع البهارات المغربية والخضروات الموسمية.",
+                    PicturePath = "/images/meal.png",
+                    Protein = 8,
+                    Carbs = 35,
+                    Fat = 7,
+                    Calories = 8 * 4 + 35 * 4 + 7 * 9, // 235 calories
+                    MealType = "طبق جانبي",
+                    MealCategory = "الغداء"
+                },
+                new Meal
+                {
+                    MealID = 26,
+                    MealName = "سلطة فتوش",
+                    Description = "سلطة فتوش لبنانية مع الخضروات الطازجة وقطع الخبز المحمص والسماق.",
+                    PicturePath = "/images/meal.png",
+                    Protein = 5,
+                    Carbs = 20,
+                    Fat = 8,
+                    Calories = 5 * 4 + 20 * 4 + 8 * 9, // 172 calories
+                    MealType = "طبق جانبي",
+                    MealCategory = "الغداء"
+                },
+                new Meal
+                {
+                    MealID = 27,
+                    MealName = "كنافة",
+                    Description = "كنافة عربية تقليدية محشوة بالجبنة الحلوة ومغطاة بالقطر ومزينة بالفستق الحلبي.",
+                    PicturePath = "/images/meal.png",
+                    Protein = 10,
+                    Carbs = 60,
+                    Fat = 25,
+                    Calories = 10 * 4 + 60 * 4 + 25 * 9, // 505 calories
+                    MealType = "حلوى",
+                    MealCategory = "الغداء"
+                },
+                new Meal
+                {
+                    MealID = 28,
+                    MealName = "عصير ليمون بالنعناع",
+                    Description = "عصير ليمون طازج ومنعش مع النعناع، مثالي لتنشيط الجسم وتعزيز المناعة.",
+                    PicturePath = "/images/meal.png",
+                    Protein = 1,
+                    Carbs = 20,
+                    Fat = 0,
+                    Calories = 1 * 4 + 20 * 4 + 0 * 9, // 84 calories
+                    MealType = "مشروب",
+                    MealCategory = "الغداء"
+                },
+                new Meal
+                {
+                    MealID = 29,
+                    MealName = "بسبوسة",
+                    Description = "بسبوسة تقليدية مصنوعة من السميد والمغطاة بشراب السكر، مزينة بالمكسرات.",
+                    PicturePath = "/images/meal.png",
+                    Protein = 5,
+                    Carbs = 65,
+                    Fat = 15,
+                    Calories = 5 * 4 + 65 * 4 + 15 * 9, // 415 calories
+                    MealType = "حلوى",
+                    MealCategory = "الغداء"
+                },
+                new Meal
+                {
+                    MealID = 30,
+                    MealName = "شاي أخضر",
+                    Description = "شاي أخضر محضَّر طازجًا ومليء بمضادات الأكسدة، يُقدَّم ساخنًا أو باردًا مع لمسة نعناع.",
+                    PicturePath = "/images/meal.png",
+                    Protein = 0,
+                    Carbs = 2,
+                    Fat = 0,
+                    Calories = 0 * 4 + 2 * 4 + 0 * 9, // ٨ سعرات حرارية
+                    MealType = "مشروب",
+                    MealCategory = "الغداء"
                 }
             );
 
-
             // Seed MenuMeal join table with the relationships
             modelBuilder.Entity<MenuMeal>().HasData(
-                // Sunday (الأحد) meals - MenuID = 1
+                //–––– الأَحَد
+                // الإفطار
                 new MenuMeal { MenuMealID = 1, MenuID = 1, MealID = 1 },
                 new MenuMeal { MenuMealID = 2, MenuID = 1, MealID = 2 },
                 new MenuMeal { MenuMealID = 3, MenuID = 1, MealID = 3 },
                 new MenuMeal { MenuMealID = 4, MenuID = 1, MealID = 4 },
-                new MenuMeal { MenuMealID = 5, MenuID = 1, MealID = 5 },
-                new MenuMeal { MenuMealID = 6, MenuID = 1, MealID = 6 },
-                new MenuMeal { MenuMealID = 7, MenuID = 1, MealID = 7 },
-                new MenuMeal { MenuMealID = 8, MenuID = 1, MealID = 8 },
-                new MenuMeal { MenuMealID = 9, MenuID = 1, MealID = 9 },
-                new MenuMeal { MenuMealID = 10, MenuID = 1, MealID = 10 },
-                new MenuMeal { MenuMealID = 11, MenuID = 1, MealID = 11 },
-                new MenuMeal { MenuMealID = 12, MenuID = 1, MealID = 12 },
-                new MenuMeal { MenuMealID = 13, MenuID = 1, MealID = 13 },
-                new MenuMeal { MenuMealID = 14, MenuID = 1, MealID = 14 },
-                new MenuMeal { MenuMealID = 15, MenuID = 1, MealID = 15 },
-                new MenuMeal { MenuMealID = 16, MenuID = 1, MealID = 16 },
-                new MenuMeal { MenuMealID = 17, MenuID = 1, MealID = 17 },
-                new MenuMeal { MenuMealID = 18, MenuID = 1, MealID = 18 },
+                new MenuMeal { MenuMealID = 5, MenuID = 1, MealID = 10 },
+                new MenuMeal { MenuMealID = 6, MenuID = 1, MealID = 15 },
+                new MenuMeal { MenuMealID = 7, MenuID = 1, MealID = 5 },
+                new MenuMeal { MenuMealID = 8, MenuID = 1, MealID = 6 },
 
-                // Monday (الإثنين) meals - MenuID = 2
-                new MenuMeal { MenuMealID = 19, MenuID = 2, MealID = 19 },
-                new MenuMeal { MenuMealID = 20, MenuID = 2, MealID = 1 },
-                new MenuMeal { MenuMealID = 21, MenuID = 2, MealID = 7 },
-                new MenuMeal { MenuMealID = 22, MenuID = 2, MealID = 13 },
+                // الغداء
+                new MenuMeal { MenuMealID = 9, MenuID = 1, MealID = 16 },
+                new MenuMeal { MenuMealID = 10, MenuID = 1, MealID = 17 },
+                new MenuMeal { MenuMealID = 11, MenuID = 1, MealID = 18 },
+                new MenuMeal { MenuMealID = 12, MenuID = 1, MealID = 19 },
+                new MenuMeal { MenuMealID = 13, MenuID = 1, MealID = 20 },
+                new MenuMeal { MenuMealID = 14, MenuID = 1, MealID = 27 },
+                new MenuMeal { MenuMealID = 15, MenuID = 1, MealID = 21 },
+                new MenuMeal { MenuMealID = 16, MenuID = 1, MealID = 28 },
 
-                // Tuesday (الثلاثاء) meals - MenuID = 3
-                new MenuMeal { MenuMealID = 23, MenuID = 3, MealID = 20 },
-                new MenuMeal { MenuMealID = 24, MenuID = 3, MealID = 2 },
-                new MenuMeal { MenuMealID = 25, MenuID = 3, MealID = 8 },
-                new MenuMeal { MenuMealID = 26, MenuID = 3, MealID = 14 },
+                //–––– الإثنين
+                // الإفطار
+                new MenuMeal { MenuMealID = 17, MenuID = 2, MealID = 7 },
+                new MenuMeal { MenuMealID = 18, MenuID = 2, MealID = 9 },
+                new MenuMeal { MenuMealID = 19, MenuID = 2, MealID = 8 },
+                new MenuMeal { MenuMealID = 20, MenuID = 2, MealID = 14 },
+                new MenuMeal { MenuMealID = 21, MenuID = 2, MealID = 12 },
+                new MenuMeal { MenuMealID = 22, MenuID = 2, MealID = 15 },
+                new MenuMeal { MenuMealID = 23, MenuID = 2, MealID = 5 },
+                new MenuMeal { MenuMealID = 24, MenuID = 2, MealID = 11 },
 
-                // Wednesday (الأربعاء) meals - MenuID = 4
-                new MenuMeal { MenuMealID = 27, MenuID = 4, MealID = 3 },
-                new MenuMeal { MenuMealID = 28, MenuID = 4, MealID = 9 },
-                new MenuMeal { MenuMealID = 29, MenuID = 4, MealID = 15 },
-                new MenuMeal { MenuMealID = 30, MenuID = 4, MealID = 19 },
+                // الغداء
+                new MenuMeal { MenuMealID = 25, MenuID = 2, MealID = 22 },
+                new MenuMeal { MenuMealID = 26, MenuID = 2, MealID = 24 },
+                new MenuMeal { MenuMealID = 27, MenuID = 2, MealID = 25 },
+                new MenuMeal { MenuMealID = 28, MenuID = 2, MealID = 26 },
+                new MenuMeal { MenuMealID = 29, MenuID = 2, MealID = 29 },
+                new MenuMeal { MenuMealID = 30, MenuID = 2, MealID = 20 },
+                new MenuMeal { MenuMealID = 31, MenuID = 2, MealID = 21 },
+                new MenuMeal { MenuMealID = 32, MenuID = 2, MealID = 30 },
 
-                // Thursday (الخميس) meals - MenuID = 5
-                new MenuMeal { MenuMealID = 31, MenuID = 5, MealID = 4 },
-                new MenuMeal { MenuMealID = 32, MenuID = 5, MealID = 10 },
-                new MenuMeal { MenuMealID = 33, MenuID = 5, MealID = 16 },
-                new MenuMeal { MenuMealID = 34, MenuID = 5, MealID = 20 }
-            );
+                //–––– الثلاثاء
+                // الإفطار
+                new MenuMeal { MenuMealID = 33, MenuID = 3, MealID = 1 },
+                new MenuMeal { MenuMealID = 34, MenuID = 3, MealID = 7 },
+                new MenuMeal { MenuMealID = 35, MenuID = 3, MealID = 3 },
+                new MenuMeal { MenuMealID = 36, MenuID = 3, MealID = 8 },
+                new MenuMeal { MenuMealID = 37, MenuID = 3, MealID = 10 },
+                new MenuMeal { MenuMealID = 38, MenuID = 3, MealID = 12 },
+                new MenuMeal { MenuMealID = 39, MenuID = 3, MealID = 6 },
+                new MenuMeal { MenuMealID = 40, MenuID = 3, MealID = 11 },
 
-            // Seed Restaurant data with day-specific meal times
-            modelBuilder.Entity<Restaurant>().HasData(
-                new Restaurant
-                {
-                    RestaurantID = 1,
-                    Name = "مطعم جامعة الملك عبدالعزيز",
-                    Description = "في المطعم الجامعي الرسمي لجامعة الملك عبد العزيز، نقدم وجبات طازجة وعالية الجودة للطلاب وأعضاء هيئة التدريس. نحرص على تقديم أطباق متنوعة ومغذية في بيئة نظيفة ومرحبة.",
-                    PhotoPath = "/images/restaurant.png",
-                    LocationUrl = "https://maps.app.goo.gl/KFBdpmH7E88Lzvy49",
-                    Address = "جامعة الملك عبد العزيز، جدة، المملكة العربية السعودية",
-                    PhoneNumber = "+9665********",
-                    Email = "restaurant@kau.edu.sa",
+                // الغدا3
+                new MenuMeal { MenuMealID = 41, MenuID = 3, MealID = 23 },
+                new MenuMeal { MenuMealID = 42, MenuID = 3, MealID = 17 },
+                new MenuMeal { MenuMealID = 43, MenuID = 3, MealID = 18 },
+                new MenuMeal { MenuMealID = 44, MenuID = 3, MealID = 25 },
+                new MenuMeal { MenuMealID = 45, MenuID = 3, MealID = 27 },
+                new MenuMeal { MenuMealID = 46, MenuID = 3, MealID = 29 },
+                new MenuMeal { MenuMealID = 47, MenuID = 3, MealID = 28 },
+                new MenuMeal { MenuMealID = 48, MenuID = 3, MealID = 30 },
 
-                    // Sunday settings
-                    IsSundayOpen = true,
-                    SundayServesBreakfast = true,
-                    SundayBreakfastOpenTime = new TimeSpan(7, 0, 0), // 7:00 AM
-                    SundayBreakfastCloseTime = new TimeSpan(10, 30, 0), // 10:30 AM
-                    SundayServesLunch = true,
-                    SundayLunchOpenTime = new TimeSpan(12, 0, 0), // 12:00 PM
-                    SundayLunchCloseTime = new TimeSpan(15, 0, 0), // 3:00 PM
-                    SundayServesDinner = true,
-                    SundayDinnerOpenTime = new TimeSpan(18, 0, 0), // 6:00 PM
-                    SundayDinnerCloseTime = new TimeSpan(22, 0, 0), // 10:00 PM
+                //–––– الأربعاء
+                // الإفطار
+                new MenuMeal { MenuMealID = 49, MenuID = 4, MealID = 2 },
+                new MenuMeal { MenuMealID = 50, MenuID = 4, MealID = 9 },
+                new MenuMeal { MenuMealID = 51, MenuID = 4, MealID = 4 },
+                new MenuMeal { MenuMealID = 52, MenuID = 4, MealID = 14 },
+                new MenuMeal { MenuMealID = 53, MenuID = 4, MealID = 15 },
+                new MenuMeal { MenuMealID = 54, MenuID = 4, MealID = 10 },
+                new MenuMeal { MenuMealID = 55, MenuID = 4, MealID = 5 },
+                new MenuMeal { MenuMealID = 56, MenuID = 4, MealID = 6 },
 
-                    // Monday settings
-                    IsMondayOpen = true,
-                    MondayServesBreakfast = true,
-                    MondayBreakfastOpenTime = new TimeSpan(7, 0, 0),
-                    MondayBreakfastCloseTime = new TimeSpan(10, 30, 0),
-                    MondayServesLunch = true,
-                    MondayLunchOpenTime = new TimeSpan(12, 0, 0),
-                    MondayLunchCloseTime = new TimeSpan(15, 0, 0),
-                    MondayServesDinner = true,
-                    MondayDinnerOpenTime = new TimeSpan(18, 0, 0),
-                    MondayDinnerCloseTime = new TimeSpan(22, 0, 0),
+                // الغداء
+                new MenuMeal { MenuMealID = 57, MenuID = 4, MealID = 16 },
+                new MenuMeal { MenuMealID = 58, MenuID = 4, MealID = 22 },
+                new MenuMeal { MenuMealID = 59, MenuID = 4, MealID = 19 },
+                new MenuMeal { MenuMealID = 60, MenuID = 4, MealID = 26 },
+                new MenuMeal { MenuMealID = 61, MenuID = 4, MealID = 20 },
+                new MenuMeal { MenuMealID = 62, MenuID = 4, MealID = 27 },
+                new MenuMeal { MenuMealID = 63, MenuID = 4, MealID = 21 },
+                new MenuMeal { MenuMealID = 64, MenuID = 4, MealID = 28 },
 
-                    // Tuesday settings
-                    IsTuesdayOpen = true,
-                    TuesdayServesBreakfast = true,
-                    TuesdayBreakfastOpenTime = new TimeSpan(7, 0, 0),
-                    TuesdayBreakfastCloseTime = new TimeSpan(10, 30, 0),
-                    TuesdayServesLunch = true,
-                    TuesdayLunchOpenTime = new TimeSpan(12, 0, 0),
-                    TuesdayLunchCloseTime = new TimeSpan(15, 0, 0),
-                    TuesdayServesDinner = true,
-                    TuesdayDinnerOpenTime = new TimeSpan(18, 0, 0),
-                    TuesdayDinnerCloseTime = new TimeSpan(22, 0, 0),
+                //–––– الخميس
+                // الإفطار
+                new MenuMeal { MenuMealID = 65, MenuID = 5, MealID = 13 },
+                new MenuMeal { MenuMealID = 66, MenuID = 5, MealID = 7 },
+                new MenuMeal { MenuMealID = 67, MenuID = 5, MealID = 3 },
+                new MenuMeal { MenuMealID = 68, MenuID = 5, MealID = 8 },
+                new MenuMeal { MenuMealID = 69, MenuID = 5, MealID = 12 },
+                new MenuMeal { MenuMealID = 70, MenuID = 5, MealID = 15 },
+                new MenuMeal { MenuMealID = 71, MenuID = 5, MealID = 11 },
+                new MenuMeal { MenuMealID = 72, MenuID = 5, MealID = 5 },
 
-                    // Wednesday settings
-                    IsWednesdayOpen = true,
-                    WednesdayServesBreakfast = true,
-                    WednesdayBreakfastOpenTime = new TimeSpan(7, 0, 0),
-                    WednesdayBreakfastCloseTime = new TimeSpan(10, 30, 0),
-                    WednesdayServesLunch = true,
-                    WednesdayLunchOpenTime = new TimeSpan(12, 0, 0),
-                    WednesdayLunchCloseTime = new TimeSpan(15, 0, 0),
-                    WednesdayServesDinner = true,
-                    WednesdayDinnerOpenTime = new TimeSpan(18, 0, 0),
-                    WednesdayDinnerCloseTime = new TimeSpan(22, 0, 0),
+                // الغداء
+                new MenuMeal { MenuMealID = 73, MenuID = 5, MealID = 24 },
+                new MenuMeal { MenuMealID = 74, MenuID = 5, MealID = 23 },
+                new MenuMeal { MenuMealID = 75, MenuID = 5, MealID = 18 },
+                new MenuMeal { MenuMealID = 76, MenuID = 5, MealID = 25 },
+                new MenuMeal { MenuMealID = 77, MenuID = 5, MealID = 29 },
+                new MenuMeal { MenuMealID = 78, MenuID = 5, MealID = 20 },
+                new MenuMeal { MenuMealID = 79, MenuID = 5, MealID = 30 },
+                new MenuMeal { MenuMealID = 80, MenuID = 5, MealID = 21 },
 
-                    // Thursday settings
-                    IsThursdayOpen = true,
-                    ThursdayServesBreakfast = true,
-                    ThursdayBreakfastOpenTime = new TimeSpan(7, 0, 0),
-                    ThursdayBreakfastCloseTime = new TimeSpan(10, 30, 0),
-                    ThursdayServesLunch = true,
-                    ThursdayLunchOpenTime = new TimeSpan(12, 0, 0),
-                    ThursdayLunchCloseTime = new TimeSpan(15, 0, 0),
-                    ThursdayServesDinner = true,
-                    ThursdayDinnerOpenTime = new TimeSpan(18, 0, 0),
-                    ThursdayDinnerCloseTime = new TimeSpan(22, 0, 0),
+                //–––– الجمعة
+                // الإفطار
+                new MenuMeal { MenuMealID = 81, MenuID = 6, MealID = 1 },
+                new MenuMeal { MenuMealID = 82, MenuID = 6, MealID = 2 },
+                new MenuMeal { MenuMealID = 83, MenuID = 6, MealID = 4 },
+                new MenuMeal { MenuMealID = 84, MenuID = 6, MealID = 14 },
+                new MenuMeal { MenuMealID = 85, MenuID = 6, MealID = 10 },
+                new MenuMeal { MenuMealID = 86, MenuID = 6, MealID = 12 },
+                new MenuMeal { MenuMealID = 87, MenuID = 6, MealID = 5 },
+                new MenuMeal { MenuMealID = 88, MenuID = 6, MealID = 6 },
 
-                    // Friday settings
-                    IsFridayOpen = true,
-                    FridayServesBreakfast = true,
-                    FridayBreakfastOpenTime = new TimeSpan(7, 0, 0),
-                    FridayBreakfastCloseTime = new TimeSpan(10, 30, 0),
-                    FridayServesLunch = true,
-                    FridayLunchOpenTime = new TimeSpan(7, 0, 0),
-                    FridayLunchCloseTime = new TimeSpan(10, 30, 0),
-                    FridayServesDinner = true,
-                    FridayDinnerOpenTime = new TimeSpan(7, 0, 0),
-                    FridayDinnerCloseTime = new TimeSpan(10, 30, 0),
+                // الغداء
+                new MenuMeal { MenuMealID = 89, MenuID = 6, MealID = 17 },
+                new MenuMeal { MenuMealID = 90, MenuID = 6, MealID = 22 },
+                new MenuMeal { MenuMealID = 91, MenuID = 6, MealID = 19 },
+                new MenuMeal { MenuMealID = 92, MenuID = 6, MealID = 26 },
+                new MenuMeal { MenuMealID = 93, MenuID = 6, MealID = 27 },
+                new MenuMeal { MenuMealID = 94, MenuID = 6, MealID = 29 },
+                new MenuMeal { MenuMealID = 95, MenuID = 6, MealID = 28 },
+                new MenuMeal { MenuMealID = 96, MenuID = 6, MealID = 30 },
 
-                    // Saturday settings
-                    IsSaturdayOpen = true,
-                    SaturdayServesBreakfast = true,
-                    SaturdayBreakfastOpenTime = new TimeSpan(7, 0, 0),
-                    SaturdayBreakfastCloseTime = new TimeSpan(10, 30, 0),
-                    SaturdayServesLunch = true,
-                    SaturdayLunchOpenTime = new TimeSpan(7, 0, 0),
-                    SaturdayLunchCloseTime = new TimeSpan(10, 30, 0),
-                    SaturdayServesDinner = true,
-                    SaturdayDinnerOpenTime = new TimeSpan(7, 0, 0),
-                    SaturdayDinnerCloseTime = new TimeSpan(10, 30, 0)
-                }
-            );
+                //–––– السبت
+                // الإفطار
+                new MenuMeal { MenuMealID = 97, MenuID = 7, MealID = 9 },
+                new MenuMeal { MenuMealID = 98, MenuID = 7, MealID = 13 },
+                new MenuMeal { MenuMealID = 99, MenuID = 7, MealID = 3 },
+                new MenuMeal { MenuMealID = 100, MenuID = 7, MealID = 8 },
+                new MenuMeal { MenuMealID = 101, MenuID = 7, MealID = 15 },
+                new MenuMeal { MenuMealID = 102, MenuID = 7, MealID = 10 },
+                new MenuMeal { MenuMealID = 103, MenuID = 7, MealID = 11 },
+                new MenuMeal { MenuMealID = 104, MenuID = 7, MealID = 5 },
 
-            // Seed FAQ data
-            modelBuilder.Entity<FAQ>().HasData(
-                new FAQ
-                {
-                    FAQID = 1,
-                    Question = "كيف يمكنني شراء تذاكر وجبات؟",
-                    Answer = "يمكنك شراء تذاكر الوجبات من خلال تسجيل الدخول إلى حسابك، ثم الانتقال إلى صفحة شراء التذاكر واختيار عدد الوجبات التي ترغب بها لكل فترة (الإفطار، الغداء، العشاء).",
-                    DisplayOrder = 1
-                },
-                new FAQ
-                {
-                    FAQID = 2,
-                    Question = "ما هي أوقات عمل المطعم؟",
-                    Answer = "يعمل المطعم من الأحد إلى الخميس، وساعات العمل هي: الإفطار من 7:00 صباحًا إلى 10:30 صباحًا، الغداء من 12:00 ظهرًا إلى 3:00 عصرًا، والعشاء من 6:00 مساءً إلى 10:00 مساءً.",
-                    DisplayOrder = 2
-                },
-                new FAQ
-                {
-                    FAQID = 3,
-                    Question = "كيف يمكنني استخدام التذاكر التي اشتريتها؟",
-                    Answer = "بعد شراء التذاكر، يمكنك عرض جميع تذاكرك في صفحة 'تذاكري'. عند زيارة المطعم، ما عليك سوى إظهار رمز QR الخاص بالتذكرة للموظف ليتم مسحه وتأكيد استخدام الوجبة.",
-                    DisplayOrder = 3
-                },
-                new FAQ
-                {
-                    FAQID = 4,
-                    Question = "هل يمكنني إلغاء التذاكر التي اشتريتها؟",
-                    Answer = "لا يمكن إلغاء التذاكر بعد الشراء. لذا يرجى التأكد من اختيارك قبل إتمام عملية الشراء.",
-                    DisplayOrder = 4
-                },
-                new FAQ
-                {
-                    FAQID = 5,
-                    Question = "هل يمكنني معرفة قائمة الطعام مسبقاً؟",
-                    Answer = "نعم، يمكنك الاطلاع على قائمة الطعام الأسبوعية في صفحة 'القائمة' على موقعنا. يتم تحديث القائمة أسبوعياً.",
-                    DisplayOrder = 5
-                }
-            );
-
-            // Seed Terms data as individual items
-            modelBuilder.Entity<Terms>().HasData(
-                new Terms
-                {
-                    TermID = 1,
-                    Title = "عام",
-                    Content = "تنطبق هذه الشروط والأحكام على جميع الخدمات المقدمة من مطعم جامعة الملك عبدالعزيز.",
-                    LastUpdated = new DateTime(2025, 1, 15),
-                    DisplayOrder = 1
-                },
-                new Terms
-                {
-                    TermID = 2,
-                    Title = "التذاكر والدفع",
-                    Content = "جميع المبيعات نهائية ولا يمكن استرداد قيمة التذاكر بعد الشراء. يجب استخدام التذاكر خلال الفصل الدراسي الذي تم شراؤها فيه. التذاكر غير قابلة للتحويل ويجب استخدامها من قبل مالك الحساب فقط.",
-                    LastUpdated = new DateTime(2025, 1, 15),
-                    DisplayOrder = 2
-                },
-                new Terms
-                {
-                    TermID = 3,
-                    Title = "الاستخدام",
-                    Content = "يتعهد المستخدم بعدم إساءة استخدام الخدمة أو محاولة التحايل على النظام. يحتفظ المطعم بالحق في رفض الخدمة لأي شخص ينتهك هذه الشروط.",
-                    LastUpdated = new DateTime(2025, 1, 15),
-                    DisplayOrder = 3
-                },
-                new Terms
-                {
-                    TermID = 4,
-                    Title = "الخصوصية",
-                    Content = "نحن نحترم خصوصيتك ونلتزم بحماية بياناتك الشخصية وفقاً لسياسة الخصوصية الخاصة بنا.",
-                    LastUpdated = new DateTime(2025, 1, 15),
-                    DisplayOrder = 4
-                },
-                new Terms
-                {
-                    TermID = 5,
-                    Title = "التغييرات على الشروط",
-                    Content = "يحتفظ المطعم بالحق في تعديل هذه الشروط في أي وقت. سيتم نشر التغييرات على موقعنا.",
-                    LastUpdated = new DateTime(2025, 1, 15),
-                    DisplayOrder = 5
-                }
+                // الغداء
+                new MenuMeal { MenuMealID = 105, MenuID = 7, MealID = 23 },
+                new MenuMeal { MenuMealID = 106, MenuID = 7, MealID = 24 },
+                new MenuMeal { MenuMealID = 108, MenuID = 7, MealID = 25 },
+                new MenuMeal { MenuMealID = 109, MenuID = 7, MealID = 20 },
+                new MenuMeal { MenuMealID = 110, MenuID = 7, MealID = 27 },
+                new MenuMeal { MenuMealID = 111, MenuID = 7, MealID = 21 },
+                new MenuMeal { MenuMealID = 112, MenuID = 7, MealID = 28 }
             );
         }
     }

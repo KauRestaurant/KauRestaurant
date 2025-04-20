@@ -16,7 +16,7 @@ namespace KauRestaurant.Controllers.User
         {
             _context = context;
         }
-        // Changed from Tickets() to Index() to match convention
+
         public async Task<IActionResult> Index()
         {
             // Get current user ID
@@ -36,26 +36,18 @@ namespace KauRestaurant.Controllers.User
             // Group tickets by meal type
             var breakfastTickets = tickets.Where(t => t.MealType == "الإفطار").ToList();
             var lunchTickets = tickets.Where(t => t.MealType == "الغداء").ToList();
-            var dinnerTickets = tickets.Where(t => t.MealType == "العشاء").ToList();
 
             // Create view model with summary and tickets
             var viewModel = new TicketsViewModel
             {
                 BreakfastCount = breakfastTickets.Count,
                 LunchCount = lunchTickets.Count,
-                DinnerCount = dinnerTickets.Count,
                 BreakfastTickets = breakfastTickets,
-                LunchTickets = lunchTickets,
-                DinnerTickets = dinnerTickets
+                LunchTickets = lunchTickets
             };
-
-            // Get restaurant information for meal times
-            var restaurant = await _context.Restaurants.FirstOrDefaultAsync();
-            ViewBag.Restaurant = restaurant;
 
             return View("~/Views/User/Tickets.cshtml", viewModel);
         }
-
 
         [HttpPost]
         public async Task<IActionResult> RedeemTicket(int ticketId)
@@ -96,14 +88,12 @@ namespace KauRestaurant.Controllers.User
         }
     }
 
-    // Add this class for the ViewModel if it doesn't exist already
+    // Updated ViewModel without dinner properties
     public class TicketsViewModel
     {
         public int BreakfastCount { get; set; }
         public int LunchCount { get; set; }
-        public int DinnerCount { get; set; }
         public List<Ticket> BreakfastTickets { get; set; } = new List<Ticket>();
         public List<Ticket> LunchTickets { get; set; } = new List<Ticket>();
-        public List<Ticket> DinnerTickets { get; set; } = new List<Ticket>();
     }
 }

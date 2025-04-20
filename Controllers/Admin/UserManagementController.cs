@@ -55,83 +55,36 @@ namespace KauRestaurant.Controllers.Admin
             return View("~/Views/Admin/UserManagement.cshtml", model);
         }
 
-
-
         [HttpPost]
-        public async Task<IActionResult> UpdateUser(string userId, string firstName, string lastName, string newEmail, string newRole)
+        public async Task<IActionResult> SaveRoles(List<string> userIds, List<string> roles)
         {
-            // Check if user exists
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user == null)
+            if (userIds == null || roles == null || userIds.Count != roles.Count)
             {
-                TempData["ErrorMessage"] = "المستخدم غير موجود";
+                TempData["ErrorMessage"] = "حدث خطأ: البيانات المرسلة غير صحيحة";
                 return RedirectToAction(nameof(Index));
             }
 
-            bool needsSignOut = false;
             bool success = true;
-            List<string> successMessages = new List<string>();
-            List<string> errorMessages = new List<string>();
-
-            // Update name if changed
-            if (!string.IsNullOrEmpty(firstName) && !string.IsNullOrEmpty(lastName) &&
-                (user.FirstName != firstName || user.LastName != lastName))
-            {
-                user.FirstName = firstName;
-                user.LastName = lastName;
-
-                var nameResult = await _userManager.UpdateAsync(user);
-                if (nameResult.Succeeded)
-                {
-                    successMessages.Add("تم تحديث الاسم بنجاح");
-                }
-                else
-                {
-                    success = false;
-                    errorMessages.Add("فشل تحديث الاسم");
-                }
-            }
-
-            // Update email if changed
-            if (!string.IsNullOrEmpty(newEmail) && user.Email != newEmail)
-            {
-                // Check if email is already in use
-                var existingUser = await _userManager.FindByEmailAsync(newEmail);
-                if (existingUser != null && existingUser.Id != userId)
-                {
-                    success = false;
-                    errorMessages.Add("البريد الإلكتروني مستخدم بالفعل");
-                }
-                else
-                {
-                    user.Email = newEmail;
-                    user.UserName = newEmail; // Since email is used as username
-                    user.NormalizedEmail = newEmail.ToUpper();
-                    user.NormalizedUserName = newEmail.ToUpper();
-
-                    var emailResult = await _userManager.UpdateAsync(user);
-                    if (emailResult.Succeeded)
-                    {
-                        successMessages.Add("تم تحديث البريد الإلكتروني بنجاح");
-
-                        // If changing the current user's email, sign them out after all updates
-                        if (User.Identity.Name == user.Email)
-                        {
-                            needsSignOut = true;
-                        }
-                    }
-                    else
-                    {
-                        success = false;
-                        errorMessages.Add("فشل تحديث البريد الإلكتروني");
-                    }
-                }
-            }
-
-            // Update role if changed
             var adminRoles = new[] { "A1", "A2", "A3" };
-            if (!string.IsNullOrEmpty(newRole) && adminRoles.Contains(newRole))
+            var successCount = 0;
+
+            for (int i = 0; i < userIds.Count; i++)
             {
+                var userId = userIds[i];
+                var newRole = roles[i];
+
+                // Skip if not a valid admin role
+                if (!adminRoles.Contains(newRole))
+                    continue;
+
+                var user = await _userManager.FindByIdAsync(userId);
+                if (user == null)
+                    continue;
+
+                // Skip if trying to modify current user's role
+                if (User.Identity.Name == user.Email)
+                    continue;
+
                 var currentRoles = await _userManager.GetRolesAsync(user);
                 var currentAdminRole = currentRoles.FirstOrDefault(r => adminRoles.Contains(r));
 
@@ -142,87 +95,25 @@ namespace KauRestaurant.Controllers.Admin
 
                     if (roleResult.Succeeded)
                     {
-                        successMessages.Add("تم تحديث الصلاحية بنجاح");
+                        successCount++;
                     }
                     else
                     {
                         success = false;
-                        errorMessages.Add("فشل تحديث الصلاحية");
                     }
                 }
             }
 
-            // Set appropriate messages
             if (success)
             {
-                if (successMessages.Count > 0)
-                {
-                    TempData["SuccessMessage"] = string.Join("، ", successMessages);
-                }
+                if (successCount > 0)
+                    TempData["SuccessMessage"] = $"تم تحديث صلاحيات {successCount} مشرف بنجاح";
                 else
-                {
                     TempData["SuccessMessage"] = "لم يتم إجراء أي تغييرات";
-                }
             }
             else
             {
-                if (errorMessages.Count > 0)
-                {
-                    TempData["ErrorMessage"] = string.Join("، ", errorMessages);
-                }
-            }
-
-            // Redirect to logout if current user's email was changed
-            if (needsSignOut)
-            {
-                return RedirectToAction("Logout", "Account", new { area = "Identity" });
-            }
-
-            return RedirectToAction(nameof(Index));
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> ChangePassword(string userId, string newPassword, string confirmPassword)
-        {
-            if (string.IsNullOrEmpty(newPassword) || newPassword.Length < 6)
-            {
-                TempData["ErrorMessage"] = "كلمة المرور يجب أن تكون 6 أحرف على الأقل";
-                return RedirectToAction(nameof(Index));
-            }
-
-            if (newPassword != confirmPassword)
-            {
-                TempData["ErrorMessage"] = "كلمات المرور غير متطابقة";
-                return RedirectToAction(nameof(Index));
-            }
-
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user == null)
-            {
-                TempData["ErrorMessage"] = "المستخدم غير موجود";
-                return RedirectToAction(nameof(Index));
-            }
-
-            // Remove current password and set the new one
-            var removePasswordResult = await _userManager.RemovePasswordAsync(user);
-            if (!removePasswordResult.Succeeded)
-            {
-                TempData["ErrorMessage"] = "فشل تغيير كلمة المرور";
-                return RedirectToAction(nameof(Index));
-            }
-
-            var addPasswordResult = await _userManager.AddPasswordAsync(user, newPassword);
-            if (addPasswordResult.Succeeded)
-            {
-                TempData["SuccessMessage"] = "تم تغيير كلمة المرور بنجاح";
-            }
-            else
-            {
-                TempData["ErrorMessage"] = "فشل تغيير كلمة المرور";
-                foreach (var error in addPasswordResult.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
+                TempData["ErrorMessage"] = "حدث خطأ أثناء تحديث بعض الصلاحيات";
             }
 
             return RedirectToAction(nameof(Index));
@@ -349,5 +240,4 @@ namespace KauRestaurant.Controllers.Admin
         [Required(ErrorMessage = "مستوى الصلاحية مطلوب")]
         public string Role { get; set; }
     }
-
 }

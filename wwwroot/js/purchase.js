@@ -7,13 +7,11 @@
 function calculateTotals() {
     const breakfastQty = parseInt(document.getElementById('breakfastQty').value) || 0;
     const lunchQty = parseInt(document.getElementById('lunchQty').value) || 0;
-    const dinnerQty = parseInt(document.getElementById('dinnerQty').value) || 0;
 
     const breakfastPrice = parseFloat(document.getElementById('breakfastPrice').value);
     const lunchPrice = parseFloat(document.getElementById('lunchPrice').value);
-    const dinnerPrice = parseFloat(document.getElementById('dinnerPrice').value);
 
-    const total = (breakfastQty * breakfastPrice) + (lunchQty * lunchPrice) + (dinnerQty * dinnerPrice);
+    const total = (breakfastQty * breakfastPrice) + (lunchQty * lunchPrice);
     document.getElementById('grandTotal').textContent = `${total.toFixed(2)} ريال`;
 }
 
@@ -43,10 +41,9 @@ function showInlineMessage(message, type) {
 function purchaseTickets() {
     const breakfastQty = parseInt(document.getElementById('breakfastQty').value) || 0;
     const lunchQty = parseInt(document.getElementById('lunchQty').value) || 0;
-    const dinnerQty = parseInt(document.getElementById('dinnerQty').value) || 0;
 
     // Check if any tickets are selected
-    if (breakfastQty === 0 && lunchQty === 0 && dinnerQty === 0) {
+    if (breakfastQty === 0 && lunchQty === 0) {
         showInlineMessage('الرجاء اختيار عدد التذاكر أولا', 'danger');
         return;
     }
@@ -59,8 +56,7 @@ function purchaseTickets() {
     // Prepare data
     const data = {
         breakfastQty: breakfastQty,
-        lunchQty: lunchQty,
-        dinnerQty: dinnerQty
+        lunchQty: lunchQty
     };
 
     console.log('Sending order data:', data);
@@ -84,7 +80,7 @@ function purchaseTickets() {
         .then(data => {
             console.log('Order response:', data);
             if (data.success) {
-                showInlineMessage('تم شراء التذاكر بنجاح!' , 'success');
+                showInlineMessage('تم شراء التذاكر بنجاح!', 'success');
                 setTimeout(() => {
                     window.location.href = 'tickets'; // Redirect to tickets page after a short delay
                 }, 1500);

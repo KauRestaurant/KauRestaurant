@@ -3,7 +3,6 @@
 
 @{
     ViewData["Title"] = "تذاكري";
-    var restaurant = ViewBag.Restaurant as KauRestaurant.Models.Restaurant;
 }
 
 <!-- Main Content Section -->
@@ -46,21 +45,13 @@
                                 <h3 class="mb-0 fw-bold">@Model.LunchCount</h3>
                                 <small class="text-muted">تذاكر</small>
                             </div>
-                            <div class="col">
-                                <div class="d-flex align-items-center justify-content-center mb-2">
-                                    <i class="bi bi-moon fs-4 text-dark me-2"></i>
-                                    <span class="h5 mb-0">العشاء</span>
-                                </div>
-                                <h3 class="mb-0 fw-bold">@Model.DinnerCount</h3>
-                                <small class="text-muted">تذاكر</small>
-                            </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Available Tickets -->
                 <div class="row g-3">
-                    @if (Model.BreakfastCount + Model.LunchCount + Model.DinnerCount == 0)
+                    @if (Model.BreakfastCount + Model.LunchCount == 0)
                     {
                         <div class="col-12 text-center py-4">
                             <p class="text-muted mb-3">ليس لديك تذاكر حالياً</p>
@@ -72,7 +63,7 @@
                     else
                     {
                         <!-- Breakfast Card -->
-                        <div class="col-12 col-md-4">
+                        <div class="col-12 col-md-6">
                             <div class="card h-100 @(Model.BreakfastCount > 0 ? "border-success" : "border")">
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between align-items-center mb-3">
@@ -80,19 +71,9 @@
                                         <span class="badge bg-breakfast">الإفطار</span>
                                     </div>
                                     <p class="card-text small mb-3">
-                                        @if (restaurant != null && restaurant.ServesBreakfast && restaurant.BreakfastOpenTime.HasValue && restaurant.BreakfastCloseTime.HasValue)
-                                        {
-                                            <div class="alert alert-white small text-center mb-3 py-1">
-                                                صالحة خلال ساعات الإفطار (@FormatTimeSpanToAmPm(restaurant.BreakfastOpenTime.Value) - @FormatTimeSpanToAmPm(restaurant.BreakfastCloseTime.Value))
-                                            </div>
-                                        }
-                                        else
-                                        {
-                                            <div class="alert alert-warning small text-center mb-3 py-1">
-                                                <i class="bi bi-exclamation-triangle me-2"></i>
-                                                تم إيقاف خدمة الإفطار مؤقتاً من قبل الإدارة
-                                            </div>
-                                        }
+                                        <div class="alert alert-white small text-center mb-3 py-1">
+                                            صالحة خلال ساعات الإفطار (7:30 صباحاً - 10:00 صباحاً)
+                                        </div>
                                     </p>
 
                                     @if (Model.BreakfastCount > 0)
@@ -103,8 +84,7 @@
                                         </div>
                                         <button class="btn btn-success w-100 text-white"
                                                 data-bs-toggle="modal" data-bs-target="#qrModal"
-                                                onclick="showQrCode(@Model.BreakfastTickets.FirstOrDefault()?.TicketID, 'الإفطار')"
-                                        @(restaurant != null && !restaurant.ServesBreakfast ? "disabled" : "")>
+                                                onclick="showQrCode(@Model.BreakfastTickets.FirstOrDefault()?.TicketID, 'الإفطار')">
                                             <i class="bi bi-qr-code me-2"></i> استرد الآن
                                         </button>
                                     }
@@ -122,7 +102,7 @@
                         </div>
 
                         <!-- Lunch Card -->
-                        <div class="col-12 col-md-4">
+                        <div class="col-12 col-md-6">
                             <div class="card h-100 @(Model.LunchCount > 0 ? "border-success" : "border")">
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between align-items-center mb-3">
@@ -130,19 +110,9 @@
                                         <span class="badge bg-lunch">الغداء</span>
                                     </div>
                                     <p class="card-text small mb-3">
-                                        @if (restaurant != null && restaurant.ServesLunch && restaurant.LunchOpenTime.HasValue && restaurant.LunchCloseTime.HasValue)
-                                        {
-                                            <div class="alert alert-white small text-center mb-3 py-1">
-                                                صالحة خلال ساعات الغداء (@FormatTimeSpanToAmPm(restaurant.LunchOpenTime.Value) - @FormatTimeSpanToAmPm(restaurant.LunchCloseTime.Value))
-                                            </div>
-                                        }
-                                        else
-                                        {
-                                            <div class="alert alert-warning small text-center mb-3 py-1">
-                                                <i class="bi bi-exclamation-triangle me-2"></i>
-                                                تم إيقاف خدمة الغداء مؤقتاً من قبل الإدارة
-                                            </div>
-                                        }
+                                        <div class="alert alert-white small text-center mb-3 py-1">
+                                            صالحة خلال ساعات الغداء (12:00 مساءً - 2:30 مساءً)
+                                        </div>
                                     </p>
 
                                     @if (Model.LunchCount > 0)
@@ -153,8 +123,7 @@
                                         </div>
                                         <button class="btn btn-success w-100 text-white"
                                                 data-bs-toggle="modal" data-bs-target="#qrModal"
-                                                onclick="showQrCode(@Model.LunchTickets.FirstOrDefault()?.TicketID, 'الغداء')"
-                                        @(restaurant != null && !restaurant.ServesLunch ? "disabled" : "")>
+                                                onclick="showQrCode(@Model.LunchTickets.FirstOrDefault()?.TicketID, 'الغداء')">
                                             <i class="bi bi-qr-code me-2"></i> استرد الآن
                                         </button>
                                     }
@@ -162,56 +131,6 @@
                                     {
                                         <div class="text-center mb-3">
                                             <p class="text-muted">لا توجد تذاكر غداء متاحة</p>
-                                        </div>
-                                        <a class="btn btn-outline-success w-100" asp-area="User" asp-controller="Purchase" asp-action="Index">
-                                            <i class="bi bi-plus-lg me-2"></i>شراء تذاكر
-                                        </a>
-                                    }
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Dinner Card -->
-                        <div class="col-12 col-md-4">
-                            <div class="card h-100 @(Model.DinnerCount > 0 ? "border-success" : "border")">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between align-items-center mb-3">
-                                        <h6 class="card-title mb-0">تذاكر العشاء</h6>
-                                        <span class="badge bg-dinner">العشاء</span>
-                                    </div>
-                                    <p class="card-text small mb-3">
-                                        @if (restaurant != null && restaurant.ServesDinner && restaurant.DinnerOpenTime.HasValue && restaurant.DinnerCloseTime.HasValue)
-                                        {
-                                            <div class="alert alert-white small text-center mb-3 py-1">
-                                                صالحة خلال ساعات العشاء (@FormatTimeSpanToAmPm(restaurant.DinnerOpenTime.Value) - @FormatTimeSpanToAmPm(restaurant.DinnerCloseTime.Value))
-                                            </div>
-                                        }
-                                        else
-                                        {
-                                            <div class="alert alert-warning small text-center mb-3 py-1">
-                                                <i class="bi bi-exclamation-triangle me-2"></i>
-                                                تم إيقاف خدمة العشاء مؤقتاً من قبل الإدارة
-                                            </div>
-                                        }
-                                    </p>
-
-                                    @if (Model.DinnerCount > 0)
-                                    {
-                                        <div class="text-center mb-3">
-                                            <h4 class="fw-bold">@Model.DinnerCount</h4>
-                                            <p class="small text-muted mb-0">تذاكر متاحة</p>
-                                        </div>
-                                        <button class="btn btn-success w-100 text-white"
-                                                data-bs-toggle="modal" data-bs-target="#qrModal"
-                                                onclick="showQrCode(@Model.DinnerTickets.FirstOrDefault()?.TicketID, 'العشاء')"
-                                        @(restaurant != null && !restaurant.ServesDinner ? "disabled" : "")>
-                                            <i class="bi bi-qr-code me-2"></i> استرد الآن
-                                        </button>
-                                    }
-                                    else
-                                    {
-                                        <div class="text-center mb-3">
-                                            <p class="text-muted">لا توجد تذاكر عشاء متاحة</p>
                                         </div>
                                         <a class="btn btn-outline-success w-100" asp-area="User" asp-controller="Purchase" asp-action="Index">
                                             <i class="bi bi-plus-lg me-2"></i>شراء تذاكر
@@ -253,19 +172,4 @@
 
 @section Scripts {
     <script src="~/js/tickets.js" asp-append-version="true"></script>
-}
-
-@functions {
-    private string FormatTimeSpanToAmPm(TimeSpan time)
-    {
-        int hour = time.Hours;
-        string amPm = hour >= 12 ? "مساءً" : "صباحاً";
-
-        // Convert to 12-hour format
-        hour = hour % 12;
-        if (hour == 0) hour = 12; // 0 hour should be displayed as 12 in 12-hour format
-
-        // Format with leading zeros for minutes
-        return $"{hour}:{time.Minutes:D2} {amPm}";
-    }
 }

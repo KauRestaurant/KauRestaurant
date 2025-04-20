@@ -41,46 +41,21 @@
         updatePasswordStrength(this);
     });
 
-    // Add password strength indicator for change password modals
-    $('input[name="newPassword"]').on('input', function () {
-        updatePasswordStrength(this);
-    });
+    // Role dropdown change handler - visual feedback
+    $('.role-dropdown').on('change', function () {
+        var originalValue = $(this).attr('data-original-value');
+        var currentValue = $(this).val();
 
-    // Password confirmation validation
-    $('#changePasswordForm').on('submit', function (e) {
-        var newPassword = $(this).find('input[name="newPassword"]').val();
-        var confirmPassword = $(this).find('input[name="confirmPassword"]').val();
-
-        if (newPassword !== confirmPassword) {
-            e.preventDefault();
-            alert('كلمات المرور غير متطابقة');
+        if (originalValue !== currentValue) {
+            $(this).addClass('border-success');
+        } else {
+            $(this).removeClass('border-success');
         }
     });
 
-    // Edit user button click handler
-    $('.btn-edit-user').on('click', function () {
-        var userId = $(this).data('user-id');
-        var firstName = $(this).data('user-firstname');
-        var lastName = $(this).data('user-lastname');
-        var email = $(this).data('user-email');
-        var role = $(this).data('user-role');
-
-        // Set form values
-        $('#editUserId').val(userId);
-        $('#editUserFirstName').val(firstName);
-        $('#editUserLastName').val(lastName);
-        $('#editUserEmail').val(email);
-        $('#editUserRole').val(role);
-    });
-
-    // Change password button click handler
-    $('[data-bs-target="#changePasswordModal"]').on('click', function () {
-        var userId = $(this).data('user-id');
-        var userName = $(this).data('user-name');
-
-        // Set user ID in the password change form
-        $('#passwordUserId').val(userId);
-        $('#passwordUserName').text('تغيير كلمة المرور للمستخدم: ' + userName);
+    // Store original values for dropdowns
+    $('.role-dropdown').each(function () {
+        $(this).attr('data-original-value', $(this).val());
     });
 
     // Setup the delete user modal

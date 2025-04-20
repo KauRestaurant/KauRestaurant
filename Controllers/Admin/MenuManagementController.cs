@@ -32,12 +32,8 @@ namespace KauRestaurant.Controllers.Admin
             // Get all available meals for dropdowns
             var allMeals = await _context.Meals.ToListAsync();
 
-            // Get restaurant info for display
-            var restaurant = await _context.Restaurants.FirstOrDefaultAsync();
-
             // Pass data to the view
             ViewBag.AllMeals = allMeals;
-            ViewBag.Restaurant = restaurant;
 
             return View("~/Views/Admin/MenuManagement.cshtml", menus);
         }

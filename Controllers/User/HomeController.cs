@@ -41,9 +41,6 @@ namespace KauRestaurant.Controllers.User
                 .ThenInclude(m => m.Reviews)
                 .FirstOrDefaultAsync(m => m.Day == arabicDay);
 
-            var restaurant = _context.Restaurants.FirstOrDefault();
-            ViewBag.Restaurant = restaurant;
-
             return View("~/Views/User/Index.cshtml", todayMenu);
         }
 

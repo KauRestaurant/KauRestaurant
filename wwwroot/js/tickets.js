@@ -12,7 +12,7 @@ function showQrCode(ticketId, mealType) {
     const qrCodeImage = document.getElementById('qrCodeImage');
 
     // Generate the QR code URL - hardcode the URL since we can't use Razor helpers
-    const qrUrl = '/QrCode/GenerateQrCode' + 
+    const qrUrl = '/QrCode/GenerateQrCode' +
         '?ticketId=' + ticketId +
         '&mealType=' + encodeURIComponent(mealType);
 
@@ -27,11 +27,11 @@ function showQrCode(ticketId, mealType) {
 }
 
 // Wait for the DOM to be ready before setting up event handlers
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Add a close handler to the modal to clear the QR code when closed
     const qrModal = document.getElementById('qrModal');
     if (qrModal) {
-        qrModal.addEventListener('hidden.bs.modal', function() {
+        qrModal.addEventListener('hidden.bs.modal', function () {
             document.getElementById('qrCodeImage').src = '';
         });
     }

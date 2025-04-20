@@ -3,7 +3,6 @@
 
 @{
     ViewData["Title"] = "إدارة قائمة الأسبوع";
-    var restaurant = ViewBag.Restaurant as KauRestaurant.Models.Restaurant;
     var allMeals = ViewBag.AllMeals as List<KauRestaurant.Models.Meal>;
 }
 
@@ -41,23 +40,20 @@
                     </div>
                 </div>
 
-                <!-- Week Days -->
+                <!-- Week Days - Include ALL days from database -->
                 <div class="card-body p-0">
                     <nav>
                         <div class="nav nav-tabs nav-fill border-0" role="tablist">
                             @foreach (var menu in Model)
                             {
-                                if (menu.Day != "الجمعة" && menu.Day != "السبت")
-                                {
-                                    var isActive = menu == Model.FirstOrDefault(m => m.Day != "الجمعة" && m.Day != "السبت") ? "active" : "";
-                                    <button class="nav-link @isActive py-3 px-2 px-md-3"
-                                            data-bs-toggle="tab"
-                                            data-bs-target="#@menu.Day.ToLower()"
-                                            type="button"
-                                            role="tab">
-                                        @menu.Day
-                                    </button>
-                                }
+                                bool isActive = menu == Model.FirstOrDefault();
+                                <button class="nav-link @(isActive ? "active" : "") py-3 px-2 px-md-3"
+                                        data-bs-toggle="tab"
+                                        data-bs-target="#@menu.Day.ToLower()"
+                                        type="button"
+                                        role="tab">
+                                    @menu.Day
+                                </button>
                             }
                         </div>
                     </nav>
@@ -68,8 +64,8 @@
             <div class="tab-content" id="menuContent">
                 @foreach (var menu in Model)
                 {
-                    var isActive = menu == Model.FirstOrDefault(m => m.Day != "الجمعة" && m.Day != "السبت") ? "show active" : "";
-                    <div class="tab-pane fade @isActive" id="@menu.Day.ToLower()">
+                    bool isActive = menu == Model.FirstOrDefault();
+                    <div class="tab-pane fade @(isActive ? "show active" : "")" id="@menu.Day.ToLower()">
                         <div class="row" id="@(menu.Day.ToLower())Menu">
                             @{
                                 // Get meals for this menu day
@@ -80,7 +76,7 @@
                                 .ToDictionary(g => g.Key, g => g.ToList())
                                 ?? new Dictionary<string, List<KauRestaurant.Models.Meal>>();
 
-                                var categories = new[] { "الإفطار", "الغداء", "العشاء" };
+                                var categories = new[] { "الإفطار", "الغداء" };
 
                                 foreach (var category in categories)
                                 {
@@ -88,20 +84,12 @@
                                     {
                                         "الإفطار" => ("bi-sun", "bg-breakfast"),
                                         "الغداء" => ("bi-brightness-high", "bg-lunch"),
-                                        "العشاء" => ("bi-moon", "bg-dinner"),
                                         _ => ("bi-question", "#6c757d")
                                     };
 
                                     var categoryId = $"{menu.Day.ToLower()}{category}";
-                                    bool mealDisabled = false;
-                                    if (category == "الإفطار" && restaurant != null && !restaurant.ServesBreakfast)
-                                        mealDisabled = true;
-                                    else if (category == "الغداء" && restaurant != null && !restaurant.ServesLunch)
-                                        mealDisabled = true;
-                                    else if (category == "العشاء" && restaurant != null && !restaurant.ServesDinner)
-                                        mealDisabled = true;
 
-                                    <div class="col-12 col-lg-4 mb-3">
+                                    <div class="col-12 col-lg-6 mb-3">
                                         <div class="accordion accordion-desktop">
                                             <div class="accordion-item border-0 rounded shadow h-100">
                                                 <h2 class="accordion-header">
@@ -110,12 +98,6 @@
                                                             data-bs-toggle="collapse"
                                                             data-bs-target="#@categoryId">
                                                         <i class="bi @icon me-2"></i>@category
-                                                        @if (mealDisabled)
-                                                        {
-                                                            <span class="ms-2 badge bg-warning text-dark">
-                                                                <i class="bi bi-exclamation-triangle me-1"></i>الخدمة معطلة يرجى مراجعة الإعدادات
-                                                            </span>
-                                                        }
                                                     </button>
                                                 </h2>
                                                 <div id="@categoryId" class="accordion-collapse collapse">
