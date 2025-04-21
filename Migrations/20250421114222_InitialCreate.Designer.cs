@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace KauRestaurant.Data.Migrations
+namespace KauRestaurant.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250420235209_RemoveAndRenameRestaurantAttributes")]
-    partial class RemoveAndRenameRestaurantAttributes
+    [Migration("20250421114222_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -1362,6 +1362,77 @@ namespace KauRestaurant.Data.Migrations
                     b.HasIndex("CustomerID");
 
                     b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("KauRestaurant.Models.Restaurant", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("BreakfastHours")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("ContactNumber")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("GoogleMapsLink")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<bool>("IsOpen")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("LunchHours")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Photo")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("WorkingDays")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Restaurants");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            BreakfastHours = "7:00 صباحاً—10:00 صباحاً",
+                            ContactNumber = "0126400000",
+                            Email = "restaurant@kau.edu.sa",
+                            GoogleMapsLink = "https://maps.app.goo.gl/5bbXVZiGK1sJfLPw9",
+                            IsOpen = true,
+                            Location = "جامعة الملك عبد العزيز، طريق الجامعات، جدة، المملكة العربية السعودية",
+                            LunchHours = "11:30 صباحاً—2:00 مساءً",
+                            Photo = "/images/restaurant.png",
+                            WorkingDays = "السبت، الأحد، الإثنين، الثلاثاء، الأربعاء، الخميس، الجمعة"
+                        });
                 });
 
             modelBuilder.Entity("KauRestaurant.Models.Review", b =>

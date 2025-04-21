@@ -17,6 +17,7 @@ namespace KauRestaurant.Data
         public DbSet<Order> Orders { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<MenuMeal> MenuMeals { get; set; }
+        public DbSet<Restaurant> Restaurants { get; set; }
         public DbSet<Feedback> Feedbacks { get; set; }
         public DbSet<TicketPrice> TicketPrices { get; set; }
 
@@ -602,6 +603,26 @@ namespace KauRestaurant.Data
                 new MenuMeal { MenuMealID = 111, MenuID = 7, MealID = 21 },
                 new MenuMeal { MenuMealID = 112, MenuID = 7, MealID = 28 }
             );
+
+
+            // Add this inside the OnModelCreating method
+            // Seed Restaurant data based on RestaurantInfo.cshtml
+            modelBuilder.Entity<Restaurant>().HasData(
+                new Restaurant
+                {
+                    Id = 1,
+                    Location = "جامعة الملك عبد العزيز، طريق الجامعات، جدة، المملكة العربية السعودية",
+                    GoogleMapsLink = "https://maps.app.goo.gl/5bbXVZiGK1sJfLPw9",
+                    ContactNumber = "0126400000",
+                    Email = "restaurant@kau.edu.sa",
+                    WorkingDays = "السبت، الأحد، الإثنين، الثلاثاء، الأربعاء، الخميس، الجمعة",
+                    BreakfastHours = "7:00 صباحاً—10:00 صباحاً",
+                    LunchHours = "11:30 صباحاً—2:00 مساءً",
+                    Photo = "/images/restaurant.png",
+                    IsOpen = true
+                }
+            );
+
         }
     }
 }

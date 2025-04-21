@@ -1,12 +1,29 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using KauRestaurant.Data;
+using KauRestaurant.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace KauRestaurant.Controllers.User
 {
     public class RestaurantInfoController : Controller
     {
-        public IActionResult Index()
+        private readonly ApplicationDbContext _context;
+
+        public RestaurantInfoController(ApplicationDbContext context)
         {
-            return View("~/Views/User/RestaurantInfo.cshtml");
+            _context = context;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            var restaurant = await _context.Restaurants.FirstOrDefaultAsync();
+
+            if (restaurant == null)
+            {
+                return View("~/Views/User/RestaurantInfo.cshtml", new Restaurant());
+            }
+
+            return View("~/Views/User/RestaurantInfo.cshtml", restaurant);
         }
     }
 }

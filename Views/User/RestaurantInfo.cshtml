@@ -1,4 +1,5 @@
-﻿@{
+﻿@model KauRestaurant.Models.Restaurant
+@{
     ViewData["Title"] = "معلومات المطعم";
 }
 
@@ -14,162 +15,65 @@
                 <!-- Restaurant Details -->
                 <div class="p-4">
                     <div class="row">
-                        <!-- Right Column - Restaurant Info (Now First) -->
+                        <!-- Right Column -->
                         <div class="col-md-6 mb-4">
-                            <h4 class="fw-bold mb-3">الموقع</h4>
-                            <div class="ratio ratio-16x9 rounded overflow-hidden">
-                                <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d14858.806983217545!2d39.2383042!3d21.4346458!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x15c3cd202a1fad31%3A0x40da8561c898f82!2z2KzYp9mF2LnYqSDYp9mE2YXZhNmDINi52KjYr9in2YTYudiy2YrYsiDYp9mE2YXYr9mK2YbYqSDYp9mE2KzYp9mF2LnZitip!5e0!3m2!1sar!2ssa!4v1713813926564!5m2!1sar!2ssa" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                            </div>
-                            <a href="https://maps.app.goo.gl/5bbXVZiGK1sJfLPw9" class="btn btn-sm btn-outline-success mt-2" target="_blank"><i class="bi bi-geo-alt me-1"></i>رابط الموقع</a>
-                        </div>
-
-                        <!-- Left Column - Working Hours (Now Second) -->
-                        <div class="col-md-6 mb-4">
-                            <!-- Working Days & Meal Times (All Days View) -->
-                            <div class="mb-4">
-                                <h4 class="fw-bold mb-3">أوقات العمل والوجبات</h4>
-
-                                <div class="card">
-                                    <div class="card-body p-0">
-                                        <ul class="list-group list-group-flush">
-                                            <!-- Saturday -->
-                                            <li class="list-group-item">
-                                                <div class="d-flex justify-content-between align-items-start">
-                                                    <div class="fw-bold text-start">السبت</div>
-                                                    <div class="text-start">
-                                                        <div class="text-dark mb-1">
-                                                            <span class="badge rounded-pill me-1 bg-breakfast">الفطور</span>
-                                                            7:00 صباحاً—10:00 صباحاً
-                                                        </div>
-                                                        <div class="text-dark mb-1">
-                                                            <span class="badge rounded-pill me-1 bg-lunch">الغداء</span>
-                                                            11:30 صباحاً—2:00 مساءً
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
-
-                                            <!-- Sunday -->
-                                            <li class="list-group-item">
-                                                <div class="d-flex justify-content-between align-items-start">
-                                                    <div class="fw-bold text-start">الأحد</div>
-                                                    <div class="text-start">
-                                                        <div class="text-dark mb-1">
-                                                            <span class="badge rounded-pill me-1 bg-breakfast">الفطور</span>
-                                                            7:00 صباحاً—10:00 صباحاً
-                                                        </div>
-                                                        <div class="text-dark mb-1">
-                                                            <span class="badge rounded-pill me-1 bg-lunch">الغداء</span>
-                                                            11:30 صباحاً—2:00 مساءً
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
-
-                                            <!-- Monday -->
-                                            <li class="list-group-item">
-                                                <div class="d-flex justify-content-between align-items-start">
-                                                    <div class="fw-bold text-start">الاثنين</div>
-                                                    <div class="text-start">
-                                                        <div class="text-dark mb-1">
-                                                            <span class="badge rounded-pill me-1 bg-breakfast">الفطور</span>
-                                                            7:00 صباحاً—10:00 صباحاً
-                                                        </div>
-                                                        <div class="text-dark mb-1">
-                                                            <span class="badge rounded-pill me-1 bg-lunch">الغداء</span>
-                                                            11:30 صباحاً—2:00 مساءً
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
-
-                                            <!-- Tuesday -->
-                                            <li class="list-group-item">
-                                                <div class="d-flex justify-content-between align-items-start">
-                                                    <div class="fw-bold text-start">الثلاثاء</div>
-                                                    <div class="text-start">
-                                                        <div class="text-dark mb-1">
-                                                            <span class="badge rounded-pill me-1 bg-breakfast">الفطور</span>
-                                                            7:00 صباحاً—10:00 صباحاً
-                                                        </div>
-                                                        <div class="text-dark mb-1">
-                                                            <span class="badge rounded-pill me-1 bg-lunch">الغداء</span>
-                                                            11:30 صباحاً—2:00 مساءً
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
-
-                                            <!-- Wednesday -->
-                                            <li class="list-group-item">
-                                                <div class="d-flex justify-content-between align-items-start">
-                                                    <div class="fw-bold text-start">الأربعاء</div>
-                                                    <div class="text-start">
-                                                        <div class="text-dark mb-1">
-                                                            <span class="badge rounded-pill me-1 bg-breakfast">الفطور</span>
-                                                            7:00 صباحاً—10:00 صباحاً
-                                                        </div>
-                                                        <div class="text-dark mb-1">
-                                                            <span class="badge rounded-pill me-1 bg-lunch">الغداء</span>
-                                                            11:30 صباحاً—2:00 مساءً
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
-
-                                            <!-- Thursday -->
-                                            <li class="list-group-item">
-                                                <div class="d-flex justify-content-between align-items-start">
-                                                    <div class="fw-bold text-start">الخميس</div>
-                                                    <div class="text-start">
-                                                        <div class="text-dark mb-1">
-                                                            <span class="badge rounded-pill me-1 bg-breakfast">الفطور</span>
-                                                            7:00 صباحاً—10:00 صباحاً
-                                                        </div>
-                                                        <div class="text-dark mb-1">
-                                                            <span class="badge rounded-pill me-1 bg-lunch">الغداء</span>
-                                                            11:30 صباحاً—2:00 مساءً
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
-
-                                            <!-- Friday -->
-                                            <li class="list-group-item">
-                                                <div class="d-flex justify-content-between align-items-start">
-                                                    <div class="fw-bold text-start">الجمعة</div>
-                                                    <div class="text-start">
-                                                        <div class="text-dark mb-1">
-                                                            <span class="badge rounded-pill me-1 bg-breakfast">الفطور</span>
-                                                            7:00 صباحاً—10:00 صباحاً
-                                                        </div>
-                                                        <div class="text-dark mb-1">
-                                                            <span class="badge rounded-pill me-1 bg-lunch">الغداء</span>
-                                                            11:30 صباحاً—2:00 مساءً
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
+                            <div class="d-flex gap-2">
+                                <h4 class="fw-bold mb-3">صورة المطعم</h4>
+                                <!-- Restaurant status -->
+                                <div>
+                                    <span class="badge @(Model.IsOpen ? "bg-success" : "bg-danger") p-2">
+                                        @(Model.IsOpen ? "مفتوح الآن" : "مغلق الآن")
+                                    </span>
                                 </div>
                             </div>
+                            @if (!string.IsNullOrEmpty(Model.Photo))
+                            {
+                                <div class="mb-3">
+                                    <img src="@Model.Photo" alt="صورة المطعم" class="img-fluid rounded" />
+                                </div>
+                            }
 
+                            <!-- Working Days & Hours -->
+                            <div class="mb-4">
+                                <h4 class="fw-bold mb-3">أوقات العمل والوجبات</h4>
+                                <div class="mb-3">
+                                    <h6 class="mb-2"><i class="bi bi-calendar-week text-success me-2"></i>أيام العمل:</h6>
+                                    <p class="ms-4 mb-0">@Model.WorkingDays</p>
+                                </div>
+                                <div>
+                                    <h6 class="mb-3"><i class="bi bi-clock text-success me-2"></i>ساعات العمل:</h6>
+                                    <div class="ms-4 mb-3">
+                                        <div class="mb-2">الإفطار @Model.BreakfastHours</div>
+                                        <div class="mb-2">الغداء @Model.LunchHours</div>
+                                    </div>
+                                </div>
+                            </div>                          
+                        </div>
+
+                        <!-- Left Column -->
+                        <div class="col-md-6 mb-4">
+
+                            <!-- Google Map Link -->
+                            <h4 class="fw-bold mb-3">الموقع</h4>
+                            <div class="ratio ratio-16x9 rounded overflow-hidden mb-3">
+                                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3712.3280451830014!2d39.24661869999999!3d21.494867!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x15c3cddb3dbfc34f%3A0x393b0cfe3da17b97!2sUniversity&#39;s%20Restaurant!5e0!3m2!1sen!2ssa!4v1745229893533!5m2!1sen!2ssa" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                            </div>
+                            <a href="@Model.GoogleMapsLink" class="btn btn-sm btn-outline-success mb-3" target="_blank"><i class="bi bi-geo-alt me-1"></i>رابط الموقع</a>
+
+                            <!-- Contact Info -->
                             <h4 class="fw-bold mb-3">معلومات الاتصال</h4>
-
                             <div class="mb-3">
                                 <h6 class="mb-2"><i class="bi bi-geo-alt-fill text-success me-2"></i>العنوان:</h6>
-                                <p class="ms-4 mb-0">جامعة الملك عبد العزيز، طريق الجامعات، جدة، المملكة العربية السعودية</p>
+                                <p class="ms-4 mb-0">@Model.Location</p>
                             </div>
-
                             <div class="row">
                                 <div class="col-6 mb-3">
                                     <h6 class="mb-2"><i class="bi bi-envelope-fill text-success me-2"></i>البريد الإلكتروني:</h6>
-                                    <p class="ms-4 mb-0">restaurant@kau.edu.sa</p>
+                                    <p class="ms-4 mb-0">@Model.Email</p>
                                 </div>
                                 <div class="col-6 mb-3">
                                     <h6 class="mb-2"><i class="bi bi-telephone-fill text-success me-2"></i>رقم الاتصال:</h6>
-                                    <p class="ms-4 mb-0">0126400000</p>
+                                    <p class="ms-4 mb-0">@Model.ContactNumber</p>
                                 </div>
                             </div>
                         </div>

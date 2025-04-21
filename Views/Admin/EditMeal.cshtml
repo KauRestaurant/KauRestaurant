@@ -207,14 +207,17 @@
                         </div>
                     </div>
 
-                    <!-- Form Buttons -->
-                    <div class="d-flex gap-2 mt-3">
-                        <button type="submit" class="btn btn-success">
-                            <i class="bi bi-check-lg me-1"></i> حفظ التغييرات
-                        </button>
-                        <a href="@Url.Action("Index", "MealManagement")" class="btn btn-outline-secondary">
-                            <i class="bi bi-arrow-right me-1"></i> العودة
+                    <div class="d-flex justify-content-between pt-3 border-top">
+                        <a asp-controller="Dashboard" asp-action="Index" class="btn btn-outline-success">
+                            <i class="bi bi-arrow-right me-1"></i>
+                            <span class="d-none d-md-inline">عودة إلى لوحة التحكم</span>
+                            <span class="d-inline d-md-none">العودة</span>
                         </a>
+                        <button type="submit" class="btn btn-success px-3">
+                            <i class="bi bi-save me-2"></i>
+                            <span class="d-none d-md-inline">حفظ التغييرات</span>
+                            <span class="d-inline d-md-none">حفظ</span>
+                        </button>
                     </div>
                 </form>
             </div>

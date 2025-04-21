@@ -45,10 +45,24 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link rounded px-3 py-2 @(currentPath.StartsWithSegments("/Identity/Account/Manage") ? "active" : "")"
+                           asp-area="Identity" asp-page="/Account/Manage/Index">
+                            <i class="bi bi-person-circle me-2"></i>
+                            إدارة الملف الشخصي
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link rounded px-3 py-2 @(currentController == "UserManagement" && currentAction == "Index" ? "active" : "")"
                            asp-area="Admin" asp-controller="UserManagement" asp-action="Index">
                             <i class="bi bi-people me-2"></i>
                             إدارة المستخدمين
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link rounded px-3 py-2 @(currentController == "RestaurantManagement" && currentAction == "Index" ? "active" : "")"
+                           asp-area="Admin" asp-controller="RestaurantManagement" asp-action="Index">
+                            <i class="bi bi-shop me-2"></i>
+                            إدارة المطعم والأسعار
                         </a>
                     </li>
                     <li class="nav-item">
@@ -63,13 +77,6 @@
                            asp-area="Admin" asp-controller="MealManagement" asp-action="Index">
                             <i class="bi bi-egg-fried me-2"></i>
                             إدارة الوجبات
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link rounded px-3 py-2 @(currentController == "PriceManagement" && currentAction == "Index" ? "active" : "")"
-                           asp-area="Admin" asp-controller="PriceManagement" asp-action="Index">
-                            <i class="bi bi-cash me-2"></i>
-                            إدارة الأسعار
                         </a>
                     </li>
                     <li class="nav-item">
@@ -91,13 +98,6 @@
                            asp-area="User" asp-controller="Home" asp-action="Index">
                             <i class="bi bi-eye me-2"></i>
                             معاينة المطعم
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link rounded px-3 py-2 @(currentPath.StartsWithSegments("/Identity/Account/Manage") ? "active" : "")"
-                           asp-area="Identity" asp-page="/Account/Manage/Index">
-                            <i class="bi bi-person-circle me-2"></i>
-                            إدارة الملف الشخصي
                         </a>
                     </li>
                     <li class="nav-item ms-3 mt-2">
@@ -144,11 +144,25 @@
                                 مسح التذاكر
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link rounded px-3 py-2 @(currentPath.StartsWithSegments("/Identity/Account/Manage") ? "active" : "")"
+                               asp-area="Identity" asp-page="/Account/Manage/Index">
+                                <i class="bi bi-person-circle me-2"></i>
+                                إدارة الملف الشخصي
+                            </a>
+                        </li>
                         <li class="nav-item px-1">
                             <a class="nav-link px-3 py-2 @(currentController == "UserManagement" && currentAction == "Index" ? "active" : "")"
                                asp-area="Admin" asp-controller="UserManagement" asp-action="Index">
                                 <i class="bi bi-people me-2"></i>
                                 إدارة المستخدمين
+                            </a>
+                        </li>
+                        <li class="nav-item px-1">
+                            <a class="nav-link px-3 py-2 @(currentController == "RestaurantManagement" && currentAction == "Index" ? "active" : "")"
+                               asp-area="Admin" asp-controller="RestaurantManagement" asp-action="Index">
+                                <i class="bi bi-shop me-2"></i>
+                                إدارة المطعم والأسعار
                             </a>
                         </li>
                         <li class="nav-item px-1">
@@ -163,13 +177,6 @@
                                asp-area="Admin" asp-controller="MealManagement" asp-action="Index">
                                 <i class="bi bi-egg-fried me-2"></i>
                                 إدارة الوجبات
-                            </a>
-                        </li>
-                        <li class="nav-item px-1">
-                            <a class="nav-link px-3 py-2 @(currentController == "PriceManagement" && currentAction == "Index" ? "active" : "")"
-                               asp-area="Admin" asp-controller="PriceManagement" asp-action="Index">
-                                <i class="bi bi-cash me-2"></i>
-                                إدارة الأسعار
                             </a>
                         </li>
                         <li class="nav-item px-1">
@@ -191,13 +198,6 @@
                                asp-area="User" asp-controller="Home" asp-action="Index">
                                 <i class="bi bi-eye me-2"></i>
                                 معاينة المطعم
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link rounded px-3 py-2 @(currentPath.StartsWithSegments("/Identity/Account/Manage") ? "active" : "")"
-                               asp-area="Identity" asp-page="/Account/Manage/Index">
-                                <i class="bi bi-person-circle me-2"></i>
-                                إدارة الملف الشخصي
                             </a>
                         </li>
                         <li class="nav-item px-1 ms-3 mt-2">

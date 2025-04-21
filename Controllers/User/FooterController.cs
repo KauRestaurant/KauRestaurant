@@ -9,12 +9,12 @@ using System.Security.Claims;
 
 namespace KauRestaurant.Controllers.User
 {
-    public class FeedbackController : Controller
+    public class FooterController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<KauRestaurantUser> _userManager;
 
-        public FeedbackController(
+        public FooterController(
             ApplicationDbContext context,
             UserManager<KauRestaurantUser> userManager)
         {
@@ -22,6 +22,19 @@ namespace KauRestaurant.Controllers.User
             _userManager = userManager;
         }
 
+        // FAQ Page
+        public IActionResult FAQ()
+        {
+            return View("~/Views/User/FAQ.cshtml");
+        }
+
+        // Terms Page
+        public IActionResult Terms()
+        {
+            return View("~/Views/User/Terms.cshtml");
+        }
+
+        // Feedback Page
         public async Task<IActionResult> Index()
         {
             var viewModel = new FeedbackViewModel
@@ -58,14 +71,14 @@ namespace KauRestaurant.Controllers.User
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Submit(string subject, string text, string userName, string userEmail)
+        public async Task<IActionResult> SubmitFeedback(string subject, string text, string userName, string userEmail)
         {
             try
             {
                 if (string.IsNullOrEmpty(subject) || string.IsNullOrEmpty(text))
                 {
                     TempData["ErrorMessage"] = "يجب ملء جميع الحقول المطلوبة";
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction(nameof(Index)); // Redirect to Index instead of Feedback
                 }
 
                 var feedback = new Feedback
@@ -91,7 +104,7 @@ namespace KauRestaurant.Controllers.User
                     if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(userEmail))
                     {
                         TempData["ErrorMessage"] = "يجب إدخال الاسم والبريد الإلكتروني";
-                        return RedirectToAction(nameof(Index));
+                        return RedirectToAction(nameof(Index)); // Redirect to Index instead of Feedback
                     }
 
                     feedback.UserName = userName;
@@ -102,12 +115,12 @@ namespace KauRestaurant.Controllers.User
                 await _context.SaveChangesAsync();
 
                 TempData["StatusMessage"] = "تم إرسال رسالتك بنجاح!";
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index)); // Redirect to Index instead of Feedback
             }
             catch (Exception)
             {
                 TempData["ErrorMessage"] = "حدث خطأ أثناء إرسال الرسالة، يرجى المحاولة مرة أخرى.";
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index)); // Redirect to Index instead of Feedback
             }
         }
     }

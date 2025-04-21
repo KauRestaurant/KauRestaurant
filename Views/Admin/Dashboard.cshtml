@@ -41,6 +41,19 @@
                 <div class="card border-0 shadow h-100 admin-card">
                     <div class="card-body d-flex flex-column text-center p-4">
                         <div class="icon-wrapper bg-light rounded-circle mx-auto mb-3">
+                            <i class="bi bi-shop fs-1 text-success"></i>
+                        </div>
+                        <h5 class="card-title">إدارة المطعم والأسعار</h5>
+                        <p class="card-text text-muted mb-4">تعديل معلومات وأسعار تذاكر المطعم الجامعي</p>
+                        <a asp-area="Admin" asp-controller="RestaurantManagement" asp-action="Index" class="btn btn-outline-success mt-auto">إدارة الأسعار</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card border-0 shadow h-100 admin-card">
+                    <div class="card-body d-flex flex-column text-center p-4">
+                        <div class="icon-wrapper bg-light rounded-circle mx-auto mb-3">
                             <i class="bi bi-journal-text fs-1 text-success"></i>
                         </div>
                         <h5 class="card-title">إدارة قائمة الأسبوع</h5>
@@ -59,19 +72,6 @@
                         <h5 class="card-title">إدارة الوجبات</h5>
                         <p class="card-text text-muted mb-4">إضافة وتعديل ووجبات المطعم</p>
                         <a asp-area="Admin" asp-controller="MealManagement" asp-action="Index" class="btn btn-outline-success mt-auto">إدارة الوجبات</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="card border-0 shadow h-100 admin-card">
-                    <div class="card-body d-flex flex-column text-center p-4">
-                        <div class="icon-wrapper bg-light rounded-circle mx-auto mb-3">
-                            <i class="bi bi-cash fs-1 text-success"></i>
-                        </div>
-                        <h5 class="card-title">إدارة الأسعار</h5>
-                        <p class="card-text text-muted mb-4">تعديل أسعار تذاكر المطعم الجامعي</p>
-                        <a asp-area="Admin" asp-controller="PriceManagement" asp-action="Index" class="btn btn-outline-success mt-auto">إدارة الأسعار</a>
                     </div>
                 </div>
             </div>

@@ -34,12 +34,16 @@ namespace KauRestaurant.Controllers.User
                 _ => "الأحد"
             };
 
-            // Get today's menu with meals using the many-to-many relationship
+            // Get today's menu
             var todayMenu = await _context.Menus
                 .Include(m => m.MenuMeals)
                 .ThenInclude(mm => mm.Meal)
                 .ThenInclude(m => m.Reviews)
                 .FirstOrDefaultAsync(m => m.Day == arabicDay);
+
+            // Get restaurant info
+            var restaurant = await _context.Restaurants.FirstOrDefaultAsync();
+            ViewBag.Restaurant = restaurant;
 
             return View("~/Views/User/Index.cshtml", todayMenu);
         }

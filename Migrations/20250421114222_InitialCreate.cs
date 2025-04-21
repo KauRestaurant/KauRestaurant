@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace KauRestaurant.Data.Migrations
+namespace KauRestaurant.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration
@@ -86,6 +86,27 @@ namespace KauRestaurant.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Menus", x => x.MenuID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Restaurants",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Location = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    GoogleMapsLink = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    ContactNumber = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    WorkingDays = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    BreakfastHours = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    LunchHours = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Photo = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    IsOpen = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Restaurants", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -386,6 +407,11 @@ namespace KauRestaurant.Data.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Restaurants",
+                columns: new[] { "Id", "BreakfastHours", "ContactNumber", "Email", "GoogleMapsLink", "IsOpen", "Location", "LunchHours", "Photo", "WorkingDays" },
+                values: new object[] { 1, "7:00 صباحاً—10:00 صباحاً", "0126400000", "restaurant@kau.edu.sa", "https://maps.app.goo.gl/5bbXVZiGK1sJfLPw9", true, "جامعة الملك عبد العزيز، طريق الجامعات، جدة، المملكة العربية السعودية", "11:30 صباحاً—2:00 مساءً", "/images/restaurant.png", "السبت، الأحد، الإثنين، الثلاثاء، الأربعاء، الخميس، الجمعة" });
+
+            migrationBuilder.InsertData(
                 table: "MenuMeals",
                 columns: new[] { "MenuMealID", "MealID", "MenuID" },
                 values: new object[,]
@@ -601,6 +627,9 @@ namespace KauRestaurant.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "MenuMeals");
+
+            migrationBuilder.DropTable(
+                name: "Restaurants");
 
             migrationBuilder.DropTable(
                 name: "Reviews");

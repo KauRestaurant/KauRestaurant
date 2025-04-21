@@ -1,0 +1,171 @@
+﻿@model KauRestaurant.Controllers.Admin.RestaurantManagementViewModel
+@{
+    ViewData["Title"] = "إدارة المطعم والأسعار";
+}
+
+<div class="container-fluid py-4 py-lg-5 bg-white">
+    <div class="container">
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+                @TempData["SuccessMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+                @TempData["ErrorMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+
+        <!-- Removed asp-area="Admin" -->
+        <div class="card border-0 shadow">
+            <div class="card-header bg-white py-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h3 class="fw-bold mb-0"><i class="bi bi-shop me-2"></i>إدارة المطعم والأسعار</h3>
+                </div>
+            </div>
+
+            <div class="card-body p-4">
+                <form method="post" asp-controller="RestaurantManagement" asp-action="UpdateAll" enctype="multipart/form-data">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" asp-for="Restaurant.Photo" />
+                    <div class="row g-4">
+                        <!-- Left Column -->
+                        <div class="col-md-6">
+                            <!-- Restaurant Photo Section -->
+                            <div class="mb-4">
+                                <h5 class="mb-3 fw-bold">صورة المطعم</h5>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <img id="restaurant-photo-preview"
+                                             src="@(string.IsNullOrEmpty(Model.Restaurant.Photo) ? "/images/default-restaurant.png" : Model.Restaurant.Photo)"
+                                             alt="صورة المطعم"
+                                             class="img-thumbnail mb-2"
+                                             style="max-height: 200px;">
+                                        <p class="text-muted small mt-2"><i class="bi bi-info-circle me-1"></i>صورة المطعم للعرض فقط. لتغيير الصورة، يرجى التواصل مع المسؤول.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Working Hours -->
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between">
+                                    <h5 class="mb-3 fw-bold">أوقات العمل</h5>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" asp-for="Restaurant.IsOpen" id="restaurantStatus">
+                                        <label class="form-check-label" for="restaurantStatus">المطعم مفتوح حاليًا</label>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="Restaurant.WorkingDays" class="form-label fw-bold">أيام العمل</label>
+                                    <input type="text" class="form-control" asp-for="Restaurant.WorkingDays">
+                                    <span asp-validation-for="Restaurant.WorkingDays" class="text-danger"></span>
+                                </div>
+
+                                <div class="row">
+                                    <div class="mb-3 col-md-6">
+                                        <label asp-for="Restaurant.BreakfastHours" class="form-label fw-bold">
+                                            <i class="bi bi-sun text-warning me-1"></i>ساعات الإفطار
+                                        </label>
+                                        <input type="text" class="form-control" asp-for="Restaurant.BreakfastHours">
+                                        <span asp-validation-for="Restaurant.BreakfastHours" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label asp-for="Restaurant.LunchHours" class="form-label fw-bold">
+                                            <i class="bi bi-brightness-high text-success me-1"></i>ساعات الغداء
+                                        </label>
+                                        <input type="text" class="form-control" asp-for="Restaurant.LunchHours">
+                                        <span asp-validation-for="Restaurant.LunchHours" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Column -->
+                        <div class="col-md-6">
+                            <!-- Contact Information -->
+                            <div class="mb-4">
+                                <h5 class="mb-3 fw-bold">معلومات الاتصال</h5>
+
+                                <div class="mb-3">
+                                    <label asp-for="Restaurant.Location" class="form-label fw-bold">موقع المطعم</label>
+                                    <input type="text" class="form-control" asp-for="Restaurant.Location">
+                                    <span asp-validation-for="Restaurant.Location" class="text-danger"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="Restaurant.GoogleMapsLink" class="form-label fw-bold">رابط خرائط جوجل</label>
+                                    <input type="text" class="form-control" asp-for="Restaurant.GoogleMapsLink">
+                                    <span asp-validation-for="Restaurant.GoogleMapsLink" class="text-danger"></span>
+                                </div>
+
+                                <div class="row">
+                                    <div class="mb-3 col-md-6">
+                                        <label asp-for="Restaurant.Email" class="form-label fw-bold">البريد الإلكتروني</label>
+                                        <input type="email" class="form-control" asp-for="Restaurant.Email">
+                                        <span asp-validation-for="Restaurant.Email" class="text-danger"></span>
+                                    </div>
+                                    <div class="mb-3 col-md-6">
+                                        <label asp-for="Restaurant.ContactNumber" class="form-label fw-bold">رقم الاتصال</label>
+                                        <input type="tel" class="form-control" asp-for="Restaurant.ContactNumber">
+                                        <span asp-validation-for="Restaurant.ContactNumber" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Ticket Prices Section -->
+                            <div class="mb-4">
+                                <h5 class="mb-3 fw-bold">أسعار التذاكر</h5>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label asp-for="TicketPrices.BreakfastPrice" class="form-label fw-bold">
+                                                سعر تذكرة الإفطار (ريال)
+                                            </label>
+                                            <input type="number" class="form-control" asp-for="TicketPrices.BreakfastPrice"
+                                                   step="0.01" min="0.01" value="@Model.TicketPrices.BreakfastPrice.ToString("F2")">
+                                            <span asp-validation-for="TicketPrices.BreakfastPrice" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div>
+                                            <label asp-for="TicketPrices.LunchPrice" class="form-label fw-bold">
+                                                سعر تذكرة الغداء (ريال)
+                                            </label>
+                                            <input type="number" class="form-control" asp-for="TicketPrices.LunchPrice"
+                                                   step="0.01" min="0.01" value="@Model.TicketPrices.LunchPrice.ToString("F2")">
+                                            <span asp-validation-for="TicketPrices.LunchPrice" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between pt-3 border-top">
+                        <a asp-controller="Dashboard" asp-action="Index" class="btn btn-outline-success">
+                            <i class="bi bi-arrow-right me-1"></i>
+                            <span class="d-none d-md-inline">عودة إلى لوحة التحكم</span>
+                            <span class="d-inline d-md-none">العودة</span>
+                        </a>
+                        <button type="submit" class="btn btn-success px-3">
+                            <i class="bi bi-save me-2"></i>
+                            <span class="d-none d-md-inline">حفظ التغييرات</span>
+                            <span class="d-inline d-md-none">حفظ</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/RestaurantManagement.js" asp-append-version="true"></script>
+}

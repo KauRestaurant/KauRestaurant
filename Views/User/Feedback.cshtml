@@ -30,7 +30,7 @@
                         <h2 class="fw-bold mb-0 text-center">اتصل بنا</h2>
                     </div>
                     <div class="card-body p-4">
-                        <form asp-controller="Feedback" asp-action="Submit" method="post" class="needs-validation" novalidate>
+                        <form asp-controller="Footer" asp-action="SubmitFeedback" method="post" class="needs-validation" novalidate>
                             @Html.AntiForgeryToken()
                             <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
 

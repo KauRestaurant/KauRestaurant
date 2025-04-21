@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "الرئيسية";
     var currentDayOfWeek = DateTime.Now.DayOfWeek;
+    var restaurant = ViewBag.Restaurant;
 }
 
 <!-- Welcome Message -->
@@ -31,6 +32,10 @@
                     <h3 class="fw-bold mb-0">
                         قائمة اليوم
                         <span class="d-none d-md-inline"> - @Model.Day</span>
+                        @if (!restaurant.IsOpen)
+                        {
+                            <span class="badge bg-danger ms-2">مغلق</span>
+                        }
                     </h3>
                     <div>
                         <a class="btn btn-success" asp-area="User" asp-controller="Menu" asp-action="Index">
@@ -40,18 +45,12 @@
                 </div>
             </div>
 
-            <!-- Meal Times - Hardcoded -->
+            <!-- Meal Times -->
             <div class="card-body border-top text-center">
                 <div class="row g-2 justify-content-center">
-                    <div class="col-auto">
-                        <i class="bi bi-sun text-dark me-1"></i>الإفطار:
-                        7:00 صباحاً - 10:00 صباحاً
-                    </div>
-                    <div class="col-auto d-none d-md-block">|</div>
-                    <div class="col-auto">
-                        <i class="bi bi-brightness-high text-dark me-1"></i>الغداء:
-                        11:30 مساءً - 2:00 مساءً
-                    </div>
+                    <div class="col-12 col-md-auto">الإفطار @restaurant.BreakfastHours</div>
+                    <div class="d-none d-md-block col-auto">|</div>
+                    <div class="col-12 col-md-auto">الغداء @restaurant.LunchHours</div>
                 </div>
             </div>
         </div>
