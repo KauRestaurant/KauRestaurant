@@ -50,40 +50,43 @@ namespace KauRestaurant.Controllers.Admin
             }
         }
 
+        public IActionResult Add() => View("~/Views/Admin/AddMeal.cshtml", new Meal());
+
+        public async Task<IActionResult> Edit(int id)
+        {
+            var meal = await _context.Meals
+                .Include(m => m.Reviews)
+                .ThenInclude(r => r.Customer)
+                .FirstOrDefaultAsync(m => m.MealID == id);
+
+            if (meal == null)
+            {
+                TempData["ErrorMessage"] = "الوجبة غير موجودة";
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View("~/Views/Admin/EditMeal.cshtml", meal);
+        }
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateMeal([Bind(Prefix = "newMeal")] Meal meal, IFormFile Picture)
+        public async Task<IActionResult> CreateMeal(Meal meal, IFormFile Picture)
         {
             try
             {
-                // Only check for required text fields
-                if (string.IsNullOrEmpty(meal.MealName) || string.IsNullOrEmpty(meal.MealCategory) ||
-                    string.IsNullOrEmpty(meal.MealType) || string.IsNullOrEmpty(meal.Description))
+                if (!ValidateMealBasics(meal))
                 {
-                    // Log the validation failure with details for debugging
-                    _logger.LogWarning($"Form validation failed: Name={meal.MealName}, Category={meal.MealCategory}, " +
-                                      $"Type={meal.MealType}, Description={meal.Description}");
-
-                    TempData["ErrorMessage"] = "اسم الوجبة وفئتها ونوعها مطلوبة";
-                    return RedirectToAction(nameof(Index));
+                    TempData["ErrorMessage"] = "اسم الوجبة وفئتها ونوعها والوصف مطلوبة";
+                    return RedirectToAction(nameof(Add));
                 }
 
-                // Set default values for numeric fields if they're 0
-                if (meal.Calories <= 0) meal.Calories = 1;
-                if (meal.Protein <= 0) meal.Protein = 1;
-                if (meal.Carbs <= 0) meal.Carbs = 1;
-                if (meal.Fat <= 0) meal.Fat = 1;
+                SetDefaultNutritionalValues(meal);
 
                 // Handle picture upload
-                if (Picture != null && Picture.Length > 0)
-                {
-                    meal.PicturePath = await SaveMealImage(Picture);
-                }
-                else
-                {
-                    // Set default image path
-                    meal.PicturePath = "/images/meal.png";
-                }
+                meal.PicturePath = Picture != null && Picture.Length > 0
+                    ? await SaveMealImage(Picture)
+                    : "/images/meal.png";
 
                 _context.Add(meal);
                 await _context.SaveChangesAsync();
@@ -95,10 +98,9 @@ namespace KauRestaurant.Controllers.Admin
             {
                 _logger.LogError(ex, "Error creating meal");
                 TempData["ErrorMessage"] = $"حدث خطأ أثناء إضافة الوجبة: {ex.Message}";
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Add));
             }
         }
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -108,16 +110,12 @@ namespace KauRestaurant.Controllers.Admin
         {
             try
             {
-                _logger.LogInformation($"Update meal request for ID: {MealID}, Name: {MealName}, RemoveImage: {RemoveImage}");
-
-                // Manual validation
                 if (string.IsNullOrEmpty(MealName) || string.IsNullOrEmpty(MealCategory) || string.IsNullOrEmpty(MealType))
                 {
                     TempData["ErrorMessage"] = "اسم الوجبة وفئتها ونوعها مطلوبة";
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction(nameof(Edit), new { id = MealID });
                 }
 
-                // Find the meal
                 var meal = await _context.Meals.FindAsync(MealID);
                 if (meal == null)
                 {
@@ -125,46 +123,14 @@ namespace KauRestaurant.Controllers.Admin
                     return RedirectToAction(nameof(Index));
                 }
 
-                // Store the old picture path in case we need to delete it
+                // Store the old picture path
                 string oldPicturePath = meal.PicturePath;
 
-                // Update properties
-                meal.MealName = MealName;
-                meal.Description = Description ?? string.Empty;
-                meal.Calories = Calories;
-                meal.Protein = Protein;
-                meal.Carbs = Carbs;
-                meal.Fat = Fat;
-                meal.MealCategory = MealCategory;
-                meal.MealType = MealType;
+                // Update basic properties
+                UpdateMealProperties(meal, MealName, Description, Calories, Protein, Carbs, Fat, MealCategory, MealType);
 
-                // Handle picture upload or removal
-                if (RemoveImage)
-                {
-                    // User wants to remove the image, set to default
-                    meal.PicturePath = "/images/meal.png";
-
-                    // Delete old image if it's not the default and it exists
-                    if (!string.IsNullOrEmpty(oldPicturePath) &&
-                        !oldPicturePath.Equals("/images/meal.png") &&
-                        oldPicturePath.StartsWith("/images/meals/"))
-                    {
-                        await DeleteImageFile(oldPicturePath);
-                    }
-                }
-                else if (Picture != null && Picture.Length > 0)
-                {
-                    // Save new image
-                    meal.PicturePath = await SaveMealImage(Picture);
-
-                    // Delete old image if it's not the default and it exists
-                    if (!string.IsNullOrEmpty(oldPicturePath) &&
-                        !oldPicturePath.Equals("/images/meal.png") &&
-                        oldPicturePath.StartsWith("/images/meals/"))
-                    {
-                        await DeleteImageFile(oldPicturePath);
-                    }
-                }
+                // Handle image changes
+                await HandleMealImage(meal, oldPicturePath, Picture, RemoveImage);
 
                 await _context.SaveChangesAsync();
 
@@ -175,29 +141,9 @@ namespace KauRestaurant.Controllers.Admin
             {
                 _logger.LogError(ex, $"Error updating meal ID: {MealID}");
                 TempData["ErrorMessage"] = $"حدث خطأ أثناء تحديث الوجبة: {ex.Message}";
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Edit), new { id = MealID });
             }
         }
-
-        // Helper method to delete image files
-        private async Task DeleteImageFile(string imagePath)
-        {
-            string filePath = Path.Combine(_webHostEnvironment.WebRootPath, imagePath.TrimStart('/'));
-            if (System.IO.File.Exists(filePath))
-            {
-                try
-                {
-                    System.IO.File.Delete(filePath);
-                    _logger.LogInformation($"Deleted old image: {filePath}");
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogWarning(ex, $"Could not delete old image: {filePath}");
-                    // Continue execution even if the file delete fails
-                }
-            }
-        }
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -205,7 +151,6 @@ namespace KauRestaurant.Controllers.Admin
         {
             try
             {
-                // Load the meal with its relationships
                 var meal = await _context.Meals
                     .Include(m => m.MenuMeals)
                     .Include(m => m.Reviews)
@@ -217,44 +162,28 @@ namespace KauRestaurant.Controllers.Admin
                     return RedirectToAction(nameof(Index));
                 }
 
-                // Remove MenuMeal relationships if present
-                if (meal.MenuMeals != null && meal.MenuMeals.Any())
+                // Clean up related records
+                if (meal.MenuMeals?.Any() == true)
                 {
                     _context.MenuMeals.RemoveRange(meal.MenuMeals);
-                    await _context.SaveChangesAsync();
-                    _logger.LogInformation($"Removed {meal.MenuMeals.Count} menu associations for meal ID: {MealID}");
                 }
 
-                // Remove reviews if present
-                if (meal.Reviews != null && meal.Reviews.Any())
+                if (meal.Reviews?.Any() == true)
                 {
                     _context.Reviews.RemoveRange(meal.Reviews);
-                    await _context.SaveChangesAsync();
-                    _logger.LogInformation($"Removed {meal.Reviews.Count} reviews for meal ID: {MealID}");
                 }
 
-                // Handle image deletion
+                await _context.SaveChangesAsync();
+
+                // Delete image if it's not the default
                 if (!string.IsNullOrEmpty(meal.PicturePath) &&
                     !meal.PicturePath.Equals("/images/meal.png") &&
                     meal.PicturePath.StartsWith("/images/meals/"))
                 {
-                    string filePath = Path.Combine(_webHostEnvironment.WebRootPath, meal.PicturePath.TrimStart('/'));
-                    if (System.IO.File.Exists(filePath))
-                    {
-                        try
-                        {
-                            System.IO.File.Delete(filePath);
-                            _logger.LogInformation($"Deleted image file: {filePath}");
-                        }
-                        catch (Exception ex)
-                        {
-                            _logger.LogWarning(ex, $"Could not delete image file: {filePath}");
-                            // Continue execution even if the file delete fails
-                        }
-                    }
+                    DeleteImageFile(meal.PicturePath);
                 }
 
-                // Finally remove the meal
+                // Remove the meal and save changes
                 _context.Meals.Remove(meal);
                 await _context.SaveChangesAsync();
 
@@ -269,36 +198,6 @@ namespace KauRestaurant.Controllers.Admin
             }
         }
 
-        // Helper method to save meal images
-        private async Task<string> SaveMealImage(IFormFile picture)
-        {
-            try
-            {
-                string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images", "meals");
-                Directory.CreateDirectory(uploadsFolder); // Ensure directory exists
-
-                // Generate unique filename
-                string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(picture.FileName);
-                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-                // Save the file
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
-                {
-                    await picture.CopyToAsync(fileStream);
-                }
-
-                _logger.LogInformation($"Saved new image: {filePath}");
-
-                // Return the relative path for database storage
-                return $"/images/meals/{uniqueFileName}";
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error saving meal image");
-                throw; // Re-throw to be handled by the calling method
-            }
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteReview(int reviewId, int returnToMealId)
@@ -309,24 +208,113 @@ namespace KauRestaurant.Controllers.Admin
                 if (review == null)
                 {
                     TempData["ErrorMessage"] = "لم يتم العثور على التقييم";
-                    // Fix: Use the correct route to the meal page
-                    return RedirectToAction("Index", "Meal", new { id = returnToMealId, area = "" });
+                    return RedirectToAction(nameof(Edit), new { id = returnToMealId });
                 }
 
                 _context.Reviews.Remove(review);
                 await _context.SaveChangesAsync();
 
                 TempData["SuccessMessage"] = "تم حذف التقييم بنجاح";
-                // Fix: Use the correct route to the meal page
-                return RedirectToAction("Index", "Meal", new { id = returnToMealId, area = "" });
+                return RedirectToAction(nameof(Edit), new { id = returnToMealId });
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"Error deleting review ID: {reviewId}");
                 TempData["ErrorMessage"] = "حدث خطأ أثناء حذف التقييم";
-                // Fix: Use the correct route to the meal page  
-                return RedirectToAction("Index", "Meal", new { id = returnToMealId, area = "" });
+                return RedirectToAction(nameof(Edit), new { id = returnToMealId });
             }
         }
+
+
+
+        #region Helper Methods
+
+        private bool ValidateMealBasics(Meal meal)
+        {
+            return !string.IsNullOrEmpty(meal.MealName) &&
+                   !string.IsNullOrEmpty(meal.MealCategory) &&
+                   !string.IsNullOrEmpty(meal.MealType) &&
+                   !string.IsNullOrEmpty(meal.Description);
+        }
+
+        private void SetDefaultNutritionalValues(Meal meal)
+        {
+            if (meal.Calories <= 0) meal.Calories = 1;
+            if (meal.Protein <= 0) meal.Protein = 1;
+            if (meal.Carbs <= 0) meal.Carbs = 1;
+            if (meal.Fat <= 0) meal.Fat = 1;
+        }
+
+        private void UpdateMealProperties(Meal meal, string name, string description,
+            int calories, int protein, int carbs, int fat, string category, string type)
+        {
+            meal.MealName = name;
+            meal.Description = description ?? string.Empty;
+            meal.Calories = calories;
+            meal.Protein = protein;
+            meal.Carbs = carbs;
+            meal.Fat = fat;
+            meal.MealCategory = category;
+            meal.MealType = type;
+        }
+
+        private async Task HandleMealImage(Meal meal, string oldPath, IFormFile picture, bool removeImage)
+        {
+            if (removeImage)
+            {
+                meal.PicturePath = "/images/meal.png";
+                DeleteOldImageIfNeeded(oldPath);
+            }
+            else if (picture != null && picture.Length > 0)
+            {
+                meal.PicturePath = await SaveMealImage(picture);
+                DeleteOldImageIfNeeded(oldPath);
+            }
+        }
+
+        private void DeleteOldImageIfNeeded(string oldPath)
+        {
+            if (!string.IsNullOrEmpty(oldPath) &&
+                !oldPath.Equals("/images/meal.png") &&
+                oldPath.StartsWith("/images/meals/"))
+            {
+                DeleteImageFile(oldPath);
+            }
+        }
+
+        private void DeleteImageFile(string imagePath)
+        {
+            try
+            {
+                string filePath = Path.Combine(_webHostEnvironment.WebRootPath, imagePath.TrimStart('/'));
+                if (System.IO.File.Exists(filePath))
+                {
+                    System.IO.File.Delete(filePath);
+                    _logger.LogInformation($"Deleted image: {filePath}");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, $"Could not delete image: {imagePath}");
+            }
+        }
+
+        private async Task<string> SaveMealImage(IFormFile picture)
+        {
+            string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images", "meals");
+            Directory.CreateDirectory(uploadsFolder);
+
+            string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(picture.FileName);
+            string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                await picture.CopyToAsync(fileStream);
+            }
+
+            return $"/images/meals/{uniqueFileName}";
+        }
+
+        #endregion
     }
 }

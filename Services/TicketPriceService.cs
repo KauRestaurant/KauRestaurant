@@ -40,11 +40,34 @@ namespace KauRestaurant.Services
             var lunchPrice = prices.FirstOrDefault(p => p.MealType == "الغداء");
             result["الغداء"] = lunchPrice?.Price ?? 10m;
 
-            // Add dinner price
-            var dinnerPrice = prices.FirstOrDefault(p => p.MealType == "العشاء");
-            result["العشاء"] = dinnerPrice?.Price ?? 10m;
-
             return result;
+        }
+
+        // Add method to update ticket prices
+        public async Task UpdateTicketPrice(string mealType, decimal price)
+        {
+            var ticketPrice = await _context.TicketPrices
+                .FirstOrDefaultAsync(tp => tp.MealType == mealType);
+
+            if (ticketPrice == null)
+            {
+                // Create new entry if it doesn't exist
+                ticketPrice = new TicketPrice
+                {
+                    MealType = mealType,
+                    Price = price,
+                    LastUpdated = DateTime.Now
+                };
+                _context.TicketPrices.Add(ticketPrice);
+            }
+            else
+            {
+                // Update existing entry
+                ticketPrice.Price = price;
+                ticketPrice.LastUpdated = DateTime.Now;
+            }
+
+            await _context.SaveChangesAsync();
         }
     }
 }

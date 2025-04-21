@@ -7,15 +7,6 @@ namespace KauRestaurant.Models
         [Key]
         public int Id { get; set; }
 
-        [StringLength(200)]
-        [Display(Name = "الصورة")]
-        public string? Photo { get; set; }
-
-        [Required]
-        [StringLength(1000)]
-        [Display(Name = "الوصف")]
-        public string Description { get; set; }
-
         [Required]
         [StringLength(200)]
         [Display(Name = "الموقع")]
@@ -24,8 +15,8 @@ namespace KauRestaurant.Models
         [Required]
         [Phone]
         [StringLength(20)]
-        [Display(Name = "رقم الهاتف")]
-        public string PhoneNumber { get; set; }
+        [Display(Name = "رقم الاتصال")]
+        public string ContactNumber { get; set; }
 
         [Required]
         [EmailAddress]
@@ -37,8 +28,5 @@ namespace KauRestaurant.Models
         [StringLength(200)]
         [Display(Name = "ساعات العمل")]
         public string WorkingHours { get; set; }
-
-        [Display(Name = "مفتوح حالياً")]
-        public bool IsOpen { get; set; }
     }
 }

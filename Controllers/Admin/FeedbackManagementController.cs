@@ -25,7 +25,7 @@ namespace KauRestaurant.Controllers.Admin
             return View("~/Views/Admin/FeedbackManagement.cshtml", allFeedback);
         }
 
-        // Add Delete function for feedback
+        // Delete function for feedback
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)

@@ -1,37 +1,33 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using KauRestaurant.Data;
 using KauRestaurant.Models;
+using KauRestaurant.Services;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using System;
 
 namespace KauRestaurant.Controllers.Admin
 {
     [Authorize(Roles = "A1")]
     public class PriceManagementController : Controller
     {
-        private readonly ApplicationDbContext _context;
-        private readonly IConfiguration _configuration;
+        private readonly TicketPriceService _ticketPriceService;
 
-        public PriceManagementController(
-            ApplicationDbContext context,
-            IConfiguration configuration)
+        public PriceManagementController(TicketPriceService ticketPriceService)
         {
-            _context = context;
-            _configuration = configuration;
+            _ticketPriceService = ticketPriceService;
         }
 
         public async Task<IActionResult> Index()
         {
-            // Get the current price settings
-            var breakfastPrice = await _context.TicketPrices.FirstOrDefaultAsync(tp => tp.MealType == "الإفطار");
-            var lunchPrice = await _context.TicketPrices.FirstOrDefaultAsync(tp => tp.MealType == "الغداء");
+            // Get the current price settings using the service
+            var prices = await _ticketPriceService.GetAllTicketPrices();
 
             var model = new TicketPriceViewModel
             {
-                BreakfastPrice = breakfastPrice?.Price ?? 7m,
-                LunchPrice = lunchPrice?.Price ?? 10m
+                BreakfastPrice = prices["الإفطار"],
+                LunchPrice = prices["الغداء"]
             };
 
             return View("~/Views/Admin/PriceManagement.cshtml", model);
@@ -45,10 +41,10 @@ namespace KauRestaurant.Controllers.Admin
                 try
                 {
                     // Update breakfast price
-                    await UpdateTicketPrice("الإفطار", model.BreakfastPrice);
+                    await _ticketPriceService.UpdateTicketPrice("الإفطار", model.BreakfastPrice);
 
                     // Update lunch price
-                    await UpdateTicketPrice("الغداء", model.LunchPrice);
+                    await _ticketPriceService.UpdateTicketPrice("الغداء", model.LunchPrice);
 
                     TempData["SuccessMessage"] = "تم تحديث أسعار التذاكر بنجاح";
                     return RedirectToAction(nameof(Index));
@@ -62,62 +58,6 @@ namespace KauRestaurant.Controllers.Admin
             // If we get here, there was a validation error
             // Return the view with the model to show validation errors
             return View("~/Views/Admin/PriceManagement.cshtml", model);
-        }
-
-        // Helper method to get the price for a specific ticket type
-        private async Task<decimal> GetTicketPrice(string mealType)
-        {
-            var ticketPrice = await _context.TicketPrices
-                .FirstOrDefaultAsync(tp => tp.MealType == mealType);
-
-            if (ticketPrice == null)
-            {
-                // Default prices if not found
-                decimal defaultPrice = mealType == "الإفطار" ? 7m : 10m;
-
-                // Create new price entry
-                ticketPrice = new TicketPrice
-                {
-                    MealType = mealType,
-                    Price = defaultPrice,
-                    LastUpdated = DateTime.Now
-                };
-
-                _context.TicketPrices.Add(ticketPrice);
-                await _context.SaveChangesAsync();
-
-                return defaultPrice;
-            }
-
-            return ticketPrice.Price;
-        }
-
-        // Helper method to update the price for a specific ticket type
-        private async Task UpdateTicketPrice(string mealType, decimal price)
-        {
-            var ticketPrice = await _context.TicketPrices
-                .FirstOrDefaultAsync(tp => tp.MealType == mealType);
-
-            if (ticketPrice == null)
-            {
-                // Create new entry if it doesn't exist
-                ticketPrice = new TicketPrice
-                {
-                    MealType = mealType,
-                    Price = price,
-                    LastUpdated = DateTime.Now
-                };
-                _context.TicketPrices.Add(ticketPrice);
-            }
-            else
-            {
-                // Update existing entry
-                ticketPrice.Price = price;
-                ticketPrice.LastUpdated = DateTime.Now;
-                _context.TicketPrices.Update(ticketPrice);
-            }
-
-            await _context.SaveChangesAsync();
         }
     }
 

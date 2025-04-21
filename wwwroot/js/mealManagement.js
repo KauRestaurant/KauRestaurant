@@ -1,110 +1,98 @@
-﻿$(document).ready(function () {
-    // Function to calculate calories based on macronutrients
+﻿function prepareDeleteReview(reviewId) {
+    document.getElementById('deleteReviewId').value = reviewId;
+    var modal = new bootstrap.Modal(document.getElementById('deleteReviewModal'));
+    modal.show();
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    // Calculate calories based on macros
     function calculateCalories(protein, carbs, fat) {
-        // Standard caloric values: protein and carbs = 4 calories/gram, fat = 9 calories/gram
         return Math.round((protein * 4) + (carbs * 4) + (fat * 9));
     }
 
-    // Add meal form - Calculate calories when protein, carbs, or fat change
-    $('#mealProtein, #mealCarbs, #mealFat').on('input', function () {
-        const protein = parseFloat($('#mealProtein').val()) || 0;
-        const carbs = parseFloat($('#mealCarbs').val()) || 0;
-        const fat = parseFloat($('#mealFat').val()) || 0;
+    // Setup auto-calculation of calories on macro input
+    function setupCalorieCalculation(formType) {
+        const prefix = formType === 'add' ? 'meal' : 'editMeal';
+        const proteinInput = document.getElementById(`${prefix}Protein`);
 
-        $('#mealCalories').val(calculateCalories(protein, carbs, fat));
-    });
+        if (!proteinInput) return; // Not on a page with this form
 
-    // Edit meal form - Calculate calories when protein, carbs, or fat change
-    $('#editMealProtein, #editMealCarbs, #editMealFat').on('input', function () {
-        const protein = parseFloat($('#editMealProtein').val()) || 0;
-        const carbs = parseFloat($('#editMealCarbs').val()) || 0;
-        const fat = parseFloat($('#editMealFat').val()) || 0;
+        const carbsInput = document.getElementById(`${prefix}Carbs`);
+        const fatInput = document.getElementById(`${prefix}Fat`);
+        const caloriesInput = document.getElementById(`${prefix}Calories`);
 
-        $('#editMealCalories').val(calculateCalories(protein, carbs, fat));
-    });
+        // Keep track of whether the user has manually edited calories
+        let caloriesManuallyEdited = false;
 
-    // Calculate initial calories on page load
-    if ($('#mealProtein').val() || $('#mealCarbs').val() || $('#mealFat').val()) {
-        const protein = parseFloat($('#mealProtein').val()) || 0;
-        const carbs = parseFloat($('#mealCarbs').val()) || 0;
-        const fat = parseFloat($('#mealFat').val()) || 0;
+        caloriesInput.addEventListener('input', () => {
+            caloriesManuallyEdited = true;
+        });
 
-        $('#mealCalories').val(calculateCalories(protein, carbs, fat));
+        const updateCalories = () => {
+            // Only update calories automatically if user hasn't manually edited them
+            if (!caloriesManuallyEdited) {
+                const protein = parseFloat(proteinInput.value) || 0;
+                const carbs = parseFloat(carbsInput.value) || 0;
+                const fat = parseFloat(fatInput.value) || 0;
+                caloriesInput.value = calculateCalories(protein, carbs, fat);
+            }
+        };
+
+        // Calculate on macro input changes
+        [proteinInput, carbsInput, fatInput].forEach(input =>
+            input.addEventListener('input', updateCalories));
+
+        // Initialize with current values if calories field is empty
+        if (!caloriesInput.value) {
+            updateCalories();
+        }
     }
 
-    // Meal filtering functionality
-    $("#categoryFilter, #typeFilter, #searchFilter").on("change keyup", function () {
-        var categoryFilter = $("#categoryFilter").val().toLowerCase();
-        var typeFilter = $("#typeFilter").val().toLowerCase();
-        var searchFilter = $("#searchFilter").val().toLowerCase();
+    // Setup meal filtering on the index page
+    function setupMealFiltering() {
+        const categoryFilter = document.getElementById('categoryFilter');
+        if (!categoryFilter) return; // Not on the listing page
 
-        $(".meal-item").each(function () {
-            var category = $(this).data("category").toLowerCase();
-            var type = $(this).data("type").toLowerCase();
-            var name = $(this).data("name").toLowerCase();
+        const typeFilter = document.getElementById('typeFilter');
+        const searchFilter = document.getElementById('searchFilter');
+        const mealItems = document.querySelectorAll('.meal-item');
 
-            // Show/hide based on filters
-            var matchCategory = categoryFilter === "" || category === categoryFilter;
-            var matchType = typeFilter === "" || type === typeFilter;
-            var matchSearch = searchFilter === "" || name.includes(searchFilter);
+        const filterMeals = () => {
+            const category = categoryFilter.value.toLowerCase();
+            const type = typeFilter.value.toLowerCase();
+            const search = searchFilter.value.toLowerCase();
 
-            if (matchCategory && matchType && matchSearch) {
-                $(this).show();
-            } else {
-                $(this).hide();
-            }
+            mealItems.forEach(item => {
+                const matchCategory = category === "" || item.dataset.category.toLowerCase() === category;
+                const matchType = type === "" || item.dataset.type.toLowerCase() === type;
+                const matchSearch = search === "" || item.dataset.name.toLowerCase().includes(search);
+
+                item.style.display = (matchCategory && matchType && matchSearch) ? '' : 'none';
+            });
+        };
+
+        // Listen for filter changes
+        categoryFilter.addEventListener('change', filterMeals);
+        typeFilter.addEventListener('change', filterMeals);
+        searchFilter.addEventListener('keyup', filterMeals);
+    }
+
+    // Setup delete confirmation modal
+    function setupDeleteModal() {
+        const deleteButtons = document.querySelectorAll('.btn-delete-meal');
+        if (!deleteButtons.length) return; // No delete buttons on page
+
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                document.getElementById('deleteMealId').value = button.dataset.mealId;
+                document.getElementById('deleteMealName').textContent = button.dataset.mealName;
+            });
         });
-    });
+    }
 
-    // Edit meal button click
-    $(".btn-edit-meal").click(function () {
-        var mealId = $(this).data("meal-id");
-        var mealName = $(this).data("meal-name");
-        var mealDescription = $(this).data("meal-description");
-        var mealCalories = $(this).data("meal-calories");
-        var mealProtein = $(this).data("meal-protein");
-        var mealCarbs = $(this).data("meal-carbs");
-        var mealFat = $(this).data("meal-fat");
-        var mealCategory = $(this).data("meal-category");
-        var mealType = $(this).data("meal-type");
-        var mealPicture = $(this).data("meal-picture");
-
-        // Set values in the edit form
-        $("#editMealId").val(mealId);
-        $("#editMealName").val(mealName);
-        $("#editMealDescription").val(mealDescription);
-        $("#editMealCalories").val(mealCalories);
-        $("#editMealProtein").val(mealProtein);
-        $("#editMealCarbs").val(mealCarbs);
-        $("#editMealFat").val(mealFat);
-        $("#editMealCategory").val(mealCategory);
-        $("#editMealType").val(mealType);
-        $("#currentPicturePath").val(mealPicture);
-
-        // Show the current meal image if available
-        if (mealPicture && mealPicture !== "") {
-            $("#currentMealImage").attr("src", mealPicture).show();
-        } else {
-            $("#currentMealImage").hide();
-        }
-
-        // Recalculate calories based on protein, carbs, and fat
-        setTimeout(function () {
-            const protein = parseFloat($('#editMealProtein').val()) || 0;
-            const carbs = parseFloat($('#editMealCarbs').val()) || 0;
-            const fat = parseFloat($('#editMealFat').val()) || 0;
-
-            $('#editMealCalories').val(calculateCalories(protein, carbs, fat));
-        }, 100);
-    });
-
-    // Delete meal button click
-    $(".btn-delete-meal").click(function () {
-        var mealId = $(this).data("meal-id");
-        var mealName = $(this).data("meal-name");
-
-        // Set the meal ID and name in the delete confirmation modal
-        $("#deleteMealId").val(mealId);
-        $("#deleteMealName").text(mealName);
-    });
+    // Initialize all functionality based on what's on the page
+    setupCalorieCalculation('add');
+    setupCalorieCalculation('edit');
+    setupMealFiltering();
+    setupDeleteModal();
 });

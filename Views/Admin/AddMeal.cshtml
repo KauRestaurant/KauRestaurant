@@ -1,0 +1,131 @@
+﻿@model KauRestaurant.Models.Meal
+
+@{
+    ViewData["Title"] = "إضافة وجبة جديدة";
+}
+
+<div class="container-fluid py-3">
+    <div class="container">
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show mb-3" role="alert">
+                @TempData["ErrorMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+
+        <div class="card border-0 shadow">
+            <div class="card-header bg-white py-2">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h4 class="fw-bold mb-0"><i class="bi bi-egg-fried me-2"></i>إضافة وجبة جديدة</h4>
+                </div>
+            </div>
+            <div class="card-body p-3">
+                <form method="post" asp-controller="MealManagement" asp-action="CreateMeal" enctype="multipart/form-data">
+                    <div class="row g-3">
+                        <!-- Left Column - Basic Info + Image -->
+                        <div class="col-md-7">
+                            <div class="mb-3">
+                                <label asp-for="MealName" class="form-label">اسم الوجبة *</label>
+                                <input asp-for="MealName" class="form-control" id="mealName" maxlength="100" required>
+                                <span asp-validation-for="MealName" class="text-danger"></span>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label asp-for="MealCategory" class="form-label">فئة الوجبة *</label>
+                                    <select asp-for="MealCategory" class="form-select" id="mealCategory" required>
+                                        <option value="">اختر الفئة</option>
+                                        <option value="الإفطار">الإفطار</option>
+                                        <option value="الغداء">الغداء</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label asp-for="MealType" class="form-label">نوع الوجبة *</label>
+                                    <select asp-for="MealType" class="form-select" id="mealType" required>
+                                        <option value="">اختر النوع</option>
+                                        <option value="الطبق الرئيسي">الطبق الرئيسي</option>
+                                        <option value="طبق جانبي">طبق جانبي</option>
+                                        <option value="حلوى">حلوى</option>
+                                        <option value="مشروب">مشروب</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="Description" class="form-label">وصف الوجبة *</label>
+                                <textarea asp-for="Description" class="form-control" id="mealDescription" rows="2" maxlength="500" required></textarea>
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="mealPicture" class="form-label">صورة الوجبة</label>
+                                <input type="file" class="form-control" id="mealPicture" name="Picture" accept="image/*">
+                                <small class="text-muted">سيتم استخدام صورة افتراضية إذا لم تقم بإضافة صورة</small>
+                            </div>
+                        </div>
+
+                        <!-- Right Column - Nutrition Info -->
+                        <div class="col-md-5">
+                            <div class="card h-100">
+                                <div class="card-header bg-light py-2">
+                                    <h5 class="mb-0">القيم الغذائية</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <label asp-for="Calories" class="form-label">السعرات الحرارية</label>
+                                        <div class="input-group">
+                                            <input asp-for="Calories" type="number" class="form-control" id="mealCalories" min="0" max="2000">
+                                            <span class="input-group-text">سعرة</span>
+                                        </div>
+                                        <small class="text-muted">يمكنك تعديل هذه القيمة أو تركها للحساب التلقائي</small>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label asp-for="Protein" class="form-label">البروتين</label>
+                                        <div class="input-group">
+                                            <input asp-for="Protein" type="number" class="form-control" id="mealProtein" min="0" max="200">
+                                            <span class="input-group-text">جرام</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label asp-for="Carbs" class="form-label">الكربوهيدرات</label>
+                                        <div class="input-group">
+                                            <input asp-for="Carbs" type="number" class="form-control" id="mealCarbs" min="0" max="200">
+                                            <span class="input-group-text">جرام</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label asp-for="Fat" class="form-label">الدهون</label>
+                                        <div class="input-group">
+                                            <input asp-for="Fat" type="number" class="form-control" id="mealFat" min="0" max="200">
+                                            <span class="input-group-text">جرام</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Form Buttons -->
+                    <div class="d-flex gap-2 mt-3">
+                        <button type="submit" class="btn btn-success">
+                            <i class="bi bi-check-lg me-1"></i> إضافة الوجبة
+                        </button>
+                        <a href="@Url.Action("Index", "MealManagement")" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-right me-1"></i> العودة
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/mealManagement.js" asp-append-version="true"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}
