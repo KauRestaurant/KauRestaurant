@@ -163,14 +163,15 @@
                                                                                                 }
                                                                                             </select>
                                                                                         </div>
+
                                                                                         <div class="meal-info text-end" style="width: 30%; min-width: 100px; text-align: left;" id="info-@menu.MenuID-@category-@mealType-@i">
                                                                                             @if (selectedMeal != null)
                                                                                             {
-                                                                                                <span class="badge bg-light text-dark" style="width: 100px; display: inline-block; text-align: center;">@selectedMeal.Calories سعرة حرارية</span>
+                                                                                                <div class="small fw-bold text-end text-dark">@selectedMeal.Calories سعرة حرارية</div>
                                                                                             }
                                                                                             else
                                                                                             {
-                                                                                                <span class="badge bg-light text-dark opacity-0" style="width: 100px; display: inline-block;">0 سعرة حرارية</span>
+                                                                                                <div class="small fw-bold text-end text-dark">0 سعرة حرارية</div>
                                                                                             }
                                                                                         </div>
                                                                                     </div>

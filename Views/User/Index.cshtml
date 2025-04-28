@@ -132,12 +132,13 @@
                                                                             <div>
                                                                                 <strong class="text-dark">@meal.MealName</strong>
                                                                             </div>
-                                                                            <div>
-                                                                                <span class="badge bg-white text-dark">@meal.Calories سعرة حرارية</span>
+                                                                            <div class="d-flex flex-column align-items-end">
+                                                                                <div class="small fw-bold text-end text-dark">@meal.Calories سعرة حرارية</div>
                                                                                 @if (meal.Reviews != null && meal.Reviews.Any())
                                                                                 {
-                                                                                    <div class="text-muted text-center small">
+                                                                                    <div class="text-muted text-end small">
                                                                                         @{
+                                                                                            var reviewsCount = meal.Reviews.Count;
                                                                                             var avgRating = meal.Reviews.Average(r => r.Rating);
                                                                                             var fullStars = (int)Math.Floor(avgRating);
                                                                                             var hasHalfStar = avgRating - fullStars >= 0.5;
@@ -162,12 +163,12 @@
                                                                                             <i class="bi bi-star text-warning"></i>
                                                                                         }
 
-                                                                                        <span class="ms-1">@avgRating.ToString("F1")</span>
+                                                                                        <span class="ms-1">@avgRating.ToString("F1") (@reviewsCount)</span>
                                                                                     </div>
                                                                                 }
                                                                                 else
                                                                                 {
-                                                                                    <div class="text-muted text-center small">
+                                                                                    <div class="text-muted text-end small">
                                                                                         <span class="ms-1">لا توجد تقييمات</span>
                                                                                     </div>
                                                                                 }

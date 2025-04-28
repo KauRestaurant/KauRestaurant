@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace KauRestaurant.Controllers.Admin
 {
-    [Authorize(Roles = "A1")]
+    [Authorize(Roles = "A1,A2")]
     public class RestaurantManagementController : Controller
     {
         private readonly TicketPriceService _ticketPriceService;

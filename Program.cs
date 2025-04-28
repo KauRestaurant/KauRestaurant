@@ -56,6 +56,7 @@ app.MapRazorPages();
 using (var scope = app.Services.CreateScope())
 {
     await IdentityDataInitializer.SeedRolesAndAdminUser(app.Services);
+    await ReviewDataSeeder.SeedReviews(app.Services);
 }
 
 app.MapControllerRoute(

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace KauRestaurant.Controllers.Admin
 {
-    [Authorize(Roles = "A1")]
+    [Authorize(Roles = "A1,A2")]
     public class FeedbackManagementController : Controller
     {
         private readonly ApplicationDbContext _context;

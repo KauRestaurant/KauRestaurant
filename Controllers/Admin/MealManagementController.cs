@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace KauRestaurant.Controllers.Admin
 {
-    [Authorize(Roles = "A1,A2,A3")]
+    [Authorize(Roles = "A1,A2")]
     public class MealManagementController : Controller
     {
         private readonly ApplicationDbContext _context;

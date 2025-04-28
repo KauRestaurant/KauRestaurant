@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KauRestaurant.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250421114222_InitialCreate")]
+    [Migration("20250428112914_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

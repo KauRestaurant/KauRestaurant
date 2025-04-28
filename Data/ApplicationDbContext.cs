@@ -605,7 +605,6 @@ namespace KauRestaurant.Data
             );
 
 
-            // Add this inside the OnModelCreating method
             // Seed Restaurant data based on RestaurantInfo.cshtml
             modelBuilder.Entity<Restaurant>().HasData(
                 new Restaurant
@@ -622,7 +621,6 @@ namespace KauRestaurant.Data
                     IsOpen = true
                 }
             );
-
         }
     }
 }
