@@ -10,12 +10,16 @@ using System.Linq;
 
 namespace KauRestaurant.Controllers.Admin
 {
+    // Restricts access to users with specific admin roles
     [Authorize(Roles = "A1")]
     public class UserManagementController : Controller
     {
+        // Manages user operations (create, delete, roles, etc.)
         private readonly UserManager<KauRestaurantUser> _userManager;
+        // Manages roles (e.g., creation, removal)
         private readonly RoleManager<IdentityRole> _roleManager;
 
+        // Constructor injecting user and role managers
         public UserManagementController(
             UserManager<KauRestaurantUser> userManager,
             RoleManager<IdentityRole> roleManager)
@@ -24,17 +28,22 @@ namespace KauRestaurant.Controllers.Admin
             _roleManager = roleManager;
         }
 
+        // Displays a list of existing admin users and provides a view model for creating new admins
         public async Task<IActionResult> Index()
         {
-            // Get all users
+            // Fetch every user from the database
             var users = await _userManager.Users.ToListAsync();
+            // Store user data for easier display
             var userViewModels = new List<UserViewModel>();
+            // Predefined admin roles
             var adminRoles = new[] { "A1", "A2", "A3" };
 
+            // Check each user's assigned roles
             foreach (var user in users)
             {
                 var userRoles = await _userManager.GetRolesAsync(user);
                 var adminRole = userRoles.FirstOrDefault(r => adminRoles.Contains(r));
+                // Track only users in any valid admin role
                 if (adminRole != null)
                 {
                     userViewModels.Add(new UserViewModel
@@ -48,16 +57,18 @@ namespace KauRestaurant.Controllers.Admin
                 }
             }
 
-            // Build tuple model (user list, new create user model)
+            // Combine the admin list and a new-user form into a single model
             var model = Tuple.Create(userViewModels, new CreateUserViewModel());
 
-            // Explicitly return the view located at ~/Views/Admin/UserManagement.cshtml 
+            // Render the admin management page
             return View("~/Views/Admin/UserManagement.cshtml", model);
         }
 
+        // Handles bulk role changes for multiple users
         [HttpPost]
         public async Task<IActionResult> SaveRoles(List<string> userIds, List<string> roles)
         {
+            // Validate we have matching user and role lists
             if (userIds == null || roles == null || userIds.Count != roles.Count)
             {
                 TempData["ErrorMessage"] = "حدث خطأ: البيانات المرسلة غير صحيحة";
@@ -68,23 +79,26 @@ namespace KauRestaurant.Controllers.Admin
             var adminRoles = new[] { "A1", "A2", "A3" };
             var successCount = 0;
 
+            // Loop over users and update their assigned roles
             for (int i = 0; i < userIds.Count; i++)
             {
                 var userId = userIds[i];
                 var newRole = roles[i];
 
-                // Skip if not a valid admin role
+                // Ignore non-admin roles
                 if (!adminRoles.Contains(newRole))
                     continue;
 
+                // Fetch user by ID
                 var user = await _userManager.FindByIdAsync(userId);
                 if (user == null)
                     continue;
 
-                // Skip if trying to modify current user's role
+                // Skip modifying the currently logged-in user
                 if (User.Identity.Name == user.Email)
                     continue;
 
+                // Remove existing roles and add new role
                 var currentRoles = await _userManager.GetRolesAsync(user);
                 var currentAdminRole = currentRoles.FirstOrDefault(r => adminRoles.Contains(r));
 
@@ -104,6 +118,7 @@ namespace KauRestaurant.Controllers.Admin
                 }
             }
 
+            // Provide feedback to user regarding success/failure
             if (success)
             {
                 if (successCount > 0)
@@ -119,18 +134,19 @@ namespace KauRestaurant.Controllers.Admin
             return RedirectToAction(nameof(Index));
         }
 
+        // Creates a new admin user with given properties
         [HttpPost]
         public async Task<IActionResult> CreateUser([Bind(Prefix = "Item2")] CreateUserViewModel model)
         {
-            // Validate that the role is an admin role
             var adminRoles = new[] { "A1", "A2", "A3" };
+            // Verify the selected role is a valid admin role
             if (!adminRoles.Contains(model.Role))
             {
                 TempData["ErrorMessage"] = "مستوى الصلاحية غير صالح";
                 return RedirectToAction(nameof(Index));
             }
 
-            // Check if email is already in use
+            // Ensure the email is not already taken
             var existingUser = await _userManager.FindByEmailAsync(model.Email);
             if (existingUser != null)
             {
@@ -138,6 +154,7 @@ namespace KauRestaurant.Controllers.Admin
                 return RedirectToAction(nameof(Index));
             }
 
+            // Create the user if inputs are valid
             if (ModelState.IsValid)
             {
                 var user = new KauRestaurantUser
@@ -151,32 +168,37 @@ namespace KauRestaurant.Controllers.Admin
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    // Assign requested admin role
                     await _userManager.AddToRoleAsync(user, model.Role);
                     TempData["SuccessMessage"] = "تم إنشاء المشرف بنجاح";
                     return RedirectToAction(nameof(Index));
                 }
 
+                // Collect any errors from the identity system
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError("", error.Description);
                 }
             }
 
+            // Creation process failed
             TempData["ErrorMessage"] = "فشل إنشاء المشرف";
             return RedirectToAction(nameof(Index));
         }
 
+        // Deletes the specified admin user
         [HttpPost]
         public async Task<IActionResult> DeleteUser(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
+            // If user not found, exit
             if (user == null)
             {
                 TempData["ErrorMessage"] = "المشرف غير موجود";
                 return RedirectToAction(nameof(Index));
             }
 
-            // Make sure the user has an admin role
+            // Confirm the user indeed has an admin role
             var adminRoles = new[] { "A1", "A2", "A3" };
             var userRoles = await _userManager.GetRolesAsync(user);
 
@@ -186,13 +208,14 @@ namespace KauRestaurant.Controllers.Admin
                 return RedirectToAction(nameof(Index));
             }
 
-            // Check if trying to delete self
+            // Prevent deleting own account
             if (User.Identity.Name == user.Email)
             {
                 TempData["ErrorMessage"] = "لا يمكنك حذف حسابك الحالي";
                 return RedirectToAction(nameof(Index));
             }
 
+            // Attempt to remove the user
             var result = await _userManager.DeleteAsync(user);
             if (result.Succeeded)
             {
@@ -207,6 +230,7 @@ namespace KauRestaurant.Controllers.Admin
         }
     }
 
+    // Holds user data (ID, Name, Role) for display
     public class UserViewModel
     {
         public string Id { get; set; }
@@ -216,6 +240,7 @@ namespace KauRestaurant.Controllers.Admin
         public string CurrentRole { get; set; }
     }
 
+    // Encapsulates user creation fields and associated validation
     public class CreateUserViewModel
     {
         [Required(ErrorMessage = "البريد الإلكتروني مطلوب")]

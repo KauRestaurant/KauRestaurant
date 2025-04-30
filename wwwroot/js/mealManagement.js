@@ -1,35 +1,40 @@
 ﻿function prepareDeleteReview(reviewId) {
+    // Place the chosen review's ID into a hidden field
     document.getElementById('deleteReviewId').value = reviewId;
+
+    // Open the Bootstrap modal for review deletion
     var modal = new bootstrap.Modal(document.getElementById('deleteReviewModal'));
     modal.show();
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    // Calculate calories based on macros
+    // Calculates total calories from protein, carbs, and fat
     function calculateCalories(protein, carbs, fat) {
         return Math.round((protein * 4) + (carbs * 4) + (fat * 9));
     }
 
-    // Setup auto-calculation of calories on macro input
+    // Sets up automatic calorie calculation for Add/Edit forms
     function setupCalorieCalculation(formType) {
         const prefix = formType === 'add' ? 'meal' : 'editMeal';
         const proteinInput = document.getElementById(`${prefix}Protein`);
 
-        if (!proteinInput) return; // Not on a page with this form
+        // No matching form found
+        if (!proteinInput) return;
 
         const carbsInput = document.getElementById(`${prefix}Carbs`);
         const fatInput = document.getElementById(`${prefix}Fat`);
         const caloriesInput = document.getElementById(`${prefix}Calories`);
 
-        // Keep track of whether the user has manually edited calories
+        // Track if the user manually edits calorie field
         let caloriesManuallyEdited = false;
 
+        // When the user changes calories manually, don't override
         caloriesInput.addEventListener('input', () => {
             caloriesManuallyEdited = true;
         });
 
+        // Synchronize macro changes with auto-calculated calories
         const updateCalories = () => {
-            // Only update calories automatically if user hasn't manually edited them
             if (!caloriesManuallyEdited) {
                 const protein = parseFloat(proteinInput.value) || 0;
                 const carbs = parseFloat(carbsInput.value) || 0;
@@ -38,25 +43,26 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         };
 
-        // Calculate on macro input changes
-        [proteinInput, carbsInput, fatInput].forEach(input =>
-            input.addEventListener('input', updateCalories));
+        // Attach calculation to protein, carbs, and fat inputs
+        [proteinInput, carbsInput, fatInput].forEach(input => {
+            input.addEventListener('input', updateCalories);
+        });
 
-        // Initialize with current values if calories field is empty
+        // If calories field is empty, initialize auto-calc
         if (!caloriesInput.value) {
             updateCalories();
         }
     }
 
-    // Setup meal filtering on the index page
+    // Enables meal filtering by category, type, or name
     function setupMealFiltering() {
         const categoryFilter = document.getElementById('categoryFilter');
-        if (!categoryFilter) return; // Not on the listing page
-
+        if (!categoryFilter) return; // Not on index page
         const typeFilter = document.getElementById('typeFilter');
         const searchFilter = document.getElementById('searchFilter');
         const mealItems = document.querySelectorAll('.meal-item');
 
+        // Filters based on selected/typed criteria
         const filterMeals = () => {
             const category = categoryFilter.value.toLowerCase();
             const type = typeFilter.value.toLowerCase();
@@ -71,17 +77,18 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         };
 
-        // Listen for filter changes
+        // Respond to filter changes and search input
         categoryFilter.addEventListener('change', filterMeals);
         typeFilter.addEventListener('change', filterMeals);
         searchFilter.addEventListener('keyup', filterMeals);
     }
 
-    // Setup delete confirmation modal
+    // Sets up the modal confirmation for deleting a meal
     function setupDeleteModal() {
         const deleteButtons = document.querySelectorAll('.btn-delete-meal');
-        if (!deleteButtons.length) return; // No delete buttons on page
+        if (!deleteButtons.length) return;
 
+        // When delete button clicked, update hidden fields and labels
         deleteButtons.forEach(button => {
             button.addEventListener('click', () => {
                 document.getElementById('deleteMealId').value = button.dataset.mealId;
@@ -90,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Initialize all functionality based on what's on the page
+    // Start everything once the page is loaded
     setupCalorieCalculation('add');
     setupCalorieCalculation('edit');
     setupMealFiltering();

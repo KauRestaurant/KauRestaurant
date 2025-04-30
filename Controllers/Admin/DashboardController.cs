@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace KauRestaurant.Controllers.Admin
 {
+    // Restrict access to users with roles A1, A2, or A3
     [Authorize(Roles = "A1,A2,A3")]
     public class DashboardController : Controller
     {
@@ -13,6 +14,7 @@ namespace KauRestaurant.Controllers.Admin
         private readonly ApplicationDbContext _context;
         private readonly ILogger<DashboardController> _logger;
 
+        // Constructor dependency injection for user manager, DB context, and logger
         public DashboardController(
             UserManager<KauRestaurantUser> userManager,
             ApplicationDbContext context,
@@ -23,8 +25,10 @@ namespace KauRestaurant.Controllers.Admin
             _logger = logger;
         }
 
+        // Opens the Dashboard view for administrators
         public IActionResult Index()
         {
+            // Renders admin dashboard page located under the Admin folder
             return View("~/Views/Admin/Dashboard.cshtml");
         }
     }

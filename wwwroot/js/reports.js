@@ -1,10 +1,10 @@
-﻿// Chart instance variables to track and manage chart instances
+﻿// Maintain references to each chart, allowing easy update/destroy
 let purchasesChart = null;
 let redeemedChart = null;
 let topRatedChart = null;
 let lowestRatedChart = null;
 
-// Function to create gradient
+// Generates a vertical gradient for chart fills
 function createGradient(ctx, colorStart, colorEnd) {
     const gradient = ctx.createLinearGradient(0, 0, 0, 400);
     gradient.addColorStop(0, colorStart);
@@ -12,28 +12,29 @@ function createGradient(ctx, colorStart, colorEnd) {
     return gradient;
 }
 
-// Function to check if data array has any non-zero values
+// Utility function: checks if any non-zero values exist in dataset
 function hasData(dataArray) {
     return dataArray && dataArray.some(value => value > 0);
 }
 
-// Function to update the purchases chart with new data
+// Updates the "ticket purchases" chart data
 function updatePurchasesChart(data) {
     const purchasesCanvas = document.getElementById('ticketPurchasesChart');
     const noPurchaseData = document.getElementById('noPurchaseData');
 
+    // Check if we have ticket purchase data
     if (data.purchasedTickets && data.purchasedTickets.length > 0) {
         purchasesCanvas.classList.remove('d-none');
         noPurchaseData.classList.add('d-none');
 
+        // Create or destroy old chart instance
         const purchasesCtx = purchasesCanvas.getContext('2d');
         const purchasesGradient = createGradient(purchasesCtx, 'rgba(76, 175, 80, 0.7)', 'rgba(76, 175, 80, 0.1)');
-
-        // Destroy previous chart instance if it exists
         if (purchasesChart) {
             purchasesChart.destroy();
         }
 
+        // Instantiate purchases line chart with chart.js
         purchasesChart = new Chart(purchasesCtx, {
             type: 'line',
             data: {
@@ -73,28 +74,29 @@ function updatePurchasesChart(data) {
             }
         });
     } else {
+        // Hide the chart if no data is present
         purchasesCanvas.classList.add('d-none');
         noPurchaseData.classList.remove('d-none');
     }
 }
 
-// Function to update the redeemed tickets chart with new data
+// Updates the "ticket redeemed" chart data
 function updateRedeemedChart(data) {
     const redeemedCanvas = document.getElementById('ticketRedeemedChart');
     const noRedeemedData = document.getElementById('noRedeemedData');
 
+    // Check if we have redeemed ticket data
     if (data.redeemedTickets && data.redeemedTickets.length > 0) {
         redeemedCanvas.classList.remove('d-none');
         noRedeemedData.classList.add('d-none');
 
         const redeemedCtx = redeemedCanvas.getContext('2d');
         const redeemedGradient = createGradient(redeemedCtx, 'rgba(255, 152, 0, 0.7)', 'rgba(255, 152, 0, 0.1)');
-
-        // Destroy previous chart instance if it exists
         if (redeemedChart) {
             redeemedChart.destroy();
         }
 
+        // Create new line chart to portray redeemed tickets
         redeemedChart = new Chart(redeemedCtx, {
             type: 'line',
             data: {
@@ -134,28 +136,32 @@ function updateRedeemedChart(data) {
             }
         });
     } else {
+        // Hide the chart and show "no data" area
         redeemedCanvas.classList.add('d-none');
         noRedeemedData.classList.remove('d-none');
     }
 }
 
-// Function to update the top rated meals chart with new data
+// Shows highest rated meals in a horizontal bar chart
 function updateTopRatedChart(data) {
     const topRatedCanvas = document.getElementById('topRatedChart');
     const noTopRatedData = document.getElementById('noTopRatedData');
 
+    // Check if we have data for top-rated meals
     if (data.topRated && data.topRated.length > 0) {
         topRatedCanvas.classList.remove('d-none');
         noTopRatedData.classList.add('d-none');
 
+        // Prepare meal names and ratings
         const mealNames = data.topRated.map(item => item.name);
         const ratings = data.topRated.map(item => item.rating);
 
-        // Destroy previous chart instance if it exists
+        // If there's an existing instance, remove it first
         if (topRatedChart) {
             topRatedChart.destroy();
         }
 
+        // Construct the horizontal bar chart
         topRatedChart = new Chart(topRatedCanvas, {
             type: 'bar',
             data: {
@@ -196,28 +202,32 @@ function updateTopRatedChart(data) {
             }
         });
     } else {
+        // Show no data placeholder
         topRatedCanvas.classList.add('d-none');
         noTopRatedData.classList.remove('d-none');
     }
 }
 
-// Function to update the lowest rated meals chart with new data
+// Shows lowest rated meals in a horizontal bar chart
 function updateLowestRatedChart(data) {
     const lowestRatedCanvas = document.getElementById('lowestRatedChart');
     const noLowestRatedData = document.getElementById('noLowestRatedData');
 
+    // Check if we have data for lowest-rated meals
     if (data.lowestRated && data.lowestRated.length > 0) {
         lowestRatedCanvas.classList.remove('d-none');
         noLowestRatedData.classList.add('d-none');
 
+        // Prepare meal names and ratings
         const mealNames = data.lowestRated.map(item => item.name);
         const ratings = data.lowestRated.map(item => item.rating);
 
-        // Destroy previous chart instance if it exists
+        // Destroy old chart instance if found
         if (lowestRatedChart) {
             lowestRatedChart.destroy();
         }
 
+        // Build the bar chart
         lowestRatedChart = new Chart(lowestRatedCanvas, {
             type: 'bar',
             data: {
@@ -263,12 +273,13 @@ function updateLowestRatedChart(data) {
     }
 }
 
-// Fetch and render ticket charts
+// Retrieves data from the server for ticket charts
 async function loadTicketCharts() {
     try {
-        // Get the URL from the global configuration
+        // Attempt to use a configured URL if provided
         const ticketStatsUrl = window.reportsConfig?.urls?.ticketStats || '/Admin/Reports/GetTicketStatistics';
 
+        // Fetch JSON data
         const response = await fetch(ticketStatsUrl);
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
@@ -277,12 +288,12 @@ async function loadTicketCharts() {
         const data = await response.json();
         console.log("Ticket data received:", data);
 
-        // Update charts with initial data
+        // Populate ticket purchases and redeemed charts
         updatePurchasesChart(data);
         updateRedeemedChart(data);
     } catch (error) {
+        // If any error happens, log it and show "no data" placeholders
         console.error('Error loading ticket chart data:', error);
-        // Show error message for both charts
         document.getElementById('ticketPurchasesChart').classList.add('d-none');
         document.getElementById('ticketRedeemedChart').classList.add('d-none');
         document.getElementById('noPurchaseData').classList.remove('d-none');
@@ -290,12 +301,13 @@ async function loadTicketCharts() {
     }
 }
 
-// Fetch and render meal rating charts
+// Retrieves data from the server for meal rating charts
 async function loadMealRatingCharts() {
     try {
-        // Get the URL from the global configuration
+        // Attempt to use a configured URL if available
         const mealRatingsUrl = window.reportsConfig?.urls?.mealRatings || '/Admin/Reports/GetMealRatings';
 
+        // Fetch JSON data
         const response = await fetch(mealRatingsUrl);
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
@@ -304,12 +316,11 @@ async function loadMealRatingCharts() {
         const data = await response.json();
         console.log("Meal ratings data received:", data);
 
-        // Update charts with initial data
+        // Populate top-rated and lowest-rated charts
         updateTopRatedChart(data);
         updateLowestRatedChart(data);
     } catch (error) {
         console.error('Error loading meal rating chart data:', error);
-        // Show error message for both charts
         document.getElementById('topRatedChart').classList.add('d-none');
         document.getElementById('lowestRatedChart').classList.add('d-none');
         document.getElementById('noTopRatedData').classList.remove('d-none');
@@ -317,13 +328,14 @@ async function loadMealRatingCharts() {
     }
 }
 
-// Function to fetch ticket statistics with filters
+// Provide filtered data requests for ticket charts
 function fetchTicketStats(ticketType, chartType) {
     const url = new URL(window.reportsConfig.urls.ticketStats, window.location.origin);
     if (ticketType) {
         url.searchParams.append('ticketType', ticketType);
     }
 
+    // Make network request and parse JSON
     fetch(url)
         .then(response => {
             if (!response.ok) {
@@ -332,7 +344,7 @@ function fetchTicketStats(ticketType, chartType) {
             return response.json();
         })
         .then(data => {
-            // Update charts based on the chartType
+            // Update either purchases, redeemed, or both
             if (chartType === 'purchases' || chartType === 'both') {
                 updatePurchasesChart(data);
             }
@@ -345,7 +357,7 @@ function fetchTicketStats(ticketType, chartType) {
         });
 }
 
-// Function to fetch meal ratings with filters
+// Provide filtered data requests for meal ratings
 function fetchMealRatings(mealType, ratingType) {
     const url = new URL(window.reportsConfig.urls.mealRatings, window.location.origin);
     if (mealType) {
@@ -360,7 +372,7 @@ function fetchMealRatings(mealType, ratingType) {
             return response.json();
         })
         .then(data => {
-            // Update charts based on the ratingType
+            // Update top, lowest, or both charts
             if (ratingType === 'top' || ratingType === 'both') {
                 updateTopRatedChart(data);
             }
@@ -373,18 +385,18 @@ function fetchMealRatings(mealType, ratingType) {
         });
 }
 
-// Load all charts when page loads
+// Initialize everything once the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', function () {
-    // Check if the configuration exists first
+    // Warn if no config is provided in code
     if (typeof window.reportsConfig === 'undefined') {
         console.warn("Reports configuration not found. Using default URLs.");
     }
 
-    // Load initial charts
+    // Load the default data for ticket usage and ratings
     loadTicketCharts();
     loadMealRatingCharts();
 
-    // Set up filter event listeners
+    // Listen for dropdown changes that call filter-based fetch
     document.getElementById('ticketTypeFilterPurchases')?.addEventListener('change', function () {
         const ticketType = this.value;
         fetchTicketStats(ticketType, 'purchases');

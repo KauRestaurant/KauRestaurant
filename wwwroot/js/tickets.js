@@ -1,36 +1,38 @@
-﻿// Fix the URL generation - can't use Razor helpers in external JS files
+﻿// Displays a QR code in a modal for a specific ticket
 function showQrCode(ticketId, mealType) {
+    // If no valid ticket ID is passed, alert the user
     if (!ticketId) {
         alert("No ticket available.");
         return;
     }
 
-    // Update the ticket ID display
+    // Update ticket ID text in the modal
     document.getElementById('ticketIdDisplay').textContent = 'تذكرة #' + ticketId;
 
-    // Set the QR code image source with ticket data
+    // Identify the IMG element for the QR code
     const qrCodeImage = document.getElementById('qrCodeImage');
 
-    // Generate the QR code URL - hardcode the URL since we can't use Razor helpers
+    // Build the URL that returns the generated QR code image for this ticket
     const qrUrl = '/QrCode/GenerateQrCode' +
         '?ticketId=' + ticketId +
         '&mealType=' + encodeURIComponent(mealType);
 
-    // Set the image source to load the QR code
+    // Assign it to the image's source to trigger loading
     qrCodeImage.src = qrUrl;
 
-    // Display meal type in the modal
+    // Display meal type in the modal for clarity
     const mealTypeElement = document.getElementById('mealTypeDisplay');
     if (mealTypeElement) {
         mealTypeElement.textContent = mealType;
     }
 }
 
-// Wait for the DOM to be ready before setting up event handlers
+// Wait for the DOM to be ready before hooking up events
 document.addEventListener('DOMContentLoaded', function () {
-    // Add a close handler to the modal to clear the QR code when closed
+    // Clean up the QR code image when the modal is closed
     const qrModal = document.getElementById('qrModal');
     if (qrModal) {
+        // Use bootstrap's 'hidden.bs.modal' event to reset QR source
         qrModal.addEventListener('hidden.bs.modal', function () {
             document.getElementById('qrCodeImage').src = '';
         });
