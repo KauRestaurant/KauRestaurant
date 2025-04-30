@@ -57,6 +57,7 @@ using (var scope = app.Services.CreateScope())
 {
     await IdentityDataInitializer.SeedRolesAndAdminUser(app.Services);
     await ReviewDataSeeder.SeedReviews(app.Services);
+    await TicketDataSeeder.SeedTickets(app.Services);
 }
 
 app.MapControllerRoute(
