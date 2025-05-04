@@ -55,27 +55,41 @@ namespace KauRestaurant.Controllers.User
             if (!User.Identity.IsAuthenticated)
             {
                 TempData["ErrorMessage"] = "يجب تسجيل الدخول لتقديم مراجعة";
-                return RedirectToAction("Meal", new { id = mealId });
+                return RedirectToAction("Index", new { id = mealId });
             }
 
-            // Retrieve the current user’s ID
+            // Retrieve the current user's ID
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            // Create a new Review entity with user-supplied values
-            var review = new Review
+            try
             {
-                MealID = mealId,
-                CustomerID = userId,
-                Rating = rating,
-                ReviewText = comment,
-                ReviewDate = DateTime.Now
-            };
+                // Create a new Review entity with user-supplied values
+                var review = new Review
+                {
+                    MealID = mealId,
+                    CustomerID = userId,
+                    Rating = rating,
+                    ReviewText = comment,
+                    ReviewDate = DateTime.Now
+                };
 
-            // Save the new review in the database
-            _context.Reviews.Add(review);
-            await _context.SaveChangesAsync();
+                // Save the new review in the database
+                _context.Reviews.Add(review);
+                await _context.SaveChangesAsync();
 
-            // Redirect back to the meal’s main page
+                // Set success message
+                TempData["SuccessMessage"] = "تم إرسال تقييمك بنجاح";
+            }
+            catch (Exception ex)
+            {
+                // Log the error
+                _logger.LogError(ex, "Error submitting review for meal {MealId}", mealId);
+
+                // Set error message
+                TempData["ErrorMessage"] = "حدث خطأ أثناء حفظ التقييم، يرجى المحاولة مرة أخرى";
+            }
+
+            // Redirect back to the meal's main page
             return RedirectToAction("Index", new { id = mealId });
         }
     }

@@ -7,6 +7,14 @@
 <!-- Main Content Section -->
 <div class="container-fluid py-4 py-lg-5 bg-white">
     <div class="container">
+        <!-- Status messages -->
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+                @TempData["SuccessMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
         @if (TempData["ErrorMessage"] != null)
         {
             <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">

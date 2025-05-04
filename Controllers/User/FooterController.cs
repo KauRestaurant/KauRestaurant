@@ -133,7 +133,7 @@ namespace KauRestaurant.Controllers.User
                 await _context.SaveChangesAsync();
 
                 // Inform user of success
-                TempData["StatusMessage"] = "تم إرسال رسالتك بنجاح!";
+                TempData["SuccessMessage"] = "تم إرسال رسالتك بنجاح!";
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception)

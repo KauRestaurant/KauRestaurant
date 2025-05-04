@@ -1,3 +1,6 @@
+/*--------------------------------------------------------------
+   Base Styles
+--------------------------------------------------------------*/
 html {
     font-size: 14px;
     position: relative;
@@ -5,12 +8,77 @@ html {
     margin: 0;
 }
 
+body {
+    font-family: "Cairo", serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin-bottom: 0;
+    padding: 0;
+}
 
+/*--------------------------------------------------------------
+   Background Colors
+--------------------------------------------------------------*/
+.bg-breakfast,
+.accordion-button.bg-breakfast:not(.collapsed) {
+    background-color: #1a6943;
+}
+
+.bg-lunch,
+.accordion-button.bg-lunch:not(.collapsed) {
+    background-color: #175133;
+}
+
+.bg-main-dish {
+    background-color: #1d7f4c;
+    color: #ffffff;
+}
+
+.bg-side-dish {
+    background-color: #509f50;
+    color: #ffffff;
+}
+
+.bg-dessert {
+    background-color: #ed5589;
+    color: #ffffff;
+}
+
+.bg-drink {
+    background-color: #228b81;
+    color: #ffffff;
+}
+
+/*--------------------------------------------------------------
+   Register/Login
+--------------------------------------------------------------*/
+.max-w-600 {
+    max-width: 600px;
+}
+
+/*--------------------------------------------------------------
+   Accordion Arrows
+--------------------------------------------------------------*/
+.accordion-button::after {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23ffffff' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 01.708 0L8 10.293l5.646-5.647a.5.5 0 11.708.708l-6 6a.5.5 0 01-.708 0l-6-6a.5.5 0 010-.708z'/%3E%3C/svg%3E") !important;
+    filter: none !important;
+}
+
+.accordion-button:not(.collapsed)::after {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23ffffff' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 01.708 0L8 10.293l5.646-5.647a.5.5 0 11.708.708l-6 6a.5.5 0 01-.708 0l-6-6a.5.5 0 010-.708z'/%3E%3C/svg%3E") !important;
+    filter: none !important;
+}
+
+/*--------------------------------------------------------------
+   Media Queries
+--------------------------------------------------------------*/
 @media (min-width: 992px) {
     html {
         font-size: 16px;
     }
 
+    /* Disable accordion interactivity on desktop */
     .accordion-desktop .accordion-button::after {
         display: none;
     }
@@ -25,53 +93,16 @@ html {
     }
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-body {
-    font-family: "Cairo", serif;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    margin-bottom: 0;
-    padding: 0;
-}
-
-/* Navbar and Footer Background */
-.custom-navbar, .custom-footer {
-    background-color: #212529;
-}
-
-/* Main Green Button */
-.btn-main-green {
-    background-color: #198754;
-    border-color: #198754;
-    color: #ffffff;
-    transition: all 0.3s ease;
-}
-
-    .btn-main-green:hover {
-        background-color: #105431;
-        border-color: #105431;
-        color: #ffffff;
+@media (max-width: 576px) {
+    .nav-tabs .nav-link {
+        font-size: 12px;
     }
-
-/* Outline Main Green Button */
-.btn-outline-main-green {
-    background-color: transparent;
-    border-color: #198754;
-    color: #ffffff;
-    transition: all 0.3s ease;
 }
 
-    .btn-outline-main-green:hover {
-        background-color: #198754;
-        border-color: #198754;
-        color: #ffffff;
-    }
-
-/* Custom Nav Pills Styling */
+/*--------------------------------------------------------------
+   Days Nav Styles
+--------------------------------------------------------------*/
+/* Nav Pills */
 .nav-pills .nav-link {
     color: #198754; /* Bootstrap's success color */
 }
@@ -87,7 +118,7 @@ body {
         color: #198754;
     }
 
-/* Custom Menu Tabs Styling */
+/* Nav Tabs */
 .nav-tabs .nav-link {
     color: #198754;
     position: relative;
@@ -116,77 +147,14 @@ body {
             background-color: #198754;
         }
 
-
-
-/* Make sure the tab content border is removed */
+/* Remove border from tab content */
 .tab-content {
     border: none;
 }
 
-.hover-success {
-    transition: color 0.2s ease-in-out;
-}
-
-    .hover-success:hover {
-        color: #198754 !important;
-    }
-
-.max-w-600 {
-    max-width: 600px
-}
-
-
-
-/* Purchase Button Hover Effect */
-.btn-light {
-    transition: all 0.3s ease;
-    background-color: #f8f9fa;
-    border: 1px solid #ddd;
-}
-
-    .btn-light:hover {
-        background-color: #ccc !important; /* Using the main green color */
-    }
-
-/* Custom Background Colors */
-.bg-breakfast,
-.accordion-button.bg-breakfast:not(.collapsed),
-.bg-A1 {
-    background-color: #1a6943;
-}
-
-.bg-lunch,
-.accordion-button.bg-lunch:not(.collapsed),
-.bg-A2 {
-    background-color: #175133;
-}
-
-.bg-dinner,
-.accordion-button.bg-dinner:not(.collapsed),
-.bg-A3 {
-    background-color: #0e3924;
-}
-
-.bg-main-dish {
-    background-color: #1d7f4c;
-    color: #ffffff;
-}
-
-.bg-side-dish {
-    background-color: #509f50;
-    color: #ffffff;
-}
-
-.bg-dessert {
-    background-color: #ed5589;
-    color: #ffffff;
-}
-
-.bg-drink {
-    background-color: #228b81;
-    color: #ffffff;
-}
-
+/*--------------------------------------------------------------
+   Focus Removal
+--------------------------------------------------------------*/
 .btn:focus,
 button:focus,
 .btn:active:focus,
@@ -197,22 +165,6 @@ select:focus,
 .form-control:focus,
 .accordion-button:focus {
     box-shadow: none;
-    border-color: rgba(0,0,0,.125);
+    border-color: rgba(0, 0, 0, 0.125);
     outline: none !important;
-}
-
-.accordion-button::after {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23ffffff' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 01.708 0L8 10.293l5.646-5.647a.5.5 0 11.708.708l-6 6a.5.5 0 01-.708 0l-6-6a.5.5 0 010-.708z'/%3E%3C/svg%3E") !important;
-    filter: none !important;
-}
-
-.accordion-button:not(.collapsed)::after {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23ffffff' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 01.708 0L8 10.293l5.646-5.647a.5.5 0 11.708.708l-6 6a.5.5 0 01-.708 0l-6-6a.5.5 0 010-.708z'/%3E%3C/svg%3E") !important;
-    filter: none !important;
-}
-
-@media (max-width: 576px) {
-    .nav-tabs .nav-link {
-        font-size: 12px;
-    }
 }

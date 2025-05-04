@@ -9,4 +9,18 @@
         // When the mouse leaves, remove highlight
         row.addEventListener('mouseleave', () => row.classList.remove('table-active'));
     });
+
+    // Setup delete modal for feedback deletion
+    function setupDeleteModal() {
+        const deleteButtons = document.querySelectorAll('.btn-delete-feedback');
+        if (!deleteButtons.length) return;
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Set the chosen feedback's ID into the hidden field in modal
+                document.getElementById('deleteFeedbackId').value = button.dataset.feedbackId;
+            });
+        });
+    }
+
+    setupDeleteModal();
 });

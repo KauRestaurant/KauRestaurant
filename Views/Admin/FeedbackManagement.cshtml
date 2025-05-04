@@ -66,16 +66,15 @@
                                                     <div class="border p-3 rounded bg-white">@feedback.Text</div>
 
                                                     <div class="mt-3 d-flex justify-content-end gap-2">
-                                                        <a href="mailto:@feedback.UserEmail?subject=رد على: @feedback.Subject" class="btn btn-main-green btn-sm">
+                                                        <a href="mailto:@feedback.UserEmail?subject=رد على: @feedback.Subject" class="btn btn-success btn-sm">
                                                             <i class="bi bi-reply me-1"></i> رد
                                                         </a>
-                                                        <form asp-controller="FeedbackManagement" asp-action="Delete" asp-route-id="@feedback.FeedbackID" method="post" class="d-inline">
-                                                            @Html.AntiForgeryToken()
-                                                            <button type="submit" class="btn btn-danger btn-sm"
-                                                                    onclick="return confirm('هل أنت متأكد من حذف هذه الرسالة؟');">
-                                                                <i class="bi bi-trash me-1"></i> حذف
-                                                            </button>
-                                                        </form>
+                                                        <button type="button" class="btn btn-danger btn-sm btn-delete-feedback"
+                                                                data-feedback-id="@feedback.FeedbackID"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#deleteFeedbackModal">
+                                                            <i class="bi bi-trash me-1"></i> حذف
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -101,6 +100,30 @@
                     </a>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Feedback Modal -->
+<div class="modal fade" id="deleteFeedbackModal" tabindex="-1" aria-labelledby="deleteFeedbackModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" asp-controller="FeedbackManagement" asp-action="Delete">
+                <input type="hidden" id="deleteFeedbackId" name="id" value="" />
+                @Html.AntiForgeryToken()
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteFeedbackModalLabel">تأكيد الحذف</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>هل أنت متأكد من رغبتك في حذف هذه الرسالة؟</p>
+                    <p class="text-danger">لا يمكن التراجع عن هذا الإجراء.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="submit" class="btn btn-danger">نعم، قم بالحذف</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
