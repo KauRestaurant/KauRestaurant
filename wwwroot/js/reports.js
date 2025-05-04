@@ -45,7 +45,9 @@ function updatePurchasesChart(data) {
                     fill: true,
                     backgroundColor: purchasesGradient,
                     borderColor: 'rgb(76, 175, 80)',
-                    tension: 0.3
+                    tension: 0.3,
+                    // Store the total sales data for use in tooltip
+                    totalSales: data.totalSales || Array(data.purchasedTickets.length).fill(0)
                 }]
             },
             options: {
@@ -69,6 +71,23 @@ function updatePurchasesChart(data) {
                 plugins: {
                     legend: {
                         position: 'top'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                const labels = [];
+                                // Add ticket count
+                                labels.push(`التذاكر المشتراة: ${context.raw}`);
+
+                                // Add total sales if available
+                                if (context.dataset.totalSales && context.dataset.totalSales[context.dataIndex] !== undefined) {
+                                    const totalSale = context.dataset.totalSales[context.dataIndex];
+                                    labels.push(`إجمالي المبيعات: ${totalSale.toFixed(2)} ر.س`);
+                                }
+
+                                return labels;
+                            }
+                        }
                     }
                 }
             }

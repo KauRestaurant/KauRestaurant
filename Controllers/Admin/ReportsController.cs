@@ -57,9 +57,10 @@ namespace KauRestaurant.Controllers.Admin
                 // Convert each month to a formatted label
                 var labels = months.Select(m => m.ToString("MMM yyyy")).ToArray();
 
-                // Prepare arrays to store purchased and redeemed counts
+                // Prepare arrays to store purchased and redeemed counts and total sales
                 var purchasedTickets = new int[6];
                 var redeemedTickets = new int[6];
+                var totalSales = new decimal[6];
 
                 // Iterate through the months and compute ticket statistics
                 for (int i = 0; i < 6; i++)
@@ -67,19 +68,45 @@ namespace KauRestaurant.Controllers.Admin
                     var startOfMonth = new DateTime(months[i].Year, months[i].Month, 1);
                     var endOfMonth = startOfMonth.AddMonths(1).AddDays(-1);
 
+                    // Base query for orders in this month
+                    var ordersQuery = _context.Orders
+                        .Where(o => o.OrderDate >= startOfMonth && o.OrderDate <= endOfMonth && o.Status == "Completed");
+
+                    // Get a list of order IDs for this month
+                    var orderIds = ordersQuery.Select(o => o.OrderID).ToList();
+
                     // Base query for purchased tickets
                     var purchasedQuery = _context.Tickets
-                        .Where(t => t.Order.OrderDate >= startOfMonth && t.Order.OrderDate <= endOfMonth);
+                        .Where(t => orderIds.Contains(t.OrderID));
 
                     // Base query for redeemed tickets
                     var redeemedQuery = _context.Tickets
-                        .Where(t => t.IsRedeemed && t.Order.OrderDate >= startOfMonth && t.Order.OrderDate <= endOfMonth);
+                        .Where(t => t.IsRedeemed && orderIds.Contains(t.OrderID));
 
                     // If a ticket type is specified, filter by that type
                     if (!string.IsNullOrEmpty(ticketType))
                     {
                         purchasedQuery = purchasedQuery.Where(t => t.MealType == ticketType);
                         redeemedQuery = redeemedQuery.Where(t => t.MealType == ticketType);
+
+                        // Calculate total sales for filtered ticket type using Order.TotalPaid
+                        if (ticketType == "الإفطار")
+                        {
+                            totalSales[i] = (decimal)ordersQuery
+                                .Where(o => o.BreakfastTicketsCount > 0)
+                                .Sum(o => o.TotalPaid);
+                        }
+                        else if (ticketType == "الغداء")
+                        {
+                            totalSales[i] = (decimal)ordersQuery
+                                .Where(o => o.LunchTicketsCount > 0)
+                                .Sum(o => o.TotalPaid);
+                        }
+                    }
+                    else
+                    {
+                        // Calculate total sales for all ticket types
+                        totalSales[i] = (decimal)ordersQuery.Sum(o => o.TotalPaid);
                     }
 
                     // Count purchased and redeemed tickets
@@ -92,7 +119,8 @@ namespace KauRestaurant.Controllers.Admin
                 {
                     labels = labels,
                     purchasedTickets = purchasedTickets,
-                    redeemedTickets = redeemedTickets
+                    redeemedTickets = redeemedTickets,
+                    totalSales = totalSales
                 };
 
                 // Return chart data as JSON

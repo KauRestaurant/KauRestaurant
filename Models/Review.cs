@@ -15,11 +15,12 @@ namespace KauRestaurant.Models
 
         public DateTime ReviewDate { get; set; }
 
-        [StringLength(300, ErrorMessage = "يجب أن يكون نص التقييم أقل من {1} حرف")]
+        [Required]
+        [StringLength(300)]
         public string ReviewText { get; set; }
 
-        [Required(ErrorMessage = "التقييم مطلوب")]
-        [Range(1, 5, ErrorMessage = "يجب أن يكون التقييم بين {1} و {2} نجوم")]
+        [Required]
+        [Range(1, 5)]
         public int Rating { get; set; }
 
         [ForeignKey("CustomerID")]

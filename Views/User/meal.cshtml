@@ -139,21 +139,23 @@
                         }
 
                         <!-- Review Form -->
-                        <form class="mb-4" method="post" asp-controller="Meal" asp-action="submitReview">
+                        <form id="review-form" class="mb-4" method="post" asp-controller="Meal" asp-action="submitReview">
                             <input type="hidden" name="mealId" value="@Model.MealID" />
                             <div class="mb-3">
-                                <label class="form-label">تقييمك</label>
+                                <label class="form-label">تقييمك <span class="text-danger" id="rating-required"></span></label>
                                 <div class="star-rating">
                                     @for (int i = 5; i >= 1; i--)
                                     {
-                                        <input type="radio" id="star@(i)" name="rating" value="@i" required />
+                                        <input type="radio" id="star@(i)" name="rating" value="@i" />
                                         <label for="star@(i)"><i class="bi bi-star-fill"></i></label>
                                     }
                                 </div>
+                                <span id="rating-error" class="text-danger"></span>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">تعليقك</label>
-                                <textarea class="form-control" name="comment" rows="3" placeholder="اكتب تعليقك هنا..." required></textarea>
+                                <label class="form-label">تعليقك <span class="text-danger" id="comment-required"></span></label>
+                                <textarea class="form-control" name="comment" rows="3" placeholder="اكتب تعليقك هنا..."></textarea>
+                                <span id="comment-error" class="text-danger"></span>
                             </div>
                             @if (User.Identity.IsAuthenticated)
                             {
@@ -223,3 +225,9 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script src="~/js/meal.js" asp-append-version="true"></script>
+}
+
+

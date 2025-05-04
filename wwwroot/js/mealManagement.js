@@ -97,6 +97,75 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    // Prevents adding duplicate meal names by validating against existing ones
+    function setupDuplicateMealNameCheck() {
+        // Find the meal name field on add or edit forms
+        const mealNameField = document.getElementById('mealName') || document.getElementById('editMealName');
+        if (!mealNameField) return; // Not on add/edit meal page
+
+        const formSubmitButton = mealNameField.closest('form').querySelector('button[type="submit"]');
+
+        let debounceTimeout;
+        let lastCheckedName = '';
+
+        // Checks the meal name against existing ones as user types
+        mealNameField.addEventListener('input', function () {
+            const mealName = this.value.trim();
+
+            // Remove any existing error message
+            const errorElement = document.getElementById('mealNameError');
+            if (errorElement) {
+                errorElement.remove();
+            }
+
+            // Reset button state when field is modified
+            if (formSubmitButton) {
+                formSubmitButton.disabled = false;
+            }
+
+            // Skip validation for very short names
+            if (mealName.length < 3) {
+                return;
+            }
+
+            // Don't recheck the same name to reduce API calls
+            if (mealName === lastCheckedName) {
+                return;
+            }
+
+            // Debounce the API call to avoid excessive requests
+            clearTimeout(debounceTimeout);
+            debounceTimeout = setTimeout(function () {
+                lastCheckedName = mealName;
+
+                // Get the current meal ID for edit mode (to exclude current meal)
+                const currentMealId = document.querySelector('input[name="MealID"]')?.value || '0';
+
+                // Make API call to check for duplicate name
+                fetch(`/MealManagement/CheckMealNameExists?mealName=${encodeURIComponent(mealName)}&currentMealId=${currentMealId}`)
+                    .then(response => response.json())
+                    .then(exists => {
+                        if (exists) {
+                            // Create and show Arabic error message
+                            const errorMsg = document.createElement('div');
+                            errorMsg.id = 'mealNameError';
+                            errorMsg.className = 'text-danger mt-1';
+                            errorMsg.textContent = 'توجد وجبة بنفس الاسم بالفعل. الرجاء اختيار اسم آخر.';
+                            mealNameField.parentNode.appendChild(errorMsg);
+
+                            // Disable submit to prevent adding duplicate
+                            if (formSubmitButton) {
+                                formSubmitButton.disabled = true;
+                            }
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error checking meal name:', error);
+                    });
+            }, 500); // Wait half second after typing stops
+        });
+    }
+
     // Start everything once the page is loaded
     setupCalorieCalculation('add');
     setupCalorieCalculation('edit');

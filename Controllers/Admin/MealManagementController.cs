@@ -80,6 +80,19 @@ namespace KauRestaurant.Controllers.Admin
             return View("~/Views/Admin/EditMeal.cshtml", meal);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> CheckMealNameExists(string mealName)
+        {
+            if (string.IsNullOrEmpty(mealName))
+            {
+                return Json(false);
+            }
+
+            var exists = await _context.Meals.AnyAsync(m => m.MealName.Trim().ToLower() == mealName.Trim().ToLower());
+            return Json(exists);
+        }
+
+
         // Handles creating a new meal record
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -91,6 +104,13 @@ namespace KauRestaurant.Controllers.Admin
                 if (!ValidateMealBasics(meal))
                 {
                     TempData["ErrorMessage"] = "اسم الوجبة وفئتها ونوعها والوصف مطلوبة";
+                    return RedirectToAction(nameof(Add));
+                }
+
+                // Check if a meal with the same name already exists
+                if (await _context.Meals.AnyAsync(m => m.MealName.Trim().ToLower() == meal.MealName.Trim().ToLower()))
+                {
+                    TempData["ErrorMessage"] = "توجد وجبة بنفس الاسم بالفعل. الرجاء اختيار اسم آخر.";
                     return RedirectToAction(nameof(Add));
                 }
 
@@ -140,6 +160,15 @@ namespace KauRestaurant.Controllers.Admin
                 {
                     TempData["ErrorMessage"] = "الوجبة غير موجودة";
                     return RedirectToAction(nameof(Index));
+                }
+
+                // Check if name is being changed and if the new name already exists
+                if (!meal.MealName.Trim().Equals(MealName.Trim(), StringComparison.OrdinalIgnoreCase) &&
+                    await _context.Meals.AnyAsync(m => m.MealID != MealID &&
+                                                  m.MealName.Trim().ToLower() == MealName.Trim().ToLower()))
+                {
+                    TempData["ErrorMessage"] = "توجد وجبة بنفس الاسم بالفعل. الرجاء اختيار اسم آخر.";
+                    return RedirectToAction(nameof(Edit), new { id = MealID });
                 }
 
                 // Keep track of the old image path in case we need to delete it
