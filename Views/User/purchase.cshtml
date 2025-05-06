@@ -5,8 +5,8 @@
 
     // Get ticket prices from ViewBag
     var ticketPrices = ViewBag.TicketPrices as Dictionary<string, decimal>;
-    var breakfastPrice = ticketPrices != null && ticketPrices.ContainsKey("الإفطار") ? ticketPrices["الإفطار"] : 7m;
-    var lunchPrice = ticketPrices != null && ticketPrices.ContainsKey("الغداء") ? ticketPrices["الغداء"] : 10m;
+    var breakfastPrice = ticketPrices != null && ticketPrices.ContainsKey("الإفطار") ? ticketPrices["الإفطار"] : 9.5m;
+    var lunchPrice = ticketPrices != null && ticketPrices.ContainsKey("الغداء") ? ticketPrices["الغداء"] : 11m;
 }
 
 <!-- Main Content Section -->

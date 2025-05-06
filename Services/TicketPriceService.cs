@@ -34,11 +34,11 @@ namespace KauRestaurant.Services
 
             // Add breakfast price
             var breakfastPrice = prices.FirstOrDefault(p => p.MealType == "الإفطار");
-            result["الإفطار"] = breakfastPrice?.Price ?? 7m;
+            result["الإفطار"] = breakfastPrice?.Price ?? 9.5m;
 
             // Add lunch price
             var lunchPrice = prices.FirstOrDefault(p => p.MealType == "الغداء");
-            result["الغداء"] = lunchPrice?.Price ?? 10m;
+            result["الغداء"] = lunchPrice?.Price ?? 11m;
 
             return result;
         }

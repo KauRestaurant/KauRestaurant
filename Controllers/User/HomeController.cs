@@ -23,31 +23,19 @@ namespace KauRestaurant.Controllers.User
         public async Task<IActionResult> Index()
         {
             // Get current day in Arabic
-            var englishDay = DateTime.Now.DayOfWeek.ToString();
-            var arabicDay = englishDay switch
-            {
-                "Sunday" => "الأحد",
-                "Monday" => "الإثنين",
-                "Tuesday" => "الثلاثاء",
-                "Wednesday" => "الأربعاء",
-                "Thursday" => "الخميس",
-                "Friday" => "الجمعة",
-                "Saturday" => "السبت",
-                _ => "الأحد"
-            };
+            var arabicDay = GetArabicDayName(DateTime.Now.DayOfWeek);
 
-            // Get today's menu
+            // Get today's menu with related data
             var todayMenu = await _context.Menus
                 .Include(m => m.MenuMeals)
-                .ThenInclude(mm => mm.Meal)
-                .ThenInclude(m => m.Reviews)
+                    .ThenInclude(mm => mm.Meal)
+                        .ThenInclude(m => m.Reviews)
                 .FirstOrDefaultAsync(m => m.Day == arabicDay);
 
             // Get restaurant info
             var restaurant = await _context.Restaurants.FirstOrDefaultAsync();
-            ViewBag.Restaurant = restaurant;
 
-            // Process menu items and organize by meal categories
+            // Create view model with basic data
             var categories = new[] { "الإفطار", "الغداء" };
             var viewModel = new IndexViewModel
             {
@@ -58,7 +46,8 @@ namespace KauRestaurant.Controllers.User
                 MealsByCategory = new Dictionary<string, List<MealWithMetadata>>()
             };
 
-            if (todayMenu != null && todayMenu.MenuMeals != null)
+            // Process menu meals if available
+            if (todayMenu?.MenuMeals != null)
             {
                 var mealsByCategory = todayMenu.MenuMeals
                     .Select(mm => mm.Meal)
@@ -68,54 +57,83 @@ namespace KauRestaurant.Controllers.User
                 // Process each category
                 foreach (var category in categories)
                 {
-                    var meals = mealsByCategory.ContainsKey(category)
-                        ? mealsByCategory[category]
-                        : new List<KauRestaurant.Models.Meal>();
-
-                    var mealsByType = meals
-                        .GroupBy(m => m.MealType)
-                        .OrderBy(g => g.Key != "الطبق الرئيسي")
-                        .ThenBy(g => g.Key != "طبق جانبي")
-                        .ThenBy(g => g.Key != "حلوى")
-                        .ThenBy(g => g.Key != "مشروب")
-                        .ToDictionary(g => g.Key, g => g.ToList());
-
-                    var processedMeals = new List<MealWithMetadata>();
-                    foreach (var mealGroup in mealsByType)
-                    {
-                        foreach (var meal in mealGroup.Value)
-                        {
-                            var reviewRating = new MealRatingInfo
-                            {
-                                HasReviews = meal.Reviews != null && meal.Reviews.Any()
-                            };
-
-                            if (reviewRating.HasReviews)
-                            {
-                                reviewRating.ReviewsCount = meal.Reviews.Count;
-                                reviewRating.AverageRating = (float)meal.Reviews.Average(r => r.Rating);
-                                reviewRating.FullStars = (int)Math.Floor(reviewRating.AverageRating);
-                                reviewRating.HasHalfStar = reviewRating.AverageRating - reviewRating.FullStars >= 0.5;
-                                reviewRating.EmptyStars = 5 - reviewRating.FullStars - (reviewRating.HasHalfStar ? 1 : 0);
-                            }
-
-                            processedMeals.Add(new MealWithMetadata
-                            {
-                                Meal = meal,
-                                Type = mealGroup.Key,
-                                TypeStyle = GetMealTypeStyle(mealGroup.Key),
-                                Rating = reviewRating
-                            });
-                        }
-                    }
-
-                    viewModel.MealsByCategory[category] = processedMeals;
+                    viewModel.MealsByCategory[category] = ProcessCategoryMeals(
+                        mealsByCategory.GetValueOrDefault(category, new List<Meal>()));
                     viewModel.CategoryIcons[category] = GetCategoryIcon(category);
                 }
             }
 
             return View("~/Views/User/Index.cshtml", viewModel);
         }
+
+        private string GetArabicDayName(DayOfWeek day)
+        {
+            return day switch
+            {
+                DayOfWeek.Sunday => "الأحد",
+                DayOfWeek.Monday => "الإثنين",
+                DayOfWeek.Tuesday => "الثلاثاء",
+                DayOfWeek.Wednesday => "الأربعاء",
+                DayOfWeek.Thursday => "الخميس",
+                DayOfWeek.Friday => "الجمعة",
+                DayOfWeek.Saturday => "السبت",
+                _ => "الأحد"
+            };
+        }
+
+        private List<MealWithMetadata> ProcessCategoryMeals(List<Meal> meals)
+        {
+            var result = new List<MealWithMetadata>();
+
+            var mealsByType = meals
+                .GroupBy(m => m.MealType)
+                .OrderBy(g => g.Key != "الطبق الرئيسي")
+                .ThenBy(g => g.Key != "طبق جانبي")
+                .ThenBy(g => g.Key != "حلوى")
+                .ThenBy(g => g.Key != "مشروب");
+
+            foreach (var mealGroup in mealsByType)
+            {
+                foreach (var meal in mealGroup)
+                {
+                    var rating = CalculateMealRating(meal.Reviews);
+
+                    result.Add(new MealWithMetadata
+                    {
+                        Meal = meal,
+                        Type = mealGroup.Key,
+                        TypeStyle = GetMealTypeStyle(mealGroup.Key),
+                        Rating = rating
+                    });
+                }
+            }
+
+            return result;
+        }
+
+        private MealRatingInfo CalculateMealRating(ICollection<Review> reviews)
+        {
+            var hasReviews = reviews != null && reviews.Any();
+            if (!hasReviews)
+            {
+                return new MealRatingInfo { HasReviews = false };
+            }
+
+            var averageRating = (float)reviews.Average(r => r.Rating);
+            var fullStars = (int)Math.Floor(averageRating);
+            var hasHalfStar = averageRating - fullStars >= 0.5;
+
+            return new MealRatingInfo
+            {
+                HasReviews = true,
+                ReviewsCount = reviews.Count,
+                AverageRating = averageRating,
+                FullStars = fullStars,
+                HasHalfStar = hasHalfStar,
+                EmptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0)
+            };
+        }
+
 
         private string GetMealTypeStyle(string mealType)
         {

@@ -80,7 +80,7 @@ namespace KauRestaurant.Controllers.Admin
                     return Json(new { success = false, message = "QR غير صالح أو تم العبث به" });
                 }
 
-                // Deserialize the QR data into a strongly typed model
+                // Deserialize the QR data
                 var ticketData = JsonSerializer.Deserialize<TicketQrService.TicketQrData>(request.qrData);
 
                 // Search the database for a matching ticket

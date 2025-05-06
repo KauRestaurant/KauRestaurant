@@ -29,8 +29,7 @@ namespace KauRestaurant.Services
 
         public string GenerateTicketQrData(TicketQrData data)
         {
-            // Generate a simple signature (for demonstration purposes)
-            // In a production app, you would use a more robust signing mechanism
+            // Generate a signature 
             data.Signature = GenerateSignature(data);
 
             // Serialize to JSON
